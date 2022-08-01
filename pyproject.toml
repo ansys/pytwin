@@ -4,9 +4,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 # Check https://python-poetry.org/docs/pyproject/ for all available sections
-name = "ansys-twin-library"
+name = "ansys-twin"
 version = "0.1.dev0"
-description = "A python wrapper for ansys digital twin components"
+description = "A python wrapper for Ansys digital twin components"
 license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
 maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]

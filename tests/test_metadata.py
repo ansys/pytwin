@@ -1,4 +1,4 @@
-from ansys.twin.library import __version__
+from ansys.twin import __version__
 
 
 def test_pkg_version():
