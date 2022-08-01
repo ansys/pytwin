@@ -1,7 +1,7 @@
 import pathlib
 import pytest
 
-from src.ansys.twin.library.evaluate.evaluate import TwinModel, TwinState
+from src.ansys.twin.evaluate.evaluate import TwinModel, TwinState
 
 DICT_1 = {
     "twinFileName": "CoupleClutches_22R2_other.twin"
@@ -9,7 +9,7 @@ DICT_1 = {
 
 
 class TestEvaluate:
-    @pytest.mark.parametrize('filename', [('CoupleClutches_22R2_other.twin')])
+    @pytest.mark.parametrize('filename', ['CoupleClutches_22R2_other.twin'])
     def test_instantiation(self, filename):
         cwd_address = str(pathlib.Path(__file__).parent.absolute())
         path = str(pathlib.Path(cwd_address, 'data', filename))

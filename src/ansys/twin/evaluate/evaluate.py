@@ -4,7 +4,7 @@ import platform
 from enum import Enum
 
 # Local application imports
-from src.ansys.twin.library.twin_runtime.twin_runtime_core import TwinRuntime
+from src.ansys.twin.twin_runtime.twin_runtime_core import TwinRuntime
 
 
 class TwinState(Enum):
