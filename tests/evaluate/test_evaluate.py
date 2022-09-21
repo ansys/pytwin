@@ -20,7 +20,40 @@ class TestEvaluate:
             TwinModel(model_filepath='')
         assert 'Please provide existing filepath' in str(e)
 
-    def test_inputs_property(self):
+    def test_parameters_property(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # Test parameters have starting values JUST AFTER INSTANTIATION
+        parameters_ref = {'CoupledClutches1_Inert1_J': 1.0,
+                          'CoupledClutches1_Inert2_J': 1.0,
+                          'CoupledClutches1_Inert3_J': 1.0,
+                          'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Test parameters have been well updated AFTER FIRST EVALUATION INITIALIZATION
+        new_parameters = {'CoupledClutches1_Inert1_J': 3.0,
+                          'CoupledClutches1_Inert2_J': 2.0}
+        twin.initialize_evaluation(parameters=new_parameters)
+        parameters_ref = {'CoupledClutches1_Inert1_J': 3.0,
+                          'CoupledClutches1_Inert2_J': 2.0,
+                          'CoupledClutches1_Inert3_J': 1.0,
+                          'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Test parameters keep same values AFTER STEP BY STEP EVALUATION
+        twin.evaluate_step_by_step(step_size=0.001)
+        parameters_ref = {'CoupledClutches1_Inert1_J': 3.0,
+                          'CoupledClutches1_Inert2_J': 2.0,
+                          'CoupledClutches1_Inert3_J': 1.0,
+                          'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Test parameters have been updated to starting values AFTER NEW INITIALIZATION
+        twin.initialize_evaluation()
+        parameters_ref = {'CoupledClutches1_Inert1_J': 1.0,
+                          'CoupledClutches1_Inert2_J': 1.0,
+                          'CoupledClutches1_Inert3_J': 1.0,
+                          'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+
+    def test_inputs_property_with_step_by_step_eval(self):
         model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
         twin = TwinModel(model_filepath=model_filepath)
         # Test inputs have starting values JUST AFTER INSTANTIATION
@@ -72,40 +105,7 @@ class TestEvaluate:
                       'Torque_in': 0.0}
         assert compare_dictionary(twin.inputs, inputs_ref)
 
-    def test_parameters_property(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
-        twin = TwinModel(model_filepath=model_filepath)
-        # Test parameters have starting values JUST AFTER INSTANTIATION
-        parameters_ref = {'CoupledClutches1_Inert1_J': 1.0,
-                          'CoupledClutches1_Inert2_J': 1.0,
-                          'CoupledClutches1_Inert3_J': 1.0,
-                          'CoupledClutches1_Inert4_J': 1.0}
-        assert compare_dictionary(twin.parameters, parameters_ref)
-        # Test parameters have been well updated AFTER FIRST EVALUATION INITIALIZATION
-        new_parameters = {'CoupledClutches1_Inert1_J': 3.0,
-                          'CoupledClutches1_Inert2_J': 2.0}
-        twin.initialize_evaluation(parameters=new_parameters)
-        parameters_ref = {'CoupledClutches1_Inert1_J': 3.0,
-                          'CoupledClutches1_Inert2_J': 2.0,
-                          'CoupledClutches1_Inert3_J': 1.0,
-                          'CoupledClutches1_Inert4_J': 1.0}
-        assert compare_dictionary(twin.parameters, parameters_ref)
-        # Test parameters keep same values AFTER STEP BY STEP EVALUATION
-        twin.evaluate_step_by_step(step_size=0.001)
-        parameters_ref = {'CoupledClutches1_Inert1_J': 3.0,
-                          'CoupledClutches1_Inert2_J': 2.0,
-                          'CoupledClutches1_Inert3_J': 1.0,
-                          'CoupledClutches1_Inert4_J': 1.0}
-        assert compare_dictionary(twin.parameters, parameters_ref)
-        # Test parameters have been updated to starting values AFTER NEW INITIALIZATION
-        twin.initialize_evaluation()
-        parameters_ref = {'CoupledClutches1_Inert1_J': 1.0,
-                          'CoupledClutches1_Inert2_J': 1.0,
-                          'CoupledClutches1_Inert3_J': 1.0,
-                          'CoupledClutches1_Inert4_J': 1.0}
-        assert compare_dictionary(twin.parameters, parameters_ref)
-
-    def test_outputs_property(self):
+    def test_outputs_property_with_step_by_step_eval(self):
         model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
         twin = TwinModel(model_filepath=model_filepath)
         # Test outputs have None values JUST AFTER INSTANTIATION

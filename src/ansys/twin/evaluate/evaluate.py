@@ -2,6 +2,7 @@ import os
 import time
 
 import pandas as pd
+import numpy as np
 
 from src.ansys.twin.twin_runtime.twin_runtime_core import TwinRuntime
 
@@ -44,6 +45,28 @@ class TwinModel:
             msg += '\nPlease provide existing filepath to initialize the TwinModel object.'
             raise self._raise_error(msg)
         return True
+
+    def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
+        """Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
+        (1) 'Time' as first column (2) one column per twin model input (3) columns order is the same as twin model
+        input names list return by SDK.
+
+        If an input is not found in the given inputs_df, then intialization value is used to keep associated input
+        constant over Time."""
+        if 'Time' not in inputs_df:
+            msg = 'Given inputs dataframe has no \'Time\' column!'
+            msg += f'\nExisting column labels are :{[s for s in inputs_df.columns]}'
+            msg += f'\nPlease provide a dataframe with a \'Time\' column to use batch mode evaluation.'
+            self._raise_error(msg)
+
+        _inputs_df = pd.DataFrame()
+        _inputs_df['Time'] = inputs_df['Time']
+        for name, value in self._inputs.items():
+            if name in inputs_df:
+                _inputs_df[name] = inputs_df[name]
+            else:
+                _inputs_df[name] = np.full(shape=(_inputs_df.shape[0], 1), fill_value=value)
+        return _inputs_df
 
     def _initialize_inputs_with_start_values(self):
         """
@@ -225,7 +248,7 @@ class TwinModel:
         if not self.evaluation_is_initialized:
             self._raise_error('Twin model evaluation has not been initialized! Please initialize evaluation.')
 
-        if step_size <= 0:
+        if step_size <= 0.:
             msg = f'Step size must be strictly bigger than zero ({step_size} was provided)!'
             self._raise_error(msg)
 
@@ -244,25 +267,27 @@ class TwinModel:
 
     def evaluate_batch(self, inputs_df: pd.DataFrame):
         """
-        TODO LUCAS
+        Evaluate the twin model with the historical inputs' data given with a Pandas.DataFrame().
+
+        Twin model evaluation must be initialized before calling this method.
+
+        **inputs_df:** is a pandas.DataFrame with historical inputs data. It must have a 'Time' column and all twin
+        model inputs history you want to simulate (one input per column). If a twin model input is not found in the
+        dataframe columns then this input is kept constant to its initialization value. The column header must match
+        with a twin model input name.
+
+        **return:** a pandas.DataFrame with all twin model outputs associated to the historical inputs' data.
         """
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
-        # TODO LUCAS
-        # TODO LUCAS
-        # TODO LUCAS
-        pass
 
-    def compute_twin_model_batch(self, inputs_df):
-        """method to simulate the Twin in batch mode, inputs argument are
-        provided as pandas dataframes """
-        step_size = 0
-        interpolate = 0
-        inputs_df.set_index('Time', inplace=True)
-        output_columns = ['Time'] + list(self.outputs)
-        outputs_df = self.twin_runtime.twin_simulate_batch_mode(inputs_df, output_columns, step_size, interpolate,
-                                                                time_as_index=True)
-        return outputs_df
+        if not self.evaluation_is_initialized:
+            self._raise_error('Twin model evaluation has not been initialized! Please initialize evaluation.')
+
+        _inputs_df = self._create_dataframe_inputs(inputs_df)
+        _output_col_names = ['Time'] + list(self._outputs.keys())
+
+        return self._twin_runtime.twin_simulate_batch_mode(input_df=_inputs_df, output_column_names=_output_col_names)
 
 
 class TwinModelError(Exception):
