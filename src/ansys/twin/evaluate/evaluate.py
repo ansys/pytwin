@@ -13,17 +13,18 @@ class TwinModel:
     batch mode or step-by-step mode.
     """
     def __init__(self, model_filepath: str):
-        self._model_filepath = None
-        if self._check_model_filepath_is_valid(model_filepath):
-            self._model_filepath = model_filepath
         self._evaluation_time = None
         self._initialization_time = None
         self._instantiation_time = None
         self._inputs = None
+        self._model_filepath = None
         self._outputs = None
         self._parameters = None
         self._twin_runtime = None
         self._init_evaluation_has_been_done = None
+
+        if self._check_model_filepath_is_valid(model_filepath):
+            self._model_filepath = model_filepath
         self._instantiate_twin_model()
 
     def __del__(self):
@@ -58,7 +59,16 @@ class TwinModel:
         """
         self._parameters = dict()
         for name in self._twin_runtime.twin_get_param_names():
-            self._parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
+            if 'solver.' not in name:
+                self._parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
+
+    def _initialize_outputs_with_none_values(self):
+        """
+        (internal) Initialize outputs dictionary {name:value} with None values.
+        """
+        output_names = self._twin_runtime.twin_get_output_names()
+        output_values = [None]*len(output_names)
+        self._outputs = dict(zip(output_names, output_values))
 
     def _instantiate_twin_model(self):
         """
@@ -70,6 +80,7 @@ class TwinModel:
             self._instantiation_time = time.time()
             self._initialize_inputs_with_start_values()
             self._initialize_parameters_with_start_values()
+            self._initialize_outputs_with_none_values()
             self._init_evaluation_has_been_done = False
         except Exception as e:
             msg = 'Twin model failed during instantiation!'
@@ -82,16 +93,9 @@ class TwinModel:
         """
         raise TwinModelError(msg)
 
-    def _update_parameters(self, parameters: dict):
-        """(internal) Update parameters values with given dictionary."""
-        for name, value in parameters:
-            if name in self._parameters:
-                self._parameters[name] = value
-                self._twin_runtime.twin_set_param_by_name(param_name=name, value=value)
-
     def _update_inputs(self, inputs: dict):
         """(internal) Update input values with given dictionary."""
-        for name, value in inputs:
+        for name, value in inputs.items():
             if name in self._inputs:
                 self._inputs[name] = value
                 self._twin_runtime.twin_set_input_by_name(input_name=name, value=value)
@@ -99,6 +103,13 @@ class TwinModel:
     def _update_outputs(self):
         """(internal) Update output values with twin model results at current evaluation time."""
         self._outputs = dict(zip(self._twin_runtime.twin_get_output_names(), self._twin_runtime.twin_get_outputs()))
+
+    def _update_parameters(self, parameters: dict):
+        """(internal) Update parameters values with given dictionary."""
+        for name, value in parameters.items():
+            if name in self._parameters:
+                self._parameters[name] = value
+                self._twin_runtime.twin_set_param_by_name(param_name=name, value=value)
 
     @property
     def evaluation_is_initialized(self):
@@ -175,7 +186,7 @@ class TwinModel:
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
 
-        if not self._init_evaluation_has_been_done:
+        if self._init_evaluation_has_been_done:
             if self._twin_runtime.is_model_initialized:
                 self._twin_runtime.twin_reset()
 
@@ -194,7 +205,7 @@ class TwinModel:
 
         self._init_evaluation_has_been_done = True
 
-    def evaluate_step(self, step_size: float, inputs: dict = None):
+    def evaluate_step_by_step(self, step_size: float, inputs: dict = None):
         """
         Evaluate the twin model a next time step (equals current time step plus step_size) and return list of
         outputs values at next time step (ordered by output_names).
