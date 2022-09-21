@@ -269,7 +269,9 @@ class TwinModel:
         """
         Evaluate the twin model with the historical inputs' data given with a Pandas.DataFrame().
 
-        Twin model evaluation must be initialized before calling this method.
+        Twin model evaluation must be initialized before calling this method, which solve time instant 0.(s).
+
+        Historical inputs must not include time instant 0.
 
         **inputs_df:** is a pandas.DataFrame with historical inputs data. It must have a 'Time' column and all twin
         model inputs history you want to simulate (one input per column). If a twin model input is not found in the
