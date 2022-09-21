@@ -51,7 +51,7 @@ class TwinModel:
         (1) 'Time' as first column (2) one column per twin model input (3) columns order is the same as twin model
         input names list return by SDK.
 
-        If an input is not found in the given inputs_df, then intialization value is used to keep associated input
+        If an input is not found in the given inputs_df, then initialization value is used to keep associated input
         constant over Time."""
         if 'Time' not in inputs_df:
             msg = 'Given inputs dataframe has no \'Time\' column!'

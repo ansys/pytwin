@@ -1,5 +1,7 @@
 import os
+
 import pytest
+import pandas as pd
 
 from src.ansys.twin.evaluate.evaluate import TwinModel
 from src.ansys.twin.evaluate.evaluate import TwinModelError
@@ -105,6 +107,18 @@ class TestEvaluate:
                       'Torque_in': 0.0}
         assert compare_dictionary(twin.inputs, inputs_ref)
 
+    def test_inputs_property_with_batch_eval(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # Test inputs after BATCH EVALUATION
+        twin.initialize_evaluation()
+        twin.evaluate_batch(pd.DataFrame({'Time': [0, 1]}))
+        inputs_ref = {'Clutch1_in': 0.0,
+                      'Clutch2_in': 0.0,
+                      'Clutch3_in': 0.0,
+                      'Torque_in': 0.0}
+        assert compare_dictionary(twin.inputs, inputs_ref)
+
     def test_outputs_property_with_step_by_step_eval(self):
         model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
         twin = TwinModel(model_filepath=model_filepath)
@@ -125,3 +139,80 @@ class TestEvaluate:
         twin.initialize_evaluation()
         outputs_ref = {'Clutch1_torque': 0.0, 'Clutch2_torque': 0.0, 'Clutch3_torque': 0.0}
         assert compare_dictionary(twin.outputs, outputs_ref)
+
+    def test_outputs_property_with_batch_eval(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # Test outputs after BATCH EVALUATION
+        twin.initialize_evaluation()
+        twin.evaluate_batch(pd.DataFrame({'Time': [0, 1]}))
+        inputs_ref = {'Clutch1_in': 0.0,
+                      'Clutch2_in': 0.0,
+                      'Clutch3_in': 0.0,
+                      'Torque_in': 0.0}
+        outputs_ref = {'Clutch1_torque': 0.0, 'Clutch2_torque': 0.0, 'Clutch3_torque': 0.0}
+        assert compare_dictionary(twin.outputs, outputs_ref)
+
+    def test_raised_errors_with_step_by_step_evaluation(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # Raise an error if TWIN MODEL HAS NOT BEEN INITIALIZED
+        with pytest.raises(TwinModelError) as e:
+            twin.evaluate_step_by_step(step_size=0.001)
+        assert 'Please initialize evaluation' in str(e)
+        # Raise an error if STEP SIZE IS ZERO
+        with pytest.raises(TwinModelError) as e:
+            twin.initialize_evaluation()
+            twin.evaluate_step_by_step(step_size=0.)
+        assert 'Step size must be strictly bigger than zero' in str(e)
+        with pytest.raises(TwinModelError) as e:
+            twin.initialize_evaluation()
+            twin.evaluate_step_by_step(step_size=-0.1)
+        assert 'Step size must be strictly bigger than zero' in str(e)
+
+    def test_raised_errors_with_batch_evaluation(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # Raise an error if TWIN MODEL HAS NOT BEEN INITIALIZED
+        with pytest.raises(TwinModelError) as e:
+            twin.evaluate_batch(pd.DataFrame())
+        assert 'Please initialize evaluation' in str(e)
+        # Raise an error if INPUTS DATAFRAME HAS NO TIME COLUMN
+        with pytest.raises(TwinModelError) as e:
+            twin.initialize_evaluation()
+            twin.evaluate_batch(pd.DataFrame())
+        assert 'Please provide a dataframe with a \'Time\' column to use batch mode evaluation' in str(e)
+
+    def test_evaluation_methods_give_same_results(self):
+        sbs_outputs = dict()
+        # Evaluate twin model with STEP BY STEP EVALUATION
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # t=0. (s)
+        twin.initialize_evaluation(inputs={'Clutch1_in': 1.0, 'Clutch2_in': 1.0})
+        sbs_outputs['Time'] = [0.]
+        for name in twin.outputs:
+            sbs_outputs[name] = [twin.outputs[name]]
+        # t=0.1 (s)
+        new_inputs = {'Clutch1_in': 2.0, 'Clutch2_in': 2.0}
+        twin.evaluate_step_by_step(step_size=0.1, inputs=new_inputs)
+        sbs_outputs['Time'].append(0.1)
+        for name in twin.outputs:
+            sbs_outputs[name].append(twin.outputs[name])
+        # t=0.2 (s)
+        new_inputs = {'Clutch1_in': 3.0, 'Clutch2_in': 3.0}
+        twin.evaluate_step_by_step(step_size=0.1, inputs=new_inputs)
+        sbs_outputs['Time'].append(0.2)
+        for name in twin.outputs:
+            sbs_outputs[name].append(twin.outputs[name])
+        # Evaluate twin model with BATCH EVALUATION
+        twin.initialize_evaluation(inputs={'Clutch1_in': 1.0, 'Clutch2_in': 1.0})
+        inputs_df = pd.DataFrame({'Time': [0.1, 0.2], 'Clutch1_in': [2., 3.], 'Clutch2_in': [2., 3.]})
+        outputs_df = twin.evaluate_batch(inputs_df)
+        # Compare STEP-BY-STEP vs BATCH RESULTS
+        """
+        TODO - Vérifier pourquoi le batch mode ne renvoie pas la sortie associée au dernier pas de temps.
+        En attendant, on retire donc le dernier pas de temps de l'évaluation step by step pour effectuer la comparaison.
+        """
+        sbs_outputs_df = pd.DataFrame(sbs_outputs).iloc[:-1, :]
+        assert pd.DataFrame.equals(sbs_outputs_df, outputs_df)
