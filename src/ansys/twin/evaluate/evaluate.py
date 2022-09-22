@@ -28,7 +28,11 @@ class TwinModel:
         self._instantiate_twin_model()
 
     def __del__(self):
-        self._close()
+        """
+        (internal) Close twin runtime when object is garbage collected.
+        """
+        if self._twin_runtime is not None:
+            self._twin_runtime.twin_close()
 
     def _check_model_filepath_is_valid(self, model_filepath):
         """
@@ -43,13 +47,6 @@ class TwinModel:
             msg += '\nPlease provide existing filepath to initialize the TwinModel object.'
             raise self._raise_error(msg)
         return True
-
-    def _close(self):
-        """
-        (internal) Close twin runtime
-        """
-        if self._twin_runtime is not None:
-            self._twin_runtime.twin_close()
 
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
@@ -243,12 +240,6 @@ class TwinModel:
         Return None if model filepath is not valid.
         """
         return self._model_filepath
-
-    def close(self):
-        """
-        Close Twin Model and its internal variables.
-        """
-        self._close()
 
     def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, json_config_filepath: str = None):
         """
