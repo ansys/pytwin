@@ -216,3 +216,63 @@ class TestEvaluate:
         """
         sbs_outputs_df = pd.DataFrame(sbs_outputs).iloc[:-1, :]
         assert pd.DataFrame.equals(sbs_outputs_df, outputs_df)
+
+    def test_evaluation_initialization_with_config_file(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # Evaluation initialization with VALID CONFIG FILE
+        config_filepath = os.path.join('data', 'eval_init_config.json')
+        twin.initialize_evaluation(json_config_filepath=config_filepath)
+        inputs_ref = {'Clutch1_in': 1.0,
+                      'Clutch2_in': 1.0,
+                      'Clutch3_in': 1.0,
+                      'Torque_in': 1.0}
+        assert compare_dictionary(twin.inputs, inputs_ref)
+        parameters_ref = {'CoupledClutches1_Inert1_J': 2.0,
+                          'CoupledClutches1_Inert2_J': 2.0,
+                          'CoupledClutches1_Inert3_J': 2.0,
+                          'CoupledClutches1_Inert4_J': 2.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Evaluation initialization IGNORE INVALID PARAMETER AND INPUT ENTRIES
+        config_filepath = os.path.join('data', 'eval_init_config_invalid_keys.json')
+        twin.initialize_evaluation(json_config_filepath=config_filepath)
+        inputs_ref = {'Clutch1_in': 1.0,
+                      'Clutch2_in': 1.0,
+                      'Clutch3_in': 1.0,
+                      'Torque_in': 0.0}
+        assert compare_dictionary(twin.inputs, inputs_ref)
+        parameters_ref = {'CoupledClutches1_Inert1_J': 2.0,
+                          'CoupledClutches1_Inert2_J': 2.0,
+                          'CoupledClutches1_Inert3_J': 2.0,
+                          'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Evaluation initialization WITH ONLY PARAMETERS ENTRIES
+        config_filepath = os.path.join('data', 'eval_init_config_only_parameters.json')
+        twin.initialize_evaluation(json_config_filepath=config_filepath)
+        inputs_ref = {'Clutch1_in': 0.0,
+                      'Clutch2_in': 0.0,
+                      'Clutch3_in': 0.0,
+                      'Torque_in': 0.0}
+        assert compare_dictionary(twin.inputs, inputs_ref)
+        parameters_ref = {'CoupledClutches1_Inert1_J': 2.0,
+                          'CoupledClutches1_Inert2_J': 2.0,
+                          'CoupledClutches1_Inert3_J': 2.0,
+                          'CoupledClutches1_Inert4_J': 2.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Evaluation initialization WITH ONLY INPUT ENTRIES
+        config_filepath = os.path.join('data', 'eval_init_config_only_inputs.json')
+        twin.initialize_evaluation(json_config_filepath=config_filepath)
+        inputs_ref = {'Clutch1_in': 1.0,
+                      'Clutch2_in': 1.0,
+                      'Clutch3_in': 1.0,
+                      'Torque_in': 1.0}
+        assert compare_dictionary(twin.inputs, inputs_ref)
+        parameters_ref = {'CoupledClutches1_Inert1_J': 1.0,
+                          'CoupledClutches1_Inert2_J': 1.0,
+                          'CoupledClutches1_Inert3_J': 1.0,
+                          'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.parameters, parameters_ref)
+        # Evaluation initialization RAISE AN ERROR IF CONFIG FILEPATH DOES NOT EXIST
+        with pytest.raises(TwinModelError) as e:
+            twin.initialize_evaluation(json_config_filepath='filepath_does_not_exist')
+        assert 'Please provide an existing filepath to initialize the twin model evaluation' in str(e)

@@ -249,18 +249,22 @@ class TwinModel:
         (1) a dictionary of parameters values and/or inputs (start) values
         OR
         (2) a json configuration file with below format:
+
         {
-            'version': '0.1.0',
-            'model': {
-                'inputs': {
-                    'input-name-1': 'some-number',
-                    'input-name-2': 'some-number'
+            "version": "0.1.0",
+            "model": {
+                "inputs": {
+                    "input-name-1": "some-number",
+                    "input-name-2": "some-number"
                 },
-                'parameters': {
-                    'param-name-1': 'some-number',
-                    'param-name-2': 'some-number'
+                "parameters": {
+                    "param-name-1": "some-number",
+                    "param-name-2": "some-number"
                 }
+            }
         }
+
+        Option (2) overrides option (1).
 
         Parameters and inputs that are not found into the provided dictionaries or config file, keep their default
         values (i.e. the start value of the twin model).
@@ -276,7 +280,14 @@ class TwinModel:
             self._initialize_evaluation(parameters=parameters, inputs=inputs)
         else:
             cfg = self._read_eval_init_config(json_config_filepath)
-            self._initialize_evaluation(parameters=cfg['model']['parameters'], inputs=cfg['model']['inputs'])
+            _parameters = None
+            _inputs = None
+            if 'model' in cfg:
+                if 'parameters' in cfg['model']:
+                    _parameters = cfg['model']['parameters']
+                if 'inputs' in cfg['model']:
+                    _inputs = cfg['model']['inputs']
+            self._initialize_evaluation(parameters=_parameters, inputs=_inputs)
 
     def evaluate_step_by_step(self, step_size: float, inputs: dict = None):
         """
