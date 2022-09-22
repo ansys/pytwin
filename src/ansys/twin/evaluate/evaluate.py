@@ -1,6 +1,6 @@
 import os
 import time
-
+import json
 import pandas as pd
 import numpy as np
 
@@ -68,6 +68,39 @@ class TwinModel:
                 _inputs_df[name] = np.full(shape=(_inputs_df.shape[0], 1), fill_value=value)
         return _inputs_df
 
+    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
+        """
+        (internal) Initialize the twin model evaluation with dictionaries:
+        (1) Initialize parameters and/or inputs values to their start values (default value found in the twin file),
+        (2) Update parameters and/or inputs values with provided dictionaries. Ignore value whose name is not found
+        into the list of parameters/inputs names of the twin model (value is kept to default one in that case).
+        (3) Initialize evaluation time to 0.
+        (4) Save universal time (time since epoch) at which the method is called
+        (5) Evaluation twin model at time instant 0. and store its results into outputs dictionary.
+        Twin runtime is reset in case of already initialized twin model.
+        """
+        if self._twin_runtime is None:
+            self._raise_error('Twin model has not been successfully instantiated!')
+
+        if self._init_evaluation_has_been_done:
+            if self._twin_runtime.is_model_initialized:
+                self._twin_runtime.twin_reset()
+
+        self._initialize_parameters_with_start_values()
+        if parameters is not None:
+            self._update_parameters(parameters)
+
+        self._initialize_inputs_with_start_values()
+        if inputs is not None:
+            self._update_inputs(inputs)
+
+        self._evaluation_time = 0.0
+        self._initialization_time = time.time()
+        self._twin_runtime.twin_initialize()
+        self._update_outputs()
+
+        self._init_evaluation_has_been_done = True
+
     def _initialize_inputs_with_start_values(self):
         """
         (internal) Initialize inputs dictionary {name:value} with starting input values found in twin model.
@@ -115,6 +148,25 @@ class TwinModel:
         (internal) Raise a TwinModelError with formatted message.
         """
         raise TwinModelError(msg)
+
+    def _read_eval_init_config(self, json_filepath: str):
+        """
+        (internal) Deserialize a json object into a dictionary that is used to store twin model inputs and parameters values
+        to be passed to the internal evaluation initialization method.
+        """
+        if not os.path.exists(json_filepath):
+            msg = 'Provided config filepath (for evaluation initialization) does not exist!'
+            msg += f'\nProvided filepath is: {json_filepath}'
+            msg += '\nPlease provide an existing filepath to initialize the twin model evaluation.'
+            raise self._raise_error(msg)
+        try:
+            with open(json_filepath) as file:
+                cfg = json.load(file)
+                return cfg
+        except Exception as e:
+            msg = 'Something went wrong while reading config file!'
+            msg += f'n{str(e)}'
+            self._raise_error(msg)
 
     def _update_inputs(self, inputs: dict):
         """(internal) Update input values with given dictionary."""
@@ -191,42 +243,40 @@ class TwinModel:
         """
         return self._model_filepath
 
-    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
+    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, json_config_filepath: str = None):
         """
-        Initialize the twin model evaluation with a dictionary of parameters values and/or inputs (start) values.
+        Initialize the twin model evaluation with:
+        (1) a dictionary of parameters values and/or inputs (start) values
+        OR
+        (2) a json configuration file with below format:
+        {
+            'version': '0.1.0',
+            'model': {
+                'inputs': {
+                    'input-name-1': 'some-number',
+                    'input-name-2': 'some-number'
+                },
+                'parameters': {
+                    'param-name-1': 'some-number',
+                    'param-name-2': 'some-number'
+                }
+        }
 
-        While updating the parameters/inputs values,
-        if a key found in the given parameters/inputs argument is not found in the list of the parameters/input names
-        of the twin model, then its value is ignored. All other parameters/inputs keep their current values.
+        Parameters and inputs that are not found into the provided dictionaries or config file, keep their default
+        values (i.e. the start value of the twin model).
 
-        Evaluation time is reset to zero after calling this method.
+        Evaluation time is reset to zero after calling this method and Initialization time is updated.
 
         This method must be called:
         (1) before to evaluate the twin model,
         (2) if you want to update parameters values between multiple twin evaluations
         (in such case the twin model is reset).
         """
-        if self._twin_runtime is None:
-            self._raise_error('Twin model has not been successfully instantiated!')
-
-        if self._init_evaluation_has_been_done:
-            if self._twin_runtime.is_model_initialized:
-                self._twin_runtime.twin_reset()
-
-        self._initialize_parameters_with_start_values()
-        if parameters is not None:
-            self._update_parameters(parameters)
-
-        self._initialize_inputs_with_start_values()
-        if inputs is not None:
-            self._update_inputs(inputs)
-
-        self._evaluation_time = 0.0
-        self._initialization_time = time.time()
-        self._twin_runtime.twin_initialize()
-        self._update_outputs()
-
-        self._init_evaluation_has_been_done = True
+        if json_config_filepath is None:
+            self._initialize_evaluation(parameters=parameters, inputs=inputs)
+        else:
+            cfg = self._read_eval_init_config(json_config_filepath)
+            self._initialize_evaluation(parameters=cfg['model']['parameters'], inputs=cfg['model']['inputs'])
 
     def evaluate_step_by_step(self, step_size: float, inputs: dict = None):
         """
