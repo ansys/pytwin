@@ -323,9 +323,9 @@ class TwinModel:
         if inputs is not None:
             self._update_inputs(inputs)
 
-        self._evaluation_time += step_size
         try:
-            self._twin_runtime.twin_simulate(self._evaluation_time)
+            self._twin_runtime.twin_simulate(self._evaluation_time + step_size)
+            self._evaluation_time += step_size
             self._update_outputs()
         except Exception as e:
             msg = f'Something went wrong during evaluation at time step {self._evaluation_time}:'
