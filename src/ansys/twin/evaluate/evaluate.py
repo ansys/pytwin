@@ -22,7 +22,6 @@ class TwinModel:
         self._outputs = None
         self._parameters = None
         self._twin_runtime = None
-        self._init_evaluation_has_been_done = None
 
         if self._check_model_filepath_is_valid(model_filepath):
             self._model_filepath = model_filepath
@@ -82,9 +81,8 @@ class TwinModel:
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
 
-        if self._init_evaluation_has_been_done:
-            if self._twin_runtime.is_model_initialized:
-                self._twin_runtime.twin_reset()
+        if self._twin_runtime.is_model_initialized:
+            self._twin_runtime.twin_reset()
 
         self._initialize_parameters_with_start_values()
         if parameters is not None:
@@ -98,8 +96,6 @@ class TwinModel:
         self._initialization_time = time.time()
         self._twin_runtime.twin_initialize()
         self._update_outputs()
-
-        self._init_evaluation_has_been_done = True
 
     def _initialize_inputs_with_start_values(self):
         """
@@ -137,7 +133,6 @@ class TwinModel:
             self._initialize_inputs_with_start_values()
             self._initialize_parameters_with_start_values()
             self._initialize_outputs_with_none_values()
-            self._init_evaluation_has_been_done = False
         except Exception as e:
             msg = 'Twin model failed during instantiation!'
             msg += f'\n{str(e)}'
