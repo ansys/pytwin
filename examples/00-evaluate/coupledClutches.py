@@ -17,10 +17,9 @@ import pandas as pd
 from src.ansys.twin.evaluate.evaluate import TwinModel
 from src.ansys.twin import examples
 
-twin_model = examples.download_file("CoupleClutches_22R2_other.twin", "twin_files")  ## TODO fix file name
+twin_model = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
 csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
-# twin_config = examples.download_file("CoupleClutches_config.json", "twin_input_files") # We will try to locate
-twin_config = "CoupleClutches_config.json"
+twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files") # We will try to locate
 # the model_setup, which provides default model start and parameter values override
 cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
@@ -141,7 +140,7 @@ data_index = 0
 inputs = dict()
 for column in twin_model_input_df.columns[1::]:
     inputs[column] = twin_model_input_df[column][data_index]
-twin_runtime.initialize_evaluation(inputs=inputs)
+twin_runtime.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
 outputs = [twin_runtime.evaluation_time]
 for item in twin_runtime.outputs:
     outputs.append(twin_runtime.outputs[item])
@@ -178,7 +177,7 @@ data_index = 0
 inputs = dict()
 for column in twin_model_input_df.columns[1::]:
     inputs[column] = twin_model_input_df[column][data_index]
-twin_runtime.initialize_evaluation(inputs=inputs)
+twin_runtime.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
 outputs = [twin_runtime.evaluation_time]
 for item in twin_runtime.outputs:
     outputs.append(twin_runtime.outputs[item])
@@ -197,4 +196,4 @@ plot_result_comparison(results_step_pd, results_batch_pd)
 # Closing the Twin Runtime.
 
 
-#twin_runtime.close()
+twin_runtime.close()
