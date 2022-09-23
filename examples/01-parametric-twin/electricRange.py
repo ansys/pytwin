@@ -81,6 +81,7 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
 
     axes1.set_title('Range/distance achieved vs battery SoC')
     axes1.set_xlabel(results[0].columns[x1_ind])
+    axes1.set_xlim((0.1, 0.9))
     axes1.set_ylabel(results[0].columns[y1_ind]+' [m]')
 
     # Show plot
@@ -134,11 +135,6 @@ for dp in sweep:
                                dtype=float)
     results.append(sim_results)
 
-    # workaround - close and reopen the Twin TODO check error/bug
-    twin_runtime.close()
-    twin_runtime = TwinModel(twin_model)
-
-
 ###############################################################################
 # Post processing
 # ~~~~~~~~~~~~~~~~~~~
@@ -152,4 +148,4 @@ plot_result_comparison(results, sweep)
 # Closing the Twin Runtime.
 
 
-twin_runtime.close()
+#twin_runtime.close()
