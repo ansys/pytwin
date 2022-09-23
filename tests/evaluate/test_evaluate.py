@@ -207,7 +207,7 @@ class TestEvaluate:
             sbs_outputs[name].append(twin.outputs[name])
         # Evaluate twin model with BATCH EVALUATION
         twin.initialize_evaluation(inputs={'Clutch1_in': 1.0, 'Clutch2_in': 1.0})
-        inputs_df = pd.DataFrame({'Time': [0.1, 0.2], 'Clutch1_in': [2., 3.], 'Clutch2_in': [2., 3.]})
+        inputs_df = pd.DataFrame({'Time': [0.0, 0.1, 0.2], 'Clutch1_in': 1., 2., 3.], 'Clutch2_in': [1., 2., 3.]})
         outputs_df = twin.evaluate_batch(inputs_df)
         # Compare STEP-BY-STEP vs BATCH RESULTS
         """
