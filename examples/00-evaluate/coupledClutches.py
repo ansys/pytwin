@@ -187,11 +187,3 @@ results_batch_pd = twin_runtime.evaluate_batch(twin_model_input_df)
 # Plotting the different results and saving the image on disk
 
 plot_result_comparison(results_step_pd, results_batch_pd)
-
-###############################################################################
-# Closing the Twin Runtime
-# ~~~~~~~~~~~~~~~~~~~
-# Closing the Twin Runtime.
-
-
-twin_runtime.close()

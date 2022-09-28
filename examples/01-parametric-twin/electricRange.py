@@ -141,11 +141,3 @@ for dp in sweep:
 # Plotting the different results and saving the image on disk
 
 plot_result_comparison(results, sweep)
-
-###############################################################################
-# Closing the Twin Runtime
-# ~~~~~~~~~~~~~~~~~~~
-# Closing the Twin Runtime.
-
-
-#twin_runtime.close()

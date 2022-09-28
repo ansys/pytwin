@@ -16,7 +16,7 @@ import ast
 
 tmpfold = tempfile.gettempdir()
 # the REPO url needs to have "raw" and not "tree", otherwise xml file are downloaded instead of raw versions
-EXAMPLES_REPO = "https://github.com/pyansys/example-data/raw/master/pytwin/" 
+EXAMPLES_REPO = "https://github.com/pyansys/example-data/raw/master/pytwin/"
 EXAMPLES_PATH = os.path.join(tmpfold, "TwinExamples")
 
 
