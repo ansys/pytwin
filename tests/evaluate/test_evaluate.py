@@ -276,3 +276,9 @@ class TestEvaluate:
         with pytest.raises(TwinModelError) as e:
             twin.initialize_evaluation(json_config_filepath='filepath_does_not_exist')
         assert 'Please provide an existing filepath to initialize the twin model evaluation' in str(e)
+
+    def test_close_method(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        twin = TwinModel(model_filepath=model_filepath)
+        twin = TwinModel(model_filepath=model_filepath)
