@@ -286,8 +286,8 @@ class TwinModel:
 
     def evaluate_step_by_step(self, step_size: float, inputs: dict = None):
         """
-        Evaluate the twin model a next time step (equals current time step plus step_size) and return list of
-        outputs values at next time step (ordered by output_names).
+        Evaluate the twin model at time instant t + step_size given inputs at time instant t. Return list of
+        outputs values at time instant t + step_size (ordered by output_names).
 
         Twin model evaluation must have been initialized before calling this method
         (see `initialize_evaluation` method).
