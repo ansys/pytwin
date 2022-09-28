@@ -107,6 +107,68 @@ class TestEvaluate:
                       'Torque_in': 0.0}
         assert compare_dictionary(twin.inputs, inputs_ref)
 
+    def test_inputs_and_parameters_initialization(self):
+        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        twin = TwinModel(model_filepath=model_filepath)
+        # TEST DEFAULT VALUES BEFORE FIRST INITIALIZATION
+        inputs_default = {'Clutch1_in': 0.0,
+                          'Clutch2_in': 0.0,
+                          'Clutch3_in': 0.0,
+                          'Torque_in': 0.0}
+        parameters_default = {'CoupledClutches1_Inert1_J': 1.0,
+                              'CoupledClutches1_Inert2_J': 1.0,
+                              'CoupledClutches1_Inert3_J': 1.0,
+                              'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.inputs, inputs_default)
+        assert compare_dictionary(twin.parameters, parameters_default)
+        # TEST INITIALIZATION UPDATES VALUES
+        inputs = {'Clutch1_in': 1.0,
+                  'Clutch2_in': 1.0,
+                  'Clutch3_in': 1.0,
+                  'Torque_in': 1.0}
+        parameters = {'CoupledClutches1_Inert1_J': 2.0,
+                      'CoupledClutches1_Inert2_J': 2.0,
+                      'CoupledClutches1_Inert3_J': 2.0,
+                      'CoupledClutches1_Inert4_J': 2.0}
+        twin.initialize_evaluation(parameters=parameters, inputs=inputs)
+        assert compare_dictionary(twin.inputs, inputs)
+        assert compare_dictionary(twin.parameters, parameters)
+        # TEST NEW INITIALIZATION OVERRIDES PREVIOUS VALUES IF GIVEN.
+        # OTHERWISE, RESET VALUES TO DEFAULT.
+        new_inputs = {'Clutch1_in': 2.0,
+                      'Clutch2_in': 2.0}
+        new_parameters = {'CoupledClutches1_Inert1_J': 3.0,
+                          'CoupledClutches1_Inert2_J': 3.0}
+        twin.initialize_evaluation(parameters=new_parameters, inputs=new_inputs)
+        new_inputs_ref = {'Clutch1_in': 2.0,
+                          'Clutch2_in': 2.0,
+                          'Clutch3_in': 0.0,
+                          'Torque_in': 0.0}
+        new_parameters_ref = {'CoupledClutches1_Inert1_J': 3.0,
+                              'CoupledClutches1_Inert2_J': 3.0,
+                              'CoupledClutches1_Inert3_J': 1.0,
+                              'CoupledClutches1_Inert4_J': 1.0}
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.parameters, new_parameters_ref)
+        # TEST NEW INITIALIZATION RESET VALUES TO DEFAULT IF NOT GIVEN (ALL NONE)
+        twin.initialize_evaluation()
+        assert compare_dictionary(twin.inputs, inputs_default)
+        assert compare_dictionary(twin.parameters, parameters_default)
+        # TEST NEW INITIALIZATION RESET VALUES TO DEFAULT IF NOT GIVEN (PARAMETER ONLY, INPUT=NONE --> DEFAULT)
+        twin.initialize_evaluation(parameters=new_parameters, inputs=new_inputs)
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.parameters, new_parameters_ref)
+        twin.initialize_evaluation(parameters=new_parameters)
+        assert compare_dictionary(twin.inputs, inputs_default)
+        assert compare_dictionary(twin.parameters, new_parameters_ref)
+        # TEST NEW INITIALIZATION RESET VALUES TO DEFAULT IF NOT GIVEN (INPUTS ONLY, PARAMETER=NONE --> DEFAULT)
+        twin.initialize_evaluation(parameters=new_parameters, inputs=new_inputs)
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.parameters, new_parameters_ref)
+        twin.initialize_evaluation(inputs=new_inputs)
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.parameters, parameters_default)
+
     def test_inputs_property_with_batch_eval(self):
         model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
         twin = TwinModel(model_filepath=model_filepath)
@@ -184,37 +246,35 @@ class TestEvaluate:
         assert 'Please provide a dataframe with a \'Time\' column to use batch mode evaluation' in str(e)
 
     def test_evaluation_methods_give_same_results(self):
-        sbs_outputs = dict()
+        inputs_df = pd.DataFrame({'Time': [0., 0.1, 0.2, 0.3],
+                                  'Clutch1_in': [0., 1., 2., 3.],
+                                  'Clutch2_in': [0., 1., 2., 3.]})
+        sbs_outputs = {'Time': [], 'Clutch1_torque': [], 'Clutch2_torque': [], 'Clutch3_torque': []}
         # Evaluate twin model with STEP BY STEP EVALUATION
         model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
         twin = TwinModel(model_filepath=model_filepath)
         # t=0. (s)
-        twin.initialize_evaluation(inputs={'Clutch1_in': 1.0, 'Clutch2_in': 1.0})
-        sbs_outputs['Time'] = [0.]
-        for name in twin.outputs:
-            sbs_outputs[name] = [twin.outputs[name]]
-        # t=0.1 (s)
-        new_inputs = {'Clutch1_in': 2.0, 'Clutch2_in': 2.0}
-        twin.evaluate_step_by_step(step_size=0.1, inputs=new_inputs)
-        sbs_outputs['Time'].append(0.1)
+        t_idx = 0
+        twin.initialize_evaluation(inputs={'Clutch1_in': inputs_df['Clutch1_in'][t_idx],
+                                           'Clutch2_in': inputs_df['Clutch2_in'][t_idx]})
+        sbs_outputs['Time'].append(twin.evaluation_time)
         for name in twin.outputs:
             sbs_outputs[name].append(twin.outputs[name])
-        # t=0.2 (s)
-        new_inputs = {'Clutch1_in': 3.0, 'Clutch2_in': 3.0}
-        twin.evaluate_step_by_step(step_size=0.1, inputs=new_inputs)
-        sbs_outputs['Time'].append(0.2)
-        for name in twin.outputs:
-            sbs_outputs[name].append(twin.outputs[name])
+        for t_idx in range(1, inputs_df.shape[0]):
+            # Evaluate state at instant t + step_size with inputs from instant t
+            step_size = inputs_df['Time'][t_idx] - inputs_df['Time'][t_idx-1]
+            new_inputs = {'Clutch1_in': inputs_df['Clutch1_in'][t_idx-1],
+                          'Clutch2_in': inputs_df['Clutch2_in'][t_idx-1]}
+            twin.evaluate_step_by_step(step_size=step_size, inputs=new_inputs)
+            sbs_outputs['Time'].append(twin.evaluation_time)
+            for name in twin.outputs:
+                sbs_outputs[name].append(twin.outputs[name])
         # Evaluate twin model with BATCH EVALUATION
-        twin.initialize_evaluation(inputs={'Clutch1_in': 1.0, 'Clutch2_in': 1.0})
-        inputs_df = pd.DataFrame({'Time': [0.1, 0.2], 'Clutch1_in': [2., 3.], 'Clutch2_in': [2., 3.]})
+        twin.initialize_evaluation(inputs={'Clutch1_in': inputs_df['Clutch1_in'][0],
+                                           'Clutch2_in': inputs_df['Clutch2_in'][0]})
         outputs_df = twin.evaluate_batch(inputs_df)
         # Compare STEP-BY-STEP vs BATCH RESULTS
-        """
-        TODO - Vérifier pourquoi le batch mode ne renvoie pas la sortie associée au dernier pas de temps.
-        En attendant, on retire donc le dernier pas de temps de l'évaluation step by step pour effectuer la comparaison.
-        """
-        sbs_outputs_df = pd.DataFrame(sbs_outputs).iloc[:-1, :]
+        sbs_outputs_df = pd.DataFrame(sbs_outputs)
         assert pd.DataFrame.equals(sbs_outputs_df, outputs_df)
 
     def test_evaluation_initialization_with_config_file(self):

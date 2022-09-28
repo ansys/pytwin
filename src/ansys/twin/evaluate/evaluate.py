@@ -55,12 +55,6 @@ class TwinModel:
 
         If an input is not found in the given inputs_df, then initialization value is used to keep associated input
         constant over Time."""
-        if 'Time' not in inputs_df:
-            msg = 'Given inputs dataframe has no \'Time\' column!'
-            msg += f'\nExisting column labels are :{[s for s in inputs_df.columns]}'
-            msg += f'\nPlease provide a dataframe with a \'Time\' column to use batch mode evaluation.'
-            self._raise_error(msg)
-
         _inputs_df = pd.DataFrame()
         _inputs_df['Time'] = inputs_df['Time']
         for name, value in self._inputs.items():
@@ -264,6 +258,9 @@ class TwinModel:
 
         Option (2) overrides option (1).
 
+        If no inputs is given (rather in the arguments or in the config file), then inputs are reset to their default
+        values when calling this method. Same thing happens for parameters.
+
         Parameters and inputs that are not found into the provided dictionaries or config file, keep their default
         values (i.e. the start value of the twin model).
 
@@ -328,16 +325,17 @@ class TwinModel:
         """
         Evaluate the twin model with the historical inputs' data given with a Pandas.DataFrame().
 
-        Twin model evaluation must be initialized before calling this method, which solve time instant 0.(s).
-
-        Historical inputs must not include time instant 0.
-
         **inputs_df:** is a pandas.DataFrame with historical inputs data. It must have a 'Time' column and all twin
         model inputs history you want to simulate (one input per column). If a twin model input is not found in the
         dataframe columns then this input is kept constant to its initialization value. The column header must match
         with a twin model input name.
 
         **return:** a pandas.DataFrame with all twin model outputs associated to the historical inputs' data.
+
+        **It raises an error if:**
+        (1) initialize_evaluation(...) has not been called before,
+        (2) there is no 'Time' column in the inputs dataframe,
+        (3) there is no time instant t=0.s in the inputs dataframe.
         """
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
@@ -345,6 +343,19 @@ class TwinModel:
         if not self.evaluation_is_initialized:
             self._raise_error('Twin model evaluation has not been initialized! Please initialize evaluation.')
 
+        if 'Time' not in inputs_df:
+            msg = 'Given inputs dataframe has no \'Time\' column!'
+            msg += f'\nExisting column labels are :{[s for s in inputs_df.columns]}'
+            msg += f'\nPlease provide a dataframe with a \'Time\' column to use batch mode evaluation.'
+            self._raise_error(msg)
+
+        t0 = inputs_df['Time'][0]
+        if not np.isclose(t0, 0.):
+            msg = 'Given inputs dataframe has no time instant t=0.s!'
+            msg += f' (first provided time instant is : {t0}).'
+            msg += '\nPlease provide inputs at time instant t=0.s'
+
+        # Ensure SDK conventions are fulfilled
         _inputs_df = self._create_dataframe_inputs(inputs_df)
         _output_col_names = ['Time'] + list(self._outputs.keys())
 
