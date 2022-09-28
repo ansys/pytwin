@@ -350,10 +350,11 @@ class TwinModel:
             self._raise_error(msg)
 
         t0 = inputs_df['Time'][0]
-        if not np.isclose(t0, 0.):
+        if not np.isclose(t0, 0., atol=np.spacing(0.)):
             msg = 'Given inputs dataframe has no time instant t=0.s!'
             msg += f' (first provided time instant is : {t0}).'
             msg += '\nPlease provide inputs at time instant t=0.s'
+            self._raise_error(msg)
 
         # Ensure SDK conventions are fulfilled
         _inputs_df = self._create_dataframe_inputs(inputs_df)

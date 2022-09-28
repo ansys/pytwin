@@ -244,6 +244,16 @@ class TestEvaluate:
             twin.initialize_evaluation()
             twin.evaluate_batch(pd.DataFrame())
         assert 'Please provide a dataframe with a \'Time\' column to use batch mode evaluation' in str(e)
+        # Raise an error if INPUTS DATAFRAME HAS NO TIME INSTANT ZERO
+        with pytest.raises(TwinModelError) as e:
+            twin.initialize_evaluation()
+            twin.evaluate_batch(pd.DataFrame({'Time': [0.1]}))
+        assert 'Please provide inputs at time instant t=0.s' in str(e)
+        # Raise an error if INPUTS DATAFRAME HAS NO TIME INSTANT ZERO
+        with pytest.raises(TwinModelError) as e:
+            twin.initialize_evaluation()
+            twin.evaluate_batch(pd.DataFrame({'Time': [1e-50]}))
+        assert 'Please provide inputs at time instant t=0.s' in str(e)
 
     def test_evaluation_methods_give_same_results(self):
         inputs_df = pd.DataFrame({'Time': [0., 0.1, 0.2, 0.3],
