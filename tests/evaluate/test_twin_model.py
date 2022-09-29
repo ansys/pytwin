@@ -3,12 +3,12 @@ import os
 import pytest
 import pandas as pd
 
-from src.ansys.twin.evaluate.evaluate import TwinModel
-from src.ansys.twin.evaluate.evaluate import TwinModelError
-from tests.test_utilities import compare_dictionary
+from pytwin.evaluate import TwinModel
+from pytwin.evaluate import TwinModelError
+from tests.utilities import compare_dictionary
 
 
-class TestEvaluate:
+class TestTwinModel:
 
     def test_instantiation_with_valid_model_filepath(self):
         model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')

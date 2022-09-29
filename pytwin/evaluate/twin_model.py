@@ -4,7 +4,7 @@ import json
 import pandas as pd
 import numpy as np
 
-from src.ansys.twin.twin_runtime.twin_runtime_core import TwinRuntime
+from pytwin.twin_runtime import TwinRuntime
 
 
 class TwinModel:

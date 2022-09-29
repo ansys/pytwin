@@ -11,12 +11,13 @@ parameterized so that we can see their effects on the overall eletric range """
 # Perform required imports, which includes downloading and importing the input files
 
 import platform
+import os
 
 import matplotlib.pyplot as plt
-import os
 import pandas as pd
-from src.ansys.twin.evaluate.evaluate import TwinModel
-from src.ansys.twin import examples
+
+from pytwin.evaluate import TwinModel
+from pytwin import examples
 
 twin_file = examples.download_file("ElectricRangeCS_23R1_other.twin", "twin_files")
 cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
@@ -27,16 +28,17 @@ cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 # Defining user inputs and simulation settings
 
 time_step = 1.0
-time_end = 24000.0 # simulating the model for 400 minutes
-dp1 = {"ElectricRange_powerLoad":2000.0, "ElectricRange_vehicleMass":2000.0}
-dp2 = {"ElectricRange_powerLoad":3000.0, "ElectricRange_vehicleMass":2000.0}
-dp3 = {"ElectricRange_powerLoad":2000.0, "ElectricRange_vehicleMass":1500.0}
+time_end = 24000.0  # simulating the model for 400 minutes
+dp1 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 2000.0}
+dp2 = {"ElectricRange_powerLoad": 3000.0, "ElectricRange_vehicleMass": 2000.0}
+dp3 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 1500.0}
 sweep = [dp1, dp2, dp3]
 
 ###############################################################################
 # Auxiliary functions definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Definition of plot_result_comparison for post processing the results
+# Definition of plot_result_comparison for post-processing the results
+
 
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed on the same TwinModel. The
@@ -84,9 +86,8 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     axes1.set_ylabel(results[0].columns[y1_ind]+' [m]')
 
     # Show plot
-    plt.style.use('seaborn')
-    plt.show()
     plt.savefig(os.path.join(cur_dir, 'results.png'))
+    plt.show()
 
 
 ###############################################################################
