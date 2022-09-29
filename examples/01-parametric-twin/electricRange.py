@@ -18,7 +18,7 @@ import pandas as pd
 from src.ansys.twin.evaluate.evaluate import TwinModel
 from src.ansys.twin import examples
 
-twin_model = examples.download_file("ElectricRangeCS_23R1_other.twin", "twin_files")
+twin_file = examples.download_file("ElectricRangeCS_23R1_other.twin", "twin_files")
 cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 ###############################################################################
@@ -36,8 +36,7 @@ sweep = [dp1, dp2, dp3]
 ###############################################################################
 # Auxiliary functions definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Definition of load_data function (loading Twin inputs data from CSV file) and plot_result_comparison for
-# post processing the results
+# Definition of plot_result_comparison for post processing the results
 
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed on the same TwinModel. The
@@ -104,8 +103,8 @@ runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
 # Loading the Twin Runtime and instantiating it.
 
 
-print('Loading model: {}'.format(twin_model))
-twin_runtime = TwinModel(twin_model)
+print('Loading model: {}'.format(twin_file))
+twin_model = TwinModel(twin_file)
 
 ###############################################################################
 # Parametric sweep over the different design points
@@ -116,22 +115,22 @@ results = []
 for dp in sweep:
 
     # Twin initialization with the right parameters values and collection of initial outputs values
-    twin_runtime.initialize_evaluation(parameters=dp)
-    outputs = [twin_runtime.evaluation_time]
-    for item in twin_runtime.outputs:
-        outputs.append(twin_runtime.outputs[item])
+    twin_model.initialize_evaluation(parameters=dp)
+    outputs = [twin_model.evaluation_time]
+    for item in twin_model.outputs:
+        outputs.append(twin_model.outputs[item])
     sim_output = [outputs]
-    while twin_runtime.evaluation_time < time_end:
+    while twin_model.evaluation_time < time_end:
         step = time_step
-        twin_runtime.evaluate_step_by_step(step_size=step)
-        outputs = [twin_runtime.evaluation_time]
-        for item in twin_runtime.outputs:
-            outputs.append(twin_runtime.outputs[item])
+        twin_model.evaluate_step_by_step(step_size=step)
+        outputs = [twin_model.evaluation_time]
+        for item in twin_model.outputs:
+            outputs.append(twin_model.outputs[item])
         sim_output.append(outputs)
-        if twin_runtime.evaluation_time%1000 == 0.0:
+        if twin_model.evaluation_time%1000 == 0.0:
             print("Simulating the model with parameters {}, evaluation time = {}".format(dp,
-                                                                                         twin_runtime.evaluation_time))
-    sim_results = pd.DataFrame(sim_output, columns=['Time'] + list(twin_runtime.outputs),
+                                                                                         twin_model.evaluation_time))
+    sim_results = pd.DataFrame(sim_output, columns=['Time'] + list(twin_model.outputs),
                                dtype=float)
     results.append(sim_results)
 

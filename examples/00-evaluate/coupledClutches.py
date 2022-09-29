@@ -15,7 +15,7 @@ import pandas as pd
 from src.ansys.twin.evaluate.evaluate import TwinModel
 from src.ansys.twin import examples
 
-twin_model = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
+twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
 csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
 twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files") # We will try to locate
 # the model_setup, which provides default model start and parameter values override
@@ -125,8 +125,8 @@ number_of_datapoints = data_dimensions[0] - 1
 # Loading the Twin Runtime and instantiating it.
 
 
-print('Loading model: {}'.format(twin_model))
-twin_runtime = TwinModel(twin_model)
+print('Loading model: {}'.format(twin_file))
+twin_model = TwinModel(twin_file)
 
 ###############################################################################
 # Setting up the initial settings of the Twin and initializing it
@@ -134,14 +134,10 @@ twin_runtime = TwinModel(twin_model)
 # Defining the initial inputs of the Twin, initializing it and collecting the initial outputs values
 
 
-data_index = 0
-inputs = dict()
-for column in twin_model_input_df.columns[1::]:
-    inputs[column] = twin_model_input_df[column][data_index]
-twin_runtime.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
-outputs = [twin_runtime.evaluation_time]
-for item in twin_runtime.outputs:
-    outputs.append(twin_runtime.outputs[item])
+twin_model.initialize_evaluation(json_config_filepath=twin_config)
+outputs = [twin_model.evaluation_time]
+for item in twin_model.outputs:
+    outputs.append(twin_model.outputs[item])
 
 ###############################################################################
 # Step by step simulation mode
@@ -150,20 +146,21 @@ for item in twin_runtime.outputs:
 
 
 sim_output_list_step = [outputs]
+data_index = 0
 while data_index < number_of_datapoints:
     # Gets the stop time of the current simulation step
     time_end = twin_model_input_df.iloc[data_index + 1][0]
-    step = time_end - twin_runtime.evaluation_time
+    step = time_end - twin_model.evaluation_time
     inputs = dict()
     for column in twin_model_input_df.columns[1::]:
         inputs[column] = twin_model_input_df[column][data_index]
-    twin_runtime.evaluate_step_by_step(step_size=step, inputs=inputs)
-    outputs = [twin_runtime.evaluation_time]
-    for item in twin_runtime.outputs:
-        outputs.append(twin_runtime.outputs[item])
+    twin_model.evaluate_step_by_step(step_size=step, inputs=inputs)
+    outputs = [twin_model.evaluation_time]
+    for item in twin_model.outputs:
+        outputs.append(twin_model.outputs[item])
     sim_output_list_step.append(outputs)
     data_index += 1
-results_step_pd = pd.DataFrame(sim_output_list_step, columns=['Time'] + list(twin_runtime.outputs),
+results_step_pd = pd.DataFrame(sim_output_list_step, columns=['Time'] + list(twin_model.outputs),
                                dtype=float)
 
 # ############################################################################## Batch simulation mode
@@ -175,11 +172,11 @@ data_index = 0
 inputs = dict()
 for column in twin_model_input_df.columns[1::]:
     inputs[column] = twin_model_input_df[column][data_index]
-twin_runtime.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
-outputs = [twin_runtime.evaluation_time]
-for item in twin_runtime.outputs:
-    outputs.append(twin_runtime.outputs[item])
-results_batch_pd = twin_runtime.evaluate_batch(twin_model_input_df)
+twin_model.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
+outputs = [twin_model.evaluation_time]
+for item in twin_model.outputs:
+    outputs.append(twin_model.outputs[item])
+results_batch_pd = twin_model.evaluate_batch(twin_model_input_df)
 
 ###############################################################################
 # Post processing

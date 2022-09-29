@@ -113,7 +113,7 @@ def download_file(file_name: str, directory: str, force_download: Optional[bool]
         file_name : str
             Path of the file in the examples folder.
         directory : str
-            Subfolder sotring the input file
+            Subfolder storing the input file
         force_download : bool, optional
             Force to delete file and download file again. Default value is ``False``.
         destination : str, optional
