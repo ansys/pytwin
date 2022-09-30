@@ -1,5 +1,5 @@
 """
-twin.
+pytwin.
 
 library
 """
@@ -8,4 +8,4 @@ try:
 except ModuleNotFoundError:
     import importlib_metadata
 
-__version__ = importlib_metadata.version('ansys-twin')
+__version__ = importlib_metadata.version('pytwin')

@@ -4,14 +4,44 @@ import json
 import pandas as pd
 import numpy as np
 
-from src.ansys.twin.twin_runtime.twin_runtime_core import TwinRuntime
+from pytwin.twin_runtime import TwinRuntime
 
 
 class TwinModel:
     """
-    Class to run Twin model as evaluation model.
-    This class takes twin model filepath. The model can be run in
-    batch mode or step-by-step mode.
+    Class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin Builder.
+    After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode) to make
+    predictions. Parametric workflows are also supported.
+
+    Parameters
+    ----------
+    model_filepath : str
+        File path to the twin model (with .twin) extension.
+
+    Examples
+    --------
+    Create a twin model object given the file path to the twin model file. Initialize two parameters and two inputs of
+    the twin model. Then evaluate two steps and retrieve results in a dictionary.
+
+    >>> from pytwin.evaluate import TwinModel
+    >>>
+    >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+    >>>
+    >>> twin_model.initialize_evaluation(parameters={'param1': 1., 'param2': 2.}, inputs={'input1': 1., 'input2': 2.})
+    >>> outputs = dict()
+    >>> outputs['Time'] = [twin_model.evaluation_time]
+    >>> outputs['output1'] = [twin_model.outputs['output1']]
+    >>> outputs['output2'] = [twin_model.outputs['output2']]
+    >>>
+    >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 10., 'input2': 20.})
+    >>> outputs['Time'].append(twin_model.evaluation_time)
+    >>> outputs['output1'].append(twin_model.outputs['output1'])
+    >>> outputs['output2'].append(twin_model.outputs['output2'])
+    >>>
+    >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 20., 'input2': 30.})
+    >>> outputs['Time'].append(twin_model.evaluation_time)
+    >>> outputs['output1'].append(twin_model.outputs['output1'])
+    >>> outputs['output2'].append(twin_model.outputs['output2'])
     """
     def __init__(self, model_filepath: str):
         self._evaluation_time = None
@@ -49,12 +79,14 @@ class TwinModel:
         return True
 
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
-        """Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
+        """
+        (internal) Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
         (1) 'Time' as first column (2) one column per twin model input (3) columns order is the same as twin model
         input names list return by SDK.
 
         If an input is not found in the given inputs_df, then initialization value is used to keep associated input
-        constant over Time."""
+        constant over Time.
+        """
         _inputs_df = pd.DataFrame()
         _inputs_df['Time'] = inputs_df['Time']
         for name, value in self._inputs.items():
@@ -237,24 +269,8 @@ class TwinModel:
 
     def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, json_config_filepath: str = None):
         """
-        Initialize the twin model evaluation with:
-        (1) a dictionary of parameters values and/or inputs (start) values
-        OR
-        (2) a json configuration file with below format:
-
-        {
-            "version": "0.1.0",
-            "model": {
-                "inputs": {
-                    "input-name-1": "some-number",
-                    "input-name-2": "some-number"
-                },
-                "parameters": {
-                    "param-name-1": "some-number",
-                    "param-name-2": "some-number"
-                }
-            }
-        }
+        Initialize the twin model evaluation with: (1) a dictionary of parameters values and/or inputs (start) values
+        OR (2) a json configuration file (see example below).
 
         Option (2) overrides option (1).
 
@@ -270,6 +286,29 @@ class TwinModel:
         (1) before to evaluate the twin model,
         (2) if you want to update parameters values between multiple twin evaluations
         (in such case the twin model is reset).
+
+        Parameters
+        ----------
+        parameters : dict, optional
+            The parameter values (i.e. {"name": value}) to be used for the next evaluation.
+        inputs : dict, optional
+            The input values (i.e. {"name": value}) to be used for twin model initialization.
+        json_config_filepath : str, optional
+            A file path to a json config file (with .json extension) to be used to initialize the evaluation
+
+        Examples
+        --------
+        >>> import json
+        >>> from pytwin.evaluate import TwinModel
+        >>>
+        >>> config = {"version": "0.1.0", "model": {"inputs": {"input-name-1": 1., "input-name-2": 2.}, \
+        >>> "parameters": {"param-name-1": 1.,"param-name-2": 2.}}}
+        >>> with open('path_to_your_config.json', 'w') as f:
+        >>>     f.write(json.dumps(config))
+        >>>
+        >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> twin_model.initialize_evaluation(json_config_filepath='path_to_your_config.json')
+        >>> outputs = twin_model.outputs
         """
         if json_config_filepath is None:
             self._initialize_evaluation(parameters=parameters, inputs=inputs)
@@ -292,11 +331,22 @@ class TwinModel:
         Twin model evaluation must have been initialized before calling this method
         (see `initialize_evaluation` method).
 
-        **step_size:** it is the step size (in second) to reach next time step. It must be strictly positive.
+        Parameters
+        ----------
+        step_size : float
+            The step size (in second) to reach next time step. It must be strictly positive.
 
-        **inputs:** dictionary of input values (name:value) at next time step. Input is not updated if
-        associated key is not found in twin model input_names. Other inputs keep current value at next time step if not
-        provided in the inputs dict.
+        inputs : dict (optional)
+            The input values (i.e. {"name": value}) at time instant t. An input is not updated if associated key is
+            not found in twin model input_names property. Other inputs keep current value if not provided.
+
+        Examples
+        --------
+        >>> from pytwin.evaluate import TwinModel
+        >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> twin_model.initialize_evaluation()
+        >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.})
+        >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
@@ -323,19 +373,35 @@ class TwinModel:
 
     def evaluate_batch(self, inputs_df: pd.DataFrame):
         """
-        Evaluate the twin model with the historical inputs' data given with a Pandas.DataFrame().
+        Evaluate the twin model with historical input values given with a data frame.
 
-        **inputs_df:** is a pandas.DataFrame with historical inputs data. It must have a 'Time' column and all twin
-        model inputs history you want to simulate (one input per column). If a twin model input is not found in the
-        dataframe columns then this input is kept constant to its initialization value. The column header must match
-        with a twin model input name.
+        Parameters
+        ----------
+        inputs_df: pandas.DataFrame
+            The historical input values stored in a pandas dataframe. It must have a 'Time' column and all twin
+            model inputs history you want to simulate (one input per column),starting at time instant t=0.(s). If a
+            twin model input is not found in the dataframe columns then this input is kept constant to its
+            initialization value. The column header must match with a twin model input name.
 
-        **return:** a pandas.DataFrame with all twin model outputs associated to the historical inputs' data.
+        Returns
+        -------
+        output_df: pandas.DataFrame
+            The twin output values associated to the input values, stored in a pandas.DataFrame.
 
-        **It raises an error if:**
-        (1) initialize_evaluation(...) has not been called before,
-        (2) there is no 'Time' column in the inputs dataframe,
-        (3) there is no time instant t=0.s in the inputs dataframe.
+        Raises
+        ------
+        TwinModelError:
+            if initialize_evaluation(...) has not been called before, if there is no 'Time' column in the inputs
+            dataframe, if there is no time instant t=0.s in the inputs dataframe.
+
+        Examples
+        --------
+        >>> import pandas as pd
+        >>> from pytwin.evaluate import TwinModel
+        >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.], 'input1': [1., 2., 3.], 'input2': [1., 2., 3.]})
+        >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
+        >>> outputs_df = twin_model.evaluate_batch(inputs_df=inputs_df)
         """
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')

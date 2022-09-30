@@ -6,55 +6,25 @@ to load and evaluate a Twin model. The model consists in a coupled clutches with
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
-import csv
 import platform
+import os
 
 import matplotlib.pyplot as plt
-import os
 import pandas as pd
-from src.ansys.twin.evaluate.evaluate import TwinModel
-from src.ansys.twin import examples
+
+from pytwin.evaluate import TwinModel
+from pytwin import examples
 
 twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
 csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
-twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files") # We will try to locate
-# the model_setup, which provides default model start and parameter values override
+twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
 cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 
 ###############################################################################
 # Auxiliary functions definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Definition of load_data function (loading Twin inputs data from CSV file) and plot_result_comparison for
-# post processing the results
-
-def load_data(inputs: str):
-    """Load a CSV input file into a Pandas Dataframe. Inputs is the path of the CSV file to be loaded,
-    containing the Time column and all the Twin inputs data"""
-
-    # Clean CSV headers if exported from Twin builder
-    def clean_column_names(column_names):
-        for name_index in range(len(column_names)):
-            clean_header = column_names[name_index].replace("\"", "").replace(" ", "").replace("]", "").replace("[", "")
-            name_components = clean_header.split(".", 1)
-            # The column name should match the last word after the "." in each column
-            column_names[name_index] = name_components[-1]
-
-        return column_names
-
-    # #### Data loading (into Pandas DataFrame) and pre-processing ###### #
-    # C engine can't read rows with quotes, reading just the first row
-    input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r',\s+',
-                                  engine='python', quoting=csv.QUOTE_ALL)
-
-    # Reading all values from the csv but skipping the first row
-    inputs_df = pd.read_csv(inputs, header=None, skiprows=1)
-    inputs_header_values = input_header_df.iloc[0][0].split(',')
-    clean_column_names(inputs_header_values)
-    inputs_df.columns = inputs_header_values
-
-    return inputs_df
-
+# Post processing for results comparison.
 
 def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd.DataFrame):
     """Compare the results obtained from 2 different simulations executed on the same TwinModel.
@@ -103,9 +73,8 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
             axes1.set_title('')
 
     # Show plot
-    plt.style.use('seaborn')
-    plt.show()
     plt.savefig(os.path.join(cur_dir, 'results.png'))
+    plt.show()
 
 
 ###############################################################################
@@ -115,7 +84,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
 
 
 runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
-twin_model_input_df = load_data(csv_input)
+twin_model_input_df = examples.load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 

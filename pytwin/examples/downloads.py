@@ -13,6 +13,8 @@ import urllib.request
 import zipfile
 import tempfile
 import ast
+import csv
+import pandas as pd
 
 tmpfold = tempfile.gettempdir()
 # the REPO url needs to have "raw" and not "tree", otherwise xml file are downloaded instead of raw versions
@@ -137,3 +139,31 @@ def download_file(file_name: str, directory: str, force_download: Optional[bool]
         if os.path.exists(local_path):
             os.unlink(local_path)
     return _download_file(file_name, directory, destination)
+
+
+def load_data(inputs: str):
+    """Load a CSV input file into a Pandas Dataframe. Inputs is the path of the CSV file to be loaded,
+    containing the Time column and all the Twin inputs data"""
+
+    # Clean CSV headers if exported from Twin builder
+    def clean_column_names(column_names):
+        for name_index in range(len(column_names)):
+            clean_header = column_names[name_index].replace("\"", "").replace(" ", "").replace("]", "").replace("[", "")
+            name_components = clean_header.split(".", 1)
+            # The column name should match the last word after the "." in each column
+            column_names[name_index] = name_components[-1]
+
+        return column_names
+
+    # #### Data loading (into Pandas DataFrame) and pre-processing ###### #
+    # C engine can't read rows with quotes, reading just the first row
+    input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r',\s+',
+                                  engine='python', quoting=csv.QUOTE_ALL)
+
+    # Reading all values from the csv but skipping the first row
+    inputs_df = pd.read_csv(inputs, header=None, skiprows=1)
+    inputs_header_values = input_header_df.iloc[0][0].split(',')
+    clean_column_names(inputs_header_values)
+    inputs_df.columns = inputs_header_values
+
+    return inputs_df
