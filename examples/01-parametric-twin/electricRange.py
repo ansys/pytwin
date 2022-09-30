@@ -58,7 +58,8 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     y1_ind = 5
 
     # Plotting the runtime outputs
-    # We will plot 3 different results with all the parametric variations
+    # We will plot 2 different results : the drive cycle results as well as the distance
+    # achieved vs battery state of charge for all the parametric variations
     fig, ax = plt.subplots(ncols=1, nrows=2, figsize=(18, 7))
 
     fig.subplots_adjust(hspace=0.5)
