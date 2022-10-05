@@ -3,7 +3,7 @@ use pyTwin to load and evaluate a Twin model and simulate multiple parametric va
 determining the range of an electric vehicle. The vehicle is represented by a battery, the electric loads of the
 vehicle, and an electric machine connected to a simple 1D chassis. The driver controls the vehicle speed to follow a
 repeated sequence of the WLTP cycle (class 3). The mass of the vehicle as well as the electric power loads are
-parameterized so that we can see their effects on the overall eletric range """
+parameterized so that we can see their effects on the overall electric range """
 
 ###############################################################################
 # Perform required imports
