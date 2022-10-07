@@ -2,13 +2,19 @@
 
 Parametric response surface ROM Twin evaluation example
 -------------------------------------------------------
-This example shows how you can
-use pyTwin to load and evaluate a Twin model and simulate multiple parametric variations. The model is based on a
-Response Surface ROM created out of a steady state thermal model of a heat exchanger. The model takes as input the
-heat flow supplied on the inner face and outputs several temperature probes (inner temperature, 3 temperature probes
-within the solid and outer temperature). The model will be tested against different input values to evaluate the
-corresponding temperature responses
+This example shows how you can use PyTwin to load and evaluate a Twin model
+and simulate multiple parametric variations. The model is based on a
+Response Surface ROM created out of a steady state thermal model of a heat
+exchanger. The model takes as input the heat flow supplied on the inner face
+and outputs several temperature probes (inner temperature, 3 temperature probes
+within the solid and outer temperature). The model will be tested against
+different input values to evaluate the corresponding temperature responses
 """
+
+###############################################################################
+# .. image:: /_static/heatExchangerRS.png
+#   :width: 400pt
+#   :align: center
 
 # sphinx_gallery_thumbnail_path = '_static/heatExchangerRS.png'
 
