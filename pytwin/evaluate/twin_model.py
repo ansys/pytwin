@@ -4,10 +4,11 @@ import json
 import pandas as pd
 import numpy as np
 
+from pytwin.evaluate.model import Model
 from pytwin.twin_runtime import TwinRuntime
 
 
-class TwinModel:
+class TwinModel(Model):
     """
     Class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin Builder.
     After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode) to make
@@ -44,6 +45,7 @@ class TwinModel:
     >>> outputs['output2'].append(twin_model.outputs['output2'])
     """
     def __init__(self, model_filepath: str):
+        super().__init__()
         self._evaluation_time = None
         self._initialization_time = None
         self._instantiation_time = None
@@ -158,6 +160,7 @@ class TwinModel:
         try:
             self._twin_runtime = TwinRuntime(model_path=self._model_filepath, load_model=True)
             self._twin_runtime.twin_instantiate()
+            self._model_name = self._twin_runtime.twin_get_model_name()
             self._instantiation_time = time.time()
             self._initialize_inputs_with_start_values()
             self._initialize_parameters_with_start_values()
@@ -167,7 +170,7 @@ class TwinModel:
             msg += f'\n{str(e)}'
             self._raise_error(msg)
 
-    def _raise_error(self, msg):
+    def _raise_model_error(self, msg):
         """
         (internal) Raise a TwinModelError with formatted message.
         """
@@ -431,4 +434,4 @@ class TwinModel:
 
 class TwinModelError(Exception):
     def __str__(self):
-        return f'[pyAnsys][pyTwin][TwinModelError] {self.args[0]}'
+        return f'[TwinModelError] {self.args[0]}'
