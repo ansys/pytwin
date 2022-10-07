@@ -2,11 +2,18 @@
 
 Scalar dynamic ROM Twin evaluation example
 ------------------------------------------
-This example shows how
-you can use pyTwin to load and evaluate a Twin model. The model is a scalar dynamic ROM created out of a 3D thermal
-model of a Heat Exchanger, having a heat flow as input and three temperature probes as outputs. The example shows a
-workflow for what-if analysis by deploying a second twin in parallel while simulating the original twin
+This example shows how you can use PyTwin to load and evaluate a Twin model.
+The model is a scalar dynamic ROM created out of a 3D thermal model of a
+Heat Exchanger, having a heat flow as input and three temperature probes
+as outputs. The example shows a workflow for what-if analysis by deploying 
+a second twin in parallel while simulating the original twin and comparing
+the different predictions.
 """
+
+###############################################################################
+# .. image:: /_static/heatExchangerRS.png
+#   :width: 400pt
+#   :align: center
 
 # sphinx_gallery_thumbnail_path = '_static/scalarDROM.png'
 
