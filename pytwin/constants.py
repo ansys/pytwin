@@ -119,8 +119,8 @@ def get_pytwin_logger():
 
 class _PyTwinConstants(object):
     """
-    (internal) This class host pytwin package constants in a singleton (i.e. any instances share of this class, share
-    same state and identity). Attributes of this class (i.e. the PyTwinConstants) can be set only once.
+    (internal) This class host pytwin package constants that must be shared between all pytwin object instances.
+    Modifications of the constant values at runtime is allowed only with high level methods like: (1) set_pytwin_logging
     """
     instance = None
     LOGGING = {'option': 'UNDEFINED'}
