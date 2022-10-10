@@ -6,7 +6,7 @@ import numpy as np
 
 from pytwin.evaluate.model import Model
 from pytwin.twin_runtime import TwinRuntime
-
+from pytwin.constants import get_pytwin_logging_filepath
 
 class TwinModel(Model):
     """
@@ -158,7 +158,13 @@ class TwinModel(Model):
         (internal) Connect TwinModel with TwinRuntime and load twin model.
         """
         try:
-            self._twin_runtime = TwinRuntime(model_path=self._model_filepath, load_model=True)
+            # Use pytwin log file (if setup) for SDK logging
+            log_filepath = None
+            if get_pytwin_logging_filepath() is not None:
+                log_filepath = get_pytwin_logging_filepath()
+            # TODO - SDK erases log file if provided. Wait BUG FIX before connecting it (replace None by log_filepath)
+            self._twin_runtime = TwinRuntime(model_path=self._model_filepath, load_model=True, log_path=None)
+            # FIN TODO
             self._twin_runtime.twin_instantiate()
             self._model_name = self._twin_runtime.twin_get_model_name()
             self._instantiation_time = time.time()

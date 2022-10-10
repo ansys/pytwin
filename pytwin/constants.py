@@ -117,6 +117,12 @@ def get_pytwin_logger():
     return logging.getLogger(_PyTwinConstants.LOGGER_NAME)
 
 
+def get_pytwin_logging_filepath():
+    if _PyTwinConstants.LOGGING['option'] == 'FILE_HANDLER':
+        return _PyTwinConstants.LOGGING['filepath']
+    return None
+
+
 class _PyTwinConstants(object):
     """
     (internal) This class host pytwin package constants that must be shared between all pytwin object instances.
