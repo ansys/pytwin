@@ -5,7 +5,11 @@ import pandas as pd
 
 from pytwin.evaluate import TwinModel
 from pytwin.evaluate import TwinModelError
+from pytwin import set_pytwin_logging
 from tests.utilities import compare_dictionary
+
+
+set_pytwin_logging(log_filepath=os.path.join(os.path.dirname(__file__), 'data', 'test_twin_model.log'), mode='w')
 
 
 class TestTwinModel:
@@ -17,9 +21,11 @@ class TestTwinModel:
     def test_instantiation_with_invalid_model_filepath(self):
         with pytest.raises(TwinModelError) as e:
             TwinModel(model_filepath=None)
+        temp = str(e)
         assert 'Please provide valid filepath' in str(e)
         with pytest.raises(TwinModelError) as e:
             TwinModel(model_filepath='')
+        temp = str(e)
         assert 'Please provide existing filepath' in str(e)
 
     def test_parameters_property(self):
