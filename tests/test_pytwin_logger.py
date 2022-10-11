@@ -6,6 +6,7 @@ from pytwin import PYTWIN_LOG_WARNING
 from pytwin import PYTWIN_NO_LOG
 from pytwin import PyTwinLoggingError
 from pytwin import get_pytwin_logger
+from pytwin import PyTwinLogLevel
 
 
 def reinit_logging():
@@ -22,7 +23,7 @@ class TestSetLoggingOption:
         # Raise error if level is unknown
         with pytest.raises(PyTwinLoggingError) as e:
             set_pytwin_logging(level='unknown')
-        assert 'Provided log level is unknown' in str(e)
+        assert f'{PyTwinLogLevel}' in str(e)
         # Raise error if mode is unknown
         with pytest.raises(PyTwinLoggingError) as e:
             set_pytwin_logging(mode='unknown', log_filepath='')
@@ -31,7 +32,7 @@ class TestSetLoggingOption:
         with pytest.raises(PyTwinLoggingError) as e:
             wrong_path = os.path.join(os.path.dirname(__file__), 'unknown_folder', 'test.log')
             set_pytwin_logging(mode='a', log_filepath=wrong_path)
-        assert 'Please provide a log filepath with existing absolute path.' in str(e)
+        assert 'Please provide a log filepath within an existing folder.' in str(e)
 
     def test_pytwin_logging_option_filehandler(self):
         # Reinit test context

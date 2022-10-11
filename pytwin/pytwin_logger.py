@@ -60,8 +60,7 @@ def set_pytwin_logging(log_filepath: str = None,
                 raise PyTwinLoggingError(msg)
         else:
             msg = 'Error while setting pytwin logging options!'
-            msg += f'\nProvided log level is unknown (provided: {_level})'
-            msg += f'\nPlease choose among {PyTwinLogLevel.__members__} enum.'
+            msg += f'\nPlease use {PyTwinLogLevel} enum to set level argument value.'
             raise PyTwinLoggingError(msg)
 
     def _check_file_logging_mode_is_valid(_mode: str):
@@ -77,8 +76,8 @@ def set_pytwin_logging(log_filepath: str = None,
         file_name = os.path.split(_filepath)[-1]
         if not os.path.exists(abs_file_dir):
             msg = 'Error while setting pytwin logging options!'
-            msg += f'\nAbsolute path ({abs_file_dir}) to log file ({file_name}) does not exists!'
-            msg += f'\nPlease provide a log filepath with existing absolute path.'
+            msg += f'\nFolder ({abs_file_dir}) of the log file ({file_name}) does not exists!'
+            msg += f'\nPlease provide a log filepath within an existing folder.'
             raise PyTwinLoggingError(msg)
 
     if _pytwin_logging_is_undefined():
