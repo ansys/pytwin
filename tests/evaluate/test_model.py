@@ -6,9 +6,9 @@ from pytwin.evaluate.model import Model
 
 
 def reinit_logging(log_file):
-    from pytwin.constants import _PyTwinConstants
-    from pytwin.constants import get_pytwin_logger
-    _PyTwinConstants.LOGGING = {'option': 'UNDEFINED'}
+    from pytwin.pytwin_logger import get_pytwin_logger
+    from pytwin.settings import _reinit_settings
+    _reinit_settings()
     logger = get_pytwin_logger()
     logger.handlers = []
     set_pytwin_logging(log_filepath=log_file)
@@ -34,7 +34,7 @@ class TestModel:
 
     def test_multiple_model_log_in_same_logger(self):
         # Init test context
-        new_log_file = os.path.join(os.path.dirname(__name__), 'data', 'test_models_logging.log')
+        new_log_file = os.path.join(os.path.dirname(__file__), 'data', 'test_models_logging.log')
         if os.path.exists(new_log_file):
             os.remove(new_log_file)
         reinit_logging(new_log_file)

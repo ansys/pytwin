@@ -9,8 +9,8 @@ from pytwin import get_pytwin_logger
 
 
 def reinit_logging():
-    from pytwin.constants import _PyTwinConstants
-    _PyTwinConstants.LOGGING = {'option': 'UNDEFINED'}
+    from pytwin.settings import _reinit_settings
+    _reinit_settings()
     logger = get_pytwin_logger()
     logger.handlers = []
 

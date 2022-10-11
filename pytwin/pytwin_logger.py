@@ -1,7 +1,11 @@
 import logging
 import os
-import sys
 from enum import Enum
+from pytwin.settings import _pytwin_logging_is_undefined
+from pytwin.settings import _disable_pytwin_logging
+from pytwin.settings import _set_pytwin_logging_option_to_file_handler
+from pytwin.settings import _set_pytwin_logging_option_to_stream_handler
+from pytwin.settings import _get_pytwin_logger_name
 
 
 class PyTwinLogLevel(Enum):
@@ -77,28 +81,25 @@ def set_pytwin_logging(log_filepath: str = None,
             msg += f'\nPlease provide a log filepath with existing absolute path.'
             raise PyTwinLoggingError(msg)
 
-    if _PyTwinConstants.LOGGING['option'] == 'UNDEFINED':
+    if _pytwin_logging_is_undefined():
         _check_level_is_valid(level)
 
         if level == PyTwinLogLevel.PYTWIN_NO_LOG:
-            _PyTwinConstants.LOGGING['option'] = 'DISABLED'
+            _disable_pytwin_logging()
         else:
             if log_filepath is not None:
                 # Case of Logging in a file
                 _check_file_logging_mode_is_valid(mode)
                 _check_path_to_provided_log_file_exists(log_filepath)
                 log_handler = logging.FileHandler(filename=log_filepath, mode=mode)
-                _PyTwinConstants.LOGGING['option'] = 'FILE_HANDLER'
-                _PyTwinConstants.LOGGING['filepath'] = log_filepath
-                _PyTwinConstants.LOGGING['level'] = level
+                _set_pytwin_logging_option_to_file_handler(log_filepath, level)
             else:
                 # Case of Logging in the console
                 log_handler = logging.StreamHandler()
-                _PyTwinConstants.LOGGING['option'] = 'STREAM_HANDLER'
-                _PyTwinConstants.LOGGING['stream'] = sys.stderr
-                _PyTwinConstants.LOGGING['level'] = level
+                _set_pytwin_logging_option_to_stream_handler(level)
+
             # This is the first call. We Create a pytwin logger in the logger hierarchy and set its level
-            logger = logging.getLogger(_PyTwinConstants.LOGGER_NAME)
+            logger = logging.getLogger(_get_pytwin_logger_name())
             logger.setLevel(level.value)
             # Choose pytwin logging handler and set its level and format
             formatter = logging.Formatter(fmt='[%(asctime)s][pytwin] %(levelname)s: %(message)s',
@@ -114,20 +115,7 @@ class PyTwinLoggingError(Exception):
 
 
 def get_pytwin_logger():
-    return logging.getLogger(_PyTwinConstants.LOGGER_NAME)
-
-
-def get_pytwin_logging_filepath():
-    if _PyTwinConstants.LOGGING['option'] == 'FILE_HANDLER':
-        return _PyTwinConstants.LOGGING['filepath']
-    return None
-
-
-class _PyTwinConstants(object):
     """
-    (internal) This class host pytwin package constants that must be shared between all pytwin object instances.
-    Modifications of the constant values at runtime is allowed only with high level methods like: (1) set_pytwin_logging
+    Get pytwin logger
     """
-    instance = None
-    LOGGING = {'option': 'UNDEFINED'}
-    LOGGER_NAME = 'pytwin_logger'
+    return logging.getLogger(_get_pytwin_logger_name())

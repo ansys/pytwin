@@ -10,10 +10,10 @@ except ModuleNotFoundError:
 
 __version__ = importlib_metadata.version('pytwin')
 
-from .constants import PyTwinLogLevel
-from .constants import PyTwinLoggingError
-from .constants import set_pytwin_logging
-from .constants import get_pytwin_logger
+from .pytwin_logger import PyTwinLogLevel
+from .pytwin_logger import PyTwinLoggingError
+from .pytwin_logger import set_pytwin_logging
+from .pytwin_logger import get_pytwin_logger
 
 PYTWIN_LOG_ALL = PyTwinLogLevel.PYTWIN_LOG_ALL
 PYTWIN_LOG_WARNING = PyTwinLogLevel.PYTWIN_LOG_WARNING
