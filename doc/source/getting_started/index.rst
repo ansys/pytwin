@@ -9,7 +9,14 @@ These Runtimes are generated using `Ansys Twin Builder and Twin Deployer <https:
 To run PyTwin, you must have a license of Ansys Twin Deployer
 installed locally. PyTwin supports Runtimes generated using 2023 R1 and later.
 
+Define the Ansys License Server
+-------------------------------
+Your Ansys License Manager must have a license file with the *twin_builder_deployer* feature available. Define the
+following environment variable that specifies the location of your Ansys License Manager:
 
+.. code::
+
+   ANSYSLMD_LICENSE_FILE={PORT_NUMBER}@{SERVER_NAME}
 
 Install the package
 -------------------
