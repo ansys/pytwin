@@ -14,6 +14,8 @@ from .pytwin_logger import PyTwinLogLevel
 from .pytwin_logger import PyTwinLoggingError
 from .pytwin_logger import set_pytwin_logging
 from .pytwin_logger import get_pytwin_logger
+from .settings import set_pytwin_working_dir
+from .settings import get_pytwin_working_dir
 
 PYTWIN_LOG_ALL = PyTwinLogLevel.PYTWIN_LOG_ALL
 PYTWIN_LOG_WARNING = PyTwinLogLevel.PYTWIN_LOG_WARNING
