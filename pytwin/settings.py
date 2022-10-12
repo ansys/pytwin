@@ -5,7 +5,7 @@ import sys
 
 class _PyTwinConstants(object):
     """
-    (internal) This class host pytwin package constants that must be shared between all pytwin object instances.
+    (internal) This class hosts pytwin package constants that must be shared between all pytwin object instances.
     Explicit modifications of the constant values at runtime is forbidden and may cause unexpected behavior.
     """
     LOGGING = {'option': 'UNDEFINED'}
@@ -61,7 +61,7 @@ def _set_pytwin_logging_option_to_stream_handler(level, stream=sys.stderr):
     _PyTwinConstants.LOGGING['level'] = level
 
 
-def set_pytwin_working_directory_path(working_directory_path: str, erase: bool = False):
+def set_pytwin_working_directory_path(working_directory_path: str, erase: bool):
     """
     Set pytwin working directory.
 
@@ -70,12 +70,12 @@ def set_pytwin_working_directory_path(working_directory_path: str, erase: bool =
     working_directory_path: str
         The empty working directory you want to use for pytwin package. The method creates it if it does not exist.
     erase: bool
-        Erase non-empty existing working directory and create a new one (default to False).
+        Erase non-empty existing working directory and create a new one.
 
     Raises
     ------
     PyTwinWorkingDirectoryError
-        If erase is False and provided working directory exists and is not empty.
+        If erase is False and provided working directory is not empty. TODO - Supprimer si pas utile
     """
     if os.path.exists(working_directory_path):
         if len(os.listdir(working_directory_path)) == 0:
@@ -104,6 +104,9 @@ def set_pytwin_working_directory_path(working_directory_path: str, erase: bool =
 
 
 def get_pytwin_logging_filepath():
+    """
+    Get pytwin logging file path if provided, return None if not.
+    """
     if _PyTwinConstants.LOGGING['option'] == 'FILE_HANDLER':
         return _PyTwinConstants.LOGGING['filepath']
     return None
