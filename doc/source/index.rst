@@ -67,7 +67,7 @@ extends the functionality of Ansys Twin Builder and Twin Deployer by adding
 a Python interface
 to the Digital Twins Runtimes SDK without changing the core behavior or license of the original
 software's. The use of the interactive control of Ansys Digital Twins Runtimes through PyTwin
-requires a legally licensed copy of Twin Deployer.
+requires a license of Twin Deployer.
 
 For more information, see the `Ansys Twin Builder and Twin Deployer <https://www.ansys.com/products/digital-twin/ansys-twin-builder>`_.
 on the Ansys website.
