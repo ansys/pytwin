@@ -6,7 +6,7 @@ library
 from pytwin._version import __version__  # noqa: F401
 
 _VERSION_INFO = None
-"""Global variable indicating the version of the PyFluent package - Empty by default"""
+"""Global variable indicating the version of the PyTwin package - Empty by default"""
 
 try:
     import importlib.metadata as importlib_metadata
@@ -14,12 +14,12 @@ except ModuleNotFoundError:
     import importlib_metadata
 
 def version_info() -> str:
-    """Method returning the version of PyFluent being used.
+    """Method returning the version of PyTwin being used.
 
     Returns
     -------
     str
-        The PyFluent version being used.
+        The PyTwin version being used.
 
     Notes
     -------
