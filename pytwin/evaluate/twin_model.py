@@ -149,7 +149,15 @@ class TwinModel(Model):
 
         self._evaluation_time = 0.0
         self._initialization_time = time.time()
-        self._twin_runtime.twin_initialize()
+
+        try:
+            self._twin_runtime.twin_initialize()
+        except Exception as e:
+            msg = f'Something went wrong during model initialization!'
+            msg += f'\n{str(e)}'
+            msg += f'\nYou will find more details in model log (see {self.model_log} file)'
+            self._raise_error(msg)
+
         self._update_outputs()
 
     def _initialize_inputs_with_start_values(self):
@@ -433,7 +441,8 @@ class TwinModel(Model):
         except Exception as e:
             msg = f'Something went wrong during evaluation at time step {self._evaluation_time}:'
             msg += f'\n{str(e)}'
-            msg += f'\nPlease reinitialize the model evaluation and restart it.'
+            msg += f'\nPlease reinitialize the model evaluation and restart evaluation.'
+            msg += f'\nYou will find more details in model log (see {self.model_log} file)'
             self._raise_error(msg)
 
     def evaluate_batch(self, inputs_df: pd.DataFrame):
@@ -493,7 +502,15 @@ class TwinModel(Model):
         _inputs_df = self._create_dataframe_inputs(inputs_df)
         _output_col_names = ['Time'] + list(self._outputs.keys())
 
-        return self._twin_runtime.twin_simulate_batch_mode(input_df=_inputs_df, output_column_names=_output_col_names)
+        try:
+            return self._twin_runtime.twin_simulate_batch_mode(input_df=_inputs_df,
+                                                               output_column_names=_output_col_names)
+        except Exception as e:
+            msg = f'Something went wrong during batch evaluation:'
+            msg += f'\n{str(e)}'
+            msg += f'\nPlease reinitialize the model evaluation and restart evaluation.'
+            msg += f'\nYou will find more details in model log (see {self.model_log} file)'
+            self._raise_error(msg)
 
 
 class TwinModelError(Exception):
