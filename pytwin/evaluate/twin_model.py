@@ -1,12 +1,17 @@
 import os
 import time
 import json
+import shutil
 import pandas as pd
 import numpy as np
 
 from pytwin.evaluate.model import Model
 from pytwin.twin_runtime import TwinRuntime
-from pytwin.settings import get_pytwin_log_file
+from pytwin.twin_runtime.log_level import LogLevel
+from pytwin.settings import get_pytwin_working_dir
+from pytwin.settings import get_pytwin_log_level
+from pytwin.settings import PyTwinLogLevel
+from pytwin.settings import pytwin_logging_is_enabled
 
 
 class TwinModel(Model):
@@ -25,7 +30,7 @@ class TwinModel(Model):
     Create a twin model object given the file path to the twin model file. Initialize two parameters and two inputs of
     the twin model. Then evaluate two steps and retrieve results in a dictionary.
 
-    >>> from pytwin.evaluate import TwinModel
+    >>> from pytwin import TwinModel
     >>>
     >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
     >>>
@@ -99,6 +104,22 @@ class TwinModel(Model):
                 _inputs_df[name] = np.full(shape=(_inputs_df.shape[0], 1), fill_value=value)
         return _inputs_df
 
+    @staticmethod
+    def _get_runtime_log_level():
+        pytwin_level = get_pytwin_log_level()
+        if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_DEBUG:
+            return LogLevel.TWIN_LOG_ALL
+        if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_INFO:
+            return LogLevel.TWIN_LOG_ALL
+        if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_WARNING:
+            return LogLevel.TWIN_LOG_WARNING
+        if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_ERROR:
+            return LogLevel.TWIN_LOG_ERROR
+        if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
+            return LogLevel.TWIN_LOG_FATAL
+        if not pytwin_logging_is_enabled():
+            return LogLevel.TWIN_NO_LOG
+
     def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
         """
         (internal) Initialize the twin model evaluation with dictionaries:
@@ -159,19 +180,29 @@ class TwinModel(Model):
         (internal) Connect TwinModel with TwinRuntime and load twin model.
         """
         try:
-            # Use pytwin log file (if setup) for SDK logging
-            log_filepath = None
-            if get_pytwin_logging_filepath() is not None:
-                log_filepath = get_pytwin_logging_filepath()
-            # TODO - SDK erases log file if provided. Wait BUG FIX before connecting it (replace None by log_filepath)
-            self._twin_runtime = TwinRuntime(model_path=self._model_filepath, load_model=True, log_path=None)
-            # FIN TODO
+            # Create temp dir if needed
+            if not os.path.exists(self.model_temp):
+                os.mkdir(self.model_temp)
+
+            # Instantiate twin runtime
+            self._twin_runtime = TwinRuntime(model_path=self._model_filepath,
+                                             load_model=True,
+                                             log_path=self.model_log,
+                                             log_level=self._get_runtime_log_level())
             self._twin_runtime.twin_instantiate()
+
+            # Create subfolder
             self._model_name = self._twin_runtime.twin_get_model_name()
+            if not os.path.exists(self.model_dir):
+                os.mkdir(self.model_dir)
+            os.link(self.model_log, self.model_log_link)
+
+            # Update TwinModel variables
             self._instantiation_time = time.time()
             self._initialize_inputs_with_start_values()
             self._initialize_parameters_with_start_values()
             self._initialize_outputs_with_none_values()
+
         except Exception as e:
             msg = 'Twin model failed during instantiation!'
             msg += f'\n{str(e)}'

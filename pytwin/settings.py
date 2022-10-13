@@ -166,6 +166,13 @@ def get_pytwin_log_file():
     return PYTWIN_SETTINGS.logfile
 
 
+def get_pytwin_log_level():
+    """
+    Get path to pytwin log level.
+    """
+    return PYTWIN_SETTINGS.loglevel
+
+
 def get_pytwin_working_dir():
     """
     Get path to pytwin working directory.
@@ -199,6 +206,7 @@ class _PyTwinSettings(object):
     LOGGER_NAME = 'pytwin_logger'
     LOGGING_FILE_NAME = 'pytwin.log'
     WORKING_DIRECTORY_NAME = 'pytwin'
+    TEMP_WD_NAME = '.temp'
 
     @property
     def logfile(self):
@@ -210,6 +218,10 @@ class _PyTwinSettings(object):
             msg = 'Working directory has not been set!'
             raise PyTwinSettingsError(msg)
         return os.path.join(_PyTwinSettings.WORKING_DIRECTORY_PATH, _PyTwinSettings.LOGGING_FILE_NAME)
+
+    @property
+    def loglevel(self):
+        return _PyTwinSettings.LOGGING_LEVEL
 
     @property
     def logger(self):
@@ -306,14 +318,16 @@ class _PyTwinSettings(object):
             pytwin_logger.handlers.clear()
             old_logfile_path = os.path.join(old_path, _PyTwinSettings.LOGGING_FILE_NAME)
             new_logfile_path = os.path.join(new_path, _PyTwinSettings.LOGGING_FILE_NAME)
-            with open(old_logfile_path, 'r') as f:
-                old_logfile_lines = f.readlines()
-            with open(new_logfile_path, 'w') as f:
-                f.writelines(old_logfile_lines)
+            shutil.copyfile(old_logfile_path, new_logfile_path)
             _PyTwinSettings.LOGGING_OPTION = PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE
             _PyTwinSettings._add_default_file_handler_to_pytwin_logger(filepath=new_logfile_path,
                                                                        level=_PyTwinSettings.LOGGING_LEVEL,
                                                                        mode='a')
+        # Migrate subfolder
+        shutil.copytree(src=old_path,
+                        dst=new_path,
+                        ignore=shutil.ignore_patterns(f'{_PyTwinSettings.TEMP_WD_NAME}*'),
+                        dirs_exist_ok=True)
 
     @staticmethod
     def modify_wd_dir(new_path: str, erase: bool):

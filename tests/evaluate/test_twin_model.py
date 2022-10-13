@@ -1,17 +1,26 @@
 import os
-
 import pytest
 import pandas as pd
-
 from pytwin.evaluate import TwinModel
 from pytwin.evaluate import TwinModelError
-from pytwin import set_pytwin_logging
+from pytwin.settings import reinit_settings_for_unit_tests
+from pytwin.settings import get_pytwin_working_dir
+from pytwin.settings import get_pytwin_logger
+from pytwin.settings import modify_pytwin_working_dir
 from tests.utilities import compare_dictionary
 
-
-set_pytwin_logging(log_filepath=os.path.join(os.path.dirname(__file__), 'data', 'test_twin_model.log'), mode='w')
-
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'CoupleClutches_22R2_other.twin')
+
+UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
+
+
+def reinit_settings():
+    from pytwin.settings import reinit_settings_for_unit_tests
+    import shutil
+    reinit_settings_for_unit_tests()
+    if os.path.exists(UNIT_TEST_WD):
+        shutil.rmtree(UNIT_TEST_WD)
+    return UNIT_TEST_WD
 
 
 class TestTwinModel:
@@ -358,3 +367,34 @@ class TestTwinModel:
         twin = TwinModel(model_filepath=model_filepath)
         twin = TwinModel(model_filepath=model_filepath)
         twin = TwinModel(model_filepath=model_filepath)
+
+    def test_each_twin_model_has_a_subfolder_in_wd(self):
+        # Init unit test
+        reinit_settings_for_unit_tests()
+        logger = get_pytwin_logger()
+        # Verify a subfolder is created each time a new twin model is instantiated
+        m_count = 10
+        for m in range(m_count):
+            model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        wd = get_pytwin_working_dir()
+        temp = os.listdir(wd)
+        assert len(os.listdir(wd)) == m_count + 2
+
+    def test_model_dir_migration_after_modifying_wd_dir(self):
+        # Init unit test
+        wd = reinit_settings()
+        assert not os.path.exists(wd)
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        assert os.path.split(model.model_dir)[0] == get_pytwin_working_dir()
+        # Run test
+        modify_pytwin_working_dir(new_path=wd)
+        assert os.path.split(model.model_dir)[0] == wd
+        assert len(os.listdir(wd)) == 1 + 1  # model + pytwin log
+        model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        assert os.path.split(model2.model_dir)[0] == wd
+        assert len(os.listdir(wd)) == 2 + 1 + 1  # 2 models + pytwin log + .temp
+
+    def test_clean_unit_test(self):
+        reinit_settings()
+
+
