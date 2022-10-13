@@ -10,6 +10,7 @@ from pytwin import PyTwinLogLevel
 from pytwin import modify_pytwin_logging
 from pytwin import modify_pytwin_working_dir
 from pytwin import PyTwinSettingsError
+from pytwin import pytwin_logging_is_enabled
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
 
@@ -42,10 +43,12 @@ class TestDefaultSettings:
         assert len(lines) == 4
         assert os.path.exists(log_file)
         assert len(logger.handlers) == 1
+        assert pytwin_logging_is_enabled()
 
     def test_modify_logging_raises_error(self):
         # Init unit test
         reinit_settings()
+        assert pytwin_logging_is_enabled()
         # Raises error if new_option is not a valid PyTwinLogOption attribute.
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_logging(new_option='unknown')
@@ -58,16 +61,19 @@ class TestDefaultSettings:
     def test_modify_logging_no_logging(self):
         # Init unit test
         reinit_settings()
+        assert pytwin_logging_is_enabled()
         # Disable logging
         modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
         logger = get_pytwin_logger()
         log_file = get_pytwin_log_file()
         assert len(logger.handlers) == 0
         assert log_file is None
+        assert not pytwin_logging_is_enabled()
 
     def test_modify_logging_console(self):
         # Init unit test
         reinit_settings()
+        assert pytwin_logging_is_enabled()
         # Redirect logging to console
         modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE)
         logger = get_pytwin_logger()
@@ -79,12 +85,13 @@ class TestDefaultSettings:
         log_file = get_pytwin_log_file()
         assert len(logger.handlers) == 1
         assert log_file is None
+        assert pytwin_logging_is_enabled()
 
     def test_modify_logging_level(self):
         # Init unit test
         reinit_settings()
         # Modify logging level works
-        modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_FATAL)
+        modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_CRITICAL)
         log_file = get_pytwin_log_file()
         logger = get_pytwin_logger()
         logger.debug('Hello 10')
@@ -96,7 +103,7 @@ class TestDefaultSettings:
             lines = f.readlines()
         assert len(lines) == 1
         # Modify logging level can be done dynamically
-        modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_ALL)
+        modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_DEBUG)
         logger.debug('Hello 10')
         logger.info('Hello 20')
         logger.warning('Hello 30')

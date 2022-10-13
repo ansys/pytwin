@@ -21,11 +21,12 @@ from .settings import modify_pytwin_working_dir
 from .settings import PyTwinLogOption
 from .settings import PyTwinLogLevel
 from .settings import PyTwinSettingsError
+from .settings import pytwin_logging_is_enabled
 
-PYTWIN_LOG_ALL = PyTwinLogLevel.PYTWIN_LOG_ALL
+PYTWIN_LOG_DEBUG = PyTwinLogLevel.PYTWIN_LOG_DEBUG
 PYTWIN_LOG_WARNING = PyTwinLogLevel.PYTWIN_LOG_WARNING
 PYTWIN_LOG_ERROR = PyTwinLogLevel.PYTWIN_LOG_ERROR
-PYTWIN_LOG_FATAL = PyTwinLogLevel.PYTWIN_LOG_FATAL
+PYTWIN_LOG_CRITICAL = PyTwinLogLevel.PYTWIN_LOG_CRITICAL
 
 PYTWIN_LOGGING_OPT_FILE = PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE
 PYTWIN_LOGGING_OPT_CONSOLE = PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE

@@ -6,7 +6,7 @@ import numpy as np
 
 from pytwin.evaluate.model import Model
 from pytwin.twin_runtime import TwinRuntime
-from pytwin.settings import get_pytwin_logging_filepath
+from pytwin.settings import get_pytwin_log_file
 
 
 class TwinModel(Model):

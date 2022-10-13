@@ -6,11 +6,11 @@ from enum import Enum
 
 
 class PyTwinLogLevel(Enum):
-    PYTWIN_LOG_ALL = 10  # DEBUG
+    PYTWIN_LOG_DEBUG = 10  # DEBUG
     PYTWIN_LOG_INFO = 20  # INFO
     PYTWIN_LOG_WARNING = 30  # WARNING
     PYTWIN_LOG_ERROR = 40  # ERROR
-    PYTWIN_LOG_FATAL = 50  # CRITICAL
+    PYTWIN_LOG_CRITICAL = 50  # CRITICAL
 
 
 class PyTwinLogOption(Enum):
@@ -48,8 +48,8 @@ def modify_pytwin_logging(new_option: PyTwinLogOption = PyTwinLogOption.PYTWIN_L
     --------
     >>> # Redirect logging to a file in the working directory
     >>> from pytwin import modify_pytwin_logging, get_pytwin_log_file
-    >>> from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_ALL
-    >>> modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_ALL)
+    >>> from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_DEBUG
+    >>> modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_DEBUG)
     >>> print(get_pytwin_log_file())
     >>> # Redirect logging to the console
     >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_CONSOLE
@@ -146,6 +146,10 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     _check_wd_path_is_valid(new_path)
     _check_wd_erase_is_valid(erase)
     PYTWIN_SETTINGS.modify_wd_dir(new_path=new_path, erase=erase)
+
+
+def pytwin_logging_is_enabled():
+    return PYTWIN_SETTINGS.LOGGING_OPTION != PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
 
 
 def get_pytwin_logger():

@@ -1,6 +1,7 @@
 import uuid
 from pytwin import PyTwinLogLevel
 from pytwin import get_pytwin_logger
+from pytwin import pytwin_logging_is_enabled
 
 
 class Model:
@@ -8,12 +9,15 @@ class Model:
         self._id = f'{uuid.uuid4()}'[0:8]
         self._model_name = None
 
-    def _log_message(self, msg: str, level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_ALL):
+    def _log_message(self, msg: str, level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_INFO):
         msg = f'[{self._model_name}.{self._id}] {msg}'
         logger = get_pytwin_logger()
-        if level != PyTwinLogLevel.PYTWIN_NO_LOG:
-            if level == PyTwinLogLevel.PYTWIN_LOG_ALL:
+        if pytwin_logging_is_enabled():
+            if level == PyTwinLogLevel.PYTWIN_LOG_DEBUG:
                 logger.debug(msg)
+                return
+            if level == PyTwinLogLevel.PYTWIN_LOG_INFO:
+                logger.info(msg)
                 return
             if level == PyTwinLogLevel.PYTWIN_LOG_WARNING:
                 logger.warning(msg)
@@ -21,7 +25,7 @@ class Model:
             if level == PyTwinLogLevel.PYTWIN_LOG_ERROR:
                 logger.error(msg)
                 return
-            if level == PyTwinLogLevel.PYTWIN_LOG_FATAL:
+            if level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
                 logger.critical(msg)
                 return
 
