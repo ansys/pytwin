@@ -1,14 +1,12 @@
 import os
 import time
 import json
-import shutil
 import pandas as pd
 import numpy as np
 
 from pytwin.evaluate.model import Model
 from pytwin.twin_runtime import TwinRuntime
 from pytwin.twin_runtime.log_level import LogLevel
-from pytwin.settings import get_pytwin_working_dir
 from pytwin.settings import get_pytwin_log_level
 from pytwin.settings import PyTwinLogLevel
 from pytwin.settings import pytwin_logging_is_enabled
@@ -95,6 +93,7 @@ class TwinModel(Model):
         If an input is not found in the given inputs_df, then initialization value is used to keep associated input
         constant over Time.
         """
+        self._warns_if_input_key_not_found(inputs_df.to_dict())
         _inputs_df = pd.DataFrame()
         _inputs_df['Time'] = inputs_df['Time']
         for name, value in self._inputs.items():
@@ -144,6 +143,9 @@ class TwinModel(Model):
         self._initialize_inputs_with_start_values()
         if inputs is not None:
             self._update_inputs(inputs)
+
+        self._warns_if_parameter_key_not_found(parameters)
+        self._warns_if_input_key_not_found(inputs)
 
         self._evaluation_time = 0.0
         self._initialization_time = time.time()
@@ -251,6 +253,21 @@ class TwinModel(Model):
                 self._parameters[name] = value
                 self._twin_runtime.twin_set_param_by_name(param_name=name, value=value)
 
+    def _warns_if_input_key_not_found(self, inputs: dict):
+        if inputs is not None:
+            for _input in inputs:
+                if _input not in self.inputs:
+                    if _input != 'Time':
+                        msg = f'Provided input ({_input}) has not been found in model inputs!'
+                        self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
+    def _warns_if_parameter_key_not_found(self, parameters: dict):
+        if parameters is not None:
+            for param in parameters:
+                if param not in self.parameters:
+                    msg = f'Provided parameter ({param}) has not been found in model parameters!'
+                    self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
     @property
     def evaluation_is_initialized(self):
         """Return true if evaluation has been initialized."""
@@ -340,7 +357,7 @@ class TwinModel(Model):
         Examples
         --------
         >>> import json
-        >>> from pytwin.evaluate import TwinModel
+        >>> from pytwin import TwinModel
         >>>
         >>> config = {"version": "0.1.0", "model": {"inputs": {"input-name-1": 1., "input-name-2": 2.}, \
         >>> "parameters": {"param-name-1": 1.,"param-name-2": 2.}}}
@@ -351,9 +368,13 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation(json_config_filepath='path_to_your_config.json')
         >>> outputs = twin_model.outputs
         """
+        self._log_key = 'InitializeEvaluation'
+
         if json_config_filepath is None:
+            self._log_key += 'WithDictionary'
             self._initialize_evaluation(parameters=parameters, inputs=inputs)
         else:
+            self._log_key += 'WithConfigFile'
             cfg = self._read_eval_init_config(json_config_filepath)
             _parameters = None
             _inputs = None
@@ -389,6 +410,8 @@ class TwinModel(Model):
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
+        self._log_key = 'EvaluateStepByStep'
+
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
 
@@ -399,6 +422,7 @@ class TwinModel(Model):
             msg = f'Step size must be strictly bigger than zero ({step_size} was provided)!'
             self._raise_error(msg)
 
+        self._warns_if_input_key_not_found(inputs)
         if inputs is not None:
             self._update_inputs(inputs)
 
@@ -444,6 +468,8 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
         >>> outputs_df = twin_model.evaluate_batch(inputs_df=inputs_df)
         """
+        self._log_key = 'EvaluateBatch'
+
         if self._twin_runtime is None:
             self._raise_error('Twin model has not been successfully instantiated!')
 

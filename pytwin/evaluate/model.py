@@ -11,9 +11,10 @@ class Model:
     def __init__(self):
         self._id = f'{uuid.uuid4()}'[0:8]
         self._model_name = None
+        self._log_key = None
 
     def _log_message(self, msg: str, level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_INFO):
-        msg = f'[{self._model_name}.{self._id}] {msg}'
+        msg = f'[{self._model_name}.{self._id}][{self._log_key}] {msg}'
         logger = get_pytwin_logger()
         if pytwin_logging_is_enabled():
             if level == PyTwinLogLevel.PYTWIN_LOG_DEBUG:

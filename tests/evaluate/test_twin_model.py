@@ -6,6 +6,7 @@ from pytwin.evaluate import TwinModelError
 from pytwin.settings import reinit_settings_for_unit_tests
 from pytwin.settings import get_pytwin_working_dir
 from pytwin.settings import get_pytwin_logger
+from pytwin.settings import get_pytwin_log_file
 from pytwin.settings import modify_pytwin_working_dir
 from tests.utilities import compare_dictionary
 
@@ -393,6 +394,62 @@ class TestTwinModel:
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model2.model_dir)[0] == wd
         assert len(os.listdir(wd)) == 2 + 1 + 1  # 2 models + pytwin log + .temp
+
+    def test_model_warns_at_initialization(self):
+        # Init unit test
+        wd = reinit_settings()
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        # Warns if given parameters have wrong names
+        wrong_params = {}
+        for p in model.parameters:
+            wrong_params[f'{p}%'] = 0.
+        model.initialize_evaluation(parameters=wrong_params)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model parameters!'
+        assert ''.join(lines).count(msg) == 4
+        # Warns if given inputs have wrong names
+        wrong_inputs = {}
+        for i in model.inputs:
+            wrong_inputs[f'{i}%'] = 0.
+        model.initialize_evaluation(inputs=wrong_inputs)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model inputs!'
+        assert ''.join(lines).count(msg) == 4
+
+    def test_model_warns_at_evaluation_step_by_step(self):
+        # Init unit test
+        wd = reinit_settings()
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        model.initialize_evaluation()
+        # Warns if given inputs have wrong names
+        wrong_inputs = {}
+        for i in model.inputs:
+            wrong_inputs[f'{i}%'] = 0.
+        model.evaluate_step_by_step(step_size=0.1, inputs=wrong_inputs)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model inputs!'
+        assert ''.join(lines).count(msg) == 4
+
+    def test_model_warns_at_evaluation_batch(self):
+        # Init unit test
+        wd = reinit_settings()
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        model.initialize_evaluation()
+        # Warns if given inputs have wrong names
+        wrong_inputs_df = pd.DataFrame({'Time': [0., 0.1],
+                                        'Clutch1_in%': [0., 1.],
+                                        'Clutch2_in%': [0., 1.]})
+        model.evaluate_batch(inputs_df=wrong_inputs_df)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model inputs!'
+        assert ''.join(lines).count(msg) == 2
 
     def test_clean_unit_test(self):
         reinit_settings()
