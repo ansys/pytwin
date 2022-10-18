@@ -13,12 +13,10 @@ PyTwin documentation |version|
 
 Introduction
 ------------
-Ansys Twin Builder and Twin Deployer are open solutions that allow engineers to create
-simulation-based digital twins with Hybrid Analytics.
 
 An analytics-driven, simulation-based digital twin is a connected, virtual replica of an
 in-service physical asset, in the form of an integrated multidomain system simulation, that
-mirrors the life and experience of the asset. Hybrid digital twins enable system design and
+mirrors the life and experience of the asset. Ansys Digital Twins enable system design and
 optimization and predictive maintenance, and they optimize industrial asset management.
 By implementing Ansys Digital Twins, you can improve top-line revenue, manage bottom-line
 costs and both gain and retain a competitive advantage.
@@ -26,6 +24,9 @@ costs and both gain and retain a competitive advantage.
 .. image:: _static/ansys_dt.png
   :width: 800
   :alt: Ansys Digital Twins
+
+Ansys Twin Builder and Ansys Twin Deployer are open solutions that allow engineers to create
+Ansys Digital Twin Runtimes.
 
 What is PyTwin?
 -----------------
