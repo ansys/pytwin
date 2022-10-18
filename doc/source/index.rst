@@ -26,7 +26,7 @@ costs and both gain and retain a competitive advantage.
   :alt: Ansys Digital Twins
 
 Ansys Twin Builder and Ansys Twin Deployer are open solutions that allow engineers to create
-Ansys Digital Twin Runtimes.
+Ansys Digital Twins, and export them in the form of deployable Runtimes.
 
 What is PyTwin?
 -----------------
