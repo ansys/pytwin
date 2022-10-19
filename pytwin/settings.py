@@ -6,11 +6,11 @@ from enum import Enum
 
 
 class PyTwinLogLevel(Enum):
-    PYTWIN_LOG_DEBUG = 10  # DEBUG
-    PYTWIN_LOG_INFO = 20  # INFO
-    PYTWIN_LOG_WARNING = 30  # WARNING
-    PYTWIN_LOG_ERROR = 40  # ERROR
-    PYTWIN_LOG_CRITICAL = 50  # CRITICAL
+    PYTWIN_LOG_DEBUG = logging.DEBUG
+    PYTWIN_LOG_INFO = logging.INFO
+    PYTWIN_LOG_WARNING = logging.WARNING
+    PYTWIN_LOG_ERROR = logging.ERROR
+    PYTWIN_LOG_CRITICAL = logging.CRITICAL
 
 
 class PyTwinLogOption(Enum):
@@ -192,7 +192,7 @@ def reinit_settings_for_unit_tests():
 
 class _PyTwinSettings(object):
     """
-    (internal) This class hosts pytwin package settings (that are mutable and immutable attributes) that are seen by all
+    This private class hosts pytwin package settings (that are mutable and immutable attributes) that are seen by all
     pytwin object instances. Helpers are provided to manipulate these attributes. Explicit modification of attributes is
     forbidden and may cause unexpected behavior.
     """
@@ -276,7 +276,7 @@ class _PyTwinSettings(object):
     @staticmethod
     def _initialize_logging():
         """
-        (internal) Default logging settings (log to file with info level)
+        Default logging settings (log to file with info level)
         """
         # Set default logging settings
         _PyTwinSettings.LOGGING_OPTION = PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE
@@ -288,7 +288,7 @@ class _PyTwinSettings(object):
     @staticmethod
     def _initialize_wd():
         """
-        (internal) Default working directory settings.
+        Default working directory settings.
         """
         # Clean pytwin temporary directory, each time pytwin is imported.
         if _PyTwinSettings.MULTI_PROCESS_IS_ENABLED:
@@ -362,7 +362,8 @@ class _PyTwinSettings(object):
                 # Create new handles if needed
                 if new_option == PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE:
                     _PyTwinSettings._add_default_file_handler_to_pytwin_logger(
-                        filepath=os.path.join(_PyTwinSettings.WORKING_DIRECTORY_PATH, _PyTwinSettings.LOGGING_FILE_NAME),
+                        filepath=os.path.join(_PyTwinSettings.WORKING_DIRECTORY_PATH,
+                                              _PyTwinSettings.LOGGING_FILE_NAME),
                         level=_PyTwinSettings.LOGGING_LEVEL)
                 if new_option == PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE:
                     _PyTwinSettings._add_default_stream_handler_to_pytwin_logger(level=_PyTwinSettings.LOGGING_LEVEL)

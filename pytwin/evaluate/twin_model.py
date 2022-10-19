@@ -14,7 +14,7 @@ from pytwin.settings import pytwin_logging_is_enabled
 
 class TwinModel(Model):
     """
-    Class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin Builder.
+    The public class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin Builder.
     After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode) to make
     predictions. Parametric workflows are also supported.
 
@@ -65,14 +65,14 @@ class TwinModel(Model):
 
     def __del__(self):
         """
-        (internal) Close twin runtime when object is garbage collected.
+        Close twin runtime when object is garbage collected.
         """
         if self._twin_runtime is not None:
             self._twin_runtime.twin_close()
 
     def _check_model_filepath_is_valid(self, model_filepath):
         """
-        (internal) Check provided twin model filepath is valid. Raise a TwinModelError if not.
+        Check provided twin model filepath is valid. Raise a TwinModelError if not.
         """
         if model_filepath is None:
             msg = f'TwinModel cannot be called with {model_filepath} as model_filepath!'
@@ -86,7 +86,7 @@ class TwinModel(Model):
 
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """
-        (internal) Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
+        Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
         (1) 'Time' as first column (2) one column per twin model input (3) columns order is the same as twin model
         input names list return by SDK.
 
@@ -121,7 +121,7 @@ class TwinModel(Model):
 
     def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
         """
-        (internal) Initialize the twin model evaluation with dictionaries:
+        Initialize the twin model evaluation with dictionaries:
         (1) Initialize parameters and/or inputs values to their start values (default value found in the twin file),
         (2) Update parameters and/or inputs values with provided dictionaries. Ignore value whose name is not found
         into the list of parameters/inputs names of the twin model (value is kept to default one in that case).
@@ -162,7 +162,7 @@ class TwinModel(Model):
 
     def _initialize_inputs_with_start_values(self):
         """
-        (internal) Initialize inputs dictionary {name:value} with starting input values found in twin model.
+        Initialize inputs dictionary {name:value} with starting input values found in twin model.
         """
         self._inputs = dict()
         for name in self._twin_runtime.twin_get_input_names():
@@ -170,7 +170,7 @@ class TwinModel(Model):
 
     def _initialize_parameters_with_start_values(self):
         """
-        (internal) Initialize parameters dictionary {name:value} with starting parameter values found in twin model.
+        Initialize parameters dictionary {name:value} with starting parameter values found in twin model.
         """
         self._parameters = dict()
         for name in self._twin_runtime.twin_get_param_names():
@@ -179,7 +179,7 @@ class TwinModel(Model):
 
     def _initialize_outputs_with_none_values(self):
         """
-        (internal) Initialize outputs dictionary {name:value} with None values.
+        Initialize outputs dictionary {name:value} with None values.
         """
         output_names = self._twin_runtime.twin_get_output_names()
         output_values = [None]*len(output_names)
@@ -187,7 +187,7 @@ class TwinModel(Model):
 
     def _instantiate_twin_model(self):
         """
-        (internal) Connect TwinModel with TwinRuntime and load twin model.
+        Connect TwinModel with TwinRuntime and load twin model.
         """
         try:
             # Create temp dir if needed
@@ -220,13 +220,13 @@ class TwinModel(Model):
 
     def _raise_model_error(self, msg):
         """
-        (internal) Raise a TwinModelError with formatted message.
+        Raise a TwinModelError with formatted message.
         """
         raise TwinModelError(msg)
 
     def _read_eval_init_config(self, json_filepath: str):
         """
-        (internal) Deserialize a json object into a dictionary that is used to store twin model inputs and parameters values
+        Deserialize a json object into a dictionary that is used to store twin model inputs and parameters values
         to be passed to the internal evaluation initialization method.
         """
         if not os.path.exists(json_filepath):
@@ -244,18 +244,18 @@ class TwinModel(Model):
             self._raise_error(msg)
 
     def _update_inputs(self, inputs: dict):
-        """(internal) Update input values with given dictionary."""
+        """Update input values with given dictionary."""
         for name, value in inputs.items():
             if name in self._inputs:
                 self._inputs[name] = value
                 self._twin_runtime.twin_set_input_by_name(input_name=name, value=value)
 
     def _update_outputs(self):
-        """(internal) Update output values with twin model results at current evaluation time."""
+        """Update output values with twin model results at current evaluation time."""
         self._outputs = dict(zip(self._twin_runtime.twin_get_output_names(), self._twin_runtime.twin_get_outputs()))
 
     def _update_parameters(self, parameters: dict):
-        """(internal) Update parameters values with given dictionary."""
+        """Update parameters values with given dictionary."""
         for name, value in parameters.items():
             if name in self._parameters:
                 self._parameters[name] = value
