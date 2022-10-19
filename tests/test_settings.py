@@ -1,0 +1,297 @@
+import os
+import shutil
+import tempfile
+import pytest
+from pytwin import get_pytwin_working_dir
+from pytwin import get_pytwin_log_file
+from pytwin import get_pytwin_logger
+from pytwin import PyTwinLogOption
+from pytwin import PyTwinLogLevel
+from pytwin import modify_pytwin_logging
+from pytwin import modify_pytwin_working_dir
+from pytwin import PyTwinSettingsError
+from pytwin import pytwin_logging_is_enabled
+
+UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
+
+
+def reinit_settings():
+    from pytwin.settings import reinit_settings_for_unit_tests
+    reinit_settings_for_unit_tests()
+    if os.path.exists(UNIT_TEST_WD):
+        shutil.rmtree(UNIT_TEST_WD)
+    return UNIT_TEST_WD
+
+
+class TestDefaultSettings:
+    def test_default_setting(self):
+        # Working directory is created in temp folder
+        wd = get_pytwin_working_dir()
+        assert tempfile.gettempdir() in wd
+        assert os.path.exists(wd)
+        # Logging is redirected to a file with INFO level
+        log_file = get_pytwin_log_file()
+        logger = get_pytwin_logger()
+        logger.debug('Hello 10')
+        logger.info('Hello 20')
+        logger.warning('Hello 30')
+        logger.error('Hello 40')
+        logger.critical('Hello 50')
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        assert 'Hello 10' not in lines
+        assert len(lines) == 4
+        assert os.path.exists(log_file)
+        assert len(logger.handlers) == 1
+        assert pytwin_logging_is_enabled()
+
+    def test_modify_logging_raises_error(self):
+        # Init unit test
+        reinit_settings()
+        assert pytwin_logging_is_enabled()
+        # Raises error if new_option is not a valid PyTwinLogOption attribute.
+        with pytest.raises(PyTwinSettingsError) as e:
+            modify_pytwin_logging(new_option='unknown')
+        assert 'Error while setting pytwin logging options!' in str(e)
+        # Raises error if new_option is not a valid PyTwinLogLevel attribute.
+        with pytest.raises(PyTwinSettingsError) as e:
+            modify_pytwin_logging(new_level='unknown')
+        assert 'Error while setting pytwin logging options!' in str(e)
+
+    def test_modify_logging_no_logging(self):
+        # Init unit test
+        reinit_settings()
+        assert pytwin_logging_is_enabled()
+        # Disable logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
+        logger = get_pytwin_logger()
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 0
+        assert log_file is None
+        assert not pytwin_logging_is_enabled()
+
+    def test_modify_logging_console(self):
+        # Init unit test
+        reinit_settings()
+        assert pytwin_logging_is_enabled()
+        # Redirect logging to console
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE)
+        logger = get_pytwin_logger()
+        logger.debug('Hello 10')  # Must verify interactively that it is not printed to the console
+        logger.info('Hello 20')
+        logger.warning('Hello 30')
+        logger.error('Hello 40')
+        logger.critical('Hello 50')
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 1
+        assert log_file is None
+        assert pytwin_logging_is_enabled()
+
+    def test_modify_logging_level(self):
+        # Init unit test
+        reinit_settings()
+        # Modify logging level works
+        modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_CRITICAL)
+        log_file = get_pytwin_log_file()
+        logger = get_pytwin_logger()
+        logger.debug('Hello 10')
+        logger.info('Hello 20')
+        logger.warning('Hello 30')
+        logger.error('Hello 40')
+        logger.critical('Hello 50')
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        assert len(lines) == 1
+        # Modify logging level can be done dynamically
+        modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_DEBUG)
+        logger.debug('Hello 10')
+        logger.info('Hello 20')
+        logger.warning('Hello 30')
+        logger.error('Hello 40')
+        logger.critical('Hello 50')
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        assert len(lines) == 5 + 1
+
+    def test_modify_logging_multiple_times(self):
+        # Init unit test
+        reinit_settings()
+        # Start by disabling the logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
+        logger = get_pytwin_logger()
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 0
+        assert log_file is None
+        # Then change to console logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE)
+        logger = get_pytwin_logger()
+        logger.info('Hello console 20')
+        logger.warning('Hello console 30')
+        logger.error('Hello console 40')
+        logger.critical('Hello console 50')
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 1
+        assert log_file is None
+        # Then change to file logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE)
+        logger = get_pytwin_logger()
+        assert len(logger.handlers) == 1
+        logger.info('Hello file 20')
+        logger.warning('Hello file 30')
+        logger.error('Hello file 40')
+        logger.critical('Hello file 50')
+        log_file = get_pytwin_log_file()
+        assert os.path.exists(log_file)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        assert len(lines) == 4
+        assert 'console' not in lines
+
+    def test_modify_working_dir_raises_error(self):
+        # Init unit test
+        reinit_settings()
+        # Raises error if None is provided as working dir
+        with pytest.raises(PyTwinSettingsError) as e:
+            modify_pytwin_working_dir(new_path=None)
+        assert 'Error while setting pytwin working directory!' in str(e)
+        # Raises error if provided path does not exist and parent directory does not exists
+        with pytest.raises(PyTwinSettingsError) as e:
+            modify_pytwin_working_dir(new_path=os.path.join(os.path.dirname(__file__), 'unknown_folder', 'wd'))
+        assert 'Please provide a folder path in which all parents exist.' in str(e)
+        # Raises error if provided path does not exist and parent directory has not writing permission
+        # TODO - on Linux only maybe
+
+    def test_modify_working_dir_with_not_existing(self):
+        # Init unit test
+        reinit_settings()
+        assert not os.path.exists(UNIT_TEST_WD)
+        # Not existing dir is created
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD)
+        assert os.path.exists(UNIT_TEST_WD)
+        assert UNIT_TEST_WD == get_pytwin_working_dir()
+
+    def test_modify_working_dir_with_existing_erase_false(self):
+        # Init unit test
+        reinit_settings()
+        os.mkdir(UNIT_TEST_WD)
+        with open(os.path.join(UNIT_TEST_WD, 'test.txt'), 'w') as f:
+            pass
+        assert len(os.listdir(UNIT_TEST_WD)) == 1
+        assert 'test.txt' in os.listdir(UNIT_TEST_WD)
+        # Existing dir with erase = false
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=False)
+        temp = os.listdir(UNIT_TEST_WD)
+        assert len(os.listdir(UNIT_TEST_WD)) == 2  # test.txt + log file
+        assert 'test.txt' in os.listdir(UNIT_TEST_WD)
+        assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
+
+    def test_modify_working_dir_with_existing_erase_true(self):
+        # Init unit test
+        reinit_settings()
+        os.mkdir(UNIT_TEST_WD)
+        with open(os.path.join(UNIT_TEST_WD, 'test.txt'), 'w') as f:
+            pass
+        assert len(os.listdir(UNIT_TEST_WD)) == 1
+        assert 'test.txt' in os.listdir(UNIT_TEST_WD)
+        # Existing dir with erase = false
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=True)
+        temp = os.listdir(UNIT_TEST_WD)
+        assert len(os.listdir(UNIT_TEST_WD)) == 1  # log file
+        assert 'test.txt' not in os.listdir(UNIT_TEST_WD)
+        assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
+
+    def test_modify_working_dir_migration(self):
+        # Init unit test
+        reinit_settings()
+        os.mkdir(UNIT_TEST_WD)
+        logger = get_pytwin_logger()
+        msg_temp = 'Hello from temp dir!'
+        logger.info(msg_temp)
+        log_file_in_temp = get_pytwin_log_file()
+        with open(log_file_in_temp, 'r') as f:
+            lines_temp = f.readlines()
+        assert len(lines_temp) == 1
+        assert msg_temp in lines_temp[0]
+        # Verifies log file is well migrated to new path
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD)
+        log_file_new = get_pytwin_log_file()
+        assert log_file_new != log_file_in_temp
+        msg_new = 'Hello from new dir!'
+        logger.info(msg_new)
+        with open(log_file_new, 'r') as f:
+            lines_new = f.readlines()
+        assert len(lines_new) == 2
+        assert msg_temp in lines_new[0]
+        assert msg_new in lines_new[1]
+
+    def test_modify_logging_after_working_dir(self):
+        # Init unit test
+        reinit_settings()
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD)
+        # Disabling the logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
+        logger = get_pytwin_logger()
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 0
+        assert log_file is None
+        # Then change to console logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE)
+        logger = get_pytwin_logger()
+        logger.info('Hello console 20')
+        logger.warning('Hello console 30')
+        logger.error('Hello console 40')
+        logger.critical('Hello console 50')
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 1
+        assert log_file is None
+        # Then change to file logging
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE)
+        logger = get_pytwin_logger()
+        assert len(logger.handlers) == 1
+        logger.info('Hello file 20')
+        logger.warning('Hello file 30')
+        logger.error('Hello file 40')
+        logger.critical('Hello file 50')
+        log_file = get_pytwin_log_file()
+        assert os.path.exists(log_file)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        assert len(lines) == 4
+        assert 'console' not in lines
+
+    def test_modify_working_after_logging_no_logging(self):
+        # Init unit test
+        reinit_settings()
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
+        logger = get_pytwin_logger()
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 0
+        assert log_file is None
+        # Modify working directory does not modify logging
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD)
+        logger = get_pytwin_logger()
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 0
+        assert log_file is None
+
+    def test_modify_working_after_logging_console(self):
+        # Init unit test
+        reinit_settings()
+        modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE)
+        logger = get_pytwin_logger()
+        msg = 'Hello from console 1'
+        logger.info(msg)
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 1
+        assert log_file is None
+        # Modify working directory does not modify logging
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD)
+        logger = get_pytwin_logger()
+        msg = 'Hello from console 2'
+        logger.info(msg)
+        log_file = get_pytwin_log_file()
+        assert len(logger.handlers) == 1
+        assert log_file is None
+
+    def test_clean_unit_test(self):
+        reinit_settings()

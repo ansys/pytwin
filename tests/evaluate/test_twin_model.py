@@ -1,17 +1,33 @@
 import os
-
 import pytest
 import pandas as pd
-
 from pytwin.evaluate import TwinModel
 from pytwin.evaluate import TwinModelError
+from pytwin.settings import reinit_settings_for_unit_tests
+from pytwin.settings import get_pytwin_working_dir
+from pytwin.settings import get_pytwin_logger
+from pytwin.settings import get_pytwin_log_file
+from pytwin.settings import modify_pytwin_working_dir
 from tests.utilities import compare_dictionary
+
+COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'CoupleClutches_22R2_other.twin')
+
+UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
+
+
+def reinit_settings():
+    from pytwin.settings import reinit_settings_for_unit_tests
+    import shutil
+    reinit_settings_for_unit_tests()
+    if os.path.exists(UNIT_TEST_WD):
+        shutil.rmtree(UNIT_TEST_WD)
+    return UNIT_TEST_WD
 
 
 class TestTwinModel:
 
     def test_instantiation_with_valid_model_filepath(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         TwinModel(model_filepath=model_filepath)
 
     def test_instantiation_with_invalid_model_filepath(self):
@@ -23,7 +39,7 @@ class TestTwinModel:
         assert 'Please provide existing filepath' in str(e)
 
     def test_parameters_property(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Test parameters have starting values JUST AFTER INSTANTIATION
         parameters_ref = {'CoupledClutches1_Inert1_J': 1.0,
@@ -56,7 +72,7 @@ class TestTwinModel:
         assert compare_dictionary(twin.parameters, parameters_ref)
 
     def test_inputs_property_with_step_by_step_eval(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Test inputs have starting values JUST AFTER INSTANTIATION
         inputs_ref = {'Clutch1_in': 0.0,
@@ -108,7 +124,7 @@ class TestTwinModel:
         assert compare_dictionary(twin.inputs, inputs_ref)
 
     def test_inputs_and_parameters_initialization(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # TEST DEFAULT VALUES BEFORE FIRST INITIALIZATION
         inputs_default = {'Clutch1_in': 0.0,
@@ -170,7 +186,7 @@ class TestTwinModel:
         assert compare_dictionary(twin.parameters, parameters_default)
 
     def test_inputs_property_with_batch_eval(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Test inputs after BATCH EVALUATION
         twin.initialize_evaluation()
@@ -182,7 +198,7 @@ class TestTwinModel:
         assert compare_dictionary(twin.inputs, inputs_ref)
 
     def test_outputs_property_with_step_by_step_eval(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Test outputs have None values JUST AFTER INSTANTIATION
         outputs_ref = {'Clutch1_torque': None, 'Clutch2_torque': None, 'Clutch3_torque': None}
@@ -203,7 +219,7 @@ class TestTwinModel:
         assert compare_dictionary(twin.outputs, outputs_ref)
 
     def test_outputs_property_with_batch_eval(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Test outputs after BATCH EVALUATION
         twin.initialize_evaluation()
@@ -216,7 +232,7 @@ class TestTwinModel:
         assert compare_dictionary(twin.outputs, outputs_ref)
 
     def test_raised_errors_with_step_by_step_evaluation(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Raise an error if TWIN MODEL HAS NOT BEEN INITIALIZED
         with pytest.raises(TwinModelError) as e:
@@ -233,7 +249,7 @@ class TestTwinModel:
         assert 'Step size must be strictly bigger than zero' in str(e)
 
     def test_raised_errors_with_batch_evaluation(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Raise an error if TWIN MODEL HAS NOT BEEN INITIALIZED
         with pytest.raises(TwinModelError) as e:
@@ -261,7 +277,7 @@ class TestTwinModel:
                                   'Clutch2_in': [0., 1., 2., 3.]})
         sbs_outputs = {'Time': [], 'Clutch1_torque': [], 'Clutch2_torque': [], 'Clutch3_torque': []}
         # Evaluate twin model with STEP BY STEP EVALUATION
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # t=0. (s)
         t_idx = 0
@@ -288,10 +304,10 @@ class TestTwinModel:
         assert pd.DataFrame.equals(sbs_outputs_df, outputs_df)
 
     def test_evaluation_initialization_with_config_file(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Evaluation initialization with VALID CONFIG FILE
-        config_filepath = os.path.join('data', 'eval_init_config.json')
+        config_filepath = os.path.join(os.path.dirname(__file__), 'data', 'eval_init_config.json')
         twin.initialize_evaluation(json_config_filepath=config_filepath)
         inputs_ref = {'Clutch1_in': 1.0,
                       'Clutch2_in': 1.0,
@@ -304,7 +320,7 @@ class TestTwinModel:
                           'CoupledClutches1_Inert4_J': 2.0}
         assert compare_dictionary(twin.parameters, parameters_ref)
         # Evaluation initialization IGNORE INVALID PARAMETER AND INPUT ENTRIES
-        config_filepath = os.path.join('data', 'eval_init_config_invalid_keys.json')
+        config_filepath = os.path.join(os.path.dirname(__file__), 'data', 'eval_init_config_invalid_keys.json')
         twin.initialize_evaluation(json_config_filepath=config_filepath)
         inputs_ref = {'Clutch1_in': 1.0,
                       'Clutch2_in': 1.0,
@@ -317,7 +333,7 @@ class TestTwinModel:
                           'CoupledClutches1_Inert4_J': 1.0}
         assert compare_dictionary(twin.parameters, parameters_ref)
         # Evaluation initialization WITH ONLY PARAMETERS ENTRIES
-        config_filepath = os.path.join('data', 'eval_init_config_only_parameters.json')
+        config_filepath = os.path.join(os.path.dirname(__file__), 'data', 'eval_init_config_only_parameters.json')
         twin.initialize_evaluation(json_config_filepath=config_filepath)
         inputs_ref = {'Clutch1_in': 0.0,
                       'Clutch2_in': 0.0,
@@ -330,7 +346,7 @@ class TestTwinModel:
                           'CoupledClutches1_Inert4_J': 2.0}
         assert compare_dictionary(twin.parameters, parameters_ref)
         # Evaluation initialization WITH ONLY INPUT ENTRIES
-        config_filepath = os.path.join('data', 'eval_init_config_only_inputs.json')
+        config_filepath = os.path.join(os.path.dirname(__file__), 'data', 'eval_init_config_only_inputs.json')
         twin.initialize_evaluation(json_config_filepath=config_filepath)
         inputs_ref = {'Clutch1_in': 1.0,
                       'Clutch2_in': 1.0,
@@ -348,7 +364,94 @@ class TestTwinModel:
         assert 'Please provide an existing filepath to initialize the twin model evaluation' in str(e)
 
     def test_close_method(self):
-        model_filepath = os.path.join('data', 'CoupleClutches_22R2_other.twin')
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         twin = TwinModel(model_filepath=model_filepath)
         twin = TwinModel(model_filepath=model_filepath)
+
+    def test_each_twin_model_has_a_subfolder_in_wd(self):
+        # Init unit test
+        reinit_settings_for_unit_tests()
+        logger = get_pytwin_logger()
+        # Verify a subfolder is created each time a new twin model is instantiated
+        m_count = 10
+        for m in range(m_count):
+            model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        wd = get_pytwin_working_dir()
+        temp = os.listdir(wd)
+        assert len(os.listdir(wd)) == m_count + 2
+
+    def test_model_dir_migration_after_modifying_wd_dir(self):
+        # Init unit test
+        wd = reinit_settings()
+        assert not os.path.exists(wd)
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        assert os.path.split(model.model_dir)[0] == get_pytwin_working_dir()
+        # Run test
+        modify_pytwin_working_dir(new_path=wd)
+        assert os.path.split(model.model_dir)[0] == wd
+        assert len(os.listdir(wd)) == 1 + 1  # model + pytwin log
+        model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        assert os.path.split(model2.model_dir)[0] == wd
+        assert len(os.listdir(wd)) == 2 + 1 + 1  # 2 models + pytwin log + .temp
+
+    def test_model_warns_at_initialization(self):
+        # Init unit test
+        wd = reinit_settings()
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        # Warns if given parameters have wrong names
+        wrong_params = {}
+        for p in model.parameters:
+            wrong_params[f'{p}%'] = 0.
+        model.initialize_evaluation(parameters=wrong_params)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model parameters!'
+        assert ''.join(lines).count(msg) == 4
+        # Warns if given inputs have wrong names
+        wrong_inputs = {}
+        for i in model.inputs:
+            wrong_inputs[f'{i}%'] = 0.
+        model.initialize_evaluation(inputs=wrong_inputs)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model inputs!'
+        assert ''.join(lines).count(msg) == 4
+
+    def test_model_warns_at_evaluation_step_by_step(self):
+        # Init unit test
+        wd = reinit_settings()
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        model.initialize_evaluation()
+        # Warns if given inputs have wrong names
+        wrong_inputs = {}
+        for i in model.inputs:
+            wrong_inputs[f'{i}%'] = 0.
+        model.evaluate_step_by_step(step_size=0.1, inputs=wrong_inputs)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model inputs!'
+        assert ''.join(lines).count(msg) == 4
+
+    def test_model_warns_at_evaluation_batch(self):
+        # Init unit test
+        wd = reinit_settings()
+        model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        model.initialize_evaluation()
+        # Warns if given inputs have wrong names
+        wrong_inputs_df = pd.DataFrame({'Time': [0., 0.1],
+                                        'Clutch1_in%': [0., 1.],
+                                        'Clutch2_in%': [0., 1.]})
+        model.evaluate_batch(inputs_df=wrong_inputs_df)
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+        msg = 'has not been found in model inputs!'
+        assert ''.join(lines).count(msg) == 2
+
+    def test_clean_unit_test(self):
+        reinit_settings()
+
+
