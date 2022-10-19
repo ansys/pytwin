@@ -8,20 +8,25 @@ Python code to integrate and deploy Ansys Digital Twins Runtimes, as explained i
 
 Global logging
 --------------
-You can control the global logging level at any time with:
+By default, the logging is enabled with PyTwin at a level of ``INFO``, and log files will be generated in the ``%temp%/pytwin`` folder.
+You can change these global settings at anytime using the following functions:
 
 .. code-block:: python
 
-    >>> # Append pytwin package logging to an existing application log file:
-    >>> from pytwin import set_pytwin_logging
-    >>> from pytwin import PYTWIN_LOG_WARNING
-    >>> set_pytwin_logging(log_filepath='filepath_to_my_app.log', mode='a', level=PYTWIN_LOG_WARNING)
+    >>> # Modify working directory:
+    >>> from pytwin import modify_pytwin_working_dir
+    >>> modify_pytwin_working_dir('path_to_new_working_dir', erase=False)
+
+    >>> # Redirect logging to a file in the working directory:
+    >>> from pytwin import modify_pytwin_logging, get_pytwin_log_file
+    >>> from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_DEBUG
+    >>> modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_DEBUG)
+    >>> print(get_pytwin_log_file())
 
     >>> # Redirect pytwin package logging to the console:
-    >>> from pytwin import set_pytwin_logging
-    >>> set_pytwin_logging()
+    >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_CONSOLE
+    >>> modify_pytwin_logging(PYTWIN_LOGGING_OPT_CONSOLE)
 
     >>> # Disable pytwin package logging:
-    >>> from pytwin import set_pytwin_logging
-    >>> from pytwin import PYTWIN_NO_LOG
-    >>> set_pytwin_logging(level=PYTWIN_NO_LOG)
+    >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_NOLOGGING
+    >>> modify_pytwin_logging(PYTWIN_LOGGING_OPT_NOLOGGING)

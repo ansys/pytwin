@@ -99,8 +99,6 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame,
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Defining the runtime log path as well as loading the input data
 
-
-#runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system())) # TODO remove/refactor based on new logging file
 twin_model_input_df = examples.load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1

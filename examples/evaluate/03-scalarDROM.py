@@ -7,7 +7,9 @@ The model is a scalar dynamic ROM created out of a 3D thermal model of a
 Heat Exchanger, having a heat flow as input and three temperature probes
 as outputs. The example shows a workflow for what-if analysis by deploying 
 a second twin in parallel while simulating the original twin and comparing
-the different predictions.
+the different predictions. It also illustrates the usage of modify_pytwin_working_dir
+to change the default working directory location (%temp%) to a user specified location
+where the different logging files will be available.
 """
 
 ###############################################################################
@@ -27,6 +29,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from pytwin import modify_pytwin_working_dir
 from pytwin.evaluate import TwinModel
 from pytwin import examples
 
@@ -82,10 +85,10 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataF
 ###############################################################################
 # Defining external files path
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining the runtime log path as well as loading the input data
+# Changing the working directory (by default in %temp%) to user defined as well as loading the input data
 
+modify_pytwin_working_dir(os.path.join(os.path.dirname(twin_file), 'pyTwinWorkingDir'))
 
-#runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
 twin_model_input_df = examples.load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1

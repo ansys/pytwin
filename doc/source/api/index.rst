@@ -33,3 +33,4 @@ to facilitate the manipulation and execution of Twin Runtimes.
 
    sdk/index
    evaluate/index
+   logging/index

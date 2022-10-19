@@ -90,14 +90,6 @@ def plot_result_comparison(results: pd.DataFrame):
 
 
 ###############################################################################
-# Defining external files path
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining the runtime log path as well as loading the input data
-
-
-#runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
-
-###############################################################################
 # Loading the Twin Runtime and instantiating it
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the Twin Runtime and instantiating it.
