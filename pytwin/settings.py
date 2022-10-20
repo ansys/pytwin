@@ -6,6 +6,10 @@ from enum import Enum
 
 
 class PyTwinLogLevel(Enum):
+    """
+    Enum to choose logging level to be used by all pytwin objects.
+    It follows standard python logging levels.
+    """
     PYTWIN_LOG_DEBUG = logging.DEBUG
     PYTWIN_LOG_INFO = logging.INFO
     PYTWIN_LOG_WARNING = logging.WARNING
@@ -14,6 +18,17 @@ class PyTwinLogLevel(Enum):
 
 
 class PyTwinLogOption(Enum):
+    """
+    Enum to choose logging options to be used by all pytwin objects.
+
+    PYTWIN_LOGGING_OPT_FILE:
+        Redirect logging to the pytwin log file stored in the pytwin working directory.
+    PYTWIN_LOGGING_OPT_CONSOLE:
+        Redirect logging to console.
+    PYTWIN_LOGGING_OPT_NOLOGGING:
+        Disable pytwin logging.
+
+    """
     PYTWIN_LOGGING_OPT_FILE = 0  # Redirect logging to pytwin log file
     PYTWIN_LOGGING_OPT_CONSOLE = 1  # Redirect logging to console
     PYTWIN_LOGGING_OPT_NOLOGGING = 2  # No logging

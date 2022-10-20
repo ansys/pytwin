@@ -39,3 +39,9 @@ PUBLIC API TO PYTWIN EVALUATE
 """
 from .evaluate import TwinModel
 from .evaluate import TwinModelError
+
+"""
+PUBLIC API TO PYTWIN RUNTIME 
+"""
+from .twin_runtime import TwinRuntime
+from .twin_runtime import TwinRuntimeError
