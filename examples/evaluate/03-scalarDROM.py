@@ -1,35 +1,51 @@
-"""pyTwin: scalar dynamic ROM Twin evaluation example --------------------------------------- This example shows how
-you can use pyTwin to load and evaluate a Twin model. The model is a scalar dynamic ROM created out of a 3D thermal
-model of a Heat Exchanger, having a heat flow as input and three temperature probes as outputs. The example shows a
-workflow for what-if analysis by deploying a second twin in parallel while simulating the original twin """
+""".. _ref_example_scalarDROM:
+
+Scalar dynamic ROM Twin evaluation example
+------------------------------------------
+This example shows how you can use PyTwin to load and evaluate a Twin model.
+The model is a scalar dynamic ROM created out of a 3D thermal model of a
+Heat Exchanger, having a heat flow as input and three temperature probes
+as outputs. The example shows a workflow for what-if analysis by deploying 
+a second twin in parallel while simulating the original twin and comparing
+the different predictions. It also illustrates the usage of modify_pytwin_working_dir
+to change the default working directory location (%temp%) to a user specified location
+where the different logging files will be available.
+"""
+
+###############################################################################
+# .. image:: /_static/heatExchangerRS.png
+#   :width: 400pt
+#   :align: center
+
+# sphinx_gallery_thumbnail_path = '_static/scalarDROM.png'
 
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
-import platform
+
 import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from pytwin.evaluate import TwinModel
+from pytwin import modify_pytwin_working_dir
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
 csv_input = examples.download_file("HX_scalarDRB_input.csv", "twin_input_files")
-cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 
 ###############################################################################
 # Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Post processing for results comparison.
 
 def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataFrame):
     """Compare the results obtained from 2 different simulations executed on the same TwinModel.
     The 2 results dataset are provided as Pandas Dataframe. The function will plot the different results for all the
-    outputs and save the plot as a file "results.png" """
+    outputs """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)
@@ -63,24 +79,23 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataF
             axes0.set_title('')
 
     # Show plot
-    plt.savefig(os.path.join(cur_dir, 'results.png'))
     plt.show()
 
 
 ###############################################################################
 # Defining external files path
-# ~~~~~~~~~~~~~~~~~~~
-# Defining the runtime log path as well as loading the input data
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Changing the working directory (by default in %temp%) to user defined location, and loading the input data
 
+modify_pytwin_working_dir(os.path.join(os.path.dirname(twin_file), 'pyTwinWorkingDir'))
 
-runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
 twin_model_input_df = examples.load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 
 ###############################################################################
 # Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the Twin Runtime and instantiating it.
 
 
@@ -90,7 +105,7 @@ twin_model_what_if = None  # the second twin used for what-if analysis
 
 ###############################################################################
 # Setting up the initial settings of the Twin and initializing it
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Defining the initial inputs of the Twin, initializing it and collecting the initial outputs values
 
 
@@ -101,7 +116,7 @@ for item in twin_model.outputs:
 
 ###############################################################################
 # Step by step simulation mode
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Looping over all the input data, simulating the Twin one time step at a time and collecting corresponding outputs
 
 
@@ -111,12 +126,12 @@ data_index = 0
 while data_index < number_of_datapoints:
     if data_index == int(number_of_datapoints / 2) and twin_model_what_if is None:
         filename = f'checkpoint.bin'
-        CUR_DIR = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-        twin_state_file = os.path.join(CUR_DIR, filename)
-        twin_model._twin_runtime.twin_save_state(twin_state_file)
+        #CUR_DIR = os.path.abspath(os.path.dirname(os.path.realpath(__file__))) #TODO treat cur_dir issue for doc
+        #twin_state_file = os.path.join(CUR_DIR, filename)
+        #twin_model._twin_runtime.twin_save_state(twin_state_file)
         twin_model_what_if = TwinModel(twin_file)
         twin_model_what_if.initialize_evaluation()
-        twin_model_what_if._twin_runtime.twin_load_state(twin_state_file)
+        #twin_model_what_if._twin_runtime.twin_load_state(twin_state_file)
         twin_model_what_if._evaluation_time = twin_model.evaluation_time
         sim_what_if_output_list_step.append(outputs)
 

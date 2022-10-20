@@ -1,27 +1,36 @@
-"""pyTwin: parametric Twin evaluation example --------------------------------------- This example shows how you can
-use pyTwin to load and evaluate a Twin model and simulate multiple parametric variations. The model is based on a
-Response Surface ROM created out of a steady state thermal model of a heat exchanger. The model takes as input the
-heat flow supplied on the inner face and outputs several temperature probes (inner temperature, 3 temperature probes
-within the solid and outer temperature). The model will be tested against different input values to evaluate the
-corresponding temperature responses """
+""".. _ref_example_heatExchangerRS:
+
+Parametric response surface ROM Twin evaluation example
+-------------------------------------------------------
+This example shows how you can use PyTwin to load and evaluate a Twin model
+and simulate multiple parametric variations. The model is based on a
+Response Surface ROM created out of a steady state thermal model of a heat
+exchanger. The model takes as input the heat flow supplied on the inner face
+and outputs several temperature probes (inner temperature, 3 temperature probes
+within the solid and outer temperature). The model will be tested against
+different input values to evaluate the corresponding temperature responses
+"""
+
+###############################################################################
+# .. image:: /_static/heatExchangerRS.png
+#   :width: 400pt
+#   :align: center
+
+# sphinx_gallery_thumbnail_path = '_static/heatExchangerRS.png'
 
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
 
-import platform
-import os
-
 import matplotlib.pyplot as plt
 import numpy
 import pandas as pd
 
-from pytwin.evaluate import TwinModel
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
-cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 ###############################################################################
 # User inputs
@@ -34,14 +43,14 @@ step = 50.0
 
 ###############################################################################
 # Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Definition of plot_result_comparison for post-processing the results
 
 
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on the TwinModel. The
     results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest and save the plot as a file "results.png" """
+    variables of interest """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)
@@ -74,21 +83,12 @@ def plot_result_comparison(results: pd.DataFrame):
     axes0.set_ylabel('Temperature [deg C]')
 
     # Show plot
-    plt.savefig(os.path.join(cur_dir, 'results.png'))
     plt.show()
 
 
 ###############################################################################
-# Defining external files path
-# ~~~~~~~~~~~~~~~~~~~
-# Defining the runtime log path as well as loading the input data
-
-
-runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
-
-###############################################################################
 # Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the Twin Runtime and instantiating it.
 
 
@@ -97,7 +97,7 @@ twin_model = TwinModel(twin_file)
 
 ###############################################################################
 # Evaluating the Twin with different input values and collecting the corresponding outputs
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Since the Twin is based on a static model, 2 different options can be considered :
 # - setting the initial input value to evaluate and run the initialization function (current approach)
 # - create an input dataframe considering all the input values to evaluate and run the evaluate batch function

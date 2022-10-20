@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 # Check https://python-poetry.org/docs/pyproject/ for all available sections
 name = "pytwin"
 version = "0.1.dev0"
-description = "A python wrapper for Ansys digital twin components"
+description = "A python wrapper for Ansys Digital Twin components"
 license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
 maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]

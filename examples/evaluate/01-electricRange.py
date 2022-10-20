@@ -1,26 +1,37 @@
-"""pyTwin: parametric Twin evaluation example --------------------------------------- This example shows how you can
-use pyTwin to load and evaluate a Twin model and simulate multiple parametric variations. The model is used for
-determining the range of an electric vehicle. The vehicle is represented by a battery, the electric loads of the
-vehicle, and an electric machine connected to a simple 1D chassis. The driver controls the vehicle speed to follow a
-repeated sequence of the WLTP cycle (class 3). The mass of the vehicle as well as the electric power loads are
-parameterized so that we can see their effects on the overall electric range """
+""".. _ref_example_electricRange:
+
+Parametric dynamic Twin evaluation example
+------------------------------------------
+This example shows how you can
+use PyTwin to load and evaluate a Twin model and simulate multiple
+parametric variations. The model is used for determining the range of an
+electric vehicle. The vehicle is represented by a battery, the electric
+loads of the vehicle, and an electric machine connected to a simple 1D
+chassis. The driver controls the vehicle speed to follow a repeated
+sequence of the WLTP cycle (class 3). The mass of the vehicle as well
+as the electric power loads are parameterized so that we can see their
+effects on the overall electric range
+"""
+
+###############################################################################
+# .. image:: /_static/electricRange.png
+#   :width: 400pt
+#   :align: center
+
+# sphinx_gallery_thumbnail_path = '_static/electricRange.png'
 
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
 
-import platform
-import os
-
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from pytwin.evaluate import TwinModel
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("ElectricRangeCS_23R1_other.twin", "twin_files")
-cur_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 ###############################################################################
 # User inputs
@@ -36,14 +47,14 @@ sweep = [dp1, dp2, dp3]
 
 ###############################################################################
 # Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Definition of plot_result_comparison for post-processing the results
 
 
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed on the same TwinModel. The
     results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest and save the plot as a file "results.png" """
+    variables of interest """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)
@@ -87,21 +98,12 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     axes1.set_ylabel(results[0].columns[y1_ind]+' [m]')
 
     # Show plot
-    plt.savefig(os.path.join(cur_dir, 'results.png'))
     plt.show()
 
 
 ###############################################################################
-# Defining external files path
-# ~~~~~~~~~~~~~~~~~~~
-# Defining the runtime log path as well as loading the input data
-
-
-runtime_log = os.path.join(cur_dir, 'model_{}.log'.format(platform.system()))
-
-###############################################################################
 # Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the Twin Runtime and instantiating it.
 
 
@@ -110,7 +112,7 @@ twin_model = TwinModel(twin_file)
 
 ###############################################################################
 # Parametric sweep over the different design points
-# ~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Simulating the Twin for each set of parameters values, one time step at a time and collecting corresponding outputs
 
 results = []
