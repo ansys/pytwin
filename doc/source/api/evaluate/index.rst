@@ -18,7 +18,7 @@ Workflow Example
 
 .. code-block:: python
 
-   >>> from pytwin.evaluate import TwinModel
+   >>> from pytwin import TwinModel
    >>> from pytwin import examples
 
    # downloading the input files

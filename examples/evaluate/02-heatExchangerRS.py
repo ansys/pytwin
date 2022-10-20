@@ -23,14 +23,11 @@ different input values to evaluate the corresponding temperature responses
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
 
-import platform
-import os
-
 import matplotlib.pyplot as plt
 import numpy
 import pandas as pd
 
-from pytwin.evaluate import TwinModel
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
@@ -53,7 +50,7 @@ step = 50.0
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on the TwinModel. The
     results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest and save the plot as a file "results.png" """
+    variables of interest """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)

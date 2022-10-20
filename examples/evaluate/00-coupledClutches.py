@@ -19,13 +19,11 @@ The model consists in a coupled clutches with 4 inputs (applied torque,
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the
 # input files
-import platform
-import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from pytwin.evaluate import TwinModel
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("CoupledClutches_23R1_other.twin",
@@ -47,7 +45,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame,
     """Compare the results obtained from 2 different simulations executed
     on the same TwinModel. The 2 results dataset are provided as Pandas
     Dataframe. The function will plot the different results for all the
-    outputs and save the plot as a file "results.png" """
+    outputs """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)

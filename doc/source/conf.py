@@ -9,8 +9,6 @@ import sys
 from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
-basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, basedir)
 import pytwin
 from pytwin import __version__
 
@@ -18,9 +16,6 @@ from pytwin import __version__
 project = "pytwin"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
-release = version = __version__
-
-# The short X.Y version
 release = version = __version__
 
 # -- General configuration ---------------------------------------------------
@@ -71,7 +66,6 @@ numpydoc_validation_checks = {
     "RT02",  # The first line of the Returns section should contain only the
     # type, unless multiple values are being returned"
 }
-numpydoc_validation_exclude = {"ansys.fluent.core.solver.settings_231."}
 
 # Favicon
 html_favicon = ansys_favicon
