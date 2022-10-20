@@ -25,13 +25,10 @@ effects on the overall electric range
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
 
-import platform
-import os
-
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from pytwin.evaluate import TwinModel
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("ElectricRangeCS_23R1_other.twin", "twin_files")
@@ -57,7 +54,7 @@ sweep = [dp1, dp2, dp3]
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed on the same TwinModel. The
     results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest and save the plot as a file "results.png" """
+    variables of interest """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)

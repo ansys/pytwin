@@ -51,7 +51,7 @@ allow you to:
 
 Documentation and issues
 ------------------------
-In addition to installation and usage information, the PyFluent
+In addition to installation and usage information, the PyTwin
 documentation provides :ref:`ref_index_api`, :ref:`ref_example_gallery`,
 and :ref:`ref_contributing` sections.
 

@@ -23,14 +23,14 @@ where the different logging files will be available.
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the input files
-import platform
+
 import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
 from pytwin import modify_pytwin_working_dir
-from pytwin.evaluate import TwinModel
+from pytwin import TwinModel
 from pytwin import examples
 
 twin_file = examples.download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
@@ -45,7 +45,7 @@ csv_input = examples.download_file("HX_scalarDRB_input.csv", "twin_input_files")
 def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataFrame):
     """Compare the results obtained from 2 different simulations executed on the same TwinModel.
     The 2 results dataset are provided as Pandas Dataframe. The function will plot the different results for all the
-    outputs and save the plot as a file "results.png" """
+    outputs """
     pd.set_option('display.precision', 12)
     pd.set_option('display.max_columns', 20)
     pd.set_option('display.expand_frame_repr', False)
@@ -85,7 +85,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataF
 ###############################################################################
 # Defining external files path
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Changing the working directory (by default in %temp%) to user defined as well as loading the input data
+# Changing the working directory (by default in %temp%) to user defined location, and loading the input data
 
 modify_pytwin_working_dir(os.path.join(os.path.dirname(twin_file), 'pyTwinWorkingDir'))
 
