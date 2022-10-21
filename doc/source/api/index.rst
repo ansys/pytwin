@@ -21,6 +21,12 @@ Evaluate
 :ref:`ref_index_api_evaluate` class is an example of higher level abstraction implementation
 to facilitate the manipulation and execution of Twin Runtimes.
 
+Global Settings
+---------------
+
+:ref:`ref_index_api_logging` describe the global settings available from PyTwin package and how to
+change them from their default values
+
 
 .. currentmodule:: pytwin
 
