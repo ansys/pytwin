@@ -55,19 +55,17 @@ rom_parameters = {"ThermalROM23R1_1_store_snapshots": 1}
 def snapshot_to_fea(snapshot_file, geometry_file):
     """Create a Pandas Dataframe containing the ROM geometry x, y , z coordinates as well as the snapshot file result
     """
-    geo = open(geometry_file, "rb")
-    snp = open(snapshot_file, "rb")
-    nb = struct.unpack('Q', snp.read(8))[0]
-    res_list = []
-    for i in range(nb):
-        res_line = []
-        res_line.append(struct.unpack('d', geo.read(8))[0])
-        res_line.append(struct.unpack('d', geo.read(8))[0])
-        res_line.append(struct.unpack('d', geo.read(8))[0])
-        res_line.append(struct.unpack('d', snp.read(8))[0])
-        res_list.append(res_line)
-    geo.close()
-    snp.close()
+    with open(geometry_file, 'rb') as geo, open(snapshot_file, "rb") as snp:
+        nb = struct.unpack('Q', snp.read(8))[0]
+        res_list = []
+        for i in range(nb):
+            res_line = []
+            res_line.append(struct.unpack('d', geo.read(8))[0])
+            res_line.append(struct.unpack('d', geo.read(8))[0])
+            res_line.append(struct.unpack('d', geo.read(8))[0])
+            res_line.append(struct.unpack('d', snp.read(8))[0])
+            res_list.append(res_line)
+
     return pd.DataFrame(res_list)
 
 ###############################################################################
@@ -92,7 +90,7 @@ twin_model = TwinModel(twin_file)
 # TODO - following are SDK atomic calls, need to use TBROM class ultimately
 twin_model._twin_runtime.twin_instantiate()
 
-directory_path = os.path.join(get_pytwin_working_dir(), 'ROM_files')
+directory_path = os.path.join(twin_model.model_dir, 'ROM_files')
 visualization_info = twin_model._twin_runtime.twin_get_visualization_resources()
 rom_name = ""
 for model_name, data in visualization_info.items():
@@ -116,9 +114,7 @@ nd_temp_data = temperature_data[:, :].astype(float)  # Change data type to Float
 # Map temperature data to FE mesh
 # Convert imported data into PolyData format
 wrapped = pv.PolyData(nd_temp_data[:, :3])  # Convert NumPy array to PolyData format
-wrapped["temperature"] = nd_temp_data[
-    :, 3
-]  # Add a scalar variable 'temperature' to PolyData
+wrapped["temperature"] = nd_temp_data[:, 3] # Add a scalar variable 'temperature' to PolyData
 
 # Perform data mapping
 inter_grid = grid.interpolate(

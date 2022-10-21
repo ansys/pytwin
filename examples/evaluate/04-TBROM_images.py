@@ -3,7 +3,7 @@
 TBROM example for images generation
 -----------------------------------
 
-This example shows how PyTwin can be used to load and evaluate a Twin model in order to ROM visualization results in
+This example shows how PyTwin can be used to load and evaluate a Twin model in order to visualize ROM results in
 the form of images with predefined views. The script takes user inputs to evaluate the ROM and will display the
 corresponding images.
 """
@@ -42,7 +42,7 @@ twin_model = TwinModel(twin_file)
 # TODO - following are SDK atomic calls, need to use TBROM class ultimately
 twin_model._twin_runtime.twin_instantiate()
 
-directory_path = os.path.join(get_pytwin_working_dir(), 'ROM_files')
+directory_path = os.path.join(twin_model.model_dir, 'ROM_files')
 visualization_info = twin_model._twin_runtime.twin_get_visualization_resources()
 rom_name = ""
 for model_name, data in visualization_info.items():
