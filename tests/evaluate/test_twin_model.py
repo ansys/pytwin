@@ -10,7 +10,7 @@ from pytwin.settings import get_pytwin_log_file
 from pytwin.settings import modify_pytwin_working_dir
 from tests.utilities import compare_dictionary
 
-COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'CoupleClutches_22R2_other.twin')
+COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'CoupledClutches_23R1_other.twin')
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
 
@@ -451,7 +451,123 @@ class TestTwinModel:
         msg = 'has not been found in model inputs!'
         assert ''.join(lines).count(msg) == 2
 
+    def test_save_state_workflow_a(self):
+        from pytwin.twin_runtime import TwinRuntime
+
+        backup = os.path.join(os.path.dirname(__file__), 'data', 'test_state.bin')
+        if os.path.exists(backup):
+            os.remove(backup)
+
+        # Save state after initialization
+        rt1 = TwinRuntime(COUPLE_CLUTCHES_FILEPATH)
+        rt1.twin_instantiate()
+        rt1.twin_set_input_by_name(input_name='Clutch1_in', value=1.)
+        rt1.twin_initialize()
+        rt1_out = rt1.twin_get_output_by_name(output_name='Clutch1_torque')
+        rt1.twin_save_state(backup)
+
+        rt2 = TwinRuntime(COUPLE_CLUTCHES_FILEPATH)
+        rt2.twin_instantiate()
+        rt2.twin_initialize()
+        rt2_out_after_init = rt2.twin_get_output_by_name(output_name='Clutch1_torque')
+        rt2.twin_load_state(load_from=backup)
+        rt2_out_after_load = rt2.twin_get_output_by_name(output_name='Clutch1_torque')
+
+        assert rt2_out_after_init != rt1_out
+        assert rt2_out_after_load == rt1_out
+
+    def test_save_state_workflow_b(self):
+        from pytwin.twin_runtime import TwinRuntime
+
+        backup = os.path.join(os.path.dirname(__file__), 'data', 'test_state_b.bin')
+        if os.path.exists(backup):
+            os.remove(backup)
+
+        # Save state after simulate
+        dynaROM_filepath = os.path.join(os.path.dirname(__file__), 'data', 'HX_scalarDRB_23R1_other.twin')
+        rt1 = TwinRuntime(dynaROM_filepath)
+        rt1.twin_instantiate()
+        rt1.twin_initialize()
+        rt1.twin_set_input_by_name(input_name='Clutch1_in', value=1.)
+        rt1.twin_simulate(0.01)
+        rt1_out = rt1.twin_get_output_by_name(output_name='Clutch1_torque')
+        rt1.twin_save_state(backup)
+
+        rt2 = TwinRuntime(COUPLE_CLUTCHES_FILEPATH)
+        rt2.twin_instantiate()
+        rt2.twin_initialize()
+        rt2_out_after_init = rt2.twin_get_output_by_name(output_name='Clutch1_torque')
+        rt2.twin_load_state(load_from=backup)
+        rt2_out_after_load = rt2.twin_get_output_by_name(output_name='Clutch1_torque')
+
+        assert rt2_out_after_init != rt1_out
+        assert rt2_out_after_load == rt1_out
+
+    def test_save_state_workflow_c(self):
+        from pytwin.twin_runtime import TwinRuntime
+
+        backup = os.path.join(os.path.dirname(__file__), 'data', 'test_state_b.bin')
+        if os.path.exists(backup):
+            os.remove(backup)
+
+        # Save state after simulate
+        rt1 = TwinRuntime(COUPLE_CLUTCHES_FILEPATH)
+        rt1.twin_instantiate()
+        rt1.twin_initialize()
+        val = 1.
+        t = 0.
+        for i in range(10):
+            rt1.twin_set_input_by_name(input_name='Clutch1_in', value=val)
+            rt1.twin_simulate(t+0.001)
+            rt1_out = rt1.twin_get_output_by_name(output_name='Clutch1_torque')
+            t += 0.001
+            val += 1.
+        rt1_out = rt1.twin_get_output_by_name(output_name='Clutch1_torque')
+        rt1.twin_save_state(backup)
+
+        rt2 = TwinRuntime(COUPLE_CLUTCHES_FILEPATH)
+        rt2.twin_instantiate()
+        rt2.twin_initialize()
+        rt2_out_after_init = rt2.twin_get_output_by_name(output_name='Clutch1_torque')
+        rt2.twin_set_input_by_name(input_name='Clutch1_in', value=val-1)
+        rt2.twin_load_state(load_from=backup)
+        rt2_out_after_load = rt2.twin_get_output_by_name(output_name='Clutch1_torque')
+
+        assert rt2_out_after_init != rt1_out
+        assert rt2_out_after_load == rt1_out
+
+    def test_save_state_workflow_d(self):
+        from pytwin.twin_runtime import TwinRuntime
+
+        backup = os.path.join(os.path.dirname(__file__), 'data', 'test_state_d.bin')
+        if os.path.exists(backup):
+            os.remove(backup)
+
+        # Save state after simulate
+        dynaROM_filepath = os.path.join(os.path.dirname(__file__), 'data', 'HX_scalarDRB_23R1_other.twin')
+        rt1 = TwinRuntime(dynaROM_filepath)
+        rt1.twin_instantiate()
+        rt1.twin_initialize()
+        rt1.twin_set_input_by_name(input_name='HeatFlow', value=0.5)
+        rt1.twin_simulate(0.1)
+        rt1.twin_set_input_by_name(input_name='HeatFlow', value=5)
+        rt1.twin_simulate(0.2)
+        rt1.twin_set_input_by_name(input_name='HeatFlow', value=50)
+        rt1.twin_simulate(0.3)
+        rt1.twin_save_state(backup)
+        rt1.twin_set_input_by_name(input_name='HeatFlow', value=500)
+        rt1.twin_simulate(0.4)
+        rt1_out_4 = rt1.twin_get_output_by_name(output_name='Temp1')
+
+        rt2 = TwinRuntime(dynaROM_filepath)
+        rt2.twin_instantiate()
+        rt2.twin_initialize()
+        rt2.twin_load_state(load_from=backup)
+        rt2.twin_set_input_by_name(input_name='HeatFlow', value=500)
+        rt2.twin_simulate(0.4)
+        rt2_out_4 = rt2.twin_get_output_by_name(output_name='Temp1')
+
+        assert rt1_out_4 == rt2_out_4
+
     def test_clean_unit_test(self):
         reinit_settings()
-
-
