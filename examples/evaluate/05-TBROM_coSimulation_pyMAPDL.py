@@ -30,7 +30,6 @@ import pyvista as pv
 from ansys.mapdl.core import launch_mapdl
 from pytwin import TwinModel
 from pytwin import examples
-from pytwin import get_pytwin_working_dir
 
 twin_file = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
 fea_file = examples.download_file("ThermalTBROM.dat", "other_files")
@@ -50,13 +49,14 @@ rom_parameters = {"ThermalROM23R1_1_store_snapshots": 1}
 ###############################################################################
 # Auxiliary functions definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Post processing for results comparison.
+# Conversion of ROM snapshot for data mapping on FEA mesh.
 
 def snapshot_to_fea(snapshot_file, geometry_file):
     """Create a Pandas Dataframe containing the ROM geometry x, y , z coordinates as well as the snapshot file result
     """
     with open(geometry_file, 'rb') as geo, open(snapshot_file, "rb") as snp:
         nb = struct.unpack('Q', snp.read(8))[0]
+        struct.unpack('Q', geo.read(8))[0]
         res_list = []
         for i in range(nb):
             res_line = []
