@@ -123,7 +123,8 @@ class SavedStateRegistry:
         wd = model.model_dir
         if not os.path.exists(wd):
             msg = f'Model directory ({wd}) does not exist!'
-            msg += f'\nPlease use existing model id (given {model_id}) and model name (given {model_name})'
+            msg += '\nPlease use an existing model id and/or model name'
+            msg += f' (given model_id:{model_id}, model_name:{model_name})'
             msg += ' to instantiate a SavedStateRegistry!'
             self._raise_error(msg)
 
@@ -161,14 +162,14 @@ class SavedStateRegistry:
             msg += f'\n{str(e)}'
             self._raise_error(msg)
 
-    def _search_saved_state(self, simulation_time: float, epsilon: float):
+    def _search_saved_state(self, evaluation_time: float, epsilon: float):
         time_instants = np.array([ss.time for ss in self._saved_states])
-        tl = simulation_time - epsilon
-        tr = simulation_time + epsilon
+        tl = evaluation_time - epsilon
+        tr = evaluation_time + epsilon
         idx = np.where((time_instants > tl) & (time_instants < tr))
 
         if len(idx[0]) == 0:
-            msg = f'No state at simulation time {simulation_time} was found!'
+            msg = f'No state at simulation time {evaluation_time} was found!'
             self._raise_error(msg)
 
         if len(idx[0]) > 1:

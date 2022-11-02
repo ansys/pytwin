@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 
 from pytwin.evaluate.model import Model
+from pytwin.evaluate.saved_state_registry import SavedStateRegistry
+from pytwin.evaluate.saved_state_registry import SavedState
 from pytwin.twin_runtime import TwinRuntime
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.settings import get_pytwin_log_level
@@ -57,6 +59,7 @@ class TwinModel(Model):
         self._model_filepath = None
         self._outputs = None
         self._parameters = None
+        self._ss_registry = None
         self._twin_runtime = None
 
         if self._check_model_filepath_is_valid(model_filepath):
@@ -242,6 +245,23 @@ class TwinModel(Model):
             msg = 'Something went wrong while reading config file!'
             msg += f'n{str(e)}'
             self._raise_error(msg)
+
+    def _save_state(self):
+        # Lazy init saved state registry for this TwinModel
+        if self._ss_registry is None:
+            self._ss_registry = SavedStateRegistry(model_id=self.id, model_name=self.name)
+
+        # Store saved state meta-data
+        ss = SavedState()
+        ss.time = self.evaluation_time
+        ss.parameters = self.parameters
+        ss.outputs = self.outputs
+        ss.inputs = self.inputs
+        ss_filepath = self._ss_registry.return_saved_state_filepath(ss)
+
+        # Create actual saved state and register it
+        self._twin_runtime.twin_save_state(save_to=ss_filepath)
+        self._ss_registry.append_saved_state(ss)
 
     def _update_inputs(self, inputs: dict):
         """Update input values with given dictionary."""
@@ -511,6 +531,25 @@ class TwinModel(Model):
             msg += f'\nPlease reinitialize the model evaluation and restart evaluation.'
             msg += f'\nYou will find more details in model log (see {self.model_log} file)'
             self._raise_error(msg)
+
+    def load_state(self, model_id: str, evaluation_time: float, epsilon: float = 1e-16):
+        """
+        TODO - Doc string
+        """
+        # Search for existing state in registry
+        ss_registry = SavedStateRegistry(model_id=model_id, model_name=self.name)
+        ss = ss_registry.extract_saved_state(evaluation_time, epsilon)
+
+        # Initialize model accordingly and load existing state
+        self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
+        ss_filepath = ss_registry.return_saved_state_filepath(ss)
+        self._twin_runtime.twin_load_state(ss_filepath)
+
+    def save_state(self):
+        """
+        TODO - Doc string
+        """
+        self._save_state()
 
 
 class TwinModelError(Exception):

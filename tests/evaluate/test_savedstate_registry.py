@@ -136,9 +136,8 @@ class TestSavedStateRegistry:
             log_lines = fp.readlines()
         assert 'Multiple saved states were found! Using first one' in ''.join(log_lines)
 
-    def test_clean_unit_test(self):
-        reinit_registry()
-
-
-
-
+    def test_raise_error(self):
+        # Raise error if model dir does not exist
+        with pytest.raises(SavedStateRegistryError) as e:
+            SavedStateRegistry(model_id='unknown', model_name='unknown')
+        assert 'Please use an existing model id and/or model name' in str(e.value)
