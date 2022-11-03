@@ -677,5 +677,49 @@ class TestTwinModel:
 
         print('hello')
 
+    def test_save_state_workflow_rc_heat_circuit(self):
+        from pytwin.twin_runtime import TwinRuntime
+
+        backup = os.path.join(os.path.dirname(__file__), 'data', 'test_state_d.bin')
+        if os.path.exists(backup):
+            os.remove(backup)
+
+        # Save state after simulate
+        filepath = os.path.join(os.path.dirname(__file__), 'data', 'RC_heat_circuit.twin')
+        rt1 = TwinRuntime(filepath)
+        rt1.twin_instantiate()
+        rt1.twin_initialize()
+        rt1.twin_set_input_by_name(input_name='heat_in', value=10)
+        rt1.twin_simulate(1)
+        rt1.twin_simulate(2)
+        rt1.twin_simulate(3)
+        rt1.twin_save_state(backup)
+        rt1.twin_set_input_by_name(input_name='heat_in', value=0)
+        rt1.twin_simulate(4)
+        rt1_out4 = rt1.twin_get_output_by_name(output_name='temp_out')
+        rt1.twin_simulate(5)
+        rt1_out5 = rt1.twin_get_output_by_name(output_name='temp_out')
+
+        rt2 = TwinRuntime(filepath)
+        rt2.twin_instantiate()
+        rt2.twin_set_input_by_name(input_name='heat_in', value=0)
+        rt2.twin_initialize()
+        rt2.twin_load_state(load_from=backup)
+        rt2.twin_simulate(4)
+        rt2_out4 = rt2.twin_get_output_by_name(output_name='temp_out')
+        rt2.twin_simulate(5)
+        rt2_out5 = rt2.twin_get_output_by_name(output_name='temp_out')
+
+        rt3 = TwinRuntime(filepath)
+        rt3.twin_instantiate()
+        rt3.twin_initialize()
+        rt3.twin_set_input_by_name(input_name='heat_in', value=0)
+        rt3.twin_simulate(4)
+        rt3_out4 = rt3.twin_get_output_by_name(output_name='temp_out')
+        rt3.twin_simulate(5)
+        rt3_out5 = rt3.twin_get_output_by_name(output_name='temp_out')
+
+        print('hello')
+
     def test_clean_unit_test(self):
         reinit_settings()
