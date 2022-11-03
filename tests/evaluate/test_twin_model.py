@@ -12,6 +12,7 @@ from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'CoupleClutches_22R2_other.twin')
 DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), 'data', 'HX_scalarDRB_23R1_other.twin')
+RC_HEAT_CIRCUIT_23R1 = os.path.join(os.path.dirname(__file__), 'data', 'RC_heat_circuit_23R1.twin')
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
 
@@ -481,7 +482,7 @@ class TestTwinModel:
         model2.load_state(model1.id, model1.evaluation_time)
         assert compare_dictionary(model1.outputs, model2.outputs)
 
-    def test_save_and_load_state_with_modelica(self):
+    def test_save_and_load_state_with_couple_clutches(self):
         # Init unit test
         wd = reinit_settings()
         # Save state test
@@ -529,6 +530,28 @@ class TestTwinModel:
         out1 = model1.outputs
         out2 = model2.outputs
         assert not compare_dictionary(out1, out2)  # TODO - Fix BU732106
+
+    def test_save_and_load_state_with_rc_hear_circuit(self):
+        # Init unit test
+        wd = reinit_settings()
+        # Save state test
+        model1 = TwinModel(model_filepath=RC_HEAT_CIRCUIT_23R1)
+        model1.initialize_evaluation(parameters={'SimModel2_C': 10.})
+        model1.evaluate_step_by_step(step_size=1, inputs={'heat_in': 100})
+        model1.evaluate_step_by_step(step_size=1)
+        model1.evaluate_step_by_step(step_size=1)
+        model1.save_state()
+        # Load state test
+        model2 = TwinModel(model_filepath=RC_HEAT_CIRCUIT_23R1)
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+        assert compare_dictionary(model1.inputs, model2.inputs)
+        assert compare_dictionary(model1.parameters, model2.parameters)
+        assert model1.evaluation_time == model2.evaluation_time
+        # Progress step by step evaluations give same results
+        model1.evaluate_step_by_step(step_size=10)
+        model2.evaluate_step_by_step(step_size=10)
+        assert compare_dictionary(model1.outputs, model2.outputs)
 
     def test_clean_unit_test(self):
         reinit_settings()
