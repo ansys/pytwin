@@ -246,23 +246,6 @@ class TwinModel(Model):
             msg += f'n{str(e)}'
             self._raise_error(msg)
 
-    def _save_state(self):
-        # Lazy init saved state registry for this TwinModel
-        if self._ss_registry is None:
-            self._ss_registry = SavedStateRegistry(model_id=self.id, model_name=self.name)
-
-        # Store saved state meta-data
-        ss = SavedState()
-        ss.time = self.evaluation_time
-        ss.parameters = self.parameters
-        ss.outputs = self.outputs
-        ss.inputs = self.inputs
-        ss_filepath = self._ss_registry.return_saved_state_filepath(ss)
-
-        # Create actual saved state and register it
-        self._twin_runtime.twin_save_state(save_to=ss_filepath)
-        self._ss_registry.append_saved_state(ss)
-
     def _update_inputs(self, inputs: dict):
         """Update input values with given dictionary."""
         for name, value in inputs.items():
