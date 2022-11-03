@@ -452,6 +452,35 @@ class TestTwinModel:
         msg = 'has not been found in model inputs!'
         assert ''.join(lines).count(msg) == 2
 
+    def test_save_and_load_state_multiple_times(self):
+        # Init unit test
+        wd = reinit_settings()
+        # Save state test
+        model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+
+        model1.initialize_evaluation()
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 1.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 2.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 3.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 4.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
     def test_save_and_load_state_with_modelica(self):
         # Init unit test
         wd = reinit_settings()
