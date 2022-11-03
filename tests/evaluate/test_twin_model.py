@@ -482,7 +482,7 @@ class TestTwinModel:
         model2.load_state(model1.id, model1.evaluation_time)
         assert compare_dictionary(model1.outputs, model2.outputs)
 
-    def test_save_and_load_state_with_couple_clutches(self):
+    def test_save_and_load_state_with_coupled_clutches(self):
         # Init unit test
         wd = reinit_settings()
         # Save state test
@@ -531,7 +531,7 @@ class TestTwinModel:
         out2 = model2.outputs
         assert not compare_dictionary(out1, out2)  # TODO - Fix BU732106
 
-    def test_save_and_load_state_with_rc_hear_circuit(self):
+    def test_save_and_load_state_with_rc_heat_circuit(self):
         # Init unit test
         wd = reinit_settings()
         # Save state test
