@@ -558,18 +558,16 @@ class TwinModel(Model):
             ss_filepath = ss_registry.return_saved_state_filepath(ss)
 
             # Initialize model accordingly and load existing state
+            self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
+            self._twin_runtime.twin_load_state(ss_filepath)
+            self._evaluation_time = ss.time
+
             BU732106_WORKAROUND = True
             if BU732106_WORKAROUND:
-                self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
-                self._twin_runtime.twin_load_state(ss_filepath)
-                self._evaluation_time = ss.time
                 # Rather we call a step by step evaluation with a small time-step OR we use the registry outputs
                 # self.evaluate_step_by_step(step_size=ss.time * 1e-12, inputs=ss.inputs)
                 self._outputs = ss.outputs
             else:
-                self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
-                self._twin_runtime.twin_load_state(ss_filepath)
-                self._evaluation_time = ss.time
                 self._update_outputs()
 
         except Exception as e:
