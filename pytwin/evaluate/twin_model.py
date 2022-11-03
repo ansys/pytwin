@@ -532,24 +532,110 @@ class TwinModel(Model):
             msg += f'\nYou will find more details in model log (see {self.model_log} file)'
             self._raise_error(msg)
 
-    def load_state(self, model_id: str, evaluation_time: float, epsilon: float = 1e-16):
+    def load_state(self, model_id: str, evaluation_time: float, epsilon: float = 1e-8):
         """
-        TODO - Doc string
-        """
-        # Search for existing state in registry
-        ss_registry = SavedStateRegistry(model_id=model_id, model_name=self.name)
-        ss = ss_registry.extract_saved_state(evaluation_time, epsilon)
+        Load a state that has been saved by a TwinModel instantiated with same .twin file. Calling this method replaces
+        evaluation initialization.
 
-        # Initialize model accordingly and load existing state
-        self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
-        ss_filepath = ss_registry.return_saved_state_filepath(ss)
-        self._twin_runtime.twin_load_state(ss_filepath)
+        Parameters
+        ----------
+        model_id: str
+            This is the id of the model that saved the state.
+        evaluation_time: float
+            Evaluation time at which the state was saved.
+        epsilon: float
+            Absolute period that is added before and after evaluation time to account for round off error while
+            searching the saved state. Search is performed in the interval [t-epsilon, t+epsilon]
+            with t the evaluation time. First found saved state in this interval is loaded.
+
+        Raises
+        ------
+        TwinModelError:
+            If no state has been saved by model with given model_id and same model name as the one calling this method.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> # Instantiate a TwinModel, initialize it and evaluate it step by step until you want to save its state
+        >>> model1 = TwinModel('model.twin')
+        >>> model1.initialize_evaluation()
+        >>> model1.evaluate_step_by_step(step_size=0.1)
+        >>> model1.save_state()
+        >>> # Instantiate a new TwinModel with same twin file and load the saved state
+        >>> model2 = TwinModel('model.twin')
+        >>> model2.load_state(model_id=model1.id, evaluation_time=model1.evaluation_time)
+        >>> model2.evaluate_step_by_step(step_size=0.1)
+        """
+        self._log_key = 'LoadState'
+
+        try:
+            # Search for existing state in registry
+            ss_registry = SavedStateRegistry(model_id=model_id, model_name=self.name)
+            ss = ss_registry.extract_saved_state(evaluation_time, epsilon)
+            ss_filepath = ss_registry.return_saved_state_filepath(ss)
+
+            # Initialize model accordingly and load existing state
+            BU732106_WORKAROUND = True
+            if BU732106_WORKAROUND:
+                self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
+                self._twin_runtime.twin_load_state(ss_filepath)
+                self._evaluation_time = ss.time
+                # Rather we call a step by step evaluation with a small time-step OR we use the registry outputs
+                # self.evaluate_step_by_step(step_size=ss.time * 1e-12, inputs=ss.inputs)
+                self._outputs = ss.outputs
+            else:
+                self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
+                self._twin_runtime.twin_load_state(ss_filepath)
+                self._evaluation_time = ss.time
+                self._update_outputs()
+
+        except Exception as e:
+            msg = f'Something went wrong while loading state:'
+            msg += f'\n{str(e)}'
+            self._raise_error(msg)
 
     def save_state(self):
         """
-        TODO - Doc string
+        Save the state of a TwinModel. This method will save the state of the twin model after its initialization and/or
+        step by step evaluation.
+
+        It should be used in conjunction with the `load_state` method.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> # Instantiate a TwinModel, initialize it and evaluate it step by step until you want to save its state
+        >>> model1 = TwinModel('model.twin')
+        >>> model1.initialize_evaluation()
+        >>> model1.evaluate_step_by_step(step_size=0.1)
+        >>> model1.save_state()
+        >>> # Instantiate a new TwinModel with same twin file and load the saved state
+        >>> model2 = TwinModel('model.twin')
+        >>> model2.load_state(model_id=model1.id, evaluation_time=model1.evaluation_time)
+        >>> model2.evaluate_step_by_step(step_size=0.1)
         """
-        self._save_state()
+        self._log_key = 'SaveState'
+
+        try:
+            # Lazy init saved state registry for this TwinModel
+            if self._ss_registry is None:
+                self._ss_registry = SavedStateRegistry(model_id=self.id, model_name=self.name)
+
+            # Store saved state meta-data
+            ss = SavedState()
+            ss.time = self.evaluation_time
+            ss.parameters = self.parameters
+            ss.outputs = self.outputs
+            ss.inputs = self.inputs
+            ss_filepath = self._ss_registry.return_saved_state_filepath(ss)
+
+            # Create actual saved state and register it
+            self._twin_runtime.twin_save_state(save_to=ss_filepath)
+            self._ss_registry.append_saved_state(ss)
+        except Exception as e:
+            msg = f'Something went wrong while saving state:'
+            msg += f'\n{str(e)}'
+            self._raise_error(msg)
 
 
 class TwinModelError(Exception):

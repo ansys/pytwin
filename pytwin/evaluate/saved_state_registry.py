@@ -82,6 +82,10 @@ class SavedStateRegistry:
         self._model_id = model_id
         self._model_name = model_name
 
+        # Backup folder creation
+        if not os.path.exists(self.backup_folderpath):
+            os.mkdir(self.backup_folderpath)
+
     @property
     def backup_folderpath(self):
         model = Model()
@@ -187,9 +191,6 @@ class SavedStateRegistry:
 
     def _write_registry(self):
         try:
-            # Lazy backup folder creation
-            if not os.path.exists(self.backup_folderpath):
-                os.mkdir(self.backup_folderpath)
             # Save current registry to registry file
             with open(self.registry_filepath, 'w', encoding='utf-8') as fp:
                 json.dump(self._dump(), fp, indent=4)
