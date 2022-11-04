@@ -36,6 +36,15 @@ fluent = "^0.10.0"
 ansys-fluent-core = "^0.11.0"
 pyvista = "^0.36.1"
 ansys-mapdl-core = "^0.63.3"
+Sphinx = ">=4.4"
+Sphinx-copybutton = ">=0.4"
+numpydoc = ">=1.2"
+ansys_sphinx_theme = ">=0.2"
+sphinx_gallery = ">=0.11.1"
+jupyter_sphinx = ">=0.4.0"
+sphinx-notfound-page = ">=0.8.3"
+sphinx_autodoc_typehints = ">=1.19.5"
+sphinxemoji = ">=0.2.0"
 
 [tool.black]
 line-length = 100
