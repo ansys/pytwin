@@ -61,6 +61,11 @@ class Model:
         return self._id
 
     @property
+    def name(self):
+        """Model name. Multiple models can share the same name."""
+        return self._model_name
+
+    @property
     def model_dir(self):
         """Model directory (within the global working directory)"""
         return os.path.join(get_pytwin_working_dir(), f'{self._model_name}.{self._id}')
