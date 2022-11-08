@@ -1,11 +1,3 @@
-from .twin_runtime_error import *
-from .twin_runtime_error import TwinRuntimeError
-from .log_level import LogLevel
-
-from pathlib import Path
-from ctypes import*
-
-
 import pandas as pd
 import numpy as np
 import os
@@ -13,6 +5,15 @@ import json
 import sys
 import math
 import platform
+from pathlib import Path
+from ctypes import*
+
+if platform.system() == 'Windows':
+    import win32api
+
+from .twin_runtime_error import *
+from .twin_runtime_error import TwinRuntimeError
+from .log_level import LogLevel
 
 CUR_DIR = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
 os.environ['TWIN_RUNTIME_SDK'] = CUR_DIR
@@ -48,11 +49,14 @@ class TwinRuntime:
     output_names = None
     input_names = None
     parameter_names = None
+    os_version = None
 
     if platform.system() == 'Windows':
         twin_runtime_library = 'TwinRuntimeSDK.dll'
+        os_version = 'win64'
     else:
-        twin_runtime_library = 'TwinRuntimeSDK.so'
+        twin_runtime_library = 'libTwinRuntimeSDK.so'
+        os_version = 'linux64'
 
     @staticmethod    
     def load_dll(twin_runtime_library_path=None):
@@ -66,7 +70,7 @@ class TwinRuntime:
                 os.environ['PATH'] = '{}{}{}'.format(sdk_folder_path, sep, os.environ['PATH'])
 
         if twin_runtime_library_path is None:
-            folder = os.path.join(CUR_DIR)
+            folder = os.path.join(CUR_DIR, TwinRuntime.os_version)
             _setup_env(sdk_folder_path=folder)
             return cdll.LoadLibrary(os.path.join(folder, TwinRuntime.twin_runtime_library))
         else:
@@ -74,8 +78,8 @@ class TwinRuntime:
             return cdll.LoadLibrary(twin_runtime_library_path)
 
     @staticmethod
-    def twin_is_cross_platform(twin_runtime_lib, file_path):
-        twin_runtime_library = TwinRuntime.load_dll(twin_runtime_lib)
+    def twin_is_cross_platform(file_path):
+        twin_runtime_library = TwinRuntime.load_dll()
         TwinIsCrossPlatform = twin_runtime_library.IsTwinCrossPlatform
         
         if type(file_path) is not bytes:
@@ -86,8 +90,8 @@ class TwinRuntime:
         return cross_platform.value
 
     @staticmethod
-    def get_twin_version(twin_runtime_lib, file_path):
-        twin_runtime_library = TwinRuntime.load_dll(twin_runtime_lib)
+    def get_twin_version(file_path):
+        twin_runtime_library = TwinRuntime.load_dll()
         TwinGetVersion = twin_runtime_library.TwinGetVersion
 
         if type(file_path) is not bytes:
@@ -99,8 +103,8 @@ class TwinRuntime:
         return valid_model.value, twin_version.value.decode()
 
     @staticmethod
-    def twin_get_model_dependencies(twin_runtime_lib, file_path):
-        twin_runtime_library = TwinRuntime.load_dll(twin_runtime_lib)
+    def twin_get_model_dependencies(file_path):
+        twin_runtime_library = TwinRuntime.load_dll()
         
         TwinGetModelDependencies = twin_runtime_library.TwinGetModelDependencies
 
@@ -151,7 +155,7 @@ class TwinRuntime:
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyNotDefinedError(message, twin_runtime, prop_status)
 
-    def __init__(self, model_path, log_path=None, twin_runtime_library_path=None, log_level=LogLevel.TWIN_LOG_WARNING, 
+    def __init__(self, model_path, log_path=None, twin_runtime_library_path=None, log_level=LogLevel.TWIN_LOG_WARNING,
                  load_model=True):
 
         local_path = os.path.dirname(__file__)
@@ -304,11 +308,23 @@ class TwinRuntime:
         self._TwinDisable3DROMData = self._twin_runtime_library.TwinDisable3DROMData
         self._TwinDisable3DROMData.restype = c_int
 
-        self._TwinGetROMImages = self._twin_runtime_library.TwinGetROMImages
-        self._TwinGetROMImages.restype = c_int
+        self._TwinGetRomImageFiles = self._twin_runtime_library.TwinGetRomImageFiles
+        self._TwinGetRomImageFiles.restype = c_int
 
-        self._TwinGet3DROMData = self._twin_runtime_library.TwinGet3DROMData
-        self._TwinGet3DROMData.restype = c_int
+        self._TwinGetNumRomImageFiles = self._twin_runtime_library.TwinGetNumRomImageFiles
+        self._TwinGetNumRomImageFiles.restype = c_int
+
+        self._TwinGetRomModeCoefFiles = self._twin_runtime_library.TwinGetRomModeCoefFiles
+        self._TwinGetRomModeCoefFiles.restype = c_int
+
+        self._TwinGetNumRomModeCoefFiles = self._twin_runtime_library.TwinGetNumRomModeCoefFiles
+        self._TwinGetNumRomModeCoefFiles.restype = c_int
+
+        self._TwinGetRomSnapshotFiles = self._twin_runtime_library.TwinGetRomSnapshotFiles
+        self._TwinGetRomSnapshotFiles.restype = c_int
+
+        self._TwinGetNumRomSnapshotFiles = self._twin_runtime_library.TwinGetNumRomSnapshotFiles
+        self._TwinGetNumRomSnapshotFiles.restype = c_int
 
         self._TwinGetDefaultROMImageDirectory = self._twin_runtime_library.TwinGetDefaultROMImageDirectory
         self._TwinGetDefaultROMImageDirectory.argtypes = [c_void_p, c_char_p, POINTER(c_char_p)]
@@ -350,6 +366,13 @@ class TwinRuntime:
     Functions for opening and closing a Twin model. Opening models is hidden within the constructor.
     """
     def twin_load(self, log_level):
+        # This ensures that DLL loading mechanism gets reset to its default behavior, which is altered when the
+        #  SDK launches in Twin Deployer built with PyInstaller.
+        # If this is not reset, optislang FMUs don't load because their dependent DLLs (from the binaries/win64)
+        #  are not found.
+        # See https://github.com/pyinstaller/pyinstaller/issues/3795
+        if platform.system() == 'Windows':
+            win32api.SetDllDirectory(None)
         file_buf = create_string_buffer(self.model_path)
         log_buf = create_string_buffer(self.log_path)
 
@@ -370,6 +393,9 @@ class TwinRuntime:
         self.load_twin_default_sim_settings()
 
     def twin_close(self):
+        if not self.is_model_opened:
+            print('[Warning]: twin_close() will not execute since model is not loaded. Maybe it was already closed?')
+            return
         self._TwinClose(self._modelPointer)
         self.is_model_opened = False
         self.is_model_initialized = False
@@ -701,7 +727,10 @@ class TwinRuntime:
         if step_size != 0:
             max_output_rows = int(math.ceil(end_time / step_size) + 1)
         else:
-            max_output_rows = num_input_rows
+            if local_df.iloc[0, 0] > 0:
+                max_output_rows = num_input_rows + 1  # + 1 to account for t=0 that's not on the input DF
+            else:
+                max_output_rows = num_input_rows
 
         # Preallocate Dataframe rows
         local_df = local_df.astype(np.float64)
@@ -905,24 +934,74 @@ class TwinRuntime:
         self.twin_status = self._TwinDisable3DROMData(self._modelPointer, c_char_p(model_name.encode()))
         self.evaluate_twin_status(self.twin_status, self, 'twin_disable_3d_rom_model_data')
 
-    def twin_get_rom_model_images(self, model_name, views):
+    def twin_get_rom_images_files(self, model_name, views, time_from=-1, time_to=-1):
         n_views_c = c_int(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
 
-        image_files_c = (c_char_p * len(views))()
-        self.twin_status = self._TwinGetROMImages(self._modelPointer, c_char_p(model_name.encode()), array_ctypes,
-                                                  n_views_c, image_files_c)
-        self.evaluate_twin_status(self.twin_status, self, 'twin_get_model_image')
+        num_files_c = c_size_t()
+        self.twin_status = self._TwinGetNumRomImageFiles(self._modelPointer,
+                                                         c_char_p(model_name.encode()),
+                                                         array_ctypes,
+                                                         n_views_c,
+                                                         byref(num_files_c),
+                                                         c_double(time_from),
+                                                         c_double(time_to)
+                                                         )
+        self.evaluate_twin_status(self.twin_status, self, 'twin_get_rom_images_files')
+
+        image_files_c = (c_char_p * num_files_c.value)()
+        self.twin_status = self._TwinGetRomImageFiles(self._modelPointer,
+                                                      c_char_p(model_name.encode()),
+                                                      array_ctypes,
+                                                      n_views_c,
+                                                      byref(image_files_c),
+                                                      c_double(time_from),
+                                                      c_double(time_to)
+                                                      )
+        self.evaluate_twin_status(self.twin_status, self, 'twin_get_rom_images_files')
         return to_np_array(image_files_c)
 
-    def twin_get_3d_rom_data(self, model_name):
-        bin_file_c = c_char_p()
-        self.twin_status = self._TwinGet3DROMData(self._modelPointer, c_char_p(model_name.encode()), byref(bin_file_c))
-        self.evaluate_twin_status(self.twin_status, self, 'twin_get_3d_rom_data')
-        return bin_file_c.value.decode()
+    def twin_get_rom_mode_coef_files(self, model_name, time_from=-1, time_to=-1):
+        num_files_c = c_size_t()
+        self.twin_status = self._TwinGetNumRomModeCoefFiles(self._modelPointer,
+                                                            c_char_p(model_name.encode()),
+                                                            byref(num_files_c),
+                                                            c_double(time_from),
+                                                            c_double(time_to)
+                                                            )
+        self.evaluate_twin_status(self.twin_status, self, 'twin_get_rom_mode_coef_data')
 
+        bin_files_c = (c_char_p * num_files_c.value)()
+        self.twin_status = self._TwinGetRomModeCoefFiles(self._modelPointer,
+                                                         c_char_p(model_name.encode()),
+                                                         byref(bin_files_c),
+                                                         c_double(time_from),
+                                                         c_double(time_to)
+                                                         )
+        self.evaluate_twin_status(self.twin_status, self, 'twin_get_rom_mode_coef_files')
+        return to_np_array(bin_files_c)
+
+    def twin_get_rom_snapshot_files(self, model_name, time_from=-1, time_to=-1):
+        num_files_c = c_size_t()
+        self.twin_status = self._TwinGetNumRomSnapshotFiles(self._modelPointer,
+                                                            c_char_p(model_name.encode()),
+                                                            byref(num_files_c),
+                                                            c_double(time_from),
+                                                            c_double(time_to)
+                                                            )
+        self.evaluate_twin_status(self.twin_status, self, 'twin_get_rom_mode_coef_data')
+
+        bin_files_c = (c_char_p * num_files_c.value)()
+        self.twin_status = self._TwinGetRomSnapshotFiles(self._modelPointer,
+                                                         c_char_p(model_name.encode()),
+                                                         byref(bin_files_c),
+                                                         c_double(time_from),
+                                                         c_double(time_to)
+                                                         )
+        self.evaluate_twin_status(self.twin_status, self, 'twin_get_rom_snapshot_files')
+        return to_np_array(bin_files_c)
 
     def twin_save_state(self, save_to):
         save_to = save_to.encode()
@@ -1005,7 +1084,7 @@ class TwinRuntime:
         param_vars = self.twin_get_param_names()
         prop_matrix_list += self.build_prop_info_df(param_vars)
 
-        var_inf_columns = ['Name', 'Type', 'Unit', 'Quantity Type', 'Start', 'Min', 'Max', 'Nominal', 'Description']
+        var_inf_columns = ['Name', 'Unit', 'Type', 'Start', 'Min', 'Max', 'Description']
         variable_info_df = pd.DataFrame(prop_matrix_list, columns=var_inf_columns)
 
         return variable_info_df
@@ -1014,7 +1093,7 @@ class TwinRuntime:
 
         prop_matrix_list = self.build_prop_info_df(vars_names[:max_var_to_print])
 
-        var_inf_columns = ['Name', 'Type', 'Unit', 'Quantity Type', 'Start', 'Min', 'Max', 'Nominal', 'Description']
+        var_inf_columns = ['Name', 'Unit', 'Type', 'Start', 'Min', 'Max', 'Description']
 
         variable_info_df = pd.DataFrame(data=prop_matrix_list, columns=var_inf_columns)
         return variable_info_df
@@ -1023,10 +1102,6 @@ class TwinRuntime:
         prop_matrix_list = []
         for value in var_names:
             o_name = value
-            try:
-                o_type = self.twin_get_var_data_type(value)
-            except (PropertyNotDefinedError, PropertyNotApplicableError, PropertyInvalidError, PropertyError) as e:
-                o_type = e.property_status_flag.name
             try:
                 o_unit = self.twin_get_var_unit(value)
             except (PropertyNotDefinedError, PropertyNotApplicableError, PropertyInvalidError, PropertyError) as e:
@@ -1042,21 +1117,17 @@ class TwinRuntime:
             try:
                 o_start = self.twin_get_var_start(value)
             except (PropertyNotDefinedError, PropertyNotApplicableError, PropertyInvalidError, PropertyError) as e:
-                o_start = e.property_status_flag.name
+                o_start = None
             try:
                 o_min = self.twin_get_var_min(value)
             except (PropertyNotDefinedError, PropertyNotApplicableError, PropertyInvalidError, PropertyError) as e:
-                o_min = e.property_status_flag.name
+                o_min = None
             try:
                 o_max = self.twin_get_var_max(value)
             except (PropertyNotDefinedError, PropertyNotApplicableError, PropertyInvalidError, PropertyError) as e:
-                o_max = e.property_status_flag.name
-            try:
-                o_nominal = self.twin_get_var_nominal(value)
-            except (PropertyNotDefinedError, PropertyNotApplicableError, PropertyInvalidError, PropertyError) as e:
-                o_nominal = e.property_status_flag.name
+                o_max = None
 
-            prop_row = [o_name, o_type, o_unit, o_quantity_type, o_start, o_min, o_max, o_nominal, o_var_description]
+            prop_row = [o_name, o_unit, o_quantity_type, o_start, o_min, o_max, o_var_description]
             prop_matrix_list.append(prop_row)
         return prop_matrix_list
 
