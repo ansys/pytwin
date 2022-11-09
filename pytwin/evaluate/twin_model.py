@@ -7,7 +7,7 @@ import numpy as np
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import SavedStateRegistry
 from pytwin.evaluate.saved_state_registry import SavedState
-from pytwin.twin_runtime import TwinRuntime
+from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.settings import get_pytwin_log_level
 from pytwin.settings import PyTwinLogLevel
@@ -415,7 +415,7 @@ class TwinModel(Model):
 
         Examples
         --------
-        >>> from pytwin.evaluate import TwinModel
+        >>> from pytwin import TwinModel
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.})
@@ -474,7 +474,7 @@ class TwinModel(Model):
         Examples
         --------
         >>> import pandas as pd
-        >>> from pytwin.evaluate import TwinModel
+        >>> from pytwin import TwinModel
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.], 'input1': [1., 2., 3.], 'input2': [1., 2., 3.]})
         >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})

@@ -1,8 +1,8 @@
 import os
 import pytest
 import pandas as pd
-from pytwin.evaluate import TwinModel
-from pytwin.evaluate import TwinModelError
+from pytwin import TwinModel
+from pytwin import TwinModelError
 from pytwin.settings import reinit_settings_for_unit_tests
 from pytwin.settings import get_pytwin_working_dir
 from pytwin.settings import get_pytwin_logger
