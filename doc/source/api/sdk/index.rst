@@ -18,7 +18,7 @@ Workflow Example
 
 .. code-block:: python
 
-   >>> from pytwin.twin_runtime import TwinRuntime, LogLevel
+   >>> from pytwin import TwinRuntime
    >>> from pytwin import examples
    >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin","twin_files")
    >>> twin_runtime = TwinRuntime(twin_model) # Load the Runtime
