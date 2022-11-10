@@ -3,14 +3,9 @@ pytwin.
 
 library
 """
-from pytwin._version import __version__  # noqa: F401 TODO check why it is needed
+import importlib.metadata as metadata
 
-try:
-    import importlib.metadata as importlib_metadata
-except ModuleNotFoundError:
-    import importlib_metadata
-
-#__version__ = importlib_metadata.version('pytwin') TODO check why it is needed, if no workaround : importlib.metadata.PackageNotFoundError: pytwin
+__version__ = metadata.version('pytwin')
 
 """
 PUBLIC API TO PYTWIN SETTINGS 
