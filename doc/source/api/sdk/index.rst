@@ -6,7 +6,7 @@ Twin Runtime SDK
 Implementation of the Twin Runtime SDK class enabling access to the core
 Twin Runtime SDK functionalities.
 
-.. currentmodule:: pytwin.twin_runtime
+.. currentmodule:: pytwin
 
 .. autosummary::
    :toctree: _autosummary
@@ -18,7 +18,7 @@ Workflow Example
 
 .. code-block:: python
 
-   >>> from pytwin.twin_runtime import TwinRuntime, LogLevel
+   >>> from pytwin import TwinRuntime, LogLevel
    >>> from pytwin import examples
    >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin","twin_files")
    >>> twin_runtime = TwinRuntime(twin_model) # Load the Runtime

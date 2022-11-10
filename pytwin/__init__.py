@@ -24,7 +24,6 @@ from .settings import PyTwinLogOption
 from .settings import PyTwinLogLevel
 from .settings import PyTwinSettingsError
 from .settings import pytwin_logging_is_enabled
-
 PYTWIN_LOG_DEBUG = PyTwinLogLevel.PYTWIN_LOG_DEBUG
 PYTWIN_LOG_WARNING = PyTwinLogLevel.PYTWIN_LOG_WARNING
 PYTWIN_LOG_ERROR = PyTwinLogLevel.PYTWIN_LOG_ERROR
@@ -45,3 +44,4 @@ PUBLIC API TO PYTWIN RUNTIME
 """
 from .twin_runtime.twin_runtime_core import TwinRuntime
 from .twin_runtime.twin_runtime_core import TwinRuntimeError
+from .twin_runtime.log_level import LogLevel

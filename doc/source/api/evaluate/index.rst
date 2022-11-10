@@ -3,10 +3,10 @@
 Evaluate
 ========
 
-Evaluate class is an example of higher level abstraction implementation
+Evaluate module is an example of higher level abstraction implementation
 to facilitate the manipulation and execution of Twin Runtimes through TwinModel.
 
-.. currentmodule:: pytwin.evaluate
+.. currentmodule:: pytwin
 
 .. autosummary::
    :toctree: _autosummary
