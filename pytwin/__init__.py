@@ -37,11 +37,11 @@ PYTWIN_LOGGING_OPT_NOLOGGING = PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
 """
 PUBLIC API TO PYTWIN EVALUATE 
 """
-from .evaluate import TwinModel
-from .evaluate import TwinModelError
+from .evaluate.twin_model import TwinModel
+from .evaluate.twin_model import TwinModelError
 
 """
 PUBLIC API TO PYTWIN RUNTIME 
 """
-from .twin_runtime import TwinRuntime
-from .twin_runtime import TwinRuntimeError
+from .twin_runtime.twin_runtime_core import TwinRuntime
+from .twin_runtime.twin_runtime_core import TwinRuntimeError

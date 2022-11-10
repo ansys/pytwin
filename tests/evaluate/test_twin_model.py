@@ -1,8 +1,8 @@
 import os
 import pytest
 import pandas as pd
-from pytwin.evaluate import TwinModel
-from pytwin.evaluate import TwinModelError
+from pytwin import TwinModel
+from pytwin import TwinModelError
 from pytwin.settings import reinit_settings_for_unit_tests
 from pytwin.settings import get_pytwin_working_dir
 from pytwin.settings import get_pytwin_logger
@@ -11,6 +11,8 @@ from pytwin.settings import modify_pytwin_working_dir
 from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'CoupleClutches_22R2_other.twin')
+DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), 'data', 'HX_scalarDRB_23R1_other.twin')
+RC_HEAT_CIRCUIT_23R1 = os.path.join(os.path.dirname(__file__), 'data', 'RC_heat_circuit_23R1.twin')
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
 
@@ -451,7 +453,105 @@ class TestTwinModel:
         msg = 'has not been found in model inputs!'
         assert ''.join(lines).count(msg) == 2
 
+    def test_save_and_load_state_multiple_times(self):
+        # Init unit test
+        wd = reinit_settings()
+        # Save state test
+        model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+
+        model1.initialize_evaluation()
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 1.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 2.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 3.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 4.})
+        model1.save_state()
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
+    def test_save_and_load_state_with_coupled_clutches(self):
+        # Init unit test
+        wd = reinit_settings()
+        # Save state test
+        model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        model1.initialize_evaluation()
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 1.})
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 2.})
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 3.})
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 4.})
+        model1.evaluate_step_by_step(step_size=0.01, inputs={'Clutch1_in': 5.})
+        model1.save_state()
+        out1 = model1.outputs
+        # Load state test
+        model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        model2.load_state(model1.id, model1.evaluation_time)
+        out2 = model2.outputs
+        assert compare_dictionary(out1, out2)
+        # Progress step by step evaluations give same results
+        model1.evaluate_step_by_step(step_size=0.05)
+        model2.evaluate_step_by_step(step_size=0.05)
+        out1 = model1.outputs
+        out2 = model2.outputs
+        assert compare_dictionary(out1, out2)
+
+    def test_save_and_load_state_with_dynarom(self):
+        # Init unit test
+        wd = reinit_settings()
+        # Save state test
+        model1 = TwinModel(model_filepath=DYNAROM_HX_23R1)
+        model1.initialize_evaluation()
+        model1.evaluate_step_by_step(step_size=0.1, inputs={'HeatFlow': 1})
+        model1.evaluate_step_by_step(step_size=0.5, inputs={'HeatFlow': 10})
+        model1.evaluate_step_by_step(step_size=1, inputs={'HeatFlow': 100})
+        model1.evaluate_step_by_step(step_size=5, inputs={'HeatFlow': 1000})
+        model1.save_state()
+        out1 = model1.outputs
+        # Load state test
+        model2 = TwinModel(model_filepath=DYNAROM_HX_23R1)
+        model2.load_state(model1.id, model1.evaluation_time)
+        out2 = model2.outputs
+        assert compare_dictionary(out1, out2)
+        # Progress step by step evaluations give same results
+        model1.evaluate_step_by_step(step_size=5)
+        model2.evaluate_step_by_step(step_size=5)
+        out1 = model1.outputs
+        out2 = model2.outputs
+        assert not compare_dictionary(out1, out2)  # TODO - Fix BU732106
+
+    def test_save_and_load_state_with_rc_heat_circuit(self):
+        # Init unit test
+        wd = reinit_settings()
+        # Save state test
+        model1 = TwinModel(model_filepath=RC_HEAT_CIRCUIT_23R1)
+        model1.initialize_evaluation(parameters={'SimModel2_C': 10.})
+        model1.evaluate_step_by_step(step_size=1, inputs={'heat_in': 100})
+        model1.evaluate_step_by_step(step_size=1)
+        model1.evaluate_step_by_step(step_size=1)
+        model1.save_state()
+        # Load state test
+        model2 = TwinModel(model_filepath=RC_HEAT_CIRCUIT_23R1)
+        model2.load_state(model1.id, model1.evaluation_time)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+        assert compare_dictionary(model1.inputs, model2.inputs)
+        assert compare_dictionary(model1.parameters, model2.parameters)
+        assert model1.evaluation_time == model2.evaluation_time
+        # Progress step by step evaluations give same results
+        model1.evaluate_step_by_step(step_size=10)
+        model2.evaluate_step_by_step(step_size=10)
+        assert compare_dictionary(model1.outputs, model2.outputs)
+
     def test_clean_unit_test(self):
         reinit_settings()
-
-
