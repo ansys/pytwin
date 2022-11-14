@@ -74,6 +74,9 @@ instance/
 
 # Sphinx documentation
 doc/_build/
+doc/build_errors.txt
+doc/source/api/*
+doc/source/examples/*
 
 # PyBuilder
 .pybuilder/
@@ -154,5 +157,8 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
+
+# Examples temporary files
+examples/evaluate/*.trn
 
 # End of https://www.toptal.com/developers/gitignore/api/python

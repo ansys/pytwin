@@ -1,15 +1,9 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
-import platform
-import subprocess
-
-import os
-import sys
 
 from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
-import pytwin
 from pytwin import __version__
 
 # -- Project information -----------------------------------------------------
