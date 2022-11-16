@@ -154,15 +154,15 @@ class TwinModel(Model):
         self._evaluation_time = 0.0
         self._initialization_time = time.time()
 
-        tbrom_info = self._twin_runtime.twin_get_visualization_resources()
-        if tbrom_info:
-            self._log_key += 'WithTBROM : {}'.format(tbrom_info)
-            self._tbrom_info = tbrom_info
-            directory_path = os.path.join(self.model_dir, 'ROM_files')
-            for model_name, data in tbrom_info.items():
-                self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
-
         try:
+            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+            if tbrom_info:
+                self._log_key += 'WithTBROM : {}'.format(tbrom_info)
+                self._tbrom_info = tbrom_info
+                directory_path = os.path.join(self.model_dir, 'ROM_files')
+                for model_name, data in tbrom_info.items():
+                    self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
+
             self._twin_runtime.twin_initialize()
         except Exception as e:
             msg = f'Something went wrong during model initialization!'
