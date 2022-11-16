@@ -7,7 +7,8 @@ The model is a scalar dynamic ROM created out of a 3D thermal model of a
 Heat Exchanger, having a heat flow as input and three temperature probes
 as outputs. The example shows a workflow for what-if analysis by deploying 
 a second twin in parallel while simulating the original twin and comparing
-the different predictions. It also illustrates the usage of modify_pytwin_working_dir
+the different predictions. This is done using the specific functions for saving
+and loading the twin states. It also illustrates the usage of modify_pytwin_working_dir
 to change the default working directory location (%temp%) to a user specified location
 where the different logging files will be available.
 """
@@ -124,17 +125,13 @@ sim_output_list_step = [outputs]
 sim_what_if_output_list_step = []
 data_index = 0
 while data_index < number_of_datapoints:
-    if data_index == int(number_of_datapoints / 2) and twin_model_what_if is None:
-        filename = f'checkpoint.bin'
-        #CUR_DIR = os.path.abspath(os.path.dirname(os.path.realpath(__file__))) #TODO treat cur_dir issue for doc
-        #twin_state_file = os.path.join(CUR_DIR, filename)
-        #twin_model._twin_runtime.twin_save_state(twin_state_file)
+    if data_index == int(number_of_datapoints / 4) and twin_model_what_if is None:
+        # Save the original model's current states
+        twin_model.save_state()
+        # Instantiate a new TwinModel with same twin file and load the saved state
         twin_model_what_if = TwinModel(twin_file)
-        twin_model_what_if.initialize_evaluation()
-        #twin_model_what_if._twin_runtime.twin_load_state(twin_state_file)
-        twin_model_what_if._evaluation_time = twin_model.evaluation_time
+        twin_model_what_if.load_state(model_id=twin_model.id, evaluation_time=twin_model.evaluation_time)
         sim_what_if_output_list_step.append(outputs)
-
 
     # Gets the stop time of the current simulation step
     time_end = twin_model_input_df.iloc[data_index + 1][0]
@@ -150,8 +147,8 @@ while data_index < number_of_datapoints:
     if twin_model_what_if is not None:
         inputs = dict()
         for column in twin_model_input_df.columns[1::]:
-            inputs[column] = twin_model_input_df[column][data_index]/2.0 # the second Twin will be evaluated using same
-            # inputs reduced by 50%
+            inputs[column] = twin_model_input_df[column][data_index]*0.9 # the second Twin will be evaluated using same
+            # inputs reduced by 10%
         twin_model_what_if.evaluate_step_by_step(step_size=step, inputs=inputs)
         outputs = [twin_model_what_if.evaluation_time]
         for item in twin_model_what_if.outputs:
@@ -164,7 +161,7 @@ results_step_pd = pd.DataFrame(sim_output_list_step, columns=['Time'] + list(twi
 outputs_names = list(twin_model.outputs)
 output_names_parallel = []
 for i in range(0,len(outputs_names)):
-    output_names_parallel.append(outputs_names[i]+ ' - what-if : load reduced by 50%')
+    output_names_parallel.append(outputs_names[i]+ ' - what-if : load reduced by 10%')
 results_what_if_step_pd = pd.DataFrame(sim_what_if_output_list_step, columns=['Time'] + output_names_parallel,
                                        dtype=float)
 
