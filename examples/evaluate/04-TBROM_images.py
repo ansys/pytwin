@@ -43,7 +43,8 @@ rom_parameters = {"ThermalROM23R1_1_colorbar_min": 290, "ThermalROM23R1_1_colorb
 # Conversion of ROM snapshot for data mapping on CFD mesh.
 
 def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
-    """Create a Fluent Interpolation file that can be loaded in Fluent and map to the CFD mesh
+    """Create a Fluent Interpolation file that can be loaded in Fluent and map to the CFD mesh. This is an example of
+    implementation for a single field of scalar data (e.g. temperature field)
     """
 
     with open(geometry_file, 'rb') as geo, open(snapshot_file, "rb") as snp:
@@ -62,11 +63,8 @@ def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
         ipfile.write("3\n") # IP file format
         ipfile.write("3\n") # 2D or 3D - 3D for now
         ipfile.write(str(len(res_list))+"\n") # number of data
-        #ipfile.write(str(len(field_name))+"\n") # number of field data
-        #for i in range(0,len(field_name)):
-        #    ipfile.write(field_name[i]+"\n") # individual field data name
         ipfile.write("1\n")  # number of field data
-        ipfile.write(field_name+"\n")  # number of field data
+        ipfile.write(field_name+"\n")  # name of field data
         for j in range(0, len(res_list[0])):
             ipfile.write("(")
             for i in range(0, len(res_list)):
@@ -82,21 +80,13 @@ def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
 print('Loading model: {}'.format(twin_file))
 twin_model = TwinModel(twin_file)
 
-# TODO - following are SDK atomic calls, need to use TBROM class ultimately
-twin_model._twin_runtime.twin_instantiate()
+twin_model.initialize_evaluation(inputs=rom_inputs, parameters=rom_parameters)
+
+rom_name = list(twin_model.tbrom_info)[0]
 
 directory_path = os.path.join(twin_model.model_dir, 'ROM_files')
-visualization_info = twin_model._twin_runtime.twin_get_visualization_resources()
-rom_name = ""
-for model_name, data in visualization_info.items():
-    twin_model._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
-    rom_name = model_name
-
-twin_model._initialize_evaluation(inputs=rom_inputs, parameters=rom_parameters)
-
 snapshot = os.path.join(directory_path, rom_name, 'snapshot_0.000000.bin')
-geometry = os.path.join(twin_model._twin_runtime.twin_get_rom_resource_directory(rom_name),
-                        'binaryOutputField', 'points.bin')
+geometry = os.path.join(twin_model.tbrom_resource_directory(rom_name=rom_name), 'binaryOutputField', 'points.bin')
 
 temperature_file = snapshot_to_cfd(snapshot, geometry, "temperature",
                                    os.path.join(directory_path, rom_name, "cfd_file.ip"))

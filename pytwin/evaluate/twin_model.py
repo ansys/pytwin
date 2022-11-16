@@ -61,6 +61,7 @@ class TwinModel(Model):
         self._parameters = None
         self._ss_registry = None
         self._twin_runtime = None
+        self._tbrom_info = None
 
         if self._check_model_filepath_is_valid(model_filepath):
             self._model_filepath = model_filepath
@@ -152,6 +153,14 @@ class TwinModel(Model):
 
         self._evaluation_time = 0.0
         self._initialization_time = time.time()
+
+        tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+        if tbrom_info:
+            self._log_key += 'WithTBROM : {}'.format(tbrom_info)
+            self._tbrom_info = tbrom_info
+            directory_path = os.path.join(self.model_dir, 'ROM_files')
+            for model_name, data in tbrom_info.items():
+                self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
 
         try:
             self._twin_runtime.twin_initialize()
@@ -335,6 +344,15 @@ class TwinModel(Model):
         Return None if model filepath is not valid.
         """
         return self._model_filepath
+
+    @property
+    def tbrom_info(self):
+        """
+        Return a dictionary with TBROM model names included in the Twin and their corresponding 3D visualization
+        capabilities available (e.g. snapshots, and optionnally images generation). If no TBROM is included in the
+        Twin, it returns None
+        """
+        return self._tbrom_info
 
     def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, json_config_filepath: str = None):
         """
@@ -618,6 +636,33 @@ class TwinModel(Model):
             msg += f'\n{str(e)}'
             self._raise_error(msg)
 
+    def tbrom_resource_directory(self, rom_name: str):
+        """
+        Return the path of the resource directory associated with rom_name. If no TBROM is part of the Twin,
+        it returns an error.
+
+        Parameters
+        ----------
+        rom_name: str
+            This is the name of the TBROM for which the resource folder will be retrieved
+        Raises
+        ------
+        TwinModelError:
+            If no TBROM is included in the Twin
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> # Instantiate a TwinModel, and initialize it
+        >>> model = TwinModel('model.twin')
+        >>> model.initialize_evaluation()
+        >>> # Pick the first TBROM name included in the Twin and recover its resource folder
+        >>> rom_name = list(twin_model.tbrom_info)[0]
+        >>> rom_resource_folder = twin_model.tbrom_resource_directory(rom_name=rom_name)
+        """
+        if self.tbrom_info is None:
+            self._raise_error('Twin model does not include any TBROM!')
+        return self._twin_runtime.twin_get_rom_resource_directory(rom_name)
 
 class TwinModelError(Exception):
     def __str__(self):
