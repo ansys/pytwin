@@ -8,12 +8,13 @@ the form of temperature field, and use them as inputs for a FEA thermal-structur
 considers the mixing of 2 different flow temperatures
 The example is based on PyTwin to evaluate the Twin results and convert them in an appropriate format, and PyMAPDL to
 load the FEA model, apply the temperature loads coming from the Twin and performing the thermal-structural analysis
+
 NOTE :
-- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must
-have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
-- In order to be able to generate images files at initialization time, the ROM component included in the Twin must
-have the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period"
-set to 0
+
+- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
+
+- In order to be able to generate images files at initialization time, the ROM component included in the Twin must have the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set to 0
+
 - These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters
 """
 
