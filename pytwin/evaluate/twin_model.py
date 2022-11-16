@@ -638,13 +638,18 @@ class TwinModel(Model):
 
     def tbrom_resource_directory(self, rom_name: str):
         """
-        Return the path of the resource directory associated with rom_name. If no TBROM is part of the Twin,
-        it returns an error.
+        Return the path of the resource directory associated with rom_name.
 
-        Parameters ---------- rom_name: str This is the name of the TBROM for which the resource folder will be
-        retrieved Raises ------ TwinModelError: If the runtime is not properly instantiated, if the twin model is not
-        initialized yet, if no TBROM is included in the Twin, or if none of the TBROM included has a name equal to
-        rom_name
+        Parameters
+        ----------
+        rom_name: str
+            This is the name of the TBROM for which the resource folder will be retrieved
+
+        Raises
+        ------
+        TwinModelError:
+            If the runtime is not properly instantiated, if the twin model is not initialized yet, if no TBROM is
+            included in the Twin, or if none of the TBROM included has a name equal to rom_name
 
         Examples
         --------
