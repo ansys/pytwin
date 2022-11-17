@@ -1,6 +1,8 @@
 import os
 import time
 import json
+import shutil
+
 import pandas as pd
 import numpy as np
 
@@ -588,6 +590,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             It raises an error if TwinModel has not been initialized.
+            It raises an error if TwinModel does not include any TBROM
             It raises an error if rom_name is not available.
             It raises an error if geometry file cannot be found for an available ROM.
 
@@ -603,8 +606,11 @@ class TwinModel(Model):
 
         if not self.evaluation_is_initialized:
             msg = 'TwinModel has not been initialized! '
-            msg += 'Please initialize the TwinModel before to call the geometry file getter!'
+            msg += 'Please initialize evaluation before to call the geometry file getter!'
             self._raise_error(msg)
+
+        if self.tbrom_info is None:
+            self._raise_error('Twin model does not include any TBROM!')
 
         if rom_name not in self.tbrom_names:
             msg = f'The provided rom_name {rom_name} has not been found in the available TBROM names. '
@@ -617,7 +623,7 @@ class TwinModel(Model):
 
         if not os.path.exists(filepath):
             msg = f'Could not find the geometry file for given available rom_name: {rom_name}. '
-            msg += f'Geometry filepath that has is looking for is: {filepath}'
+            msg += f'Geometry filepath you are looking for is: {filepath}'
             self._raise_error(msg)
 
         return filepath
@@ -641,6 +647,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             It raises an error if TwinModel has not been initialized.
+            It raises an error if TwinModel does not include any TBROM
             It raises an error if rom_name is not available.
 
         Examples
@@ -655,8 +662,11 @@ class TwinModel(Model):
 
         if not self.evaluation_is_initialized:
             msg = 'TwinModel has not been initialized! '
-            msg += 'Please initialize the TwinModel before to call the snapshot file getter!'
+            msg += 'Please initialize evaluation before to call the snapshot file getter!'
             self._raise_error(msg)
+
+        if self.tbrom_info is None:
+            self._raise_error('Twin model does not include any TBROM!')
 
         if rom_name not in self.tbrom_names:
             msg = f'The provided rom_name {rom_name} has not been found in the available TBROM names. '
@@ -672,7 +682,7 @@ class TwinModel(Model):
         if not os.path.exists(filepath):
             msg = f'Could not find the snapshot file for given available rom_name: {rom_name} '
             msg += f'and evaluation_time: {evaluation_time}.'
-            msg += f'Snapshot filepath that has is looking for is: {filepath}'
+            msg += f'Snapshot filepath you are looking for is: {filepath}'
             self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return filepath
