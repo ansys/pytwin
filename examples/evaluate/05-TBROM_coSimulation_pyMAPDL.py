@@ -97,11 +97,9 @@ twin_model = TwinModel(twin_file)
 
 twin_model.initialize_evaluation(inputs=cfd_inputs, parameters=rom_parameters)
 
-rom_name = list(twin_model.tbrom_info)[0]
-
-directory_path = os.path.join(twin_model.model_dir, 'ROM_files')
-snapshot = os.path.join(directory_path, rom_name, 'snapshot_0.000000.bin')
-geometry = os.path.join(twin_model.tbrom_resource_directory(rom_name=rom_name), 'binaryOutputField', 'points.bin')
+rom_name = twin_model.tbrom_names[0]
+snapshot = twin_model.get_snapshot_filepath(rom_name=rom_name)
+geometry = twin_model.get_geometry_filepath(rom_name=rom_name)
 
 temperature_file = snapshot_to_fea(snapshot, geometry)
 
@@ -115,7 +113,7 @@ nd_temp_data = temperature_data[:, :].astype(float)  # Change data type to Float
 # Map temperature data to FE mesh
 # Convert imported data into PolyData format
 wrapped = pv.PolyData(nd_temp_data[:, :3])  # Convert NumPy array to PolyData format
-wrapped["temperature"] = nd_temp_data[:, 3] # Add a scalar variable 'temperature' to PolyData
+wrapped["temperature"] = nd_temp_data[:, 3]  # Add a scalar variable 'temperature' to PolyData
 
 # Perform data mapping
 inter_grid = grid.interpolate(
