@@ -92,8 +92,8 @@ twin_model.initialize_evaluation(inputs=rom_inputs, parameters=rom_parameters)
 
 rom_name = twin_model.tbrom_names[0]
 rom_directory_path = twin_model.tbrom_directory_path
-snapshot = twin_model.get_snapshot_filepath(rom_name=rom_name)
-geometry = twin_model.get_geometry_filepath(rom_name=rom_name)
+snapshot = twin_model.get_snapshot_filepath(rom_name)
+geometry = twin_model.get_geometry_filepath(rom_name)
 
 temperature_file = snapshot_to_cfd(snapshot, geometry, "temperature",
                                    os.path.join(rom_directory_path, rom_name, "cfd_file.ip"))

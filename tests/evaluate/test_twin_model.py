@@ -559,6 +559,26 @@ class TestTwinModel:
         assert compare_dictionary(model1.outputs, model2.outputs)
 
     def test_raised_errors_with_tbrom_resource_directory(self):
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twin = TwinModel(model_filepath=model_filepath)
+        # Raise an error if TWIN MODEL IS NOT INITIALIZED
+        with pytest.raises(TwinModelError) as e:
+            twin.tbrom_resource_directory(rom_name='test')
+        assert 'Please initialize evaluation' in str(e)
+        twin.initialize_evaluation()
+        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
+        with pytest.raises(TwinModelError) as e:
+            twin.tbrom_resource_directory(rom_name='test')
+        assert 'Twin model does not include any TBROM!' in str(e)
+        model_filepath = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+        twin.initialize_evaluation()
+        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM NAMED 'test'
+        with pytest.raises(TwinModelError) as e:
+            twin.tbrom_resource_directory(rom_name='test')
+        assert 'Twin model does not include any TBROM named' in str(e)
+
+    def test_raised_errors_with_tbrom_resource_directory(self):
         wd = reinit_settings()
         model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
