@@ -559,19 +559,19 @@ class TestTwinModel:
         twin = TwinModel(model_filepath=model_filepath)
         # Raise an error if TWIN MODEL IS NOT INITIALIZED
         with pytest.raises(TwinModelError) as e:
-            twin.tbrom_resource_directory(rom_name='test')
+            twin._tbrom_resource_directory(rom_name='test')
         assert 'Please initialize evaluation' in str(e)
         twin.initialize_evaluation()
         # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
         with pytest.raises(TwinModelError) as e:
-            twin.tbrom_resource_directory(rom_name='test')
+            twin._tbrom_resource_directory(rom_name='test')
         assert 'Twin model does not include any TBROM!' in str(e)
         model_filepath = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
         twin = TwinModel(model_filepath=model_filepath)
         twin.initialize_evaluation()
         # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM NAMED 'test'
         with pytest.raises(TwinModelError) as e:
-            twin.tbrom_resource_directory(rom_name='test')
+            twin._tbrom_resource_directory(rom_name='test')
         assert 'Twin model does not include any TBROM named' in str(e)
 
     def test_clean_unit_test(self):

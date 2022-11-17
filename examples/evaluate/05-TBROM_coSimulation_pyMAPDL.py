@@ -101,7 +101,7 @@ rom_name = list(twin_model.tbrom_info)[0]
 
 directory_path = os.path.join(twin_model.model_dir, 'ROM_files')
 snapshot = os.path.join(directory_path, rom_name, 'snapshot_0.000000.bin')
-geometry = os.path.join(twin_model.tbrom_resource_directory(rom_name=rom_name), 'binaryOutputField', 'points.bin')
+geometry = os.path.join(twin_model._tbrom_resource_directory(rom_name=rom_name), 'binaryOutputField', 'points.bin')
 
 temperature_file = snapshot_to_fea(snapshot, geometry)
 
