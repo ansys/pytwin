@@ -3,6 +3,7 @@ import pytest
 import pandas as pd
 from pytwin import TwinModel
 from pytwin import TwinModelError
+from pytwin import examples
 from pytwin.settings import reinit_settings_for_unit_tests
 from pytwin.settings import get_pytwin_working_dir
 from pytwin.settings import get_pytwin_logger
@@ -552,6 +553,26 @@ class TestTwinModel:
         model1.evaluate_step_by_step(step_size=10)
         model2.evaluate_step_by_step(step_size=10)
         assert compare_dictionary(model1.outputs, model2.outputs)
+
+    def test_raised_errors_with_tbrom_resource_directory(self):
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twin = TwinModel(model_filepath=model_filepath)
+        # Raise an error if TWIN MODEL IS NOT INITIALIZED
+        with pytest.raises(TwinModelError) as e:
+            twin.tbrom_resource_directory(rom_name='test')
+        assert 'Please initialize evaluation' in str(e)
+        twin.initialize_evaluation()
+        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
+        with pytest.raises(TwinModelError) as e:
+            twin.tbrom_resource_directory(rom_name='test')
+        assert 'Twin model does not include any TBROM!' in str(e)
+        model_filepath = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+        twin.initialize_evaluation()
+        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM NAMED 'test'
+        with pytest.raises(TwinModelError) as e:
+            twin.tbrom_resource_directory(rom_name='test')
+        assert 'Twin model does not include any TBROM named' in str(e)
 
     def test_clean_unit_test(self):
         reinit_settings()
