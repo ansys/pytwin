@@ -5,7 +5,7 @@ library
 """
 import importlib.metadata as metadata
 
-__version__ = metadata.version('pytwin')
+__version__ = metadata.version("pytwin")
 
 """
 PUBLIC API TO PYTWIN SETTINGS 

@@ -26,13 +26,9 @@ import pandas as pd
 from pytwin import TwinModel
 from pytwin import examples
 
-twin_file = examples.download_file("CoupledClutches_23R1_other.twin",
-                                   "twin_files")
-csv_input = examples.download_file("CoupledClutches_input.csv",
-                                   "twin_input_files")
-twin_config = examples.download_file("CoupledClutches_config.json",
-                                     "twin_input_files")
-
+twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
+csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
+twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
 
 
 ###############################################################################
@@ -40,28 +36,27 @@ twin_config = examples.download_file("CoupledClutches_config.json",
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Post processing for results comparison.
 
-def plot_result_comparison(step_by_step_results: pd.DataFrame,
-                           batch_results: pd.DataFrame):
+
+def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd.DataFrame):
     """Compare the results obtained from 2 different simulations executed
     on the same TwinModel. The 2 results dataset are provided as Pandas
     Dataframe. The function will plot the different results for all the
-    outputs """
-    pd.set_option('display.precision', 12)
-    pd.set_option('display.max_columns', 20)
-    pd.set_option('display.expand_frame_repr', False)
+    outputs"""
+    pd.set_option("display.precision", 12)
+    pd.set_option("display.max_columns", 20)
+    pd.set_option("display.expand_frame_repr", False)
 
     # Plotting the runtime outputs
     columns = step_by_step_results.columns[1::]
     result_sets = 2  # Results from only step-by-step, batch_mode
-    fig, ax = plt.subplots(ncols=result_sets, nrows=len(columns),
-                           figsize=(18, 7))
+    fig, ax = plt.subplots(ncols=result_sets, nrows=len(columns), figsize=(18, 7))
     if len(columns) == 1:
         single_column = True
     else:
         single_column = False
 
     fig.subplots_adjust(hspace=0.5)
-    fig.set_tight_layout({"pad": .0})
+    fig.set_tight_layout({"pad": 0.0})
 
     for ind, col_name in enumerate(columns):
         # Plot runtime results
@@ -73,20 +68,18 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame,
             axes0 = ax[ind, 0]
             axes1 = ax[ind, 1]
 
-        step_by_step_results.plot(x=0, y=col_name, ax=axes0, ls=":", color='g',
-                                  title='Twin Runtime - Step by Step')
+        step_by_step_results.plot(x=0, y=col_name, ax=axes0, ls=":", color="g", title="Twin Runtime - Step by Step")
         axes0.legend(loc=2)
-        axes0.set_xlabel('Time [s]')
+        axes0.set_xlabel("Time [s]")
 
         # Plot Twin batch mode csv results
-        batch_results.plot(x=0, y=col_name, ax=axes1, ls="-.", color='g',
-                           title='Twin Runtime - Batch Mode')
+        batch_results.plot(x=0, y=col_name, ax=axes1, ls="-.", color="g", title="Twin Runtime - Batch Mode")
         axes1.legend(loc=2)
-        axes1.set_xlabel('Time [s]')
+        axes1.set_xlabel("Time [s]")
 
         if ind > 0:
-            axes0.set_title('')
-            axes1.set_title('')
+            axes0.set_title("")
+            axes1.set_title("")
 
     # Show plot
     plt.show()
@@ -107,7 +100,7 @@ number_of_datapoints = data_dimensions[0] - 1
 # Loading the Twin Runtime and instantiating it.
 
 
-print('Loading model: {}'.format(twin_file))
+print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
@@ -144,9 +137,7 @@ while data_index < number_of_datapoints:
         outputs.append(twin_model.outputs[item])
     sim_output_list_step.append(outputs)
     data_index += 1
-results_step_pd = pd.DataFrame(sim_output_list_step,
-                               columns=['Time'] + list(twin_model.outputs),
-                               dtype=float)
+results_step_pd = pd.DataFrame(sim_output_list_step, columns=["Time"] + list(twin_model.outputs), dtype=float)
 
 # ##############################################################################
 # Batch simulation mode
@@ -160,8 +151,7 @@ data_index = 0
 inputs = dict()
 for column in twin_model_input_df.columns[1::]:
     inputs[column] = twin_model_input_df[column][data_index]
-twin_model.initialize_evaluation(inputs=inputs,
-                                 json_config_filepath=twin_config)
+twin_model.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
 outputs = [twin_model.evaluation_time]
 for item in twin_model.outputs:
     outputs.append(twin_model.outputs[item])

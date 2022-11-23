@@ -54,12 +54,12 @@ sweep = [dp1, dp2, dp3]
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed on the same TwinModel. The
     results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest """
-    pd.set_option('display.precision', 12)
-    pd.set_option('display.max_columns', 20)
-    pd.set_option('display.expand_frame_repr', False)
+    variables of interest"""
+    pd.set_option("display.precision", 12)
+    pd.set_option("display.max_columns", 20)
+    pd.set_option("display.expand_frame_repr", False)
 
-    color = ['g','b','r']
+    color = ["g", "b", "r"]
     # output ordering : time, battery_loss, loads_loss, machine_loss, pack_SoC, position, speed_m, speed_ref,
     # tau_ref, tau_sns
     x0_ind = 0
@@ -74,28 +74,28 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     fig, ax = plt.subplots(ncols=1, nrows=2, figsize=(18, 7))
 
     fig.subplots_adjust(hspace=0.5)
-    fig.set_tight_layout({"pad": .0})
+    fig.set_tight_layout({"pad": 0.0})
 
     axes0 = ax[0]
 
-    results[0].plot(x=x0_ind, y=y0_ind, ax=axes0, label='{}'.format('measured speed'))
-    results[0].plot(x=x0_ind, y=z0_ind, ax=axes0, ls='-.', label='{}'.format('reference speed'))
+    results[0].plot(x=x0_ind, y=y0_ind, ax=axes0, label="{}".format("measured speed"))
+    results[0].plot(x=x0_ind, y=z0_ind, ax=axes0, ls="-.", label="{}".format("reference speed"))
 
-    axes0.set_title('Drive cycle')
-    axes0.set_xlabel(results[0].columns[x0_ind]+' [sec]')
-    axes0.set_ylabel(results[0].columns[y0_ind]+' [m/s]')
-    axes0.set_xlim((0, 32*60))
+    axes0.set_title("Drive cycle")
+    axes0.set_xlabel(results[0].columns[x0_ind] + " [sec]")
+    axes0.set_ylabel(results[0].columns[y0_ind] + " [m/s]")
+    axes0.set_xlim((0, 32 * 60))
 
     axes1 = ax[1]
 
     for ind, dp in enumerate(sweep):
         # Plot runtime results
-        results[ind].plot(x=x1_ind, y=y1_ind, ax=axes1, color=color[ind], label='{}'.format(dp))
+        results[ind].plot(x=x1_ind, y=y1_ind, ax=axes1, color=color[ind], label="{}".format(dp))
 
-    axes1.set_title('Range/distance achieved vs battery SoC')
+    axes1.set_title("Range/distance achieved vs battery SoC")
     axes1.set_xlabel(results[0].columns[x1_ind])
     axes1.set_xlim((0.1, 0.9))
-    axes1.set_ylabel(results[0].columns[y1_ind]+' [m]')
+    axes1.set_ylabel(results[0].columns[y1_ind] + " [m]")
 
     # Show plot
     plt.show()
@@ -107,7 +107,7 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
 # Loading the Twin Runtime and instantiating it.
 
 
-print('Loading model: {}'.format(twin_file))
+print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
@@ -131,11 +131,11 @@ for dp in sweep:
         for item in twin_model.outputs:
             outputs.append(twin_model.outputs[item])
         sim_output.append(outputs)
-        if twin_model.evaluation_time%1000 == 0.0:
-            print("Simulating the model with parameters {}, evaluation time = {}".format(dp,
-                                                                                         twin_model.evaluation_time))
-    sim_results = pd.DataFrame(sim_output, columns=['Time'] + list(twin_model.outputs),
-                               dtype=float)
+        if twin_model.evaluation_time % 1000 == 0.0:
+            print(
+                "Simulating the model with parameters {}, evaluation time = {}".format(dp, twin_model.evaluation_time)
+            )
+    sim_results = pd.DataFrame(sim_output, columns=["Time"] + list(twin_model.outputs), dtype=float)
     results.append(sim_results)
 
 ###############################################################################

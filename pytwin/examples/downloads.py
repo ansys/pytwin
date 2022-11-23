@@ -106,32 +106,34 @@ def _download_file(filename, directory, destination=None):
     return local_path
 
 
-def download_file(file_name: str, directory: str, force_download: Optional[bool] = False, destination: Optional[str] = None):
+def download_file(
+    file_name: str, directory: str, force_download: Optional[bool] = False, destination: Optional[str] = None
+):
     """Download a example data file.
-        Examples files are downloaded to a persistent cache to avoid
-        downloading the same file twice.
-        Parameters
-        ----------
-        file_name : str
-            Path of the file in the examples folder.
-        directory : str
-            Subfolder storing the input file
-        force_download : bool, optional
-            Force to delete file and download file again. Default value is ``False``.
-        destination : str, optional
-            Path to download files to. The default is the user's temporary folder.
-        Returns
-        -------
-        str
-            Path to the folder containing all example data files.
-        Examples
-        --------
-        Download an example result file and return the path of the file
-        #>>> from pytwin import examples
-        #>>> path = examples.download_file("CoupleClutches_22R2_other.twin", "twin_files", force_download=True)
-        #>>> path
-        'C:/Users/user/AppData/local/temp/TwinExamples'
-        """
+    Examples files are downloaded to a persistent cache to avoid
+    downloading the same file twice.
+    Parameters
+    ----------
+    file_name : str
+        Path of the file in the examples folder.
+    directory : str
+        Subfolder storing the input file
+    force_download : bool, optional
+        Force to delete file and download file again. Default value is ``False``.
+    destination : str, optional
+        Path to download files to. The default is the user's temporary folder.
+    Returns
+    -------
+    str
+        Path to the folder containing all example data files.
+    Examples
+    --------
+    Download an example result file and return the path of the file
+    #>>> from pytwin import examples
+    #>>> path = examples.download_file("CoupleClutches_22R2_other.twin", "twin_files", force_download=True)
+    #>>> path
+    'C:/Users/user/AppData/local/temp/TwinExamples'
+    """
     if not destination:
         destination = EXAMPLES_PATH
     if force_download:
@@ -148,7 +150,7 @@ def load_data(inputs: str):
     # Clean CSV headers if exported from Twin builder
     def clean_column_names(column_names):
         for name_index in range(len(column_names)):
-            clean_header = column_names[name_index].replace("\"", "").replace(" ", "").replace("]", "").replace("[", "")
+            clean_header = column_names[name_index].replace('"', "").replace(" ", "").replace("]", "").replace("[", "")
             name_components = clean_header.split(".", 1)
             # The column name should match the last word after the "." in each column
             column_names[name_index] = name_components[-1]
@@ -157,12 +159,11 @@ def load_data(inputs: str):
 
     # #### Data loading (into Pandas DataFrame) and pre-processing ###### #
     # C engine can't read rows with quotes, reading just the first row
-    input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r',\s+',
-                                  engine='python', quoting=csv.QUOTE_ALL)
+    input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r",\s+", engine="python", quoting=csv.QUOTE_ALL)
 
     # Reading all values from the csv but skipping the first row
     inputs_df = pd.read_csv(inputs, header=None, skiprows=1)
-    inputs_header_values = input_header_df.iloc[0][0].split(',')
+    inputs_header_values = input_header_df.iloc[0][0].split(",")
     clean_column_names(inputs_header_values)
     inputs_df.columns = inputs_header_values
 
