@@ -11,9 +11,12 @@ load the FEA model, apply the temperature loads coming from the Twin and perform
 
 NOTE :
 
-- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
+- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must
+have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
 
-- In order to be able to generate images files at initialization time, the ROM component included in the Twin must have the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set to 0
+- In order to be able to generate images files at initialization time, the ROM component included in the Twin must have
+the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set
+to 0
 
 - These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters
 """
@@ -28,7 +31,6 @@ NOTE :
 ###############################################################################
 # Import all necessary modules and launch an instance of MAPDL
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import os
 import struct
 
 import numpy as np
@@ -64,7 +66,7 @@ def snapshot_to_fea(snapshot_file, geometry_file):
     """Create a Pandas Dataframe containing the ROM geometry x, y , z coordinates as well as the snapshot file result"""
     with open(geometry_file, "rb") as geo, open(snapshot_file, "rb") as snp:
         nb = struct.unpack("Q", snp.read(8))[0]
-        struct.unpack("Q", geo.read(8))[0]
+        struct.unpack("Q", geo.read(8))
         res_list = []
         for i in range(nb):
             res_line = []
@@ -149,7 +151,8 @@ mapdl.slashsolu()
 with mapdl.non_interactive:
     for node, temp in zip(node_num, temperature_load_val):
         mapdl.bf(node, "TEMP", temp)
-# Use the X and Y min. bounds to select nodes from five surfaces that are to be fixed and created a component and fix all DOFs.
+# Use the X and Y min. bounds to select nodes from five surfaces that are to be fixed and created a component and fix
+# all DOFs.
 mapdl.nsel("s", "LOC", "X", Xmax)  # Select all nodes whose X coord.=Xmax
 mapdl.nsel("a", "LOC", "Y", Ymin)  # Select all nodes whose Y coord.=Ymin and add to previous selection
 mapdl.nsel("a", "LOC", "Y", Ymax)  # Select all nodes whose Y coord.=Ymax and add to previous selection

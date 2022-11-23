@@ -17,9 +17,9 @@ from pytwin.settings import pytwin_logging_is_enabled
 
 class TwinModel(Model):
     """
-    The public class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin Builder.
-    After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode) to make
-    predictions. Parametric workflows are also supported.
+    The public class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin
+    Builder. After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode)
+    to make predictions. Parametric workflows are also supported.
 
     Parameters
     ----------

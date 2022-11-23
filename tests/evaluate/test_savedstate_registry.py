@@ -125,7 +125,7 @@ class TestSavedStateRegistry:
         ss2 = SavedState()
         ss2.load(ss2_dict)
 
-        # Test appended SavedState are writen in registry file
+        # Test appended SavedState are written in registry file
         ssr = SavedStateRegistry(model_id=test_model.id, model_name=test_model.name)
         ssr.append_saved_state(ss1)
         ssr.append_saved_state(ss2)
