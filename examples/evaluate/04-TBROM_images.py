@@ -11,12 +11,19 @@ CFD mesh within Fluent.
 
 NOTE :
 
-- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
+To generate snapshot files at initialization time, the ROM component included in the Twin must have its parameter
+"field_data_storage_period" set to 0 and "store_snapshots" set to 1.
 
-- In order to be able to generate images files at initialization time, the ROM component included in the Twin must have the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set to 0
+To generate images files at initialization time, the ROM component included in the Twin must have the "Embed Geometry"
+and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set to 0.
 
-- These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters
+These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters.
 """
+
+###############################################################################
+# .. image:: /_static/TBROM_images_generation.png
+#   :width: 400pt
+#   :align: center
 
 # sphinx_gallery_thumbnail_path = '_static/TBROM_images_generation.png'
 
@@ -26,12 +33,11 @@ NOTE :
 import os
 import struct
 
-import matplotlib.pyplot as plt
-import matplotlib.image as img
 import ansys.fluent.core as pyfluent
+import matplotlib.image as img
+import matplotlib.pyplot as plt
 
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
 cfd_file = examples.download_file("T_Junction.cas.h5", "other_files")
@@ -43,49 +49,55 @@ cfd_file = examples.download_file("T_Junction.cas.h5", "other_files")
 # Defining user inputs
 
 rom_inputs = {"main_inlet_temperature": 353.15, "side_inlet_temperature": 293.15}
-rom_parameters = {"ThermalROM23R1_1_colorbar_min": 290, "ThermalROM23R1_1_colorbar_max": 360, "ThermalROM23R1_1_store_snapshots": 1}
+rom_parameters = {
+    "ThermalROM23R1_1_colorbar_min": 290,
+    "ThermalROM23R1_1_colorbar_max": 360,
+    "ThermalROM23R1_1_store_snapshots": 1,
+}
 
 ###############################################################################
 # Auxiliary functions definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Conversion of ROM snapshot for data mapping on CFD mesh.
 
+
 def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
     """Create a Fluent Interpolation file that can be loaded in Fluent and map to the CFD mesh. This is an example of
     implementation for a single field of scalar data (e.g. temperature field)
     """
 
-    with open(geometry_file, 'rb') as geo, open(snapshot_file, "rb") as snp:
-        nb = struct.unpack('Q', snp.read(8))[0]
-        struct.unpack('Q', geo.read(8))
+    with open(geometry_file, "rb") as geo, open(snapshot_file, "rb") as snp:
+        nb = struct.unpack("Q", snp.read(8))[0]
+        struct.unpack("Q", geo.read(8))
         res_list = []
         for i in range(nb):
             res_line = []
-            res_line.append(struct.unpack('d', geo.read(8))[0])
-            res_line.append(struct.unpack('d', geo.read(8))[0])
-            res_line.append(struct.unpack('d', geo.read(8))[0])
-            res_line.append(struct.unpack('d', snp.read(8))[0])
+            res_line.append(struct.unpack("d", geo.read(8))[0])
+            res_line.append(struct.unpack("d", geo.read(8))[0])
+            res_line.append(struct.unpack("d", geo.read(8))[0])
+            res_line.append(struct.unpack("d", snp.read(8))[0])
             res_list.append(res_line)
 
-    with open(outputFilePath, 'w') as ipfile:
-        ipfile.write("3\n") # IP file format
-        ipfile.write("3\n") # 2D or 3D - 3D for now
-        ipfile.write(str(len(res_list))+"\n") # number of data
+    with open(outputFilePath, "w") as ipfile:
+        ipfile.write("3\n")  # IP file format
+        ipfile.write("3\n")  # 2D or 3D - 3D for now
+        ipfile.write(str(len(res_list)) + "\n")  # number of data
         ipfile.write("1\n")  # number of field data
-        ipfile.write(field_name+"\n")  # name of field data
+        ipfile.write(field_name + "\n")  # name of field data
         for j in range(0, len(res_list[0])):
             ipfile.write("(")
             for i in range(0, len(res_list)):
-                ipfile.write(str(res_list[i][j])+"\n")
+                ipfile.write(str(res_list[i][j]) + "\n")
             ipfile.write(")\n")
 
     return outputFilePath
+
 
 ###############################################################################
 # Loading the Twin Runtime and generate the temperature results from the TBROM
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-print('Loading model: {}'.format(twin_file))
+print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 twin_model.initialize_evaluation(inputs=rom_inputs, parameters=rom_parameters)
@@ -95,14 +107,15 @@ rom_directory_path = twin_model.tbrom_directory_path
 snapshot = twin_model.get_snapshot_filepath(rom_name)
 geometry = twin_model.get_geometry_filepath(rom_name)
 
-temperature_file = snapshot_to_cfd(snapshot, geometry, "temperature",
-                                   os.path.join(rom_directory_path, rom_name, "cfd_file.ip"))
+temperature_file = snapshot_to_cfd(
+    snapshot, geometry, "temperature", os.path.join(rom_directory_path, rom_name, "cfd_file.ip")
+)
 
 ###############################################################################
 # Post-processing with image generated by point cloud based ROM Viewer
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-image = img.imread(os.path.join(rom_directory_path, rom_name, 'View1_0.000000.png'))
+image = img.imread(os.path.join(rom_directory_path, rom_name, "View1_0.000000.png"))
 plt.imshow(image)
 plt.show()
 

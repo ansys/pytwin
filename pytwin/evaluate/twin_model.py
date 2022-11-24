@@ -1,25 +1,22 @@
+import json
 import os
 import time
-import json
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from pytwin.evaluate.model import Model
-from pytwin.evaluate.saved_state_registry import SavedStateRegistry
-from pytwin.evaluate.saved_state_registry import SavedState
-from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
+from pytwin.evaluate.saved_state_registry import SavedState, SavedStateRegistry
+from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
-from pytwin.settings import get_pytwin_log_level
-from pytwin.settings import PyTwinLogLevel
-from pytwin.settings import pytwin_logging_is_enabled
+from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
 
 
 class TwinModel(Model):
     """
-    The public class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin Builder.
-    After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode) to make
-    predictions. Parametric workflows are also supported.
+    The public class to evaluate a twin model given a twin model file (with .twin extension) created with Ansys Twin
+    Builder. After being initialized, a twin model object can be evaluated with two modes (step-by-step or batch mode)
+    to make predictions. Parametric workflows are also supported.
 
     Parameters
     ----------
@@ -52,10 +49,10 @@ class TwinModel(Model):
     >>> outputs['output2'].append(twin_model.outputs['output2'])
     """
 
-    TBROM_FOLDER_NAME = 'ROM_files'
-    TBROM_SNAPSHOT_FILE_PREFIX = 'snapshot_'
-    TBROM_SNAPSHOT_EXT = '.bin'
-    TBROM_SNAPSHOT_TIME_FORMAT = '.6f'
+    TBROM_FOLDER_NAME = "ROM_files"
+    TBROM_SNAPSHOT_FILE_PREFIX = "snapshot_"
+    TBROM_SNAPSHOT_EXT = ".bin"
+    TBROM_SNAPSHOT_TIME_FORMAT = ".6f"
 
     def __init__(self, model_filepath: str):
         super().__init__()
@@ -86,12 +83,12 @@ class TwinModel(Model):
         Check provided twin model filepath is valid. Raise a TwinModelError if not.
         """
         if model_filepath is None:
-            msg = f'TwinModel cannot be called with {model_filepath} as model_filepath!'
-            msg += '\nPlease provide valid filepath to initialize the TwinModel object.'
+            msg = f"TwinModel cannot be called with {model_filepath} as model_filepath!"
+            msg += "\nPlease provide valid filepath to initialize the TwinModel object."
             raise self._raise_error(msg)
         if not os.path.exists(model_filepath):
-            msg = f'Provided twin model filepath: {model_filepath} does not exist!'
-            msg += '\nPlease provide existing filepath to initialize the TwinModel object.'
+            msg = f"Provided twin model filepath: {model_filepath} does not exist!"
+            msg += "\nPlease provide existing filepath to initialize the TwinModel object."
             raise self._raise_error(msg)
         return True
 
@@ -106,7 +103,7 @@ class TwinModel(Model):
         """
         self._warns_if_input_key_not_found(inputs_df.to_dict())
         _inputs_df = pd.DataFrame()
-        _inputs_df['Time'] = inputs_df['Time']
+        _inputs_df["Time"] = inputs_df["Time"]
         for name, value in self._inputs.items():
             if name in inputs_df:
                 _inputs_df[name] = inputs_df[name]
@@ -142,7 +139,7 @@ class TwinModel(Model):
         Twin runtime is reset in case of already initialized twin model.
         """
         if self._twin_runtime is None:
-            self._raise_error('Twin model has not been successfully instantiated!')
+            self._raise_error("Twin model has not been successfully instantiated!")
 
         if self._twin_runtime.is_model_initialized:
             self._twin_runtime.twin_reset()
@@ -164,7 +161,7 @@ class TwinModel(Model):
         try:
             tbrom_info = self._twin_runtime.twin_get_visualization_resources()
             if tbrom_info:
-                self._log_key += 'WithTBROM : {}'.format(tbrom_info)
+                self._log_key += "WithTBROM : {}".format(tbrom_info)
                 self._tbrom_info = tbrom_info
                 directory_path = os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
                 for model_name, data in tbrom_info.items():
@@ -172,9 +169,9 @@ class TwinModel(Model):
 
             self._twin_runtime.twin_initialize()
         except Exception as e:
-            msg = f'Something went wrong during model initialization!'
-            msg += f'\n{str(e)}'
-            msg += f'\nYou will find more details in model log (see {self.model_log} file)'
+            msg = f"Something went wrong during model initialization!"
+            msg += f"\n{str(e)}"
+            msg += f"\nYou will find more details in model log (see {self.model_log} file)"
             self._raise_error(msg)
 
         self._update_outputs()
@@ -193,7 +190,7 @@ class TwinModel(Model):
         """
         self._parameters = dict()
         for name in self._twin_runtime.twin_get_param_names():
-            if 'solver.' not in name:
+            if "solver." not in name:
                 self._parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
 
     def _initialize_outputs_with_none_values(self):
@@ -201,7 +198,7 @@ class TwinModel(Model):
         Initialize outputs dictionary {name:value} with None values.
         """
         output_names = self._twin_runtime.twin_get_output_names()
-        output_values = [None]*len(output_names)
+        output_values = [None] * len(output_names)
         self._outputs = dict(zip(output_names, output_values))
 
     def _instantiate_twin_model(self):
@@ -214,10 +211,12 @@ class TwinModel(Model):
                 os.mkdir(self.model_temp)
 
             # Instantiate twin runtime
-            self._twin_runtime = TwinRuntime(model_path=self._model_filepath,
-                                             load_model=True,
-                                             log_path=self.model_log,
-                                             log_level=self._get_runtime_log_level())
+            self._twin_runtime = TwinRuntime(
+                model_path=self._model_filepath,
+                load_model=True,
+                log_path=self.model_log,
+                log_level=self._get_runtime_log_level(),
+            )
             self._twin_runtime.twin_instantiate()
 
             # Create subfolder
@@ -233,8 +232,8 @@ class TwinModel(Model):
             self._initialize_outputs_with_none_values()
 
         except Exception as e:
-            msg = 'Twin model failed during instantiation!'
-            msg += f'\n{str(e)}'
+            msg = "Twin model failed during instantiation!"
+            msg += f"\n{str(e)}"
             self._raise_error(msg)
 
     def _raise_model_error(self, msg):
@@ -249,17 +248,17 @@ class TwinModel(Model):
         to be passed to the internal evaluation initialization method.
         """
         if not os.path.exists(json_filepath):
-            msg = 'Provided config filepath (for evaluation initialization) does not exist!'
-            msg += f'\nProvided filepath is: {json_filepath}'
-            msg += '\nPlease provide an existing filepath to initialize the twin model evaluation.'
+            msg = "Provided config filepath (for evaluation initialization) does not exist!"
+            msg += f"\nProvided filepath is: {json_filepath}"
+            msg += "\nPlease provide an existing filepath to initialize the twin model evaluation."
             raise self._raise_error(msg)
         try:
             with open(json_filepath) as file:
                 cfg = json.load(file)
                 return cfg
         except Exception as e:
-            msg = 'Something went wrong while reading config file!'
-            msg += f'n{str(e)}'
+            msg = "Something went wrong while reading config file!"
+            msg += f"n{str(e)}"
             self._raise_error(msg)
 
     def _update_inputs(self, inputs: dict):
@@ -285,16 +284,16 @@ class TwinModel(Model):
         Return the path of the resource directory associated with rom_name.
         """
         if self._twin_runtime is None:
-            self._raise_error('Twin model has not been successfully instantiated!')
+            self._raise_error("Twin model has not been successfully instantiated!")
 
         if not self.evaluation_is_initialized:
-            self._raise_error('Twin model evaluation has not been initialized! Please initialize evaluation.')
+            self._raise_error("Twin model evaluation has not been initialized! Please initialize evaluation.")
 
         if self.tbrom_info is None:
-            self._raise_error('Twin model does not include any TBROM!')
+            self._raise_error("Twin model does not include any TBROM!")
 
         if rom_name not in self.tbrom_info:
-            self._raise_error(f'Twin model does not include any TBROM named {rom_name}!')
+            self._raise_error(f"Twin model does not include any TBROM named {rom_name}!")
 
         return self._twin_runtime.twin_get_rom_resource_directory(rom_name)
 
@@ -302,22 +301,22 @@ class TwinModel(Model):
         if inputs is not None:
             for _input in inputs:
                 if _input not in self.inputs:
-                    if _input != 'Time':
-                        msg = f'Provided input ({_input}) has not been found in model inputs!'
+                    if _input != "Time":
+                        msg = f"Provided input ({_input}) has not been found in model inputs!"
                         self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
     def _warns_if_parameter_key_not_found(self, parameters: dict):
         if parameters is not None:
             for param in parameters:
                 if param not in self.parameters:
-                    msg = f'Provided parameter ({param}) has not been found in model parameters!'
+                    msg = f"Provided parameter ({param}) has not been found in model parameters!"
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
     @property
     def evaluation_is_initialized(self):
         """Return true if evaluation has been initialized."""
         if self._twin_runtime is None:
-            self._raise_error('Twin model has not been successfully instantiated!')
+            self._raise_error("Twin model has not been successfully instantiated!")
         return self._twin_runtime.is_model_initialized
 
     @property
@@ -438,21 +437,21 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation(json_config_filepath='path_to_your_config.json')
         >>> outputs = twin_model.outputs
         """
-        self._log_key = 'InitializeEvaluation'
+        self._log_key = "InitializeEvaluation"
 
         if json_config_filepath is None:
-            self._log_key += 'WithDictionary'
+            self._log_key += "WithDictionary"
             self._initialize_evaluation(parameters=parameters, inputs=inputs)
         else:
-            self._log_key += 'WithConfigFile'
+            self._log_key += "WithConfigFile"
             cfg = self._read_eval_init_config(json_config_filepath)
             _parameters = None
             _inputs = None
-            if 'model' in cfg:
-                if 'parameters' in cfg['model']:
-                    _parameters = cfg['model']['parameters']
-                if 'inputs' in cfg['model']:
-                    _inputs = cfg['model']['inputs']
+            if "model" in cfg:
+                if "parameters" in cfg["model"]:
+                    _parameters = cfg["model"]["parameters"]
+                if "inputs" in cfg["model"]:
+                    _inputs = cfg["model"]["inputs"]
             self._initialize_evaluation(parameters=_parameters, inputs=_inputs)
 
     def evaluate_step_by_step(self, step_size: float, inputs: dict = None):
@@ -480,16 +479,16 @@ class TwinModel(Model):
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
-        self._log_key = 'EvaluateStepByStep'
+        self._log_key = "EvaluateStepByStep"
 
         if self._twin_runtime is None:
-            self._raise_error('Twin model has not been successfully instantiated!')
+            self._raise_error("Twin model has not been successfully instantiated!")
 
         if not self.evaluation_is_initialized:
-            self._raise_error('Twin model evaluation has not been initialized! Please initialize evaluation.')
+            self._raise_error("Twin model evaluation has not been initialized! Please initialize evaluation.")
 
-        if step_size <= 0.:
-            msg = f'Step size must be strictly bigger than zero ({step_size} was provided)!'
+        if step_size <= 0.0:
+            msg = f"Step size must be strictly bigger than zero ({step_size} was provided)!"
             self._raise_error(msg)
 
         self._warns_if_input_key_not_found(inputs)
@@ -501,10 +500,10 @@ class TwinModel(Model):
             self._evaluation_time += step_size
             self._update_outputs()
         except Exception as e:
-            msg = f'Something went wrong during evaluation at time step {self._evaluation_time}:'
-            msg += f'\n{str(e)}'
-            msg += f'\nPlease reinitialize the model evaluation and restart evaluation.'
-            msg += f'\nYou will find more details in model log (see {self.model_log} file)'
+            msg = f"Something went wrong during evaluation at time step {self._evaluation_time}:"
+            msg += f"\n{str(e)}"
+            msg += f"\nPlease reinitialize the model evaluation and restart evaluation."
+            msg += f"\nYou will find more details in model log (see {self.model_log} file)"
             self._raise_error(msg)
 
     def evaluate_batch(self, inputs_df: pd.DataFrame):
@@ -539,39 +538,40 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
         >>> outputs_df = twin_model.evaluate_batch(inputs_df=inputs_df)
         """
-        self._log_key = 'EvaluateBatch'
+        self._log_key = "EvaluateBatch"
 
         if self._twin_runtime is None:
-            self._raise_error('Twin model has not been successfully instantiated!')
+            self._raise_error("Twin model has not been successfully instantiated!")
 
         if not self.evaluation_is_initialized:
-            self._raise_error('Twin model evaluation has not been initialized! Please initialize evaluation.')
+            self._raise_error("Twin model evaluation has not been initialized! Please initialize evaluation.")
 
-        if 'Time' not in inputs_df:
-            msg = 'Given inputs dataframe has no \'Time\' column!'
-            msg += f'\nExisting column labels are :{[s for s in inputs_df.columns]}'
-            msg += f'\nPlease provide a dataframe with a \'Time\' column to use batch mode evaluation.'
+        if "Time" not in inputs_df:
+            msg = "Given inputs dataframe has no 'Time' column!"
+            msg += f"\nExisting column labels are :{[s for s in inputs_df.columns]}"
+            msg += f"\nPlease provide a dataframe with a 'Time' column to use batch mode evaluation."
             self._raise_error(msg)
 
-        t0 = inputs_df['Time'][0]
-        if not np.isclose(t0, 0., atol=np.spacing(0.)):
-            msg = 'Given inputs dataframe has no time instant t=0.s!'
-            msg += f' (first provided time instant is : {t0}).'
-            msg += '\nPlease provide inputs at time instant t=0.s'
+        t0 = inputs_df["Time"][0]
+        if not np.isclose(t0, 0.0, atol=np.spacing(0.0)):
+            msg = "Given inputs dataframe has no time instant t=0.s!"
+            msg += f" (first provided time instant is : {t0})."
+            msg += "\nPlease provide inputs at time instant t=0.s"
             self._raise_error(msg)
 
         # Ensure SDK conventions are fulfilled
         _inputs_df = self._create_dataframe_inputs(inputs_df)
-        _output_col_names = ['Time'] + list(self._outputs.keys())
+        _output_col_names = ["Time"] + list(self._outputs.keys())
 
         try:
-            return self._twin_runtime.twin_simulate_batch_mode(input_df=_inputs_df,
-                                                               output_column_names=_output_col_names)
+            return self._twin_runtime.twin_simulate_batch_mode(
+                input_df=_inputs_df, output_column_names=_output_col_names
+            )
         except Exception as e:
-            msg = f'Something went wrong during batch evaluation:'
-            msg += f'\n{str(e)}'
-            msg += f'\nPlease reinitialize the model evaluation and restart evaluation.'
-            msg += f'\nYou will find more details in model log (see {self.model_log} file)'
+            msg = f"Something went wrong during batch evaluation:"
+            msg += f"\n{str(e)}"
+            msg += f"\nPlease reinitialize the model evaluation and restart evaluation."
+            msg += f"\nYou will find more details in model log (see {self.model_log} file)"
             self._raise_error(msg)
 
     def get_geometry_filepath(self, rom_name: str):
@@ -601,33 +601,32 @@ class TwinModel(Model):
         >>> available_rom_names = model.tbrom_names
         >>> geometry_filepath = TwinModel.get_geometry_filepath(rom_name=available_rom_names[0])
         """
-        self._log_key = 'GetGeometryFilePath'
+        self._log_key = "GetGeometryFilePath"
 
         if not self.evaluation_is_initialized:
-            msg = 'TwinModel has not been initialized! '
-            msg += 'Please initialize evaluation before to call the geometry file getter!'
+            msg = "TwinModel has not been initialized! "
+            msg += "Please initialize evaluation before to call the geometry file getter!"
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error('Twin model does not include any TBROM!')
+            self._raise_error("Twin model does not include any TBROM!")
 
         if rom_name not in self.tbrom_names:
-            msg = f'The provided rom_name {rom_name} has not been found in the available TBROM names. '
-            msg += f'Please call the geometry file getter with a valid TBROM name.'
-            msg += f'\n Available TBROM name are: {self.tbrom_names}'
+            msg = f"The provided rom_name {rom_name} has not been found in the available TBROM names. "
+            msg += f"Please call the geometry file getter with a valid TBROM name."
+            msg += f"\n Available TBROM name are: {self.tbrom_names}"
             self._raise_error(msg)
 
-        filepath = os.path.join(self._tbrom_resource_directory(rom_name),
-                                'binaryOutputField', 'points.bin')
+        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
 
         if not os.path.exists(filepath):
-            msg = f'Could not find the geometry file for given available rom_name: {rom_name}. '
-            msg += f'Geometry filepath you are looking for is: {filepath}'
+            msg = f"Could not find the geometry file for given available rom_name: {rom_name}. "
+            msg += f"Geometry filepath you are looking for is: {filepath}"
             self._raise_error(msg)
 
         return filepath
 
-    def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.):
+    def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
         Get the snapshot file associated to a Reduced Order Model (ROM) available in the TwinModel and evaluated at the
         given time instant. The snapshot file contains the field results of the ROM.
@@ -657,31 +656,31 @@ class TwinModel(Model):
         >>> available_rom_names = model.tbrom_names
         >>> geometry_filepath = TwinModel.get_snapshot_filepath(rom_name=available_rom_names[0])
         """
-        self._log_key = 'GetSnapshotFilePath'
+        self._log_key = "GetSnapshotFilePath"
 
         if not self.evaluation_is_initialized:
-            msg = 'TwinModel has not been initialized! '
-            msg += 'Please initialize evaluation before to call the snapshot file getter!'
+            msg = "TwinModel has not been initialized! "
+            msg += "Please initialize evaluation before to call the snapshot file getter!"
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error('Twin model does not include any TBROM!')
+            self._raise_error("Twin model does not include any TBROM!")
 
         if rom_name not in self.tbrom_names:
-            msg = f'The provided rom_name {rom_name} has not been found in the available TBROM names. '
-            msg += f'Please call the snapshot file getter with a valid TBROM name.'
-            msg += f'\n Available TBROM name are: {self.tbrom_names}'
+            msg = f"The provided rom_name {rom_name} has not been found in the available TBROM names. "
+            msg += f"Please call the snapshot file getter with a valid TBROM name."
+            msg += f"\n Available TBROM name are: {self.tbrom_names}"
             self._raise_error(msg)
 
-        filename = f'{self.TBROM_SNAPSHOT_FILE_PREFIX}'
-        filename += f'{format(evaluation_time, self.TBROM_SNAPSHOT_TIME_FORMAT)}'
-        filename += f'{self.TBROM_SNAPSHOT_EXT}'
+        filename = f"{self.TBROM_SNAPSHOT_FILE_PREFIX}"
+        filename += f"{format(evaluation_time, self.TBROM_SNAPSHOT_TIME_FORMAT)}"
+        filename += f"{self.TBROM_SNAPSHOT_EXT}"
         filepath = os.path.join(self.tbrom_directory_path, rom_name, filename)
 
         if not os.path.exists(filepath):
-            msg = f'Could not find the snapshot file for given available rom_name: {rom_name} '
-            msg += f'and evaluation_time: {evaluation_time}.'
-            msg += f'Snapshot filepath you are looking for is: {filepath}'
+            msg = f"Could not find the snapshot file for given available rom_name: {rom_name} "
+            msg += f"and evaluation_time: {evaluation_time}."
+            msg += f"Snapshot filepath you are looking for is: {filepath}"
             self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return filepath
@@ -720,7 +719,7 @@ class TwinModel(Model):
         >>> model2.load_state(model_id=model1.id, evaluation_time=model1.evaluation_time)
         >>> model2.evaluate_step_by_step(step_size=0.1)
         """
-        self._log_key = 'LoadState'
+        self._log_key = "LoadState"
 
         try:
             # Search for existing state in registry
@@ -742,8 +741,8 @@ class TwinModel(Model):
                 self._update_outputs()
 
         except Exception as e:
-            msg = f'Something went wrong while loading state:'
-            msg += f'\n{str(e)}'
+            msg = f"Something went wrong while loading state:"
+            msg += f"\n{str(e)}"
             self._raise_error(msg)
 
     def save_state(self):
@@ -766,7 +765,7 @@ class TwinModel(Model):
         >>> model2.load_state(model_id=model1.id, evaluation_time=model1.evaluation_time)
         >>> model2.evaluate_step_by_step(step_size=0.1)
         """
-        self._log_key = 'SaveState'
+        self._log_key = "SaveState"
 
         try:
             # Lazy init saved state registry for this TwinModel
@@ -785,11 +784,11 @@ class TwinModel(Model):
             self._twin_runtime.twin_save_state(save_to=ss_filepath)
             self._ss_registry.append_saved_state(ss)
         except Exception as e:
-            msg = f'Something went wrong while saving state:'
-            msg += f'\n{str(e)}'
+            msg = f"Something went wrong while saving state:"
+            msg += f"\n{str(e)}"
             self._raise_error(msg)
 
 
 class TwinModelError(Exception):
     def __str__(self):
-        return f'[TwinModelError] {self.args[0]}'
+        return f"[TwinModelError] {self.args[0]}"

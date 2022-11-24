@@ -46,7 +46,7 @@ Some of the many features in this primary PyTwin package, ``pytwin``,
 allow you to:
 
 - Use the Twin Runtimes Core SDK to build your own consumption workflows based on atomic API calls, see :ref:`ref_index_api_sdk`
-- Get access and use the Twin Evaluate module, providing an higher level abstraction implmentation of Twin Runtimes consumption workflows for direct usage and integration, see :ref:`ref_index_api_evaluate`
+- Get access and use the Twin Evaluate module, providing an higher level abstraction implementation of Twin Runtimes consumption workflows for direct usage and integration, see :ref:`ref_index_api_evaluate`
 - Get familiar with the PyTwin functionalities through multiple examples available, see :ref:`ref_example_gallery`
 
 Documentation and issues

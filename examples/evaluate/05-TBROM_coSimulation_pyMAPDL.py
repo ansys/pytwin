@@ -11,11 +11,14 @@ load the FEA model, apply the temperature loads coming from the Twin and perform
 
 NOTE :
 
-- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
+To generate snapshot files at initialization time, the ROM component included in the Twin must
+have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1.
 
-- In order to be able to generate images files at initialization time, the ROM component included in the Twin must have the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set to 0
+To generate images files at initialization time, the ROM component included in the Twin must have
+the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set
+to 0.
 
-- These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters
+These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters.
 """
 
 ###############################################################################
@@ -28,16 +31,14 @@ NOTE :
 ###############################################################################
 # Import all necessary modules and launch an instance of MAPDL
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import os
 import struct
 
+from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd
 import pyvista as pv
 
-from ansys.mapdl.core import launch_mapdl
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
 fea_file = examples.download_file("ThermalTBROM.dat", "other_files")
@@ -59,22 +60,23 @@ rom_parameters = {"ThermalROM23R1_1_store_snapshots": 1}
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Conversion of ROM snapshot for data mapping on FEA mesh.
 
+
 def snapshot_to_fea(snapshot_file, geometry_file):
-    """Create a Pandas Dataframe containing the ROM geometry x, y , z coordinates as well as the snapshot file result
-    """
-    with open(geometry_file, 'rb') as geo, open(snapshot_file, "rb") as snp:
-        nb = struct.unpack('Q', snp.read(8))[0]
-        struct.unpack('Q', geo.read(8))[0]
+    """Create a Pandas Dataframe containing the ROM geometry x, y , z coordinates as well as the snapshot file result"""
+    with open(geometry_file, "rb") as geo, open(snapshot_file, "rb") as snp:
+        nb = struct.unpack("Q", snp.read(8))[0]
+        struct.unpack("Q", geo.read(8))
         res_list = []
         for i in range(nb):
             res_line = []
-            res_line.append(struct.unpack('d', geo.read(8))[0])
-            res_line.append(struct.unpack('d', geo.read(8))[0])
-            res_line.append(struct.unpack('d', geo.read(8))[0])
-            res_line.append(struct.unpack('d', snp.read(8))[0])
+            res_line.append(struct.unpack("d", geo.read(8))[0])
+            res_line.append(struct.unpack("d", geo.read(8))[0])
+            res_line.append(struct.unpack("d", geo.read(8))[0])
+            res_line.append(struct.unpack("d", snp.read(8))[0])
             res_list.append(res_line)
 
     return pd.DataFrame(res_list)
+
 
 ###############################################################################
 # Import and save the mesh.
@@ -92,7 +94,7 @@ grid = mapdl.mesh.grid  # save mesh as a VTK object
 # Loading the Twin Runtime and generate the temperature results for FEA load
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-print('Loading model: {}'.format(twin_file))
+print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 twin_model.initialize_evaluation(inputs=cfd_inputs, parameters=rom_parameters)
@@ -148,19 +150,14 @@ mapdl.slashsolu()
 with mapdl.non_interactive:
     for node, temp in zip(node_num, temperature_load_val):
         mapdl.bf(node, "TEMP", temp)
-# Use the X and Y min. bounds to select nodes from five surfaces that are to be fixed and created a component and fix all DOFs.
+# Use the X and Y min. bounds to select nodes from five surfaces that are to be fixed and created a component and fix
+# all DOFs.
 mapdl.nsel("s", "LOC", "X", Xmax)  # Select all nodes whose X coord.=Xmax
-mapdl.nsel(
-    "a", "LOC", "Y", Ymin
-)  # Select all nodes whose Y coord.=Ymin and add to previous selection
-mapdl.nsel(
-    "a", "LOC", "Y", Ymax
-)  # Select all nodes whose Y coord.=Ymax and add to previous selection
+mapdl.nsel("a", "LOC", "Y", Ymin)  # Select all nodes whose Y coord.=Ymin and add to previous selection
+mapdl.nsel("a", "LOC", "Y", Ymax)  # Select all nodes whose Y coord.=Ymax and add to previous selection
 mapdl.cm("fixed_nodes", "NODE")  # Create a nodal component 'fixed_nodes'
 mapdl.allsel()  # Revert active selection to full model
-mapdl.d(
-    "fixed_nodes", "all", 0
-)  # Impose fully fixed constraint on component created earlier
+mapdl.d("fixed_nodes", "all", 0)  # Impose fully fixed constraint on component created earlier
 
 # Solve the model
 output = mapdl.solve()

@@ -2,23 +2,26 @@ import os
 
 import pytest
 
-from tests.utilities import compare_dictionary
-from pytwin.evaluate.saved_state_registry import SavedState
-from pytwin.evaluate.saved_state_registry import SavedStateError
-from pytwin.evaluate.saved_state_registry import SavedStateRegistry
-from pytwin.evaluate.saved_state_registry import SavedStateRegistryError
-from pytwin.evaluate.model import Model
 from pytwin import get_pytwin_log_file
+from pytwin.evaluate.model import Model
+from pytwin.evaluate.saved_state_registry import (
+    SavedState,
+    SavedStateError,
+    SavedStateRegistry,
+    SavedStateRegistryError,
+)
+from tests.utilities import compare_dictionary
 
-
-UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), 'unit_test_wd')
-UNIT_TEST_MODEL_ID = '1234abcd'
-UNIT_TEST_MODEL_NAME = 'test_model'
+UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
+UNIT_TEST_MODEL_ID = "1234abcd"
+UNIT_TEST_MODEL_NAME = "test_model"
 
 
 def reinit_registry():
-    from pytwin.settings import reinit_settings_for_unit_tests
     import shutil
+
+    from pytwin.settings import reinit_settings_for_unit_tests
+
     reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):
         shutil.rmtree(UNIT_TEST_WD)
@@ -31,11 +34,13 @@ def reinit_registry():
 
 class TestSavedState:
     def test_dump(self):
-        ref_dict = {SavedState.ID_KEY: '1234abcd',
-                    SavedState.TIME_KEY: 0.12345678,
-                    SavedState.INPUTS_KEY: {'input1': 1., 'input2': 2.},
-                    SavedState.OUTPUTS_KEY: {'output1': 11., 'output2': 22.},
-                    SavedState.PARAMETERS_KEY: {'param1': 0.1, 'param2': 0.2}}
+        ref_dict = {
+            SavedState.ID_KEY: "1234abcd",
+            SavedState.TIME_KEY: 0.12345678,
+            SavedState.INPUTS_KEY: {"input1": 1.0, "input2": 2.0},
+            SavedState.OUTPUTS_KEY: {"output1": 11.0, "output2": 22.0},
+            SavedState.PARAMETERS_KEY: {"param1": 0.1, "param2": 0.2},
+        }
 
         ss = SavedState()
 
@@ -59,11 +64,13 @@ class TestSavedState:
             assert id_store.count(ss._id) == 1
 
     def test_load_dump_x2(self):
-        ref_dict = {SavedState.ID_KEY: '1234abcd',
-                    SavedState.TIME_KEY: 0.12345678,
-                    SavedState.INPUTS_KEY: {'input1': 1., 'input2': 2.},
-                    SavedState.OUTPUTS_KEY: {'output1': 11., 'output2': 22.},
-                    SavedState.PARAMETERS_KEY: {'param1': 0.1, 'param2': 0.2}}
+        ref_dict = {
+            SavedState.ID_KEY: "1234abcd",
+            SavedState.TIME_KEY: 0.12345678,
+            SavedState.INPUTS_KEY: {"input1": 1.0, "input2": 2.0},
+            SavedState.OUTPUTS_KEY: {"output1": 11.0, "output2": 22.0},
+            SavedState.PARAMETERS_KEY: {"param1": 0.1, "param2": 0.2},
+        }
 
         ss = SavedState()
         ss.load(ref_dict)
@@ -74,51 +81,60 @@ class TestSavedState:
         assert compare_dictionary(dumped_dict, dumped_dict2)
 
     def test_raise_error(self):
-        wrong_dictionaries = [{},
-                              {SavedState.ID_KEY: '1234abcd'},
-                              {SavedState.ID_KEY: '1234abcd',
-                               SavedState.TIME_KEY: 0.12345678},
-                              {SavedState.ID_KEY: '1234abcd',
-                               SavedState.TIME_KEY: 0.12345678,
-                               SavedState.INPUTS_KEY: {'input1': 1., 'input2': 2.}},
-                              {SavedState.ID_KEY: '1234abcd',
-                               SavedState.TIME_KEY: 0.12345678,
-                               SavedState.INPUTS_KEY: {'input1': 1., 'input2': 2.},
-                               SavedState.OUTPUTS_KEY: {'output1': 11., 'output2': 22.}}]
+        wrong_dictionaries = [
+            {},
+            {SavedState.ID_KEY: "1234abcd"},
+            {SavedState.ID_KEY: "1234abcd", SavedState.TIME_KEY: 0.12345678},
+            {
+                SavedState.ID_KEY: "1234abcd",
+                SavedState.TIME_KEY: 0.12345678,
+                SavedState.INPUTS_KEY: {"input1": 1.0, "input2": 2.0},
+            },
+            {
+                SavedState.ID_KEY: "1234abcd",
+                SavedState.TIME_KEY: 0.12345678,
+                SavedState.INPUTS_KEY: {"input1": 1.0, "input2": 2.0},
+                SavedState.OUTPUTS_KEY: {"output1": 11.0, "output2": 22.0},
+            },
+        ]
         for wrong_dict in wrong_dictionaries:
             with pytest.raises(SavedStateError) as e:
                 ss = SavedState()
                 ss.load(wrong_dict)
-            assert 'Meta data is corrupted!' in str(e)
+            assert "Meta data is corrupted!" in str(e)
 
 
 class TestSavedStateRegistry:
     def test_append_and_extract_saved_state(self):
         # Initialize unit test
         test_model = reinit_registry()
-        ss1_dict = {SavedState.ID_KEY: '1234abcd',
-                    SavedState.TIME_KEY: 0.12345678,
-                    SavedState.INPUTS_KEY: {'input1': 1., 'input2': 2.},
-                    SavedState.OUTPUTS_KEY: {'output1': 11., 'output2': 22.},
-                    SavedState.PARAMETERS_KEY: {'param1': 0.1, 'param2': 0.2}}
+        ss1_dict = {
+            SavedState.ID_KEY: "1234abcd",
+            SavedState.TIME_KEY: 0.12345678,
+            SavedState.INPUTS_KEY: {"input1": 1.0, "input2": 2.0},
+            SavedState.OUTPUTS_KEY: {"output1": 11.0, "output2": 22.0},
+            SavedState.PARAMETERS_KEY: {"param1": 0.1, "param2": 0.2},
+        }
         ss1 = SavedState()
         ss1.load(ss1_dict)
-        ss2_dict = {SavedState.ID_KEY: '1234abcdBIS',
-                    SavedState.TIME_KEY: 1.12345678,
-                    SavedState.INPUTS_KEY: {'input1': 11., 'input2': 22.},
-                    SavedState.OUTPUTS_KEY: {'output1': 111., 'output2': 222.},
-                    SavedState.PARAMETERS_KEY: {'param1': 1.1, 'param2': 2.2}}
+        ss2_dict = {
+            SavedState.ID_KEY: "1234abcdBIS",
+            SavedState.TIME_KEY: 1.12345678,
+            SavedState.INPUTS_KEY: {"input1": 11.0, "input2": 22.0},
+            SavedState.OUTPUTS_KEY: {"output1": 111.0, "output2": 222.0},
+            SavedState.PARAMETERS_KEY: {"param1": 1.1, "param2": 2.2},
+        }
         ss2 = SavedState()
         ss2.load(ss2_dict)
 
-        # Test appended SavedState are writen in registry file
+        # Test appended SavedState are written in registry file
         ssr = SavedStateRegistry(model_id=test_model.id, model_name=test_model.name)
         ssr.append_saved_state(ss1)
         ssr.append_saved_state(ss2)
-        with open(ssr.registry_filepath, 'r') as ssr_fp:
+        with open(ssr.registry_filepath, "r") as ssr_fp:
             ssr_str = ssr_fp.readlines()
-        assert ss1_dict[SavedState.ID_KEY] in ''.join(ssr_str)
-        assert ss2_dict[SavedState.ID_KEY] in ''.join(ssr_str)
+        assert ss1_dict[SavedState.ID_KEY] in "".join(ssr_str)
+        assert ss2_dict[SavedState.ID_KEY] in "".join(ssr_str)
 
         # Test extracted SavedState are consistent with appended one
         ssr = SavedStateRegistry(model_id=test_model.id, model_name=test_model.name)
@@ -129,15 +145,15 @@ class TestSavedStateRegistry:
 
         # Test SavedState extraction with large epsilon
         ssr = SavedStateRegistry(model_id=test_model.id, model_name=test_model.name)
-        extracted_ss1 = ssr.extract_saved_state(simulation_time=0.12345678, epsilon=2.)
+        extracted_ss1 = ssr.extract_saved_state(simulation_time=0.12345678, epsilon=2.0)
         assert compare_dictionary(extracted_ss1.dump(), ss1.dump())
         log_file = get_pytwin_log_file()
-        with open(log_file, 'r') as fp:
+        with open(log_file, "r") as fp:
             log_lines = fp.readlines()
-        assert 'Multiple saved states were found! Using first one' in ''.join(log_lines)
+        assert "Multiple saved states were found! Using first one" in "".join(log_lines)
 
     def test_raise_error(self):
         # Raise error if model dir does not exist
         with pytest.raises(SavedStateRegistryError) as e:
-            SavedStateRegistry(model_id='unknown', model_name='unknown')
-        assert 'Please use an existing model id and/or model name' in str(e.value)
+            SavedStateRegistry(model_id="unknown", model_name="unknown")
+        assert "Please use an existing model id and/or model name" in str(e.value)

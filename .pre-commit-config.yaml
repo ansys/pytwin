@@ -1,3 +1,4 @@
+exclude: "pytwin/twin_runtime/"
 repos:
 
 - repo: https://github.com/psf/black
@@ -19,10 +20,3 @@ repos:
   rev: v2.1.0
   hooks:
   - id: codespell
-
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.1.1
-  hooks:
-  - id: pydocstyle
-    additional_dependencies: [toml]
-    exclude: "tests/"

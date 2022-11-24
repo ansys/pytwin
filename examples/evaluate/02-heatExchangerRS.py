@@ -27,8 +27,7 @@ import matplotlib.pyplot as plt
 import numpy
 import pandas as pd
 
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
 
@@ -50,12 +49,12 @@ step = 50.0
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on the TwinModel. The
     results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest """
-    pd.set_option('display.precision', 12)
-    pd.set_option('display.max_columns', 20)
-    pd.set_option('display.expand_frame_repr', False)
+    variables of interest"""
+    pd.set_option("display.precision", 12)
+    pd.set_option("display.max_columns", 20)
+    pd.set_option("display.expand_frame_repr", False)
 
-    color = ['g']
+    color = ["g"]
     # output ordering : T_inner, T1_out, T_outer, T2_out, T3_out
     x_ind = 0
     y0_ind = 1
@@ -68,19 +67,19 @@ def plot_result_comparison(results: pd.DataFrame):
     fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(18, 7))
 
     fig.subplots_adjust(hspace=0.5)
-    fig.set_tight_layout({"pad": .0})
+    fig.set_tight_layout({"pad": 0.0})
 
     axes0 = ax
 
-    results.plot(x=x_ind, y=y0_ind, ax=axes0, ls='-.', label='{}'.format('T inner'))
-    results.plot(x=x_ind, y=y1_ind, ax=axes0, ls='-.', label='{}'.format('T1'))
-    results.plot(x=x_ind, y=y2_ind, ax=axes0, ls='-.', label='{}'.format('T2'))
-    results.plot(x=x_ind, y=y3_ind, ax=axes0, ls='-.', label='{}'.format('T3'))
-    results.plot(x=x_ind, y=y4_ind, ax=axes0, ls='-.', label='{}'.format('T outer'))
+    results.plot(x=x_ind, y=y0_ind, ax=axes0, ls="-.", label="{}".format("T inner"))
+    results.plot(x=x_ind, y=y1_ind, ax=axes0, ls="-.", label="{}".format("T1"))
+    results.plot(x=x_ind, y=y2_ind, ax=axes0, ls="-.", label="{}".format("T2"))
+    results.plot(x=x_ind, y=y3_ind, ax=axes0, ls="-.", label="{}".format("T3"))
+    results.plot(x=x_ind, y=y4_ind, ax=axes0, ls="-.", label="{}".format("T outer"))
 
-    axes0.set_title('Heat Exchanger thermal response')
-    axes0.set_xlabel(results.columns[x_ind]+' [W]')
-    axes0.set_ylabel('Temperature [deg C]')
+    axes0.set_title("Heat Exchanger thermal response")
+    axes0.set_xlabel(results.columns[x_ind] + " [W]")
+    axes0.set_ylabel("Temperature [deg C]")
 
     # Show plot
     plt.show()
@@ -92,7 +91,7 @@ def plot_result_comparison(results: pd.DataFrame):
 # Loading the Twin Runtime and instantiating it.
 
 
-print('Loading model: {}'.format(twin_file))
+print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
@@ -105,7 +104,7 @@ twin_model = TwinModel(twin_file)
 
 results = []
 input_name = list(twin_model.inputs.keys())[0]
-for dp in numpy.linspace(start=heat_flow_min, stop=heat_flow_max, num=int((heat_flow_max-heat_flow_min)/step+1)):
+for dp in numpy.linspace(start=heat_flow_min, stop=heat_flow_max, num=int((heat_flow_max - heat_flow_min) / step + 1)):
 
     # Twin initialization with the right input values and collection of initial outputs values
     dp_input = {input_name: dp}
@@ -114,7 +113,7 @@ for dp in numpy.linspace(start=heat_flow_min, stop=heat_flow_max, num=int((heat_
     for item in twin_model.outputs:
         outputs.append(twin_model.outputs[item])
     results.append(outputs)
-    if dp%1000 == 0.0:
+    if dp % 1000 == 0.0:
         print("Simulating the model with input {}".format(dp))
 sim_results = pd.DataFrame(results, columns=[input_name] + list(twin_model.outputs), dtype=float)
 

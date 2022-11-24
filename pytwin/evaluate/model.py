@@ -1,9 +1,7 @@
-import uuid
 import os
-from pytwin import PyTwinLogLevel
-from pytwin import get_pytwin_logger
-from pytwin import pytwin_logging_is_enabled
-from pytwin import get_pytwin_working_dir
+import uuid
+
+from pytwin import PyTwinLogLevel, get_pytwin_logger, get_pytwin_working_dir, pytwin_logging_is_enabled
 from pytwin.settings import PYTWIN_SETTINGS
 
 
@@ -14,8 +12,9 @@ class Model:
 
     A Base class can overload the raise_model_error(self, msg) method to provide its own exception.
     """
+
     def __init__(self):
-        self._id = f'{uuid.uuid4()}'[0:8]
+        self._id = f"{uuid.uuid4()}"[0:8]
         self._model_name = None
         self._log_key = None
 
@@ -23,7 +22,7 @@ class Model:
         """
         Use this method in base class to log message at key steps in the code logic.
         """
-        msg = f'[{self._model_name}.{self._id}][{self._log_key}] {msg}'
+        msg = f"[{self._model_name}.{self._id}][{self._log_key}] {msg}"
         logger = get_pytwin_logger()
         if pytwin_logging_is_enabled():
             if level == PyTwinLogLevel.PYTWIN_LOG_DEBUG:
@@ -68,7 +67,7 @@ class Model:
     @property
     def model_dir(self):
         """Model directory (within the global working directory)"""
-        return os.path.join(get_pytwin_working_dir(), f'{self._model_name}.{self._id}')
+        return os.path.join(get_pytwin_working_dir(), f"{self._model_name}.{self._id}")
 
     @property
     def model_temp(self):
@@ -79,14 +78,14 @@ class Model:
     def model_log(self):
         """Path to model log file that is used at TwinRuntime instantiation (because we don't know the model name before
         having instantiated it and this can't use the model_dir in the log file path that is given at instantiation)."""
-        return os.path.join(self.model_temp, f'{self._id}.log')
+        return os.path.join(self.model_temp, f"{self._id}.log")
 
     @property
     def model_log_link(self):
         """Path to symbolic link to the log file in the temporary folder and that is stored in the model_dir."""
-        return os.path.join(self.model_dir, f'link.log')
+        return os.path.join(self.model_dir, f"link.log")
 
 
 class ModelError(Exception):
     def __str__(self):
-        return f'[ModelError] {self.args[0]}'
+        return f"[ModelError] {self.args[0]}"
