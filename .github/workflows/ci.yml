@@ -26,5 +26,4 @@ jobs:
         uses: pyansys/actions/code-style@main
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: 'pyproject.toml'
+          use-python-cache: 'pip'
