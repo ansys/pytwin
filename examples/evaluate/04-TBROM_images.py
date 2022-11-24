@@ -11,15 +11,19 @@ CFD mesh within Fluent.
 
 NOTE :
 
-- In order to be able to generate snapshot files at initialization time, the ROM component included in the Twin must
-have its parameter "field_data_storage_period" set to 0 and "store_snapshots" set to 1
+To generate snapshot files at initialization time, the ROM component included in the Twin must have its parameter
+"field_data_storage_period" set to 0 and "store_snapshots" set to 1.
 
-- In order to be able to generate images files at initialization time, the ROM component included in the Twin must have
-the "Embed Geometry" and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set
-to 0
+To generate images files at initialization time, the ROM component included in the Twin must have the "Embed Geometry"
+and "Generate Image" options enabled at export time, and its parameter "viewX_storage_period" set to 0.
 
-- These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters
+These parameters can be defined in the Twin Builder subsheet before Twin compilation, or exposed as Twin parameters.
 """
+
+###############################################################################
+# .. image:: /_static/TBROM_images_generation.png
+#   :width: 400pt
+#   :align: center
 
 # sphinx_gallery_thumbnail_path = '_static/TBROM_images_generation.png'
 
