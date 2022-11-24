@@ -18,21 +18,13 @@ concurrency:
 
 jobs:
 
-  style:
+  code-style:
     name: Code style
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4.3.0
+      - name: "Run PyAnsys code style checks"
+        uses: pyansys/actions/code-style@main
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: 'pyproject.toml'
-
-      - name: Install pre-commit
-        run: pip install pre-commit
-
-      - name: Run pre-commit
-        run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
