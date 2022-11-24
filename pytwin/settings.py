@@ -1,8 +1,8 @@
+from enum import Enum
+import logging
 import os
 import shutil
 import tempfile
-import logging
-from enum import Enum
 
 
 class PyTwinLogLevel(Enum):

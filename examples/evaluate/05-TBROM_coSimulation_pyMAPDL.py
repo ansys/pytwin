@@ -33,13 +33,12 @@ to 0
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import struct
 
+from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd
 import pyvista as pv
 
-from ansys.mapdl.core import launch_mapdl
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
 fea_file = examples.download_file("ThermalTBROM.dat", "other_files")

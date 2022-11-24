@@ -1,17 +1,17 @@
 import os
 import time
 
-import pytest
 import pandas as pd
+import pytest
 
-from pytwin import TwinModel
-from pytwin import TwinModelError
-from pytwin import examples
-from pytwin.settings import reinit_settings_for_unit_tests
-from pytwin.settings import get_pytwin_working_dir
-from pytwin.settings import get_pytwin_logger
-from pytwin.settings import get_pytwin_log_file
-from pytwin.settings import modify_pytwin_working_dir
+from pytwin import TwinModel, TwinModelError, examples
+from pytwin.settings import (
+    get_pytwin_log_file,
+    get_pytwin_logger,
+    get_pytwin_working_dir,
+    modify_pytwin_working_dir,
+    reinit_settings_for_unit_tests,
+)
 from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
@@ -22,8 +22,9 @@ UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
 
 def reinit_settings():
-    from pytwin.settings import reinit_settings_for_unit_tests
     import shutil
+
+    from pytwin.settings import reinit_settings_for_unit_tests
 
     reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):

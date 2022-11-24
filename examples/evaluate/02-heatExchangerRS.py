@@ -27,8 +27,7 @@ import matplotlib.pyplot as plt
 import numpy
 import pandas as pd
 
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
 

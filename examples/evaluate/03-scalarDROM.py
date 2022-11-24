@@ -30,9 +30,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from pytwin import modify_pytwin_working_dir
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples, modify_pytwin_working_dir
 
 twin_file = examples.download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
 csv_input = examples.download_file("HX_scalarDRB_input.csv", "twin_input_files")

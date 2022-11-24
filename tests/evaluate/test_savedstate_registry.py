@@ -2,14 +2,15 @@ import os
 
 import pytest
 
-from tests.utilities import compare_dictionary
-from pytwin.evaluate.saved_state_registry import SavedState
-from pytwin.evaluate.saved_state_registry import SavedStateError
-from pytwin.evaluate.saved_state_registry import SavedStateRegistry
-from pytwin.evaluate.saved_state_registry import SavedStateRegistryError
-from pytwin.evaluate.model import Model
 from pytwin import get_pytwin_log_file
-
+from pytwin.evaluate.model import Model
+from pytwin.evaluate.saved_state_registry import (
+    SavedState,
+    SavedStateError,
+    SavedStateRegistry,
+    SavedStateRegistryError,
+)
+from tests.utilities import compare_dictionary
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 UNIT_TEST_MODEL_ID = "1234abcd"
@@ -17,8 +18,9 @@ UNIT_TEST_MODEL_NAME = "test_model"
 
 
 def reinit_registry():
-    from pytwin.settings import reinit_settings_for_unit_tests
     import shutil
+
+    from pytwin.settings import reinit_settings_for_unit_tests
 
     reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):

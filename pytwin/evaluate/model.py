@@ -1,9 +1,7 @@
-import uuid
 import os
-from pytwin import PyTwinLogLevel
-from pytwin import get_pytwin_logger
-from pytwin import pytwin_logging_is_enabled
-from pytwin import get_pytwin_working_dir
+import uuid
+
+from pytwin import PyTwinLogLevel, get_pytwin_logger, get_pytwin_working_dir, pytwin_logging_is_enabled
 from pytwin.settings import PYTWIN_SETTINGS
 
 

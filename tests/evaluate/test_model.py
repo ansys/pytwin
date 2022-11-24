@@ -1,15 +1,15 @@
 import os
-from pytwin import PyTwinLogLevel
-from pytwin import get_pytwin_log_file
-from pytwin.evaluate.model import Model
 
+from pytwin import PyTwinLogLevel, get_pytwin_log_file
+from pytwin.evaluate.model import Model
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
 
 def reinit_settings():
-    from pytwin.settings import reinit_settings_for_unit_tests
     import shutil
+
+    from pytwin.settings import reinit_settings_for_unit_tests
 
     reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):

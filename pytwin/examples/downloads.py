@@ -6,14 +6,15 @@ Examples
 #>>> filename
 '/home/user/.local/share/TwinExamples/twin/CoupleClutches_22R2_other.twin'
 """
+import ast
+import csv
 import os
 import shutil
+import tempfile
 from typing import Optional
 import urllib.request
 import zipfile
-import tempfile
-import ast
-import csv
+
 import pandas as pd
 
 tmpfold = tempfile.gettempdir()

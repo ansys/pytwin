@@ -1,2 +1,1 @@
-from .downloads import download_file
-from .downloads import load_data
+from .downloads import download_file, load_data

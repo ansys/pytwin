@@ -29,12 +29,11 @@ to 0
 import os
 import struct
 
-import matplotlib.pyplot as plt
-import matplotlib.image as img
 import ansys.fluent.core as pyfluent
+import matplotlib.image as img
+import matplotlib.pyplot as plt
 
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
 cfd_file = examples.download_file("T_Junction.cas.h5", "other_files")

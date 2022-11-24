@@ -6,6 +6,11 @@ repos:
   hooks:
   - id: black
 
+- repo: https://github.com/pycqa/isort
+  rev: 5.10.1
+  hooks:
+  - id: isort
+
 - repo: https://github.com/PyCQA/flake8
   rev: 5.0.4
   hooks:
@@ -15,10 +20,3 @@ repos:
   rev: v2.1.0
   hooks:
   - id: codespell
-
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.1.1
-  hooks:
-  - id: pydocstyle
-    additional_dependencies: [toml]
-    exclude: "tests/"

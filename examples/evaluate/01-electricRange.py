@@ -28,8 +28,7 @@ effects on the overall electric range
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from pytwin import TwinModel
-from pytwin import examples
+from pytwin import TwinModel, examples
 
 twin_file = examples.download_file("ElectricRangeCS_23R1_other.twin", "twin_files")
 
