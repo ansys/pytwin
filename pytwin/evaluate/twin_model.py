@@ -49,10 +49,12 @@ class TwinModel(Model):
     >>> outputs['output2'].append(twin_model.outputs['output2'])
     """
 
+    TBROM_FILENAME_TIME_FORMAT = ".6f"
     TBROM_FOLDER_NAME = "ROM_files"
+    TBROM_IMAGE_EXT = ".png"
+    TBROM_VIEWS_KEY = "views"
     TBROM_SNAPSHOT_FILE_PREFIX = "snapshot_"
     TBROM_SNAPSHOT_EXT = ".bin"
-    TBROM_SNAPSHOT_TIME_FORMAT = ".6f"
 
     def __init__(self, model_filepath: str):
         super().__init__()
@@ -574,6 +576,126 @@ class TwinModel(Model):
             msg += f"\nYou will find more details in model log (see {self.model_log} file)"
             self._raise_error(msg)
 
+    def get_available_view_names(self, rom_name: str):
+        """
+        Get a list of available view names for a given Reduced Order Model (ROM) available in the TwinModel.
+
+        Parameters
+        ----------
+        rom_name : str
+            This is the name of a ROM model that is available in the TwinModel. See TwinModel.tbrom_names property to
+            get a list of available ROM model.
+
+        Raises
+        ------
+        TwinModelError:
+            It raises an error if TwinModel has not been initialized.
+            It raises an error if TwinModel does not include any TBROM.
+            It raises an error if rom_name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.initialize_evaluation()
+        >>> model.get_available_view_names(rom_name=model.tbrom_names[0])
+        """
+        self._log_key = "GetImageViewNames"
+
+        if not self.evaluation_is_initialized:
+            msg = "TwinModel has not been initialized! "
+            msg += "Please initialize evaluation before to call this method!"
+            self._raise_error(msg)
+
+        if self.tbrom_info is None:
+            self._raise_error("Twin model does not include any TBROM!")
+
+        if rom_name not in self.tbrom_names:
+            msg = f"The provided rom_name {rom_name} has not been found in the available TBROM names. "
+            msg += f"Please call this method with a valid TBROM name."
+            msg += f"\n Available TBROM name are: {self.tbrom_names}"
+            self._raise_error(msg)
+
+        view_names = list(self._tbrom_info[rom_name][self.TBROM_VIEWS_KEY])
+
+        if len(view_names) == 0:
+            msg = f"No views are available for given rom_name: {rom_name}."
+            self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
+        return view_names
+
+    def get_image_filepath(self, rom_name: str, view_name: str, evaluation_time: float = 0.0):
+        """
+        Get the image file associated to a Reduced Order Model (ROM) available in the TwinModel and evaluated at the
+        given time instant. The image file shows the field results of the ROM in the given predefined view.
+
+        Parameters
+        ----------
+        rom_name : str
+            This is the name of a ROM model that is available in the TwinModel. See TwinModel.tbrom_names property to
+            get a list of available ROM model.
+        view_name : str
+            The view name associated to the rendering view with which the ROM results are displayed. See
+            TwinModel.get_available_view_names method to get a list of available rendering view names for a given ROM.
+        evaluation_time: float
+            This is the evaluation time at which you want to get the snapshot file. The method returns None if no
+            snapshot file is available at this evaluation_time. Two evaluation times can be distinguished up to 6 digits
+            after the comma.
+
+        Raises
+        ------
+        TwinModelError:
+            It raises an error if TwinModel has not been initialized.
+            It raises an error if TwinModel does not include any TBROM.
+            It raises an error if rom_name is not available.
+            It raises an error if view_name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.initialize_evaluation()
+        >>> rom_name = model.tbrom_names[0]
+        >>> view_name = model.get_available_view_names(rom_name)[0]
+        >>> geometry_filepath = TwinModel.get_image_filepath(rom_name, view_name)
+        """
+        self._log_key = "GetImageFilePath"
+
+        if not self.evaluation_is_initialized:
+            msg = "TwinModel has not been initialized! "
+            msg += "Please initialize evaluation before to call this method!"
+            self._raise_error(msg)
+
+        if self.tbrom_info is None:
+            self._raise_error("Twin model does not include any TBROM!")
+
+        if rom_name not in self.tbrom_names:
+            msg = f"The provided rom_name {rom_name} has not been found in the available TBROM names. "
+            msg += f"Please call this method with a valid TBROM name."
+            msg += f"\n Available TBROM name are: {self.tbrom_names}"
+            self._raise_error(msg)
+
+        view_names = self.get_available_view_names(rom_name)
+        if view_name not in view_names:
+            msg = f"The provided view_name {view_name} is not available for rom_name {rom_name}."
+            msg += f"Please call this method with a valid view name."
+            msg += f'\n Available view name for "{rom_name}" are: {view_names}'
+            self._raise_error(msg)
+
+        filename = f"{view_name}_"
+        filename += f"{format(evaluation_time, self.TBROM_FILENAME_TIME_FORMAT)}"
+        filename += f"{self.TBROM_IMAGE_EXT}"
+        filepath = os.path.join(self.tbrom_directory_path, rom_name, filename)
+
+        if not os.path.exists(filepath):
+            msg = f"Could not find the image file for given available rom_name: {rom_name}, "
+            msg += f"available view_name: {view_name} "
+            msg += f"and evaluation_time: {evaluation_time}."
+            msg += f"Image filepath you are looking for is: {filepath}"
+            self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
+        return filepath
+
     def get_geometry_filepath(self, rom_name: str):
         """
         Get the geometry file associated to a Reduced Order Model (ROM) available in the TwinModel. The geometry file
@@ -673,7 +795,7 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         filename = f"{self.TBROM_SNAPSHOT_FILE_PREFIX}"
-        filename += f"{format(evaluation_time, self.TBROM_SNAPSHOT_TIME_FORMAT)}"
+        filename += f"{format(evaluation_time, self.TBROM_FILENAME_TIME_FORMAT)}"
         filename += f"{self.TBROM_SNAPSHOT_EXT}"
         filepath = os.path.join(self.tbrom_directory_path, rom_name, filename)
 
