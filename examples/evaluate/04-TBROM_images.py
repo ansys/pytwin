@@ -1,7 +1,7 @@
 """.. _ref_example_TBROM_images:
 
-TBROM example for images generation
------------------------------------
+3D field ROM example for images generation
+------------------------------------------
 
 This example shows how PyTwin can be used to load and evaluate a Twin model in order to visualize ROM results in
 the form of images with predefined views. The script takes user inputs to evaluate the ROM and will display the

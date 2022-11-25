@@ -1,7 +1,7 @@
 """.. _ref_example_TBROM_cosim_pyMAPDL:
 
-TBROM co-simulation with FEA model
-----------------------------------
+3D field ROM co-simulation with FEA model
+-----------------------------------------
 
 This example shows how PyTwin can be used to load and evaluate a Twin model in order to predict CFD results, in
 the form of temperature field, and use them as inputs for a FEA thermal-structural analysis of T-junction which
