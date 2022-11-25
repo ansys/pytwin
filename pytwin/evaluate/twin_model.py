@@ -748,6 +748,48 @@ class TwinModel(Model):
 
         return filepath
 
+    def get_rom_directory(self, rom_name):
+        """
+        Get working directory path for a given Reduced Order Model (ROM) available in the TwinModel.
+
+        Parameters
+        ----------
+        rom_name : str
+            This is the name of a ROM model that is available in the TwinModel. See TwinModel.tbrom_names property to
+            get a list of available ROM model.
+
+        Raises
+        ------
+        TwinModelError:
+            It raises an error if TwinModel has not been initialized.
+            It raises an error if TwinModel does not include any TBROM.
+            It raises an error if rom_name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.initialize_evaluation()
+        >>> model.get_rom_directory(model.tbrom_names[0])
+        """
+        self._log_key = "GetRomDirectory"
+
+        if not self.evaluation_is_initialized:
+            msg = "TwinModel has not been initialized! "
+            msg += "Please initialize evaluation before to call this method!"
+            self._raise_error(msg)
+
+        if self.tbrom_info is None:
+            self._raise_error("Twin model does not include any TBROM!")
+
+        if rom_name not in self.tbrom_names:
+            msg = f"The provided rom_name {rom_name} has not been found in the available TBROM names. "
+            msg += f"Please call this method with a valid TBROM name."
+            msg += f"\n Available TBROM name are: {self.tbrom_names}"
+            self._raise_error(msg)
+
+        return os.path.join(self.tbrom_directory_path, rom_name)
+
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
         Get the snapshot file associated to a Reduced Order Model (ROM) available in the TwinModel and evaluated at the

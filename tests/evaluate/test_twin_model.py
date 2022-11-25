@@ -550,6 +550,9 @@ class TestTwinModel:
         with pytest.raises(TwinModelError) as e:
             twin.get_image_filepath(rom_name="test", view_name="test")
         assert "Please initialize evaluation" in str(e)
+        with pytest.raises(TwinModelError) as e:
+            twin.get_rom_directory(rom_name="test")
+        assert "Please initialize evaluation" in str(e)
         twin.initialize_evaluation()
         # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
         with pytest.raises(TwinModelError) as e:
@@ -566,6 +569,9 @@ class TestTwinModel:
         assert "Twin model does not include any TBROM!" in str(e)
         with pytest.raises(TwinModelError) as e:
             twin.get_image_filepath(rom_name="test", view_name="test")
+        assert "Twin model does not include any TBROM!" in str(e)
+        with pytest.raises(TwinModelError) as e:
+            twin.get_rom_directory(rom_name="test")
         assert "Twin model does not include any TBROM!" in str(e)
         model_filepath = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
         twin = TwinModel(model_filepath=model_filepath)
@@ -585,6 +591,9 @@ class TestTwinModel:
         assert "Please call this method with a valid TBROM name." in str(e)
         with pytest.raises(TwinModelError) as e:
             twin.get_image_filepath(rom_name="test", view_name="test")
+        assert "Please call this method with a valid TBROM name." in str(e)
+        with pytest.raises(TwinModelError) as e:
+            twin.get_rom_directory(rom_name="test")
         assert "Please call this method with a valid TBROM name." in str(e)
         # Raise an error if IMAGE VIEW DOES NOT EXIST
         with pytest.raises(TwinModelError) as e:
