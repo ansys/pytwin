@@ -34,12 +34,11 @@ jobs:
     strategy:
        matrix:
            os: [windows-latest]
-           python-version: ['3.7', '3.8', '3.9', '3.10']
+           python-version: ["3.9", "3.10"]
     steps:
       - name: Run pytest
         uses: pyansys/actions/tests-pytest@main
         with:
-          pytest-markers: "-k 'mocked'"
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
           ANSYSLMD_LICENSE_FILE: ${{ secrets.LICENSE_SERVER }}
