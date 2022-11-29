@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: '3.9'
+  MAIN_PYTHON_VERSION: "3.9"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,3 +27,19 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: 'pip'
+
+  tests:
+    name: Test library
+    runs-on: ${{ matrix.os }}
+    strategy:
+       matrix:
+           os: [windows-latest]
+           python-version: ['3.7', '3.8', '3.9', '3.10']
+    steps:
+      - name: Run pytest
+        uses: pyansys/actions/tests-pytest@main
+        with:
+          pytest-markers: "-k 'mocked'"
+          pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ secrets.LICENSE_SERVER }}
