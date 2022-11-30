@@ -42,4 +42,4 @@ jobs:
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
-          ANSYSLMD_LICENSE_FILE: 1055:${{ secrets.LICENSE_SERVER }}
+          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
