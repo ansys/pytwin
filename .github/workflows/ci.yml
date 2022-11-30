@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: '3.9'
+  MAIN_PYTHON_VERSION: "3.9"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,3 +27,18 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: 'pip'
+
+  tests:
+    name: Test library (Ubuntu)
+    runs-on: ${{ matrix.os }}
+    strategy:
+       matrix:
+           os: [ubuntu-20.04]
+           python-version: ["3.8", "3.9", "3.10"]
+    steps:
+      - name: Run pytest
+        uses: pyansys/actions/tests-pytest@main
+        with:
+          pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
+        env:
+          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
