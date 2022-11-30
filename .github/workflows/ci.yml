@@ -29,12 +29,12 @@ jobs:
           use-python-cache: 'pip'
 
   tests:
-    name: Test library (Windows10)
+    name: Test library (Ubuntu)
     runs-on: ${{ matrix.os }}
     strategy:
        matrix:
-           os: [pytwin-win10]
-           python-version: ["3.9", "3.10"]
+           os: [ubuntu-20.04]
+           python-version: ["3.8", "3.9", "3.10"]
     steps:
       - name: Run pytest
         uses: pyansys/actions/tests-pytest@main
