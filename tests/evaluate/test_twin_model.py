@@ -1,5 +1,6 @@
 import os
 import time
+import sys
 
 import pandas as pd
 import pytest
@@ -611,15 +612,16 @@ class TestTwinModel:
         with open(log_file, "r") as log:
             log_str = log.readlines()
         assert "Could not find the snapshot file for given available rom_name" in "".join(log_str)
-        # Raise a warning if IMAGE FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
-        bug751873_fixed = False
-        if bug751873_fixed:
+        # Verify IMAGE IS GENERATED AT INITIALIZATION
+        if sys.platform != "linux":
+            # BUG751873
             fp = twin.get_image_filepath(
                 rom_name=twin.tbrom_names[0],
                 view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
                 evaluation_time=0.0,
             )
             assert os.path.exists(fp)
+        # Raise a warning if IMAGE FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
         twin.get_image_filepath(
             rom_name=twin.tbrom_names[0],
             view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
