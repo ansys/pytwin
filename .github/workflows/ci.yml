@@ -29,11 +29,11 @@ jobs:
           use-python-cache: 'pip'
 
   tests:
-    name: Test library (Ubuntu)
+    name: Test library
     runs-on: ${{ matrix.os }}
     strategy:
        matrix:
-           os: [ubuntu-20.04]
+           os: [pytwin-win10, ubuntu-20.04]
            python-version: ["3.8", "3.9", "3.10"]
     steps:
       - name: Setup headless display
