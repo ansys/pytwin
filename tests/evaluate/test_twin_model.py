@@ -1,6 +1,6 @@
 import os
-import time
 import sys
+import time
 
 import pandas as pd
 import pytest
