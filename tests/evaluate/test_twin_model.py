@@ -615,7 +615,7 @@ class TestTwinModel:
         fp = twin.get_image_filepath(
             rom_name=twin.tbrom_names[0],
             view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
-            evaluation_time=0.,
+            evaluation_time=0.0,
         )
         assert os.path.exists(fp)
         twin.get_image_filepath(
