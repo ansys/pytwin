@@ -1,4 +1,4 @@
-name: GitHub CI
+name: PyTwin CI
 on:
   pull_request:
   workflow_dispatch:
