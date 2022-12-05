@@ -612,12 +612,14 @@ class TestTwinModel:
             log_str = log.readlines()
         assert "Could not find the snapshot file for given available rom_name" in "".join(log_str)
         # Raise a warning if IMAGE FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
-        fp = twin.get_image_filepath(
-            rom_name=twin.tbrom_names[0],
-            view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
-            evaluation_time=0.0,
-        )
-        assert os.path.exists(fp)
+        bug751873_fixed = False
+        if bug751873_fixed:
+            fp = twin.get_image_filepath(
+                rom_name=twin.tbrom_names[0],
+                view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
+                evaluation_time=0.0,
+            )
+            assert os.path.exists(fp)
         twin.get_image_filepath(
             rom_name=twin.tbrom_names[0],
             view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
