@@ -1,4 +1,4 @@
-name: GitHub CI
+name: PyTwin CI
 on:
   pull_request:
   workflow_dispatch:
@@ -29,16 +29,17 @@ jobs:
           use-python-cache: 'pip'
 
   tests:
-    name: Test library (Ubuntu)
+    name: Test library
     runs-on: ${{ matrix.os }}
     strategy:
        matrix:
-           os: [ubuntu-20.04]
+           os: [pytwin-win10, ubuntu-20.04]
            python-version: ["3.8", "3.9", "3.10"]
     steps:
       - name: Run pytest
         uses: pyansys/actions/tests-pytest@main
         with:
+          python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
