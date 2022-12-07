@@ -15,7 +15,7 @@ Introduction
 ------------
 
 An analytics-driven, simulation-based digital twin is a connected, virtual replica of an
-in-service physical asset, in the form of an integrated multidomain system simulation, that
+in-service physical asset, in the form of an integrated multi-domain system simulation, that
 mirrors the life and experience of the asset. Ansys Digital Twins enable system design and
 optimization and predictive maintenance, and they optimize industrial asset management.
 By implementing Ansys Digital Twins, you can improve top-line revenue, manage bottom-line
