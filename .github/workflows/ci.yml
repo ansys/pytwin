@@ -46,7 +46,7 @@ jobs:
 
   doc-style:
     name: "Running documentation style checks"
-    runs-on: pytwin-win10
+    runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
         uses: pyansys/actions/doc-style@v2
