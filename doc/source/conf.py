@@ -2,6 +2,7 @@
 from datetime import datetime
 
 from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
+import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
 
 from pytwin import __version__
@@ -13,6 +14,10 @@ author = "ANSYS, Inc."
 release = version = __version__
 
 # -- General configuration ---------------------------------------------------
+
+# Ensure that offscreen rendering is used for docs generation
+pyvista.OFF_SCREEN = True
+
 extensions = [
     "jupyter_sphinx",
     "notfound.extension",
