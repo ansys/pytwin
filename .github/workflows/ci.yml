@@ -104,3 +104,15 @@ jobs:
           name: documentation-html
           path: doc/_build/html
           retention-days: 7
+
+  doc-deploy-stable:
+    name: "Deploy stable documentation"
+    runs-on: ubuntu-latest
+    needs: doc-build
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    steps:
+      - name: "Deploy the stable documentation"
+        uses: pyansys/actions/doc-deploy-stable@v2
+        with:
+            cname: "twin.docs.pyansys.com"
+            token: ${{ secrets.GITHUB_TOKEN }}
