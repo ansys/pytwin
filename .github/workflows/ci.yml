@@ -96,10 +96,9 @@ jobs:
 
   doc-deploy-dev:
     name: "Deploy developers documentation"
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: doc-build
-    if: github.event_name == 'push'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
         uses: pyansys/actions/doc-deploy-dev@v2
