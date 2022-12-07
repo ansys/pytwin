@@ -87,11 +87,11 @@ jobs:
 
       - name: "Build HTML, PDF, and JSON documentation"
         shell: bash
-        run: .\doc\make.bat clean
+        run: doc/make.bat clean
 
       - name: "Build HTML, PDF, and JSON documentation"
         shell: bash
-        run: .\doc\make.bat html
+        run: doc/make.bat html
 #        run: |
 #          sphinx-build -M html doc/source doc/_build -j auto -W --keep-going -w build_errors.txt -N -q
 
