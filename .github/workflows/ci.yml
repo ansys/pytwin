@@ -98,9 +98,9 @@ jobs:
 #          make -C doc pdf
 #          make -C doc json SPHINXOPTS="-j auto -W --keep-going"
 
-#      - name: "Upload HTML documentation artifact"
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: documentation-html
-#          path: doc/_build/html
-#          retention-days: 7
+      - name: "Upload HTML documentation artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation-html
+          path: doc/_build/html
+          retention-days: 7
