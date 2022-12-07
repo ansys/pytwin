@@ -43,3 +43,69 @@ jobs:
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+
+  doc-style:
+    name: "Running documentation style checks"
+    runs-on: pytwin-win10
+    steps:
+      - name: "Running documentation style checks"
+        uses: pyansys/actions/doc-style@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-build:
+    name: "Building library documentation"
+    runs-on: pytwin-win10
+    needs: doc-style
+    steps:
+      - name: "Install Git and clone project"
+        uses: actions/checkout@v3
+
+      - name: "Set up Python"
+        uses: pyansys/actions/_setup-python@main
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          use-cache: true
+
+      - name: "Update pip"
+        shell: bash
+        run: python -m pip install -U pip
+
+      - name: "Install Python library"
+        shell: bash
+        run: python -m pip install .
+
+      #- name: "Check if requirements.txt file exists"
+      #  shell: bash
+      #  run: |
+      #    echo "EXISTS_DOC_REQUIREMENTS=$(if [ -f requirements/requirements_doc.txt ]; then echo 'true'; else echo 'false'; fi)" >> $GITHUB_ENV
+
+      #- name: "Print previous output"
+      #  shell: bash
+      #  run:
+      #    echo "Output was found ${{ env.EXISTS_DOC_REQUIREMENTS }}"
+
+      #- name: "Install documentation dependencies from requirements file"
+      #  shell: bash
+      #  if: env.EXISTS_DOC_REQUIREMENTS == 'true'
+      #  run: python -m pip install -r requirements/requirements_doc.txt
+
+      - name: "Install documentation dependencies from pyproject.toml"
+        shell: bash
+      #  if: env.EXISTS_DOC_REQUIREMENTS == 'false'
+        run: python -m pip install .[doc]
+
+      - name: "Build HTML, PDF, and JSON documentation"
+        if: inputs.requires-xvfb == 'false'
+        shell: bash
+        run: |
+          make -C doc html SPHINXOPTS="-j auto -W --keep-going"
+#          make -C doc pdf
+#          make -C doc json SPHINXOPTS="-j auto -W --keep-going"
+
+#      - name: "Upload HTML documentation artifact"
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: documentation-html
+#          path: doc/_build/html
+#          retention-days: 7
