@@ -2,9 +2,8 @@
 from datetime import datetime
 
 from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
-from sphinx_gallery.sorting import FileNameSortKey
-
 import pyvista
+from sphinx_gallery.sorting import FileNameSortKey
 
 from pytwin import __version__
 
