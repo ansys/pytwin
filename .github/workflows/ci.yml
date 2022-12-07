@@ -76,28 +76,16 @@ jobs:
         shell: bash
         run: python -m pip install .
 
-      #- name: "Check if requirements.txt file exists"
-      #  shell: bash
-      #  run: |
-      #    echo "EXISTS_DOC_REQUIREMENTS=$(if [ -f requirements/requirements_doc.txt ]; then echo 'true'; else echo 'false'; fi)" >> $GITHUB_ENV
-
-      #- name: "Print previous output"
-      #  shell: bash
-      #  run:
-      #    echo "Output was found ${{ env.EXISTS_DOC_REQUIREMENTS }}"
-
-      #- name: "Install documentation dependencies from requirements file"
-      #  shell: bash
-      #  if: env.EXISTS_DOC_REQUIREMENTS == 'true'
-      #  run: python -m pip install -r requirements/requirements_doc.txt
-
-      - name: "Install documentation dependencies from pyproject.toml"
+      - name: "Install documentation dependencies from requirements file"
         shell: bash
+        run: python -m pip install -r requirements/requirements_doc.txt
+
+#      - name: "Install documentation dependencies from pyproject.toml"
+#        shell: bash
       #  if: env.EXISTS_DOC_REQUIREMENTS == 'false'
-        run: python -m pip install .[tool.poetry.group.doc.dependencies]
+#        run: python -m pip install ".[doc]"
 
       - name: "Build HTML, PDF, and JSON documentation"
-        if: inputs.requires-xvfb == 'false'
         shell: bash
         run: |
           make -C doc html SPHINXOPTS="-j auto -W --keep-going"
