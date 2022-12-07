@@ -94,7 +94,7 @@ jobs:
       - name: "Install documentation dependencies from pyproject.toml"
         shell: bash
       #  if: env.EXISTS_DOC_REQUIREMENTS == 'false'
-        run: python -m pip install .[doc]
+        run: python -m pip install .[tool.poetry.group.doc.dependencies]
 
       - name: "Build HTML, PDF, and JSON documentation"
         if: inputs.requires-xvfb == 'false'
