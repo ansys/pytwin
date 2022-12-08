@@ -34,10 +34,10 @@ import os
 import struct
 
 import ansys.fluent.core as pyfluent
-import matplotlib.image as img
-import matplotlib.pyplot as plt
 from ansys.fluent.visualization.pyvista import Graphics
 from ansys.fluent.visualization import set_config
+import matplotlib.image as img
+import matplotlib.pyplot as plt
 
 from pytwin import TwinModel, examples
 
