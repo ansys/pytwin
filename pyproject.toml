@@ -27,7 +27,6 @@ importlib-metadata = {version = "^4.0", python = "<3.8"}
 numpy = "1.23.4"
 pandas = "1.5.1"
 pywin32 = {version = ">=304", markers = "platform_system == 'Windows'"}
-pre-commit = "^2.20.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "7.1.2"
