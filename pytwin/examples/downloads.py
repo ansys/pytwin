@@ -1,7 +1,7 @@
 """Functions to download sample datasets from the PyAnsys data repository.
 Examples
 --------
-#>>> from src.ansys.twin import examples
+#>>> from pytwin import examples
 #>>> filename = examples.download_file("CoupleClutches_22R2_other.twin", "twin_files")
 #>>> filename
 '/home/user/.local/share/TwinExamples/twin/CoupleClutches_22R2_other.twin'
@@ -17,10 +17,10 @@ import zipfile
 
 import pandas as pd
 
-tmpfold = tempfile.gettempdir()
+temp_folder = tempfile.gettempdir()
 # the REPO url needs to have "raw" and not "tree", otherwise xml file are downloaded instead of raw versions
 EXAMPLES_REPO = "https://github.com/pyansys/example-data/raw/master/pytwin/"
-EXAMPLES_PATH = os.path.join(tmpfold, "TwinExamples")
+EXAMPLES_PATH = os.path.join(temp_folder, "TwinExamples")
 
 
 def get_ext(filename: str) -> str:
@@ -110,9 +110,10 @@ def _download_file(filename, directory, destination=None):
 def download_file(
     file_name: str, directory: str, force_download: Optional[bool] = False, destination: Optional[str] = None
 ):
-    """Download a example data file.
-    Examples files are downloaded to a persistent cache to avoid
-    downloading the same file twice.
+    """
+    Download an example data file.
+    Examples files are downloaded to a persistent cache to avoid downloading the same file twice.
+
     Parameters
     ----------
     file_name : str
@@ -123,17 +124,17 @@ def download_file(
         Force to delete file and download file again. Default value is ``False``.
     destination : str, optional
         Path to download files to. The default is the user's temporary folder.
+
     Returns
     -------
     str
         Path to the folder containing all example data files.
+
     Examples
     --------
     Download an example result file and return the path of the file
-    #>>> from pytwin import examples
-    #>>> path = examples.download_file("CoupleClutches_22R2_other.twin", "twin_files", force_download=True)
-    #>>> path
-    'C:/Users/user/AppData/local/temp/TwinExamples'
+    >>> from pytwin import examples
+    >>> path = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
     """
     if not destination:
         destination = EXAMPLES_PATH
