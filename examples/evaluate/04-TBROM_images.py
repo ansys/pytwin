@@ -34,8 +34,8 @@ import os
 import struct
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.visualization.pyvista import Graphics
 from ansys.fluent.visualization import set_config
+from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
 
