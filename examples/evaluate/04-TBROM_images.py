@@ -160,4 +160,9 @@ temperature_contour.surfaces_list = [
 ]
 temperature_contour.display()
 
+###############################################################################
+# .. image:: /_static/TBROM_fluent_viewer.png
+#   :width: 400pt
+#   :align: center
+
 solver.exit()
