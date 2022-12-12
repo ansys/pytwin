@@ -10,6 +10,7 @@ on:
 
 env:
   MAIN_PYTHON_VERSION: "3.9"
+  DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -103,7 +104,7 @@ jobs:
       - name: "Deploy the latest documentation"
         uses: pyansys/actions/doc-deploy-dev@v2
         with:
-            cname: "twin.docs.pyansys.com"
+            cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
 
   doc-deploy-stable:
@@ -115,7 +116,7 @@ jobs:
       - name: "Deploy the stable documentation"
         uses: pyansys/actions/doc-deploy-stable@v2
         with:
-            cname: "twin.docs.pyansys.com"
+            cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
 
   check-licenses:
