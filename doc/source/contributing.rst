@@ -63,11 +63,6 @@ install and activate this tool with:
    python -m pip install pre-commit
    pre-commit install
 
-You can then use the ``style`` rule defined in ``Makefile`` with:
-
-.. code:: bash
-
-   make style
 
 Or, you can directly execute `pre-commit <https://pre-commit.com/>`_ with:
 
