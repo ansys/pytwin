@@ -40,7 +40,6 @@ jobs:
 
   doc-build:
     name: "Building library documentation"
-    needs: doc-style
     runs-on: pytwin-win10
     needs: doc-style
     steps:
@@ -101,7 +100,7 @@ jobs:
            python-version: ["3.8", "3.9", "3.10"]
     steps:
       - name: Run pytest
-        uses: pyansys/actions/tests-pytest@main
+        uses: pyansys/actions/tests-pytest@v2
         with:
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
