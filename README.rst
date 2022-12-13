@@ -32,7 +32,7 @@ Pytwin
 
 Overview
 --------
-PyTwin is a Python package that eases `Ansys Digital Twin`_ deployment workflows.
+PyTwin is a Python package that eases `Ansys Digital Twin`_ consumption workflows.
 
 
 Documentation
