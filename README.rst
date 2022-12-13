@@ -56,22 +56,23 @@ Install the latest release from `PyPI
 
 .. code:: console
 
-   pip install pytwin
+    pip install pytwin
 
 If you plan on doing local *development* of PyTwin with Git, install
 the latest release with:
 
 .. code:: console
 
-   git clone https://github.com/pyansys/pytwin.git
-   cd pytwin
-   pip install -e .
+    git clone https://github.com/pyansys/pytwin.git
+    cd pytwin
+    pip install pip -U
+    pip install -e .
 
 Dependencies
 ------------
 The ``pytwin`` package requires access to an Ansys License Server
 with the ``twin_builder_deployer`` feature available (see the
-`Getting started`_).
+`Getting started`_ section).
 
 
 License and acknowledgments
