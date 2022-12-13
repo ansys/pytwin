@@ -18,9 +18,15 @@ following environment variable that specifies the location of your Ansys License
 
    ANSYSLMD_LICENSE_FILE={PORT_NUMBER}@{SERVER_NAME}
 
+Install Visual C++ redistributable (Windows only)
+-----------------------------------------------------
+On Windows 10, the ``pytwin`` package has dependencies to `Microsoft Visual C++ Redistributable <https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170>`_.
+
+If not already installed, please install redistributable packages for `Visual Studio 2015, 2017, 2019, and 2022 <https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170>`_.
+
 Install the package
 -------------------
-The ``pytwin`` package supports Python 3.7 through
+The ``pytwin`` package supports Python 3.8 through
 Python 3.10 on Windows and Linux.
 
 Install the latest release from `PyPi
