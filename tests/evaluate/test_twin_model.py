@@ -507,7 +507,7 @@ class TestTwinModel:
         model2.evaluate_step_by_step(step_size=5)
         out1 = model1.outputs
         out2 = model2.outputs
-        assert not compare_dictionary(out1, out2)  # TODO - Fix BU732106
+        assert not compare_dictionary(out1, out2)  # TODO - Fix BUG732106
 
     def test_save_and_load_state_with_rc_heat_circuit(self):
         # Init unit test
@@ -667,7 +667,7 @@ class TestTwinModel:
 
         # Verify IMAGE IS GENERATED AT INITIALIZATION
         if sys.platform != "linux":
-            # BUG751873
+            # TODO - Fix BUG755776
             fp = twin.get_image_filepath(
                 rom_name=twin.tbrom_names[0],
                 view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
