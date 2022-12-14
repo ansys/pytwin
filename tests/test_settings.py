@@ -163,8 +163,6 @@ class TestDefaultSettings:
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_working_dir(new_path=os.path.join(os.path.dirname(__file__), "unknown_folder", "wd"))
         assert "Please provide a folder path in which all parents exist." in str(e)
-        # Raises error if provided path does not exist and parent directory has not writing permission
-        # TODO - on Linux only maybe
 
     def test_modify_working_dir_with_not_existing(self):
         # Init unit test
