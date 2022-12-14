@@ -32,7 +32,7 @@ Pytwin
 
 Overview
 --------
-PyTwin is a Python package that eases `Ansys Digital Twin`_ consumption workflows.
+PyTwin is a Python package that eases `Ansys Digital Twins`_ consumption workflows.
 
 
 Documentation
@@ -79,11 +79,11 @@ License and acknowledgments
 ---------------------------
 PyTwin is licensed under the MIT license.
 
-For more information on `Ansys Digital Twin`_, see the `Twin Builder`_
+For more information on `Ansys Digital Twins`_, see the `Twin Builder`_
 page on the Ansys website.
 
 .. LINKS AND REFERENCES
-.. _Ansys Digital Twin: https://www.ansys.com/products/digital-twin/
+.. _Ansys Digital Twins: https://www.ansys.com/products/digital-twin/
 .. _Twin Builder: https://www.ansys.com/products/digital-twin/ansys-twin-builder
 .. _Documentation: https://twin.docs.pyansys.com/
 .. _Getting started: https://twin.docs.pyansys.com/getting_started/index.html#
