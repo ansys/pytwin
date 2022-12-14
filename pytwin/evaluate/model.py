@@ -14,7 +14,7 @@ class Model:
     """
 
     def __init__(self):
-        self._id = f"{uuid.uuid4()}"[0:13].replace("-", "")
+        self._id = f"{uuid.uuid4()}"[0:24].replace("-", "")
         self._model_name = None
         self._log_key = None
 
