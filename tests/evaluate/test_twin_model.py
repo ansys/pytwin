@@ -507,7 +507,7 @@ class TestTwinModel:
         model2.evaluate_step_by_step(step_size=5)
         out1 = model1.outputs
         out2 = model2.outputs
-        assert not compare_dictionary(out1, out2)  # TODO - Fix BU732106
+        assert not compare_dictionary(out1, out2)  # TODO - Fix BUG732106
 
     def test_save_and_load_state_with_rc_heat_circuit(self):
         # Init unit test
