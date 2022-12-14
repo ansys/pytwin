@@ -667,7 +667,7 @@ class TestTwinModel:
 
         # Verify IMAGE IS GENERATED AT INITIALIZATION
         if sys.platform != "linux":
-            # BUG751873
+            # TODO - Fix BUG755776
             fp = twin.get_image_filepath(
                 rom_name=twin.tbrom_names[0],
                 view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
