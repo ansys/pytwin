@@ -12,6 +12,11 @@ attempting to contribute to PyTwin.
  
 The following contribution information is specific to PyTwin.
 
+Post issues
+-----------
+Use the `PyTwin Issues <https://github.com/pyansys/pytwin/issues>`_ page to
+submit questions, report bugs, and request new features.
+
 Clone the repository
 --------------------
 To clone and install the latest PyTwin release in development
@@ -45,11 +50,15 @@ You can clear all HTML files from the ``_builds/html`` directory with:
 
     make clean
 
-Post issues
------------
-Use the `PyTwin Issues <https://github.com/pyansys/pytwin/issues>`_ page to
-submit questions, report bugs, and request new features.
+Run unitary tests
+-----------------
+To launch ``pytwin`` unitary tests automatically and verify that code modifications do not break existing logic,
+install `pytest <https://pypi.org/project/pytest/>`_ package into your Python environment and from the root
+directory, run :
 
+.. code::
+
+    pytest --cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html tests -vv
 
 Adhere to code style
 --------------------
