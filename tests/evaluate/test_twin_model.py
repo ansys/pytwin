@@ -352,6 +352,7 @@ class TestTwinModel:
 
     def test_each_twin_model_has_a_subfolder_in_wd(self):
         # Init unit test
+        time.sleep(1)
         reinit_settings_for_unit_tests()
         logger = get_pytwin_logger()
         # Verify a subfolder is created each time a new twin model is instantiated
