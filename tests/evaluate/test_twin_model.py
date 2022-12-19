@@ -4,8 +4,7 @@ import time
 
 import pandas as pd
 import pytest
-
-from pytwin import TwinModel, TwinModelError, examples
+from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.settings import (
     get_pytwin_log_file,
     get_pytwin_logger,
@@ -13,6 +12,7 @@ from pytwin.settings import (
     modify_pytwin_working_dir,
     reinit_settings_for_unit_tests,
 )
+
 from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
@@ -604,7 +604,7 @@ class TestTwinModel:
 
     def test_raised_errors_with_tbrom_bad_name(self):
         reinit_settings()
-        model_filepath = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
         twin = TwinModel(model_filepath=model_filepath)
         twin.initialize_evaluation()
         # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM NAMED 'test'
@@ -640,7 +640,7 @@ class TestTwinModel:
 
     def test_raised_errors_with_tbrom_bad_view(self):
         reinit_settings()
-        model_filepath = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
         twin = TwinModel(model_filepath=model_filepath)
         twin.initialize_evaluation()
 

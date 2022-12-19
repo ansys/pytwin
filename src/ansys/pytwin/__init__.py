@@ -10,7 +10,7 @@ __version__ = metadata.version("pytwin")
 """
 PUBLIC API TO PYTWIN SETTINGS 
 """
-from .settings import (
+from pytwin.settings import (
     PyTwinLogLevel,
     PyTwinLogOption,
     PyTwinSettingsError,
@@ -34,10 +34,15 @@ PYTWIN_LOGGING_OPT_NOLOGGING = PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
 """
 PUBLIC API TO PYTWIN EVALUATE 
 """
-from .evaluate.twin_model import TwinModel, TwinModelError
+from pytwin.evaluate.twin_model import TwinModel, TwinModelError
 
 """
 PUBLIC API TO PYTWIN RUNTIME 
 """
-from .twin_runtime.log_level import LogLevel
-from .twin_runtime.twin_runtime_core import TwinRuntime, TwinRuntimeError
+from pytwin.twin_runtime.log_level import LogLevel
+from pytwin.twin_runtime.twin_runtime_core import TwinRuntime, TwinRuntimeError
+
+"""
+PUBLIC API TO EXAMPLES
+"""
+from pytwin.examples.downloads import download_file, load_data
