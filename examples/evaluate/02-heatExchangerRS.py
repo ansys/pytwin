@@ -26,9 +26,9 @@ different input values to evaluate the corresponding temperature responses
 import matplotlib.pyplot as plt
 import numpy
 import pandas as pd
-from pytwin import TwinModel, examples
+from pytwin import TwinModel, download_file
 
-twin_file = examples.download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
+twin_file = download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
 
 ###############################################################################
 # User inputs
