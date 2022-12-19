@@ -4,7 +4,6 @@ import time
 
 import numpy as np
 import pandas as pd
-
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import SavedState, SavedStateRegistry
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled

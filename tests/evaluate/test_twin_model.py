@@ -4,7 +4,6 @@ import time
 
 import pandas as pd
 import pytest
-
 from pytwin import TwinModel, TwinModelError, examples
 from pytwin.settings import (
     get_pytwin_log_file,
@@ -13,6 +12,7 @@ from pytwin.settings import (
     modify_pytwin_working_dir,
     reinit_settings_for_unit_tests,
 )
+
 from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")

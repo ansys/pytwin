@@ -29,7 +29,6 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
 from pytwin import TwinModel, examples, modify_pytwin_working_dir
 
 twin_file = examples.download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
