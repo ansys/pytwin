@@ -10,7 +10,6 @@ from pytwin.settings import (
     get_pytwin_logger,
     get_pytwin_working_dir,
     modify_pytwin_working_dir,
-    reinit_settings_for_unit_tests,
 )
 
 from tests.utilities import compare_dictionary
