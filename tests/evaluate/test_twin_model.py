@@ -5,12 +5,7 @@ import time
 import pandas as pd
 import pytest
 from pytwin import TwinModel, TwinModelError, download_file
-from pytwin.settings import (
-    get_pytwin_log_file,
-    get_pytwin_logger,
-    get_pytwin_working_dir,
-    modify_pytwin_working_dir,
-)
+from pytwin.settings import get_pytwin_log_file, get_pytwin_logger, get_pytwin_working_dir, modify_pytwin_working_dir
 
 from tests.utilities import compare_dictionary
 
