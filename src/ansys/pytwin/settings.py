@@ -321,8 +321,12 @@ class _PyTwinSettings(object):
             )
         else:
             pytwin_temp_dir = os.path.join(tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME)
-        if os.path.exists(pytwin_temp_dir):
-            shutil.rmtree(pytwin_temp_dir)
+        try:
+            if os.path.exists(pytwin_temp_dir):
+                shutil.rmtree(pytwin_temp_dir)
+        except PermissionError as e:
+            logging.warning(f"_PyTwinSettings failed to empty working dir! \n {str(e)}")
+
         os.mkdir(pytwin_temp_dir)
         _PyTwinSettings.WORKING_DIRECTORY_PATH = pytwin_temp_dir
 
