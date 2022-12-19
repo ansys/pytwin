@@ -33,12 +33,14 @@ class TestTwinModel:
         TwinModel(model_filepath=model_filepath)
 
     def test_instantiation_with_invalid_model_filepath(self):
-        with pytest.raises(TwinModelError) as e:
+        try:
             TwinModel(model_filepath=None)
-        assert "Please provide valid filepath" in str(e)
-        with pytest.raises(TwinModelError) as e:
+        except TwinModelError as e:
+            assert "Please provide valid filepath" in str(e)
+        try:
             TwinModel(model_filepath="")
-        assert "Please provide existing filepath" in str(e)
+        except TwinModelError as e:
+            assert "Please provide existing filepath" in str(e)
 
     def test_parameters_property(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
@@ -210,41 +212,48 @@ class TestTwinModel:
         model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Raise an error if TWIN MODEL HAS NOT BEEN INITIALIZED
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.evaluate_step_by_step(step_size=0.001)
-        assert "Please initialize evaluation" in str(e)
+        except TwinModelError as e:
+            assert "Please initialize evaluation" in str(e)
         # Raise an error if STEP SIZE IS ZERO
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.initialize_evaluation()
             twin.evaluate_step_by_step(step_size=0.0)
-        assert "Step size must be strictly bigger than zero" in str(e)
-        with pytest.raises(TwinModelError) as e:
+        except TwinModelError as e:
+            assert "Step size must be strictly bigger than zero" in str(e)
+        try:
             twin.initialize_evaluation()
             twin.evaluate_step_by_step(step_size=-0.1)
-        assert "Step size must be strictly bigger than zero" in str(e)
+        except TwinModelError as e:
+            assert "Step size must be strictly bigger than zero" in str(e)
 
     def test_raised_errors_with_batch_evaluation(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
         # Raise an error if TWIN MODEL HAS NOT BEEN INITIALIZED
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.evaluate_batch(pd.DataFrame())
-        assert "Please initialize evaluation" in str(e)
+        except TwinModelError as e:
+            assert "Please initialize evaluation" in str(e)
         # Raise an error if INPUTS DATAFRAME HAS NO TIME COLUMN
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.initialize_evaluation()
             twin.evaluate_batch(pd.DataFrame())
-        assert "Please provide a dataframe with a 'Time' column to use batch mode evaluation" in str(e)
+        except TwinModelError as e:
+            assert "Please provide a dataframe with a 'Time' column to use batch mode evaluation" in str(e)
         # Raise an error if INPUTS DATAFRAME HAS NO TIME INSTANT ZERO
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.initialize_evaluation()
             twin.evaluate_batch(pd.DataFrame({"Time": [0.1]}))
-        assert "Please provide inputs at time instant t=0.s" in str(e)
+        except TwinModelError as e:
+            assert "Please provide inputs at time instant t=0.s" in str(e)
         # Raise an error if INPUTS DATAFRAME HAS NO TIME INSTANT ZERO
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.initialize_evaluation()
             twin.evaluate_batch(pd.DataFrame({"Time": [1e-50]}))
-        assert "Please provide inputs at time instant t=0.s" in str(e)
+        except TwinModelError as e:
+            assert "Please provide inputs at time instant t=0.s" in str(e)
 
     def test_evaluation_methods_give_same_results(self):
         inputs_df = pd.DataFrame(
