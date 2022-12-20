@@ -126,7 +126,7 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     Raises
     ------
     PyTwinSettingsError
-        If provided path it None.
+        If provided path is None.
         If provided path does not exist AND some parent directories do not exist or last parent directory does not have
         writing permission.
         If erase is not a boolean.
