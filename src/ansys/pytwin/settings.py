@@ -329,7 +329,7 @@ class _PyTwinSettings(object):
             except PermissionError as e:
                 import time
 
-                logging.warning(f"_PyTwinSettings failed to empty working dir (attempt #{i})! \n {str(e)}")
+                logging.warning(f"_PyTwinSettings failed to clear working dir (attempt #{i})! \n {str(e)}")
                 time.sleep(1)
 
         os.mkdir(pytwin_temp_dir)
