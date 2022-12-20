@@ -22,11 +22,11 @@ The model consists in a coupled clutches with 4 inputs (applied torque,
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from pytwin import TwinModel, examples
+from pytwin import TwinModel, download_file, load_data
 
-twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
-csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
-twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
+twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files")
+csv_input = download_file("CoupledClutches_input.csv", "twin_input_files")
+twin_config = download_file("CoupledClutches_config.json", "twin_input_files")
 
 
 ###############################################################################
@@ -91,7 +91,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
-twin_model_input_df = examples.load_data(csv_input)
+twin_model_input_df = load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 
