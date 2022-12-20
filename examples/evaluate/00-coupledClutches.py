@@ -82,24 +82,17 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
     # Show plot
     plt.show()
 
-
 ###############################################################################
-# Defining external files path
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining the runtime log path as well as loading the input data
-
-twin_model_input_df = load_data(csv_input)
-data_dimensions = twin_model_input_df.shape
-number_of_datapoints = data_dimensions[0] - 1
-
-###############################################################################
-# Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Loading the Twin Runtime and external CSV file
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the Twin Runtime and instantiating it.
 
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
+twin_model_input_df = examples.load_data(csv_input)
+data_dimensions = twin_model_input_df.shape
+number_of_datapoints = data_dimensions[0] - 1
 
 ###############################################################################
 # Setting up the initial settings of the Twin and initializing it
