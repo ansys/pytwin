@@ -82,6 +82,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
     # Show plot
     plt.show()
 
+    
 ###############################################################################
 # Loading the Twin Runtime and external CSV file
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
