@@ -38,11 +38,10 @@ from ansys.fluent.visualization import set_config
 from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
+from pytwin import TwinModel, download_file
 
-from pytwin import TwinModel, examples
-
-twin_file = examples.download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-cfd_file = examples.download_file("T_Junction.cas.h5", "other_files")
+twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+cfd_file = download_file("T_Junction.cas.h5", "other_files")
 
 set_config(blocking=True, set_view_on_display="isometric")
 

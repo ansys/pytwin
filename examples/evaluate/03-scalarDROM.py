@@ -29,11 +29,10 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from pytwin import TwinModel, download_file, load_data, modify_pytwin_working_dir
 
-from pytwin import TwinModel, examples, modify_pytwin_working_dir
-
-twin_file = examples.download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
-csv_input = examples.download_file("HX_scalarDRB_input.csv", "twin_input_files")
+twin_file = download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
+csv_input = download_file("HX_scalarDRB_input.csv", "twin_input_files")
 
 
 ###############################################################################
@@ -88,7 +87,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataF
 
 modify_pytwin_working_dir(os.path.join(os.path.dirname(twin_file), "pyTwinWorkingDir"))
 
-twin_model_input_df = examples.load_data(csv_input)
+twin_model_input_df = load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 

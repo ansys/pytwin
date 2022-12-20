@@ -126,7 +126,7 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     Raises
     ------
     PyTwinSettingsError
-        If provided path it None.
+        If provided path is None.
         If provided path does not exist AND some parent directories do not exist or last parent directory does not have
         writing permission.
         If erase is not a boolean.
@@ -321,8 +321,17 @@ class _PyTwinSettings(object):
             )
         else:
             pytwin_temp_dir = os.path.join(tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME)
-        if os.path.exists(pytwin_temp_dir):
-            shutil.rmtree(pytwin_temp_dir)
+        for i in range(5):
+            # Loop to wait until logging file is freed
+            try:
+                if os.path.exists(pytwin_temp_dir):
+                    shutil.rmtree(pytwin_temp_dir)
+            except PermissionError as e:
+                import time
+
+                logging.warning(f"_PyTwinSettings failed to clear working dir (attempt #{i})! \n {str(e)}")
+                time.sleep(1)
+
         os.mkdir(pytwin_temp_dir)
         _PyTwinSettings.WORKING_DIRECTORY_PATH = pytwin_temp_dir
 

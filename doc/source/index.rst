@@ -17,9 +17,9 @@ Introduction
 An analytics-driven, simulation-based digital twin is a connected, virtual replica of an
 in-service physical asset, in the form of an integrated multi-domain system simulation, that
 mirrors the life and experience of the asset. Ansys Digital Twins enable system design and
-optimization and predictive maintenance, and they optimize industrial asset management.
+optimization as well as predictive maintenance, to optimize industrial asset management.
 By implementing Ansys Digital Twins, you can improve top-line revenue, manage bottom-line
-costs and both gain and retain a competitive advantage.
+costs and both gain and retain competitive advantages.
 
 .. image:: _static/ansys_dt.png
   :width: 800
@@ -42,7 +42,7 @@ to programmatically interact with, and control the execution of Twin Runtimes.
 
 Features
 --------
-Some of the many features in this primary PyTwin package, ``pytwin``,
+Some of the many features in the PyTwin package,, ``pytwin``,
 allow you to:
 
 - Use the Twin Runtimes Core SDK to build your own consumption workflows based on atomic API calls, see :ref:`ref_index_api_sdk`
@@ -51,7 +51,7 @@ allow you to:
 
 Documentation and issues
 ------------------------
-In addition to installation and usage information, the PyTwin
+In addition to :ref:`getting_started` and :ref:`ref_user_guide`, the PyTwin
 documentation provides :ref:`ref_index_api`, :ref:`ref_example_gallery`,
 and :ref:`ref_contributing` sections.
 
@@ -70,7 +70,7 @@ to the Digital Twins Runtimes SDK without changing the core behavior or license 
 software's. The use of the interactive control of Ansys Digital Twins Runtimes through PyTwin
 requires a license of Twin Deployer.
 
-For more information, see the `Ansys Twin Builder and Twin Deployer <https://www.ansys.com/products/digital-twin/ansys-twin-builder>`_.
+For more information, see `Ansys Twin Builder and Twin Deployer <https://www.ansys.com/products/digital-twin/ansys-twin-builder>`_
 on the Ansys website.
 
 Project index

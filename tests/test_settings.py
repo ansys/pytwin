@@ -3,7 +3,6 @@ import shutil
 import tempfile
 
 import pytest
-
 from pytwin import (
     PyTwinLogLevel,
     PyTwinLogOption,
