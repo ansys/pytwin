@@ -43,7 +43,6 @@ the latest release with:
    cd pytwin
    pip install pip -U
    pip install -e .
-   python codegen/allapigen.py  # Generates the API files
 
 
 Any changes that you make locally are reflected in your setup after you restart
