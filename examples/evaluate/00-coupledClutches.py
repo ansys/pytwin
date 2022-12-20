@@ -22,11 +22,11 @@ The model consists in a coupled clutches with 4 inputs (applied torque,
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from pytwin import TwinModel, download_file, load_data
+from pytwin import TwinModel, examples
 
-twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files")
-csv_input = download_file("CoupledClutches_input.csv", "twin_input_files")
-twin_config = download_file("CoupledClutches_config.json", "twin_input_files")
+twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
+csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
+twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
 
 
 ###############################################################################
