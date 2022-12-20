@@ -24,8 +24,8 @@ to facilitate the manipulation and execution of Twin Runtimes.
 Global Settings
 ---------------
 
-:ref:`ref_index_api_logging` describe the global settings available from PyTwin package and how to
-change them from their default values
+:ref:`ref_index_api_logging` describe the global settings (e.g. logging and working directory options) available from
+PyTwin package and how to change them from their default values
 
 
 .. currentmodule:: pytwin
