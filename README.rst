@@ -86,16 +86,8 @@ page on the Ansys website.
 .. _Ansys Digital Twins: https://www.ansys.com/products/digital-twin/
 .. _Twin Builder: https://www.ansys.com/products/digital-twin/ansys-twin-builder
 .. _Documentation: https://twin.docs.pyansys.com/
-.. _Getting started: https://twin.docs.pyansys.com/getting_started/index.html#
-.. _User guide: https://twin.docs.pyansys.com/user_guide/index.html
-.. _API reference: https://twin.docs.pyansys.com/api/index.html
-.. _Examples: https://twin.docs.pyansys.com/examples/index.html
-.. _Contributing: https://twin.docs.pyansys.com/contributing.html
-.. _black: https://github.com/psf/black
-.. _flake8: https://flake8.pycqa.org/en/latest/
-.. _isort: https://github.com/PyCQA/isort
-.. _PyAnsys Developer's guide: https://dev.docs.pyansys.com/
-.. _pre-commit: https://pre-commit.com/
-.. _pytest: https://docs.pytest.org/en/stable/
-.. _Sphinx: https://www.sphinx-doc.org/en/master/
-.. _tox: https://tox.wiki/
+.. _Getting started: https://twin.docs.pyansys.com/release/0.1/getting_started/index.html
+.. _User guide: https://twin.docs.pyansys.com/release/0.1/user_guide/index.html
+.. _API reference: https://twin.docs.pyansys.com/release/0.1/api/index.html
+.. _Examples: https://twin.docs.pyansys.com/release/0.1/examples/index.html
+.. _Contributing: https://twin.docs.pyansys.com/release/0.1/contributing.html
