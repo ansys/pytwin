@@ -146,8 +146,7 @@ while data_index < number_of_datapoints:
         for column in twin_model_input_df.columns[1::]:
             inputs[column] = (
                 twin_model_input_df[column][data_index] * 0.9
-            )  # the second Twin will be evaluated using same
-            # inputs reduced by 10%
+            )  # the second Twin will be evaluated using same inputs reduced by 10%
         twin_model_what_if.evaluate_step_by_step(step_size=step, inputs=inputs)
         outputs = [twin_model_what_if.evaluation_time]
         for item in twin_model_what_if.outputs:

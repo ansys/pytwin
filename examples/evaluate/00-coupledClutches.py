@@ -131,9 +131,9 @@ while data_index < number_of_datapoints:
     data_index += 1
 results_step_pd = pd.DataFrame(sim_output_list_step, columns=["Time"] + list(twin_model.outputs), dtype=float)
 
-# ##############################################################################
+###############################################################################
 # Batch simulation mode
-# ~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Resetting/re-initializing the Twin and running it in batch mode (i.e. passing
 # all the input data, simulating all the data points, and collecting all
 # the outputs at once)

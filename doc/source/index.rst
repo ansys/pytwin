@@ -42,7 +42,7 @@ to programmatically interact with, and control the execution of Twin Runtimes.
 
 Features
 --------
-Some of the many features in the PyTwin package,, ``pytwin``,
+Some of the many features in the PyTwin package, ``pytwin``,
 allow you to:
 
 - Use the Twin Runtimes Core SDK to build your own consumption workflows based on atomic API calls, see :ref:`ref_index_api_sdk`
