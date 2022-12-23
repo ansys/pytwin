@@ -32,18 +32,6 @@ from pytwin import TwinModel, download_file
 twin_file = download_file("ElectricRange_23R1_other.twin", "twin_files")
 
 ###############################################################################
-# User inputs
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining user inputs and simulation settings
-
-time_step = 1.0
-time_end = 24000.0  # simulating the model for 400 minutes
-dp1 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 2000.0}
-dp2 = {"ElectricRange_powerLoad": 3000.0, "ElectricRange_vehicleMass": 2000.0}
-dp3 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 1500.0}
-sweep = [dp1, dp2, dp3]
-
-###############################################################################
 # Auxiliary functions definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Definition of plot_result_comparison for post-processing the results
@@ -107,6 +95,19 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
+
+###############################################################################
+# User inputs
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Defining user inputs and simulation settings
+
+time_step = 1.0
+time_end = 24000.0  # simulating the model for 400 minutes
+print("Twin parameters : {}".format(twin_model.parameters))
+dp1 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 2000.0}
+dp2 = {"ElectricRange_powerLoad": 3000.0, "ElectricRange_vehicleMass": 2000.0}
+dp3 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 1500.0}
+sweep = [dp1, dp2, dp3]
 
 ###############################################################################
 # Parametric sweep over the different design points

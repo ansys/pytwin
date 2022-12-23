@@ -97,6 +97,7 @@ twin_model = TwinModel(twin_file)
 # Evaluating the Twin with different input values and collecting the corresponding outputs
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Since the Twin is based on a static model, 2 different options can be considered :
+#
 # - setting the initial input value to evaluate and run the initialization function (current approach)
 # - create an input dataframe considering all the input values to evaluate and run the evaluate batch function
 # (in that case, a time dimension needs to be defined arbitrarily to execute the transient simulation)
