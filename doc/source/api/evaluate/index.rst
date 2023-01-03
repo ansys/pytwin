@@ -16,15 +16,15 @@ to facilitate the manipulation and execution of Twin Runtimes through TwinModel.
 Workflow Example
 ----------------
 
-.. code-block:: python
+.. code-block:: pycon
 
    >>> from pytwin import TwinModel
    >>> from pytwin import examples
 
    # downloading the input files
-   >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin","twin_files")
-   >>> csv_input = examples.download_file("CoupledClutches_input.csv","twin_input_files")
-   >>> twin_config = examples.download_file("CoupledClutches_config.json","twin_input_files")
+   >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
+   >>> csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
+   >>> twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
 
    # loading the CSV file containing the Twin input data over time
    >>> twin_model_input_df = examples.load_data(csv_input)
@@ -33,10 +33,11 @@ Workflow Example
 
    >>> inputs = dict()
    >>> for column in twin_model_input_df.columns[1::]:
-       inputs[column] = twin_model_input_df[column][0]
+   ...     inputs[column] = twin_model_input_df[column][0]
+   ...
 
    # Initializing the TwinModel given initial inputs values as well as a configuration file for parameters values
-   >>> twin_model.initialize_evaluation(inputs=inputs,json_config_filepath=twin_config)
+   >>> twin_model.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
 
    # Evaluating the TwinModel in batch mode and printing the computed outputs values
    >>> results_batch_pd = twin_model.evaluate_batch(twin_model_input_df)
