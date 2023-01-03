@@ -13,22 +13,26 @@ You can change these global settings at anytime using the following functions:
 
 .. code-block:: python
 
-    >>> # Modify working directory:
-    >>> from pytwin import modify_pytwin_working_dir
-    >>> modify_pytwin_working_dir('path_to_new_working_dir', erase=False)
+    # Modify working directory:
+    from pytwin import modify_pytwin_working_dir
 
-    >>> # Redirect logging to a file in the working directory:
-    >>> from pytwin import modify_pytwin_logging, get_pytwin_log_file
-    >>> from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_DEBUG
-    >>> modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_DEBUG)
-    >>> print(get_pytwin_log_file())
+    modify_pytwin_working_dir("path_to_new_working_dir", erase=False)
 
-    >>> # Redirect pytwin package logging to the console:
-    >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_CONSOLE
-    >>> modify_pytwin_logging(PYTWIN_LOGGING_OPT_CONSOLE)
+    # Redirect logging to a file in the working directory:
+    from pytwin import modify_pytwin_logging, get_pytwin_log_file
+    from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_DEBUG
 
-    >>> # Disable pytwin package logging:
-    >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_NOLOGGING
-    >>> modify_pytwin_logging(PYTWIN_LOGGING_OPT_NOLOGGING)
+    modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_DEBUG)
+    print(get_pytwin_log_file())
+
+    # Redirect pytwin package logging to the console:
+    from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_CONSOLE
+
+    modify_pytwin_logging(PYTWIN_LOGGING_OPT_CONSOLE)
+
+    # Disable pytwin package logging:
+    from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_NOLOGGING
+
+    modify_pytwin_logging(PYTWIN_LOGGING_OPT_NOLOGGING)
 
 See :ref:`ref_index_api_logging` for more information on the APIs available

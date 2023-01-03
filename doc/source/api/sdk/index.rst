@@ -16,13 +16,13 @@ Twin Runtime SDK functionalities.
 Workflow Example
 ----------------
 
-.. code-block:: python
+.. code-block:: pycon
 
    >>> from pytwin import TwinRuntime, LogLevel
    >>> from pytwin import examples
-   >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin","twin_files")
-   >>> twin_runtime = TwinRuntime(twin_model) # Load the Runtime
-   >>> twin_runtime.print_model_info(max_var_to_print=10) # Print Twin information
+   >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
+   >>> twin_runtime = TwinRuntime(twin_model)  # Load the Runtime
+   >>> twin_runtime.print_model_info(max_var_to_print=10)  # Print Twin information
    ------------------------------------- Model Info -------------------------------------
    Twin Runtime Version: 2.4.0.0
    Model Name: CoupledClutchesTwin
@@ -59,9 +59,9 @@ Workflow Example
    2  solver.reltol  ...                   Solver relative tolerance
 
    [3 rows x 9 columns]
-   >>> twin_runtime.twin_instantiate() # Instantiate the Runtime
-   >>> twin_runtime.twin_initialize() # Initialize the Twin simulation
-   >>> print(twin_runtime.twin_get_outputs()) # Collect and print the initial outputs values
+   >>> twin_runtime.twin_instantiate()  # Instantiate the Runtime
+   >>> twin_runtime.twin_initialize()  # Initialize the Twin simulation
+   >>> print(twin_runtime.twin_get_outputs())  # Collect and print the initial outputs values
    [0.0, 0.0, 0.0]
-   >>> twin_runtime.twin_simulate(0.001) # Simulate the Twin till time_end
-   >>> twin_runtime.twin_close() # Close the Runtime
+   >>> twin_runtime.twin_simulate(0.001)  # Simulate the Twin till time_end
+   >>> twin_runtime.twin_close()  # Close the Runtime
