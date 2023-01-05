@@ -1,4 +1,4 @@
-Pytwin
+PyTwin
 ======
 |pyansys| |python| |pypi| |codecov| |GH-CI| |MIT| |black|
 
