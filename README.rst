@@ -10,7 +10,7 @@ PyTwin
    :target: https://pypi.org/project/pytwin/
    :alt: Python
 
-.. |pypi| image:: https://img.shields.io/pypi/v/pytwin-library.svg?logo=python&logoColor=white
+.. |pypi| image:: https://img.shields.io/pypi/v/pytwin.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/pytwin/
    :alt: PyPI
 
