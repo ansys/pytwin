@@ -6,10 +6,10 @@ PyTwin
    :target: https://docs.pyansys.com/
    :alt: PyAnsys
 
-.. |python| image:: https://img.shields.io/badge/Python-%3E%3D3.9-blue
+.. |python| image:: https://img.shields.io/pypi/pyversions/pytwin?logo=pypi
    :target: https://pypi.org/project/pytwin/
    :alt: Python
-
+   
 .. |pypi| image:: https://img.shields.io/pypi/v/pytwin.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/pytwin/
    :alt: PyPI
