@@ -19,16 +19,6 @@ concurrency:
 
 jobs:
 
-  code-style:
-    name: Code style
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Run PyAnsys code style checks"
-        uses: pyansys/actions/code-style@v2
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          use-python-cache: 'pip'
-
   doc-style:
     name: "Running documentation style checks"
     runs-on: ubuntu-latest
@@ -81,7 +71,6 @@ jobs:
 
   build-library:
     name: "Smoke test and building"
-    needs: code-style
     runs-on: ubuntu-latest
     steps:
       - name: "Build library source and wheel artifacts"
