@@ -407,6 +407,8 @@ class _PyTwinSettings(object):
         # Modifications in case of new level
         if new_level is not None:
             if new_level != _PyTwinSettings.LOGGING_LEVEL:
+                # fix ACE bug on logging level Jan 18th 2023 (test_modify_logging_level)
+                _PyTwinSettings.LOGGING_LEVEL = new_level
                 pytwin_logger.setLevel(new_level.value)
                 for handler in pytwin_logger.handlers:
                     handler.setLevel(new_level.value)
