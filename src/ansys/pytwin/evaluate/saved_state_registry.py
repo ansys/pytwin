@@ -3,9 +3,8 @@ import os
 import uuid
 
 import numpy as np
-from pytwin.evaluate.model import Model
-
 from pytwin import get_pytwin_logger
+from pytwin.evaluate.model import Model
 
 
 class SavedState:
