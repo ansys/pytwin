@@ -99,9 +99,12 @@ jobs:
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.PACKAGE_NAME }}_${{ matrix.python-version }}_${{ matrix.os }}_pytest.xml
+          name: ${{ matrix.python-version }}_${{ matrix.os }}_pytest.xml
           path: .cov/coverage.xml 
           retention-days: 7
+  
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v3
 
   check-licenses:
     name: "Check library dependencies ship with valid licenses"
