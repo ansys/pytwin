@@ -72,7 +72,6 @@ class TestDefaultSettings:
         # Disable logging
         modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
         level = TwinModel._get_runtime_log_level()
-        print(level)
         logger = get_pytwin_logger()
         log_file = get_pytwin_log_file()
         assert len(logger.handlers) == 0
