@@ -114,6 +114,8 @@ class TwinModel(Model):
 
     @staticmethod
     def _get_runtime_log_level():
+        if not pytwin_logging_is_enabled():
+            return LogLevel.TWIN_NO_LOG
         pytwin_level = get_pytwin_log_level()
         if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_DEBUG:
             return LogLevel.TWIN_LOG_ALL
@@ -125,8 +127,6 @@ class TwinModel(Model):
             return LogLevel.TWIN_LOG_ERROR
         if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
             return LogLevel.TWIN_LOG_FATAL
-        if not pytwin_logging_is_enabled():
-            return LogLevel.TWIN_NO_LOG
 
     def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
         """
@@ -224,7 +224,9 @@ class TwinModel(Model):
             self._model_name = self._twin_runtime.twin_get_model_name()
             if not os.path.exists(self.model_dir):
                 os.mkdir(self.model_dir)
-            os.link(self.model_log, self.model_log_link)
+            # Create link to log file if any
+            if os.path.exists(self.model_log):
+                os.link(self.model_log, self.model_log_link)
 
             # Update TwinModel variables
             self._instantiation_time = time.time()
