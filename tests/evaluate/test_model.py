@@ -1,8 +1,7 @@
 import os
 
-from pytwin.evaluate.model import Model
-
 from pytwin import PyTwinLogLevel, get_pytwin_log_file
+from pytwin.evaluate.model import Model
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 

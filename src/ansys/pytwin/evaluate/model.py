@@ -1,9 +1,8 @@
 import os
 import uuid
 
-from pytwin.settings import PYTWIN_SETTINGS
-
 from pytwin import PyTwinLogLevel, get_pytwin_logger, get_pytwin_working_dir, pytwin_logging_is_enabled
+from pytwin.settings import PYTWIN_SETTINGS
 
 
 class Model:
