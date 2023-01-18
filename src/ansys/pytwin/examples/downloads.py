@@ -128,11 +128,10 @@ def download_file(
     Returns
     -------
     str
-        Path to the folder containing all example data files.
+        Path to the downloaded file.
 
     Examples
     --------
-    Download an example result file and return the path of the file
     >>> from pytwin import examples
     >>> path = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
     """
@@ -161,7 +160,6 @@ def load_data(inputs: str):
 
     Examples
     --------
-    Download an example result file and return the path of the file
     >>> from pytwin import load_data, download_file
     >>> csv_input = download_file("CoupledClutches_input.csv", "twin_input_files")
     >>> twin_model_input_df = load_data(csv_input)
