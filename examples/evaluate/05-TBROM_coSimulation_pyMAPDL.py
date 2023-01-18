@@ -36,8 +36,9 @@ import struct
 from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, download_file
 import pyvista as pv
+
+from pytwin import TwinModel, download_file
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
 fea_file = download_file("ThermalTBROM.dat", "other_files")

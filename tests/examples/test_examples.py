@@ -1,5 +1,6 @@
-from pytwin import TwinModel, TwinRuntime
 import pytwin.examples.downloads as dld
+
+from pytwin import TwinModel, TwinRuntime
 
 
 class TestExamples:

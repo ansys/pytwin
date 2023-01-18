@@ -38,6 +38,7 @@ from ansys.fluent.visualization import set_config
 from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
+
 from pytwin import TwinModel, download_file
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files")

@@ -4,9 +4,9 @@ import time
 
 import pandas as pd
 import pytest
-from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.settings import get_pytwin_log_file, get_pytwin_logger, get_pytwin_working_dir, modify_pytwin_working_dir
 
+from pytwin import TwinModel, TwinModelError, download_file
 from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")

@@ -1,7 +1,6 @@
 import os
 
 import pytest
-from pytwin import get_pytwin_log_file
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import (
     SavedState,
@@ -10,6 +9,7 @@ from pytwin.evaluate.saved_state_registry import (
     SavedStateRegistryError,
 )
 
+from pytwin import get_pytwin_log_file
 from tests.utilities import compare_dictionary
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
