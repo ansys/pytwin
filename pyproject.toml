@@ -61,7 +61,14 @@ default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["pytwin"]
+source = ["ansys.pytwin"]
 
 [tool.coverage.report]
 show_missing = true
+
+[tool.pytest.ini_options]
+minversion = "7.1"
+addopts = "-ra --cov=ansys.pytwin --cov-report html:.cov/html"
+testpaths = [
+    "tests",
+]
