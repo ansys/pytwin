@@ -1,7 +1,7 @@
 import os
 
-from pytwin import TwinModel, PYTWIN_LOGGING_OPT_NOLOGGING
-from pytwin.settings import modify_pytwin_logging, get_pytwin_log_file
+from pytwin import PYTWIN_LOGGING_OPT_NOLOGGING, TwinModel
+from pytwin.settings import get_pytwin_log_file, modify_pytwin_logging
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
@@ -29,7 +29,7 @@ class TestTwinModelLogging:
         twin = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         twin.initialize_evaluation()
         for i in range(100):
-            new_inputs = {"Clutch1_in": 1.0*i/100, "Clutch2_in": 1.0*i/100}
+            new_inputs = {"Clutch1_in": 1.0 * i / 100, "Clutch2_in": 1.0 * i / 100}
             twin.evaluate_step_by_step(step_size=0.01, inputs=new_inputs)
         temp_dir = twin.model_temp
         assert os.path.exists(temp_dir)
