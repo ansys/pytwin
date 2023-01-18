@@ -97,8 +97,8 @@ class TestDefaultSettings:
         assert pytwin_logging_is_enabled()
 
     def test_modify_logging_level(self):
-        from pytwin.settings import get_pytwin_log_level
         from pytwin import TwinModel
+        from pytwin.settings import get_pytwin_log_level
         from pytwin.twin_runtime.log_level import LogLevel
 
         # Init unit test

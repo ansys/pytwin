@@ -130,7 +130,6 @@ class TwinModel(Model):
             if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
                 return LogLevel.TWIN_LOG_FATAL
 
-
     def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
         """
         Initialize the twin model evaluation with dictionaries:
