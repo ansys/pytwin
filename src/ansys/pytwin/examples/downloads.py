@@ -128,11 +128,10 @@ def download_file(
     Returns
     -------
     str
-        Path to the folder containing all example data files.
+        Path to the downloaded file.
 
     Examples
     --------
-    Download an example result file and return the path of the file
     >>> from pytwin import examples
     >>> path = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
     """
@@ -146,8 +145,25 @@ def download_file(
 
 
 def load_data(inputs: str):
-    """Load a CSV input file into a Pandas Dataframe. Inputs is the path of the CSV file to be loaded,
-    containing the Time column and all the Twin inputs data"""
+    """
+    Load a CSV input file into a Pandas Dataframe.
+
+    Parameters
+    ----------
+    inputs : str
+        Path of the CSV file to be loaded, containing the Time column and all the Twin inputs data.
+
+    Returns
+    -------
+    inputs_df: pandas.DataFrame
+        A ``pandas.DataFrame`` storing time values as well as all the corresponding input data.
+
+    Examples
+    --------
+    >>> from pytwin import load_data, download_file
+    >>> csv_input = download_file("CoupledClutches_input.csv", "twin_input_files")
+    >>> twin_model_input_df = load_data(csv_input)
+    """
 
     # Clean CSV headers if exported from Twin builder
     def clean_column_names(column_names):

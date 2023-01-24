@@ -9,6 +9,19 @@ class PyTwinLogLevel(Enum):
     """
     Enum to choose logging level to be used by all pytwin objects.
     It follows standard python logging levels.
+
+    PYTWIN_LOG_DEBUG:
+        Detailed information, typically of interest only when diagnosing problems.
+    PYTWIN_LOG_INFO:
+        Confirmation that things are working as expected.
+    PYTWIN_LOG_WARNING:
+        An indication that something unexpected happened, or indicative of some problem in the near future
+        (e.g. ‘disk space low’). The software is still working as expected.
+    PYTWIN_LOG_ERROR:
+        Due to a more serious problem, the software has not been able to perform some function.
+    PYTWIN_LOG_CRITICAL:
+        A serious error, indicating that the program itself may be unable to continue running.
+
     """
 
     PYTWIN_LOG_DEBUG = logging.DEBUG

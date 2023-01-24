@@ -27,6 +27,10 @@ Global Settings
 :ref:`ref_index_api_logging` describe the global settings (e.g. logging and working directory options) available from
 PyTwin package and how to change them from their default values
 
+Other Functions
+---------------
+
+Additional useful functions used for the examples implementation are described in :ref:`ref_index_api_example`.
 
 .. currentmodule:: pytwin
 
@@ -40,3 +44,4 @@ PyTwin package and how to change them from their default values
    sdk/index
    evaluate/index
    logging/index
+   examples/index
