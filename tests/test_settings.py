@@ -63,16 +63,21 @@ class TestDefaultSettings:
         assert "Error while setting pytwin logging options!" in str(e)
 
     def test_modify_logging_no_logging(self):
+        from pytwin import TwinModel
+        from pytwin.twin_runtime.log_level import LogLevel
+
         # Init unit test
         reinit_settings()
         assert pytwin_logging_is_enabled()
         # Disable logging
         modify_pytwin_logging(new_option=PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING)
+        level = TwinModel._get_runtime_log_level()
         logger = get_pytwin_logger()
         log_file = get_pytwin_log_file()
         assert len(logger.handlers) == 0
         assert log_file is None
         assert not pytwin_logging_is_enabled()
+        assert level == LogLevel.TWIN_NO_LOG
 
     def test_modify_logging_console(self):
         # Init unit test
@@ -92,10 +97,16 @@ class TestDefaultSettings:
         assert pytwin_logging_is_enabled()
 
     def test_modify_logging_level(self):
+        from pytwin import TwinModel
+        from pytwin.settings import get_pytwin_log_level
+        from pytwin.twin_runtime.log_level import LogLevel
+
         # Init unit test
         reinit_settings()
         # Modify logging level works
         modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_CRITICAL)
+        level = get_pytwin_log_level()
+        runtime_level = TwinModel._get_runtime_log_level()
         log_file = get_pytwin_log_file()
         logger = get_pytwin_logger()
         logger.debug("Hello 10")
@@ -106,8 +117,12 @@ class TestDefaultSettings:
         with open(log_file, "r") as f:
             lines = f.readlines()
         assert len(lines) == 1
+        assert level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL
+        assert runtime_level == LogLevel.TWIN_LOG_FATAL
         # Modify logging level can be done dynamically
         modify_pytwin_logging(new_level=PyTwinLogLevel.PYTWIN_LOG_DEBUG)
+        level = get_pytwin_log_level()
+        runtime_level = TwinModel._get_runtime_log_level()
         logger.debug("Hello 10")
         logger.info("Hello 20")
         logger.warning("Hello 30")
@@ -116,6 +131,8 @@ class TestDefaultSettings:
         with open(log_file, "r") as f:
             lines = f.readlines()
         assert len(lines) == 5 + 1
+        assert level == PyTwinLogLevel.PYTWIN_LOG_DEBUG
+        assert runtime_level == LogLevel.TWIN_LOG_ALL
 
     def test_modify_logging_multiple_times(self):
         # Init unit test
