@@ -156,7 +156,7 @@ def load_data(inputs: str):
     Returns
     -------
     inputs_df: pandas.DataFrame
-        A pandas.DataFrame storing time values as well as all the corresponding input data
+        A ``pandas.DataFrame`` storing time values as well as all the corresponding input data.
 
     Examples
     --------
