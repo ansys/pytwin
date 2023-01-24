@@ -151,7 +151,7 @@ def load_data(inputs: str):
     Parameters
     ----------
     inputs : str
-        Path of the CSV file to be loaded, containing the Time column and all the Twin inputs data
+        Path of the CSV file to be loaded, containing the Time column and all the Twin inputs data.
 
     Returns
     -------
