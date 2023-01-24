@@ -151,12 +151,12 @@ def load_data(inputs: str):
     Parameters
     ----------
     inputs : str
-        Path of the CSV file to be loaded, containing the Time column and all the Twin inputs data
+        Path of the CSV file to be loaded, containing the Time column and all the Twin inputs data.
 
     Returns
     -------
     inputs_df: pandas.DataFrame
-        A pandas.DataFrame storing time values as well as all the corresponding input data
+        A ``pandas.DataFrame`` storing time values as well as all the corresponding input data.
 
     Examples
     --------

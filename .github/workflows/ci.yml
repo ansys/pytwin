@@ -96,6 +96,16 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.python-version }}_${{ matrix.os }}_pytest.html
+          path: .cov/html 
+          retention-days: 7
+  
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v3
+
   check-licenses:
     name: "Check library dependencies ship with valid licenses"
     runs-on: ubuntu-latest
