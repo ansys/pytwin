@@ -369,12 +369,19 @@ class _PyTwinSettings(object):
                 filepath=new_logfile_path, level=_PyTwinSettings.LOGGING_LEVEL, mode="a"
             )
         # Migrate subfolder
-        shutil.copytree(
-            src=old_path,
-            dst=new_path,
-            ignore=shutil.ignore_patterns(f"{_PyTwinSettings.TEMP_WD_NAME}*"),
-            dirs_exist_ok=True,
-        )
+        try:
+            shutil.copytree(
+                src=old_path,
+                dst=new_path,
+                ignore=shutil.ignore_patterns(f"{_PyTwinSettings.TEMP_WD_NAME}*"),
+                dirs_exist_ok=True
+            )
+        except TypeError:
+            shutil.copytree(
+                src=old_path,
+                dst=new_path,
+                ignore=shutil.ignore_patterns(f"{_PyTwinSettings.TEMP_WD_NAME}*")
+            )
 
     @staticmethod
     def modify_wd_dir(new_path: str, erase: bool):
