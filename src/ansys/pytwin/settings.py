@@ -375,7 +375,7 @@ class _PyTwinSettings(object):
                 src=old_path,
                 dst=new_path,
                 ignore=shutil.ignore_patterns(f"{_PyTwinSettings.TEMP_WD_NAME}*"),
-                dirs_exist_ok=True
+                dirs_exist_ok=True,
             )
         else:
             """Copy a directory structure overwriting existing files"""
@@ -385,13 +385,12 @@ class _PyTwinSettings(object):
                 if not os.path.isdir(root):
                     os.makedirs(root)
                 for file in files:
-                    rel_path = root.replace(src, '').lstrip(os.sep)
+                    rel_path = root.replace(src, "").lstrip(os.sep)
                     dest_path = os.path.join(dst, rel_path)
                     if _PyTwinSettings.TEMP_WD_NAME not in dest_path:
                         if not os.path.isdir(dest_path):
                             os.makedirs(dest_path)
                         shutil.copyfile(os.path.join(root, file), os.path.join(dest_path, file))
-
 
     @staticmethod
     def modify_wd_dir(new_path: str, erase: bool):
