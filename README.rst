@@ -53,7 +53,7 @@ and its sections:
 Installation
 ------------
 The ``pytwin`` package supports Python 3.7 through Python
-3.10 on Windows and Linux.
+3.11 on Windows and Linux.
 
 Install the latest release from `PyPI
 <https://pypi.org/project/pytwin/>`_ with:
