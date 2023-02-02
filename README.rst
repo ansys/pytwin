@@ -52,7 +52,7 @@ and its sections:
 
 Installation
 ------------
-The ``pytwin`` package supports Python 3.8 through Python
+The ``pytwin`` package supports Python 3.7 through Python
 3.10 on Windows and Linux.
 
 Install the latest release from `PyPI
