@@ -3,9 +3,13 @@ pytwin.
 
 library
 """
-import importlib.metadata as metadata
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
 
-__version__ = metadata.version("pytwin")
+
+__version__ = importlib_metadata.version("pytwin")
 
 """
 PUBLIC API TO PYTWIN SETTINGS 

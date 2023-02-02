@@ -2,6 +2,7 @@ from enum import Enum
 import logging
 import os
 import shutil
+import sys
 import tempfile
 
 
@@ -369,12 +370,27 @@ class _PyTwinSettings(object):
                 filepath=new_logfile_path, level=_PyTwinSettings.LOGGING_LEVEL, mode="a"
             )
         # Migrate subfolder
-        shutil.copytree(
-            src=old_path,
-            dst=new_path,
-            ignore=shutil.ignore_patterns(f"{_PyTwinSettings.TEMP_WD_NAME}*"),
-            dirs_exist_ok=True,
-        )
+        if sys.version >= "3.8":
+            shutil.copytree(
+                src=old_path,
+                dst=new_path,
+                ignore=shutil.ignore_patterns(f"{_PyTwinSettings.TEMP_WD_NAME}*"),
+                dirs_exist_ok=True,
+            )
+        else:
+            """Copy a directory structure overwriting existing files"""
+            src = old_path
+            dst = new_path
+            for root, dirs, files in os.walk(src):
+                if not os.path.isdir(root):
+                    os.makedirs(root)
+                for file in files:
+                    rel_path = root.replace(src, "").lstrip(os.sep)
+                    dest_path = os.path.join(dst, rel_path)
+                    if _PyTwinSettings.TEMP_WD_NAME not in dest_path:
+                        if not os.path.isdir(dest_path):
+                            os.makedirs(dest_path)
+                        shutil.copyfile(os.path.join(root, file), os.path.join(dest_path, file))
 
     @staticmethod
     def modify_wd_dir(new_path: str, erase: bool):

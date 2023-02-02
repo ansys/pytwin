@@ -86,7 +86,7 @@ jobs:
     strategy:
        matrix:
            os: [pytwin-win10, ubuntu-20.04]
-           python-version: ["3.8", "3.9", "3.10"]
+           python-version: ["3.7", "3.8", "3.9", "3.10"]
     steps:
       - name: Run pytest
         uses: pyansys/actions/tests-pytest@v3
