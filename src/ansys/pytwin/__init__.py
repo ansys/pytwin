@@ -19,6 +19,7 @@ from pytwin.settings import (
     PyTwinLogOption,
     PyTwinSettingsError,
     get_pytwin_log_file,
+    get_pytwin_log_level,
     get_pytwin_logger,
     get_pytwin_working_dir,
     modify_pytwin_logging,
