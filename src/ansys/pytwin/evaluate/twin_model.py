@@ -377,7 +377,7 @@ class TwinModel(Model):
         """
         Return a dictionary with TBROM model names included in the Twin and their corresponding 3D visualization
         capabilities available (e.g. snapshots, and optionally images generation). If TwinModel has not been
-        initialized no TBROM is included in the Twin, it returns None
+        initialized, or no TBROM is included in the Twin, it returns None
         """
         return self._tbrom_info
 
