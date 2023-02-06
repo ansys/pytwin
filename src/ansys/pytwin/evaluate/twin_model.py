@@ -378,33 +378,14 @@ class TwinModel(Model):
         Return a dictionary with TBROM model names included in the Twin and their corresponding 3D visualization
         capabilities available (e.g. snapshots, and optionally images generation). If no TBROM is included in the
         Twin, it returns None
-        Raises
-        ------
-        TwinModelError:
-            It raises an error if TwinModel has not been initialized.
         """
-        self._log_key = "TBROMInfo"
-        if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized! "
-            msg += "Please initialize evaluation before to call this method!"
-            self._raise_error(msg)
         return self._tbrom_info
 
     @property
     def tbrom_names(self):
         """
         Return available TBROM model names. If no TBROM is included in the Twin, it returns an empty list.
-
-        Raises
-        ------
-        TwinModelError:
-            It raises an error if TwinModel has not been initialized.
         """
-        self._log_key = "TBROMNames"
-        if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized! "
-            msg += "Please initialize evaluation before to call this method!"
-            self._raise_error(msg)
         if self._tbrom_info is not None:
             return list(self._tbrom_info)
         return []
