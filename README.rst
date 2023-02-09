@@ -36,8 +36,19 @@ PyTwin
 
 Overview
 --------
-PyTwin is a Python package that eases `Ansys Digital Twins`_ consumption workflows.
+PyTwin is a Python package for consuming a digital twin model that has been exported from
+Ansys Twin Builder as a TWIN file. Each TWIN file is a self-contained app (Twin Runtime)
+that consists of two parts:
 
+- The twin model, which is the simulation model created and compiled in Twin Buider
+- The runtime SDK, which is the shared library for consuming the twin model within
+  the deployment workflow.
+  
+Because PyTwin wraps a Twin Runtime in a Python interface, you do not need a Twin Builder
+installation to deploy it.
+
+For more information on digital twins and Ansys Twin Builder, see
+`Digital Twins`_ and `Ansys Twin Builder`_ on the Ansys website.
 
 Documentation
 -------------
@@ -52,18 +63,18 @@ and its sections:
 
 Installation
 ------------
-The ``pytwin`` package supports Python 3.7 through Python
-3.11 on Windows and Linux.
+The ``pytwin`` package supports Python 3.7 through Python 3.11 on Windows and Linux.
 
-Install the latest release from `PyPI
-<https://pypi.org/project/pytwin/>`_ with:
+Install the latest release from `PyPI <https://pypi.org/project/pytwin/>`_ with this
+command:
 
 .. code:: console
 
     pip install pytwin
 
+
 If you plan on doing local *development* of PyTwin with Git, install
-the latest release with:
+the latest release with this code:
 
 .. code:: console
 
@@ -72,23 +83,22 @@ the latest release with:
     pip install pip -U
     pip install -e .
 
+
 Dependencies
 ------------
 The ``pytwin`` package requires access to an Ansys License Server
-with the ``twin_builder_deployer`` feature available (see the
-`Getting started`_ section).
+with the ``twin_builder_deployer`` feature available. For more information,
+see `Getting started`_.
 
 
 License and acknowledgments
 ---------------------------
 PyTwin is licensed under the MIT license.
 
-For more information on `Ansys Digital Twins`_, see the `Twin Builder`_
-page on the Ansys website.
 
 .. LINKS AND REFERENCES
-.. _Ansys Digital Twins: https://www.ansys.com/products/digital-twin/
-.. _Twin Builder: https://www.ansys.com/products/digital-twin/ansys-twin-builder
+.. _Digital Twins: https://www.ansys.com/products/digital-twin/
+.. _Ansys Twin Builder: https://www.ansys.com/products/digital-twin/ansys-twin-builder
 .. _Documentation: https://twin.docs.pyansys.com/
 .. _Getting started: https://twin.docs.pyansys.com/release/0.1/getting_started/index.html
 .. _User guide: https://twin.docs.pyansys.com/release/0.1/user_guide/index.html
