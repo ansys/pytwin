@@ -64,12 +64,12 @@ def modify_pytwin_logging(
 ):
     """
     Modify global PyTwin logging. You can choose to take these actions:
-    
+
     - Redirect logging to a log file.
     - Redirect logging to the console.
     - Disable logging.
-    
-    All PyTwin objects from the same Python process share the same logging options. 
+
+    All PyTwin objects from the same Python process share the same logging options.
     To fine tune the logging level, use the ``new_level`` parameter. For more
     information, see the examples.
 
@@ -153,10 +153,10 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     ------
     PyTwinSettingsError
         If provided path is ``None``.
-        
+
         If provided path does not exist and some parent directories do not exist or the last parent
         directory does not have write permission.
-        
+
         If ``erase`` is not a Boolean value.
 
     Examples

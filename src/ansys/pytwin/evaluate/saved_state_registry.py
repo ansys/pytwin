@@ -65,7 +65,7 @@ class SavedStateError(Exception):
 class SavedStateRegistry:
     """
     Manages a registry of saved states for the twin model.
-    
+
     This class registers metadata associated with the saved state, persists
     the saved state, and provide methods for appending and extracting saved states.
     """
