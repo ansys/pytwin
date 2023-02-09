@@ -182,7 +182,7 @@ class SavedStateRegistry:
                 times.append(ss.time)
             msg = (
                 f"[SavedStateRegistry]Multiple saved states were found. The first one is "
-            msg += f"\nused at simulation time {times[0]}."
+                msg += f"\nused at simulation time {times[0]}."
             )
             logger = get_pytwin_logger()
             logger.warning(msg)
