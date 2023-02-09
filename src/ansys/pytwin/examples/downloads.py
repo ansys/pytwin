@@ -113,7 +113,7 @@ def download_file(
 ):
     """
     Download the input file for an example.
-    
+
     Input files for examples are downloaded to a persistent cache to avoid downloading the same file twice.
 
     Parameters

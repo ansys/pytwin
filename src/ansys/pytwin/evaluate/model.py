@@ -8,7 +8,7 @@ from pytwin.settings import PYTWIN_SETTINGS
 class Model:
     """
     Provides the private base class for managing twin model evaluation.
-    
+
     This class handles the model ID, working directory paths, logging,
     and error raising.
 

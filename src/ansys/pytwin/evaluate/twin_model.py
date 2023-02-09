@@ -14,7 +14,7 @@ from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
 class TwinModel(Model):
     """
     Evaluates a twin model in a TWIN file created by Ansys Twin Builder.
-    
+
     After a twin model is initialized, it can be evaluated with two modes (step-by-step or batch)
     to make predictions. Parametric workflows are also supported.
 
@@ -483,7 +483,7 @@ class TwinModel(Model):
         -------
         list
             List of outputs values at time instant t plus the step size, ordered by output names.
-        
+
         Examples
         --------
         >>> from pytwin import TwinModel
@@ -641,7 +641,7 @@ class TwinModel(Model):
         """
         Get the image file associated with a ROM (reduced order model) in the twin model and evaluated at a
         given time instant.
-        
+
         The image file shows the field results of the ROM in the given predefined view.
 
         Parameters
@@ -715,7 +715,7 @@ class TwinModel(Model):
     def get_geometry_filepath(self, rom_name: str):
         """
         Get the geometry file associated with a ROM (reduced order model) available in the twin model.
-        
+
         The geometry file contains the coordinates of the points that are used to define the
         geometrical support of the ROM field output.
 
@@ -812,7 +812,7 @@ class TwinModel(Model):
         """
         Get the snapshot file associated with a ROM (reduced order model) in the twin model and evaluated at the
         given time instant.
-        
+
         The snapshot file contains the field results of the ROM.
 
         Parameters
@@ -872,7 +872,7 @@ class TwinModel(Model):
     def load_state(self, model_id: str, evaluation_time: float, epsilon: float = 1e-8):
         """
         Load a state that has been saved by a twin model instantiated with the same TWIN file.
-        
+
         .. note::
            Calling this method replaces evaluation initialization.
 

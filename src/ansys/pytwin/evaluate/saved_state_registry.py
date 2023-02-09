@@ -65,7 +65,7 @@ class SavedStateError(Exception):
 class SavedStateRegistry:
     """
     Manages a registry of saved states for the twin model.
-    
+
     This class registers metadata associated with the saved state, persists
     the saved state, and provide methods for appending and extracting saved states.
     """
@@ -180,9 +180,7 @@ class SavedStateRegistry:
             for i in range(len(idx[0])):
                 ss = self._saved_states[idx[0][i]]
                 times.append(ss.time)
-            msg = (
-                f"[SavedStateRegistry]Multiple saved states were found. Using the first one at simulation time {times[0]}."
-            )
+            msg = f"[SavedStateRegistry]Multiple saved states were found. Using the first one at simulation time {times[0]}."
             logger = get_pytwin_logger()
             logger.warning(msg)
 
