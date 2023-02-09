@@ -173,7 +173,7 @@ class TwinModel(Model):
         except Exception as e:
             msg = f"Something went wrong during model initialization."
             msg += f"\n{str(e)}"
-            msg += f"\nFor more infomration, see the model log file: {self.model_log}."
+            msg += f"\nFor more information, see the model log file: {self.model_log}."
             self._raise_error(msg)
 
         self._update_outputs()
@@ -403,22 +403,22 @@ class TwinModel(Model):
     def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, json_config_filepath: str = None):
         """
         Initialize evaluation of a twin model.
-        
+
         A twin model can be initialized with either a dictionary of parameters values and/or input (start) values
         or a JSON configuration file. For more information, see the examples.
 
         Using a JSON configuration file overrides using a dictionary of parameter values and/or input (start) values.
 
-        If no inputs are given in the arguments or in the configuration file, calling this method resets inputs to their default
-        values. The behavior is the same for parameters.
+        If no inputs are given in the arguments or in the configuration file, calling this method
+        resets inputs to their default values. The behavior is the same for parameters.
 
-        Default values are kept for parameters and inputs that are not found in the provided dictionaries or configuration file.
-        For example, the start value of the twin model is kept.
+        Default values are kept for parameters and inputs that are not found in the provided dictionaries
+        or configuration file. For example, the start value of the twin model is kept.
 
         After this method is called and the initialization time is updated, the evaluation time is reset to zero.
 
         This method must be called:
-        
+
         - Before evaluating the twin model.
         - If you want to update parameters values between multiple twin evaluations. In this case,
           the twin model is reset.

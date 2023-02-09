@@ -242,7 +242,7 @@ class _PyTwinSettings(object):
     """
     This private class hosts PyTwin package settings (that are mutable and immutable attributes) that are seen by all
     PyTwin object instances. Helpers are provided to manipulate these attributes. Explicit modification of attributes is
-    forbidden becaue they may cause unexpected behavior.
+    forbidden because they may cause unexpected behavior.
     """
 
     # Mutable constants

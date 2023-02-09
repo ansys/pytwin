@@ -40,7 +40,7 @@ PyTwin is a Python package for consuming a digital twin model that has been expo
 Ansys Twin Builder as a TWIN file. Each TWIN file is a self-contained app (Twin Runtime)
 that consists of two parts:
 
-- The twin model, which is the simulation model created and compiled in Twin Buider
+- The twin model, which is the simulation model created and compiled in Twin Builder
 - The runtime SDK, which is the shared library for consuming the twin model within
   the deployment workflow.
   
