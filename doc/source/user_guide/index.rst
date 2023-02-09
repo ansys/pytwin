@@ -3,12 +3,14 @@
 ==========
 User guide
 ==========
+
 Anyone who wants to use PyTwin can import its Python modules and develop
 Python code to integrate and deploy Ansys Digital Twin Runtimes, as
 explained in :ref:`ref_index_api` and demonstrated in :ref:`ref_example_gallery`.
 
 Global settings
 ---------------
+
 By default, logging is enabled in PyTwin at a level of ``INFO``. Simulation output
 files are generated in the ``%temp%/pytwin`` folder. You can change these global
 settings at anytime using these functions:

@@ -11,25 +11,27 @@ and an example of a higher-level abstraction class for evaluating Twin Runtimes.
 Twin Runtime SDK
 ----------------
 
-Implementation of the :ref:`ref_index_api_sdk` class enabling access to the core
-Twin Runtime SDK functionalities.
+The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to core
+Twin Runtime SDK functionalities. For a workflow example, see :ref:`ref_index_api_sdk`.
 
 Evaluate
 --------
 
-:ref:`ref_index_api_evaluate` class is an example of higher level abstraction implementation
-to facilitate the manipulation and execution of Twin Runtimes.
+The :class:`TwinModel <ansys.pytwin.TwinModel` class implements a higher-level
+abstraction to facilitate the manipulation and execution of a twin model. For more
+information, see :ref:`ref_index_api_sdk`.
 
-Global Settings
+Global settings
 ---------------
 
-:ref:`ref_index_api_logging` describe the global settings (e.g. logging and working directory options) available from
-PyTwin package and how to change them from their default values
+PyTwin provides global settings for configuring and changing both logging and directory options.
+For more information, see :ref:`ref_index_api_logging`.
 
-Other Functions
+Other functions
 ---------------
 
-Additional useful functions used for the examples implementation are described in :ref:`ref_index_api_example`.
+Some other PyTwin functions are available and used in examples. For more information,
+see :ref:`ref_index_api_example`.
 
 .. currentmodule:: pytwin
 

@@ -3,8 +3,8 @@
 Evaluate
 ========
 
-Evaluate module is an example of higher level abstraction implementation
-to facilitate the manipulation and execution of Twin Runtimes through TwinModel.
+The :class:`TwinModel <ansys.pytwin.TwinModel` class implements a higher-level
+abstraction to facilitate the manipulation and execution of a twin model. 
 
 .. currentmodule:: pytwin
 
@@ -13,22 +13,24 @@ to facilitate the manipulation and execution of Twin Runtimes through TwinModel.
 
    TwinModel
 
-Workflow Example
+Workflow example
 ----------------
+
+This code shows how to set up and evaluate a twin model. 
 
 .. code-block:: pycon
 
    >>> from pytwin import TwinModel
    >>> from pytwin import examples
 
-   # downloading the input files
+   # Download the input files
    >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
    >>> csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
    >>> twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
 
-   # loading the CSV file containing the Twin input data over time
+   # Load the CSV file containing the twin input data over time
    >>> twin_model_input_df = examples.load_data(csv_input)
-   # Loading and instantiating the TwinModel
+   # Load and instantiate the twin model
    >>> twin_model = TwinModel(twin_file)
 
    >>> inputs = dict()
@@ -36,10 +38,10 @@ Workflow Example
    ...     inputs[column] = twin_model_input_df[column][0]
    ...
 
-   # Initializing the TwinModel given initial inputs values as well as a configuration file for parameters values
+   # Initialize the twin model given initial input values and a configuration file for parameters values
    >>> twin_model.initialize_evaluation(inputs=inputs, json_config_filepath=twin_config)
 
-   # Evaluating the TwinModel in batch mode and printing the computed outputs values
+   # Evaluate the twin model in batch mode and print the computed output values
    >>> results_batch_pd = twin_model.evaluate_batch(twin_model_input_df)
    >>> print(results_batch_pd)
           Time  Clutch1_torque  Clutch2_torque  Clutch3_torque

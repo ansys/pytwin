@@ -9,7 +9,7 @@ from pytwin.evaluate.model import Model
 
 class SavedState:
     """
-    MetaData of the twin model on user save state request.
+    Provides the metadata of a twin model on a save state request.
     """
 
     ID_KEY = "id"
@@ -52,8 +52,8 @@ class SavedState:
         requested_keys = [self.ID_KEY, self.TIME_KEY, self.INPUTS_KEY, self.OUTPUTS_KEY, self.PARAMETERS_KEY]
         for key in requested_keys:
             if key not in json_dict:
-                msg = f"Meta data is corrupted! No '{key}' key was found!"
-                msg += f"\nGiven dictionary is: {json_dict}"
+                msg = f"Metadata is corrupted. No '{key}' key was found."
+                msg += f"\nGiven dictionary is: {json_dict}."
                 self._raise_error(msg)
 
 
@@ -64,8 +64,10 @@ class SavedStateError(Exception):
 
 class SavedStateRegistry:
     """
-    This class manages a registry of twin model saved states. It registers meta-data associated to saved state, persists
-    it and provide append and extract saved state methods.
+    Manages a registry of saved states for the twin model.
+    
+    This class registers metadata associated with the saved state, persists
+    the saved state, and provide methods for appending and extracting saved states.
     """
 
     SAVED_STATES_KEY = "saved_states"
@@ -123,10 +125,10 @@ class SavedStateRegistry:
         model._model_name = model_name
         wd = model.model_dir
         if not os.path.exists(wd):
-            msg = f"Model directory ({wd}) does not exist!"
-            msg += "\nPlease use an existing model id and/or model name"
-            msg += f" (given model_id:{model_id}, model_name:{model_name})"
-            msg += " to instantiate a SavedStateRegistry!"
+            msg = f"Model directory ({wd}) does not exist."
+            msg += "\nUse an existing model ID or model name."
+            msg += f" (Given model_id:{model_id}, model_name:{model_name})"
+            msg += " to instantiate a SavedStateRegistry."
             self._raise_error(msg)
 
     def _check_given_dict(self, json_dict):
@@ -134,7 +136,7 @@ class SavedStateRegistry:
         for key in requested_keys:
             if key not in requested_keys:
                 if key not in json_dict:
-                    msg = f"Meta data is corrupted! No '{key}' key was found!"
+                    msg = f"Metadata is corrupted. No '{key}' key was found."
                     msg += f"\n{json_dict}"
                     self._raise_error(msg)
 
@@ -159,7 +161,7 @@ class SavedStateRegistry:
             with open(self.registry_filepath, "r", encoding="utf-8") as fp:
                 self._load(json_dict=json.load(fp))
         except Exception as e:
-            msg = f"Something went wrong while reading registry file {self.registry_filename}!"
+            msg = f"Something went wrong while reading the registry file {self.registry_filename}."
             msg += f"\n{str(e)}"
             self._raise_error(msg)
 
@@ -170,7 +172,7 @@ class SavedStateRegistry:
         idx = np.where((time_instants > tl) & (time_instants < tr))
 
         if len(idx[0]) == 0:
-            msg = f"No state at simulation time {evaluation_time} was found!"
+            msg = f"No state at simulation time {evaluation_time} was found."
             self._raise_error(msg)
 
         if len(idx[0]) > 1:
@@ -179,7 +181,7 @@ class SavedStateRegistry:
                 ss = self._saved_states[idx[0][i]]
                 times.append(ss.time)
             msg = (
-                f"[SavedStateRegistry]Multiple saved states were found! Using first one, at simulation time {times[0]}"
+                f"[SavedStateRegistry]Multiple saved states were found. Using the first one at simulation time {times[0]}."
             )
             logger = get_pytwin_logger()
             logger.warning(msg)
@@ -194,7 +196,7 @@ class SavedStateRegistry:
             with open(self.registry_filepath, "w", encoding="utf-8") as fp:
                 json.dump(self._dump(), fp, indent=4)
         except Exception as e:
-            msg = f"Something went wrong while writing registry file {self.registry_filename}!"
+            msg = f"Something went wrong while writing the registry file {self.registry_filename}."
             msg += f"\n{str(e)}"
             self._raise_error(msg)
 

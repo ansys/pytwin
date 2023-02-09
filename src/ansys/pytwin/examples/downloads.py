@@ -1,4 +1,5 @@
 """Functions to download sample datasets from the PyAnsys data repository.
+
 Examples
 --------
 #>>> from pytwin import examples
@@ -50,7 +51,7 @@ def _get_file_url(directory, filename=None):
 
 
 def _retrieve_file(url, filename, directory, destination=None):
-    """Download a file from an url"""
+    """Download a file from a URL."""
     # First check if file has already been downloaded
     if not destination:
         destination = EXAMPLES_PATH
@@ -73,7 +74,7 @@ def _retrieve_file(url, filename, directory, destination=None):
 
 
 def _retrieve_folder(url, directory, destination=None):
-    """Download a folder from an url"""
+    """Download a folder from a URL."""
     # First check if folder exists
     if not destination:
         destination = EXAMPLES_PATH
@@ -111,24 +112,26 @@ def download_file(
     file_name: str, directory: str, force_download: Optional[bool] = False, destination: Optional[str] = None
 ):
     """
-    Download an example data file.
-    Examples files are downloaded to a persistent cache to avoid downloading the same file twice.
+    Download the input file for an example.
+    
+    Input files for examples are downloaded to a persistent cache to avoid downloading the same file twice.
 
     Parameters
     ----------
     file_name : str
-        Path of the file in the examples folder.
+        Name of the input file.
     directory : str
-        Subfolder storing the input file
+        Path to the input file.
     force_download : bool, optional
-        Force to delete file and download file again. Default value is ``False``.
+        Whether to force deletion of an input file so that it can be downloaded again. The default is ``False``.
     destination : str, optional
-        Path to download files to. The default is the user's temporary folder.
+        Path to download the input file to. The default is ``None``, in which case the input file is
+        downloaded to the user's temporary folder.
 
     Returns
     -------
     str
-        Path to the downloaded file.
+        Path to the downloaded input file.
 
     Examples
     --------
@@ -146,17 +149,18 @@ def download_file(
 
 def load_data(inputs: str):
     """
-    Load a CSV input file into a Pandas Dataframe.
+    Load the input data in a CVS file into a Pandas dataframe.
 
     Parameters
     ----------
     inputs : str
-        Path of the CSV file to be loaded, containing the Time column and all the Twin inputs data.
+        Path of the CSV file. This file must containing the `Time` column and all input data
+        for the twin model.
 
     Returns
     -------
     inputs_df: pandas.DataFrame
-        A ``pandas.DataFrame`` storing time values as well as all the corresponding input data.
+        A Pandas dataframe storing time values and all corresponding input data.
 
     Examples
     --------
@@ -165,7 +169,7 @@ def load_data(inputs: str):
     >>> twin_model_input_df = load_data(csv_input)
     """
 
-    # Clean CSV headers if exported from Twin builder
+    # Clean CSV headers if exported from Twin Builder
     def clean_column_names(column_names):
         for name_index in range(len(column_names)):
             clean_header = column_names[name_index].replace('"', "").replace(" ", "").replace("]", "").replace("[", "")
@@ -175,11 +179,11 @@ def load_data(inputs: str):
 
         return column_names
 
-    # #### Data loading (into Pandas DataFrame) and pre-processing ###### #
-    # C engine can't read rows with quotes, reading just the first row
+    # #### Load data into a Pandas dataframe and preprocess ###### #
+    # Because C engine can't read rows with quotes, read just the first row
     input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r",\s+", engine="python", quoting=csv.QUOTE_ALL)
 
-    # Reading all values from the csv but skipping the first row
+    # Read all values from the CSV file but skip the first row
     inputs_df = pd.read_csv(inputs, header=None, skiprows=1)
     inputs_header_values = input_header_df.iloc[0][0].split(",")
     clean_column_names(inputs_header_values)

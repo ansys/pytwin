@@ -3,7 +3,7 @@
 Other Functions
 ===============
 
-Other useful functions available and used for the examples implemented (see :ref:`ref_example_gallery`).
+Some other PyTwin functions are available and used in :ref:`ref_example_gallery`.
 
 .. currentmodule:: pytwin
 

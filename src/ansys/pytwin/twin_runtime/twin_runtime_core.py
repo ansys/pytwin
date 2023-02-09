@@ -119,39 +119,39 @@ class TwinRuntime:
     @staticmethod
     def evaluate_twin_status(twin_status, twin_runtime, method_name):
         if twin_status == 1:
-            message = "The method " + method_name + " caused a warning! \n"
+            message = "The method " + method_name + " caused a warning. \n"
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             print(message)
 
         elif twin_status == 2:
-            message = "The method " + method_name + " caused a error!\n"
+            message = "The method " + method_name + " caused an error.\n"
             message += "TwinRuntime error message: " + twin_runtime.twin_get_status_string()
             raise TwinRuntimeError(message, twin_runtime)
 
         elif twin_status == 3:
-            message = "The method " + method_name + " caused a fatal error!\n"
+            message = "The method " + method_name + " caused a fatal error.\n"
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise TwinRuntimeError(message, twin_runtime)
 
     @staticmethod
     def evaluate_twin_prop_status(prop_status, twin_runtime, method_name, var):
         if prop_status == 4:
-            message = "The method {} with the variable {} caused an error!\n".format(method_name.encode(), var)
+            message = "The method {} with the variable {} caused an error.\n".format(method_name.encode(), var)
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyError(message, twin_runtime, prop_status)
 
         elif prop_status == 3:
-            message = "The method {} with the variable {} is invalid (i.e., variable does not exist)!\n".format(method_name.encode(), var)
+            message = "The method {} with the variable {} is invalid, usually because the variable does not exist.\n".format(method_name.encode(), var)
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyInvalidError(message, twin_runtime, prop_status)
 
         elif prop_status == 2:
-            message = "The method {} with the variable {} is not applicable!\n".format(method_name.encode(), var)
+            message = "The method {} with the variable {} is not applicable.\n".format(method_name.encode(), var)
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyNotApplicableError(message, twin_runtime, prop_status)
 
         elif prop_status == 1:
-            message = "The method {} with the variable {} is not defined!\n".format(method_name, var)
+            message = "The method {} with the variable {} is not defined.\n".format(method_name, var)
             message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyNotDefinedError(message, twin_runtime, prop_status)
 
@@ -163,7 +163,7 @@ class TwinRuntime:
         self.log_level = log_level
 
         if model_path.is_file() is False:
-            raise FileNotFoundError("File is not found at {}".format(model_path.absolute()))
+            raise FileNotFoundError("File is not found at {}.".format(model_path.absolute()))
 
         self._twin_runtime_library = TwinRuntime.load_dll(twin_runtime_library_path)
 
@@ -362,7 +362,7 @@ class TwinRuntime:
             self.twin_load(log_level)
 
     """
-    Model opening/closing
+    Model opening and closing
     Functions for opening and closing a Twin model. Opening models is hidden within the constructor.
     """
     def twin_load(self, log_level):
@@ -394,7 +394,7 @@ class TwinRuntime:
 
     def twin_close(self):
         if not self.is_model_opened:
-            print('[Warning]: twin_close() will not execute since model is not loaded. Maybe it was already closed?')
+            print('[Warning]: twin_close() will not execute because the model is not loaded. Maybe it was already closed?')
             return
         self._TwinClose(self._modelPointer)
         self.is_model_opened = False
@@ -422,13 +422,13 @@ class TwinRuntime:
     """
     def twin_get_model_name(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning its name")
+            raise TwinRuntimeError("The model has to be opened before returning its name.")
 
         return self._TwinGetModelName(self._modelPointer).decode()
 
     def twin_get_number_params(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning the number of parameters!")
+            raise TwinRuntimeError("The model has to be opened before returning the number of parameters.")
 
         if self.number_parameters is None:
             c_number_params = c_int(0)
@@ -441,7 +441,7 @@ class TwinRuntime:
 
     def twin_get_number_inputs(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning the number of inputs!")
+            raise TwinRuntimeError("The model has to be opened before returning the number of inputs.")
 
         if self.number_inputs is None:
             c_number_inputs = c_int(0)
@@ -454,7 +454,7 @@ class TwinRuntime:
 
     def twin_get_number_outputs(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning the number of outputs!")
+            raise TwinRuntimeError("The model has to be opened before returning the number of outputs.")
 
         if self.number_outputs is None:
             c_number_outputs = c_int(0)
@@ -467,7 +467,7 @@ class TwinRuntime:
 
     def twin_get_param_names(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning parameter names!")
+            raise TwinRuntimeError("The model has to be opened before returning parameter names.")
 
         if self.parameter_names is None:
             self._TwinGetParamNames.argtypes = [c_void_p, POINTER(c_char_p * self.number_parameters), c_int]
@@ -485,7 +485,7 @@ class TwinRuntime:
 
     def twin_get_input_names(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning input names!")
+            raise TwinRuntimeError("The model has to be opened before returning input names.")
 
         if self.input_names is None:
             self._TwinGetInputNames.argtypes = [c_void_p, POINTER(c_char_p * self.number_inputs), c_int]
@@ -503,7 +503,7 @@ class TwinRuntime:
 
     def twin_get_output_names(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning output names!")
+            raise TwinRuntimeError("The model has to be opened before returning output names.")
 
         if self.output_names is None:
             self._TwinGetInputNames.argtypes = [c_void_p, POINTER(c_char_p * self.number_outputs), c_int]
@@ -521,7 +521,7 @@ class TwinRuntime:
 
     def twin_get_default_simulation_settings(self):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning default settings!")
+            raise TwinRuntimeError("The model has to be opened before returning default settings.")
 
         c_end_time = c_double(0)
         c_step_size = c_double(0)
@@ -539,7 +539,7 @@ class TwinRuntime:
     """
     def twin_get_var_data_type(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable data type!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's data type.")
 
         var_type = c_char_p()
 
@@ -556,7 +556,7 @@ class TwinRuntime:
 
     def twin_get_var_quantity_type(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable quantity type!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's quantity type.")
 
         quantity_type = c_char_p()
 
@@ -573,7 +573,7 @@ class TwinRuntime:
 
     def twin_get_var_description(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable description!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's description.")
 
         var_description = c_char_p()
 
@@ -590,7 +590,7 @@ class TwinRuntime:
 
     def twin_get_var_unit(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable unit type!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's unit type.")
 
         var_unit = c_char_p()
 
@@ -607,7 +607,7 @@ class TwinRuntime:
 
     def twin_get_var_start(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable start value!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's start value.")
 
         start_value = c_double()
         if type(var_name) is not bytes:
@@ -620,7 +620,7 @@ class TwinRuntime:
 
     def twin_get_str_var_start(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable start value!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's start value.")
 
         start_value = c_char_p()
         if type(var_name) is not bytes:
@@ -633,7 +633,7 @@ class TwinRuntime:
 
     def twin_get_var_min(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable minimum value!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's minimum value.")
 
         min_value = c_double()
         if type(var_name) is not bytes:
@@ -646,7 +646,7 @@ class TwinRuntime:
 
     def twin_get_var_max(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable maximum value!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's maximum value.")
 
         max_value = c_double()
         if type(var_name) is not bytes:
@@ -659,7 +659,7 @@ class TwinRuntime:
 
     def twin_get_var_nominal(self, var_name):
         if self.is_model_opened is False:
-            raise TwinRuntimeError("The model has to be opened before returning variable nominal value!")
+            raise TwinRuntimeError("The model has to be opened before returning the variable's nominal value.")
 
         nominal_value = c_double()
         if type(var_name) is not bytes:
@@ -672,7 +672,7 @@ class TwinRuntime:
 
     # def twin_get_str_var_nominal(self, var_name):
     #     if self.is_model_opened is False:
-    #         raise TwinRuntimeError("The model has to be opened before returning variable nominal value!")
+    #         raise TwinRuntimeError("The model has to be opened before returning the variable's nominal value.")
     #
     #     nominal_value = c_char_p()
     #     if type(var_name) is not bytes:
@@ -694,12 +694,12 @@ class TwinRuntime:
 
     def twin_initialize(self):
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before initialization!")
+            raise TwinRuntimeError("The model has to be instantiated before initialization.")
 
         try:
             self.twin_status = self._TwinInitialize(self._modelPointer)
         except OSError:
-            message = "Error while initializing the model. This model may need start values or has other dependencies."
+            message = "Error occurred while initializing the model. This model may need start values or has other dependencies."
             raise TwinRuntimeError(message)
 
         self.evaluate_twin_status(self.twin_status, self, "twin_initialize")
@@ -707,7 +707,7 @@ class TwinRuntime:
 
     def twin_simulate(self, time_stop, time_step=0):
         if self.is_model_initialized is False:
-            raise TwinRuntimeError("The Model has to be initialized before simulation!")
+            raise TwinRuntimeError("The model has to be initialized before simulation.")
 
         self.twin_status = self._TwinSimulate(self._modelPointer, c_double(time_stop), c_double(time_step))
         self.evaluate_twin_status(self.twin_status, self, "twin_simulate")
@@ -716,7 +716,7 @@ class TwinRuntime:
         output_number_of_columns = self.number_outputs + 1
 
         if self.is_model_initialized is False:
-            raise TwinRuntimeError("The Model has to be initialized before simulation!")
+            raise TwinRuntimeError("The model has to be initialized before simulation.")
 
         local_df = input_df  # Creates a local copy so that the source DF does not get modified outside this scope
         num_input_rows = local_df.shape[0]
@@ -752,7 +752,7 @@ class TwinRuntime:
     # This method will generate the response also as a csv
     def twin_simulate_batch_mode_csv(self, input_csv, output_csv, step_size=0, interpolate=0):
         if self.is_model_initialized is False:
-            raise TwinRuntimeError("The Model has to be initialized before simulation!")
+            raise TwinRuntimeError("The model has to be initialized before simulation.")
 
         if type(input_csv) is not bytes:
             input_csv = input_csv.encode()
@@ -774,14 +774,14 @@ class TwinRuntime:
 
     """
     Input/output handling
-    Functions for setting parameters/inputs and getting outputs.
+    Functions for setting parameters and inputs and for getting outputs.
     """
     def twin_set_inputs(self, input_array):
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before setting inputs!")
+            raise TwinRuntimeError("The model has to be instantiated before setting inputs.")
 
         if len(input_array) != self.number_inputs:
-            raise TwinRuntimeError("The input array size must match the the models number of inputs!")
+            raise TwinRuntimeError("The input array size must match the the model's number of inputs.")
 
         array_np = np.array(input_array)
         array_ctypes = array_np.ctypes.data_as(POINTER(c_double * self.number_inputs))
@@ -792,7 +792,7 @@ class TwinRuntime:
 
     def twin_get_outputs(self):
         if self.is_model_initialized is False:
-            raise TwinRuntimeError("The Model has to be initialized before it can return outputs!")
+            raise TwinRuntimeError("The model has to be initialized before it can return outputs.")
 
         self._TwinGetOutputs.argtypes = [c_void_p, POINTER(c_double * self.number_outputs), c_int]
         outputs = (c_double * self.number_outputs)()
@@ -805,7 +805,7 @@ class TwinRuntime:
 
     def twin_set_param_by_name(self, param_name, value):
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before setting parameters!")
+            raise TwinRuntimeError("The model has to be instantiated before setting parameters.")
 
         if isinstance(param_name, str):
             param_name = param_name.encode()
@@ -815,7 +815,7 @@ class TwinRuntime:
 
     def twin_set_str_param_by_name(self, param_name, value):
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before setting parameters!")
+            raise TwinRuntimeError("The model has to be instantiated before setting parameters.")
 
         if isinstance(param_name, str):
             param_name = param_name.encode()
@@ -830,14 +830,14 @@ class TwinRuntime:
     def twin_set_param_by_index(self, index, value):
 
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before setting parameters!")
+            raise TwinRuntimeError("The model has to be instantiated before setting parameters.")
 
         self.twin_status = self._TwinSetParamByIndex(self._modelPointer, c_int(index), c_double(value))
         self.evaluate_twin_status(self.twin_status, self, "twin_set_param_by_index")
 
     def twin_set_input_by_name(self, input_name, value):
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before setting inputs!")
+            raise TwinRuntimeError("The model has to be instantiated before setting inputs.")
 
         if isinstance(input_name, str):
             input_name = input_name.encode()
@@ -847,14 +847,14 @@ class TwinRuntime:
 
     def twin_set_input_by_index(self, index, value):
         if self.is_model_instantiated is False:
-            raise TwinRuntimeError("The model has to be instantiated before setting inputs!")
+            raise TwinRuntimeError("The model has to be instantiated before setting inputs.")
 
         self.twin_status = self._TwinSetInputByIndex(self._modelPointer, c_int(index), c_double(value))
         self.evaluate_twin_status(self.twin_status, self, "twin_set_input_by_index")
 
     def twin_get_output_by_name(self, output_name):
         if self.is_model_initialized is False:
-            raise TwinRuntimeError("The Model has to be initialized before it can return outputs!")
+            raise TwinRuntimeError("The model has to be initialized before it can return outputs.")
 
         value = c_double(0)
         self.twin_status = self._TwinGetOutputByName(self._modelPointer, c_char_p(output_name.encode()), byref(value))
@@ -863,7 +863,7 @@ class TwinRuntime:
 
     def twin_get_output_by_index(self, index):
         if self.is_model_initialized is False:
-            raise TwinRuntimeError("The Model has to be initialized before it can return outputs!")
+            raise TwinRuntimeError("The model has to be initialized before it can return outputs.")
 
         value = c_double(0)
         self.twin_status = self._TwinGetOutputByIndex(self._modelPointer, c_int(index), byref(value))
