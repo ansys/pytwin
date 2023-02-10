@@ -101,7 +101,7 @@ class TestSavedState:
             with pytest.raises(SavedStateError) as e:
                 ss = SavedState()
                 ss.load(wrong_dict)
-            assert "Meta data is corrupted!" in str(e)
+            assert "Metadata is corrupted." in str(e)
 
 
 class TestSavedStateRegistry:
@@ -150,10 +150,10 @@ class TestSavedStateRegistry:
         log_file = get_pytwin_log_file()
         with open(log_file, "r") as fp:
             log_lines = fp.readlines()
-        assert "Multiple saved states were found! Using first one" in "".join(log_lines)
+        assert "Multiple saved states were found. The first one is" in "".join(log_lines)
 
     def test_raise_error(self):
         # Raise error if model dir does not exist
         with pytest.raises(SavedStateRegistryError) as e:
             SavedStateRegistry(model_id="unknown", model_name="unknown")
-        assert "Please use an existing model id and/or model name" in str(e.value)
+        assert "Use an existing model ID or model name." in str(e.value)
