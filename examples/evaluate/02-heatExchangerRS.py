@@ -94,20 +94,20 @@ print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
-# Evaluate the twin with different input values and collect the corresponding outputs
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Evaluate the twin with different input values and collect corresponding outputs
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Because the twin is based on a static model, two options can be considered:
 #
 # - Set the initial input value to evaluate and run the initialization function (current approach).
 # - Create an input dataframe considering all input values to evaluate and run the batch function
-#   to evaluate. In this case, to execute the transient simulation, a time dimension must be defined
-#   arbitrarily.)
+#   to evaluate. In this case, to execute the transient simulation, a time dimension must be
+#   arbitrarily defined.
 
 results = []
 input_name = list(twin_model.inputs.keys())[0]
 for dp in numpy.linspace(start=heat_flow_min, stop=heat_flow_max, num=int((heat_flow_max - heat_flow_min) / step + 1)):
 
-    # Inititalize twin with input values and collect initial output values
+    # Initialize twin with input values and collect output values
     dp_input = {input_name: dp}
     twin_model.initialize_evaluation(inputs=dp_input)
     outputs = [dp]

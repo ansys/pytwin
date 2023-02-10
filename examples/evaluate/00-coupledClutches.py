@@ -94,10 +94,10 @@ data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 
 ###############################################################################
-# Set the initial inputs of the twin model and initialize it
+# Define the initial inputs of the twin model and initialize it
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define the initial inputs of the twin model, initialize it, and collect
-# the initial outputs values.
+# Define the inputs of the twin model, initialize it, and collect
+# the output values.
 
 twin_model.initialize_evaluation(json_config_filepath=twin_config)
 outputs = [twin_model.evaluation_time]
@@ -107,8 +107,8 @@ for item in twin_model.outputs:
 ###############################################################################
 # Simulate the twin for each time step
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loop over all input data, simulating the twin one time step at a
-# time and collecting the corresponding output data.
+# Loop over all inputs, simulating the twin one time step at a
+# time and collecting the corresponding output values.
 
 sim_output_list_step = [outputs]
 data_index = 0

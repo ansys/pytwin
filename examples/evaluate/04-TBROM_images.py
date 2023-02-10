@@ -15,11 +15,11 @@ in the 3D Viewer enabled by PyFluent.
    To generate snapshot files at initialization time, the ROM included in the twin
    must have its parameter ``field_data_storage_period`` set to ``0`` and its
    parameter ``store_snapshots`` set to ``1``.
-   
+
    To generate images files at initialization time, the ROM included in the twin must
    have the **Embed Geometry** and **Generate Image** options enabled at export time.
    Additionally, its parameter ``viewX_storage_period`` must be set to ``0``.
-   
+
    These parameters can be defined in the Twin Builder subsheet before twin compilation
    or be exposed as twin parameters.
 
@@ -33,7 +33,7 @@ in the 3D Viewer enabled by PyFluent.
 # sphinx_gallery_thumbnail_path = '_static/TBROM_images_generation.png'
 
 ###############################################################################
-# Perform requried imports
+# Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which include downloading and importing the input
 # files.
