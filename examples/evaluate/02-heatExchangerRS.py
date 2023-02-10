@@ -45,11 +45,12 @@ step = 50.0
 # Define auxiliary functions for comparing and plotting the results from
 # different input values evaluated on the twin model.
 
+
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on
     the twin model. The results datasets are provided as Pandas dataframes. The
     function plots the results for few variables of particular interest."""
-    
+
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.expand_frame_repr", False)

@@ -37,6 +37,7 @@ twin_file = download_file("ElectricRange_23R1_other.twin", "twin_files")
 # Define auxiliary functions for comparing and plotting the results from
 # different parametric simulations executed on the same twin model.
 
+
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed
     on the same TwinModel. The results datasets are provided as Pandas dataframes. The
