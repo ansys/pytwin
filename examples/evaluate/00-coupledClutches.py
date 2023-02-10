@@ -1,10 +1,10 @@
 """.. _ref_example_coupledClutches:
 
-Twin evaluation example
----------------------------------------
+Twin evaluation
+---------------
 This example shows how you can use PyTwin to load and evaluate a Twin model.
-The model consists in a coupled clutches with 4 inputs (applied torque,
-3 clutches opening) and 3 outputs (computed torque on each of the clutches)
+The model consists of three coupled clutches and has four inputs (applied torque
+and the three clutch openings) and three outputs (the computed torque on each clutch.
 """
 
 ###############################################################################
@@ -17,8 +17,8 @@ The model consists in a coupled clutches with 4 inputs (applied torque,
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Perform required imports, which includes downloading and importing the
-# input files
+# Perform required imports, which include downloading and importing the
+# input files.
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -30,21 +30,20 @@ twin_config = download_file("CoupledClutches_config.json", "twin_input_files")
 
 
 ###############################################################################
-# Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Post processing for results comparison.
-
+# Define auxiliary functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define auxiliary functions for comparing and plotting the results from
+# different simulations executed on the same twin model.
 
 def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd.DataFrame):
-    """Compare the results obtained from 2 different simulations executed
-    on the same TwinModel. The 2 results dataset are provided as Pandas
-    Dataframe. The function will plot the different results for all the
-    outputs"""
+    """Compare the results obtained from two different simulations executed
+    on the same twin model. The two results datasets are provided as Pandas
+    dataframes. The function plots the results for all the outputs."""
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.expand_frame_repr", False)
 
-    # Plotting the runtime outputs
+    # Plot the runtime outputs
     columns = step_by_step_results.columns[1::]
     result_sets = 2  # Results from only step-by-step, batch_mode
     fig, ax = plt.subplots(ncols=result_sets, nrows=len(columns), figsize=(18, 7))
@@ -70,7 +69,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
         axes0.legend(loc=2)
         axes0.set_xlabel("Time [s]")
 
-        # Plot Twin batch mode csv results
+        # Plot Twin results in CSV file in batch mode
         batch_results.plot(x=0, y=col_name, ax=axes1, ls="-.", color="g", title="Twin Runtime - Batch Mode")
         axes1.legend(loc=2)
         axes1.set_xlabel("Time [s]")
@@ -84,10 +83,9 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
 
 
 ###############################################################################
-# Loading the Twin Runtime and external CSV file
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loading the Twin Runtime and instantiating it.
-
+# Load the twin runtime and external CSV file
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and instantiate it.
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
@@ -96,11 +94,10 @@ data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 
 ###############################################################################
-# Setting up the initial settings of the Twin and initializing it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining the initial inputs of the Twin, initializing it and collecting
-# the initial outputs values
-
+# Set the initial inputs of the twin model and initialize it
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the initial inputs of the twin model, initialize it, and collect
+# the initial outputs values.
 
 twin_model.initialize_evaluation(json_config_filepath=twin_config)
 outputs = [twin_model.evaluation_time]
@@ -108,11 +105,10 @@ for item in twin_model.outputs:
     outputs.append(twin_model.outputs[item])
 
 ###############################################################################
-# Step by step simulation mode
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Looping over all the input data, simulating the Twin one time step at a
-# time and collecting corresponding outputs
-
+# Simulate the twin for each time step
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Loop over all input data, simulating the twin one time step at a
+# time and collecting the corresponding output data.
 
 sim_output_list_step = [outputs]
 data_index = 0
@@ -132,12 +128,11 @@ while data_index < number_of_datapoints:
 results_step_pd = pd.DataFrame(sim_output_list_step, columns=["Time"] + list(twin_model.outputs), dtype=float)
 
 ###############################################################################
-# Batch simulation mode
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Resetting/re-initializing the Twin and running it in batch mode (i.e. passing
-# all the input data, simulating all the data points, and collecting all
-# the outputs at once)
-
+# Simulate the twin in batch mode
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reset/re-initialize the twin and run the simulation in batch mode, which
+# passes all the input data, simulates all the data points, and collects all
+# the outputs at once.
 
 data_index = 0
 inputs = dict()
@@ -150,8 +145,8 @@ for item in twin_model.outputs:
 results_batch_pd = twin_model.evaluate_batch(twin_model_input_df)
 
 ###############################################################################
-# Post processing
-# ~~~~~~~~~~~~~~~~~~~
-# Plotting the different results and saving the image on disk
+# Plot results
+# ~~~~~~~~~~~~
+# Plot the results and save the imagees on disk.
 
 plot_result_comparison(results_step_pd, results_batch_pd)
