@@ -1,10 +1,10 @@
 .. _ref_index_api_sdk:
 
-Twin Runtime SDK
-================
+Twin runtimes
+=============
 
-The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to core
-Twin Runtime SDK functionalities.
+The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to
+twin runtime functionalities.
 
 .. currentmodule:: pytwin
 
@@ -16,7 +16,7 @@ Twin Runtime SDK functionalities.
 Workflow example
 ----------------
 
-This code shows how to load the Twin Runtime SDK and print twin information. 
+This code shows how to load the ``TwinRuntime`` module and print twin information. 
 
 .. code-block:: pycon
 

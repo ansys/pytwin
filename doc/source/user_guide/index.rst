@@ -5,7 +5,7 @@ User guide
 ==========
 
 Anyone who wants to use PyTwin can import its Python modules and develop
-Python code to integrate and deploy Ansys Digital Twin Runtimes, as
+Python code to integrate and deploy twin runtimes, as
 explained in :ref:`ref_index_api` and demonstrated in :ref:`ref_example_gallery`.
 
 Global settings

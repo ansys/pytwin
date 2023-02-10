@@ -1,9 +1,9 @@
 .. _ref_index_api_example:
 
-Other Functions
+Other functions
 ===============
 
-Some other PyTwin functions are available and used in :ref:`ref_example_gallery`.
+Other PyTwin functions are available and used in :ref:`ref_example_gallery`.
 
 .. currentmodule:: pytwin
 

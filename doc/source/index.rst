@@ -26,28 +26,27 @@ costs, and both gain and retain competitive advantages.
   :alt: Ansys Digital Twins
 
 Ansys Twin Builder and Ansys Twin Deployer are open solutions that allow engineers to create
-Ansys Digital Twins and export them in the form of deployable Twin Runtimes.
+digital twins and export them in the form of deployable twin runtimes.
 
 What is PyTwin?
 -----------------
 PyTwin is part of the `PyAnsys <https://docs.pyansys.com>`_ ecosystem that
-lets you use Ansys Digital Twin Runtimes within a Python environment of your choice in
+lets you deploy twin runtimes within a Python environment of your choice in
 conjunction with other PyAnsys libraries and external Python libraries.
 
 PyTwin implements different modules to facilitate the consumption of Twin Runtimes. It gives access to
-the core Runtime SDK as well as a higher-level abstraction class offering Python interfaces that can
-be used in any client code for workflow development and Twin Runtime integrations. You can use PyTwin
-to programmatically interact with and control the execution of Twin Runtimes.
+core runtime functionalities as well as a higher-level abstraction class offering Python interfaces that can
+be used in any client code for workflow development and twin runtime integrations. You can use PyTwin
+to programmatically interact with and control the execution of twin runtimes.
 
 Features
 --------
-Some of the many features in the PyTwin package, ``pytwin``,
-allow you to:
+Some of the many features in the PyTwin package, ``pytwin``, allow you to:
 
-- Use the Twin Runtimes' core SDK to build your own consumption workflows based on atomic API calls.
-  For more information, see :ref:`ref_index_api_sdk`.
-- Access and use the Twin Evaluate module, which provides a higher-level abstraction implementation
-  of Twin Runtimes consumption workflows for direct usage and integration. For more information, see
+- Use the core twin runtime functionalities to build your own consumption workflows based on
+   atomic API calls. For more information, see :ref:`ref_index_api_sdk`.
+- Access and use a higher-level abstraction implementation of consumption workflows for
+  direct usage and integration of twin runtimes. For more information, see
   :ref:`ref_index_api_evaluate`.
 - Become familiar with PyTwin functionalities by exploring the multiple examples that are available.
   For more information, see :ref:`ref_example_gallery`.
