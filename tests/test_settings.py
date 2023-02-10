@@ -60,7 +60,7 @@ class TestDefaultSettings:
         # Raises error if new_option is not a valid PyTwinLogLevel attribute.
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_logging(new_level="unknown")
-        assert "Error occurred while setting PyTwin logging option." in str(e)
+        assert "Error occurred while setting PyTwin logging level." in str(e)
 
     def test_modify_logging_no_logging(self):
         from pytwin import TwinModel
@@ -178,7 +178,7 @@ class TestDefaultSettings:
         # Raises error if provided path does not exist and parent directory does not exists
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_working_dir(new_path=os.path.join(os.path.dirname(__file__), "unknown_folder", "wd"))
-        assert "Please provide a folder path in which all parents exist." in str(e)
+        assert "Provide a folder path in which all parents exist." in str(e)
 
     def test_modify_working_dir_with_not_existing(self):
         # Init unit test

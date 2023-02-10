@@ -40,7 +40,7 @@ class TestTwinModel:
         try:
             TwinModel(model_filepath="")
         except TwinModelError as e:
-            assert "Provide an existing filepath" in str(e)
+            assert "Provide the correct filepath" in str(e)
 
     def test_parameters_property(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
@@ -221,12 +221,12 @@ class TestTwinModel:
             twin.initialize_evaluation()
             twin.evaluate_step_by_step(step_size=0.0)
         except TwinModelError as e:
-            assert "Step size must be strictly bigger than zero" in str(e)
+            assert "Step size must be greater than zero" in str(e)
         try:
             twin.initialize_evaluation()
             twin.evaluate_step_by_step(step_size=-0.1)
         except TwinModelError as e:
-            assert "Step size must be strictly bigger than zero" in str(e)
+            assert "Step size must be greater than zero" in str(e)
 
     def test_raised_errors_with_batch_evaluation(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
@@ -247,13 +247,13 @@ class TestTwinModel:
             twin.initialize_evaluation()
             twin.evaluate_batch(pd.DataFrame({"Time": [0.1]}))
         except TwinModelError as e:
-            assert "Provide inputs at time instant t=0.s" in str(e)
+            assert "Provide inputs at time instant `t=0.s`" in str(e)
         # Raise an error if INPUTS DATAFRAME HAS NO TIME INSTANT ZERO
         try:
             twin.initialize_evaluation()
             twin.evaluate_batch(pd.DataFrame({"Time": [1e-50]}))
         except TwinModelError as e:
-            assert "Provide inputs at time instant t=0.s" in str(e)
+            assert "Provide inputs at time instant `t=0.s`" in str(e)
 
     def test_evaluation_methods_give_same_results(self):
         inputs_df = pd.DataFrame(
@@ -345,7 +345,7 @@ class TestTwinModel:
         # Evaluation initialization RAISE AN ERROR IF CONFIG FILEPATH DOES NOT EXIST
         with pytest.raises(TwinModelError) as e:
             twin.initialize_evaluation(json_config_filepath="filepath_does_not_exist")
-        assert "Provide an existing filepath to initialize the twin model evaluation" in str(e)
+        assert "Provide the correct filepath to initialize the TwinModel object." in str(e)
 
     def test_close_method(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
@@ -547,7 +547,7 @@ class TestTwinModel:
         try:
             twin.get_geometry_filepath(rom_name="test")
         except TwinModelError as e:
-            assert "Initialize the evaluation" in str(e)
+            assert "Initialize evaluation" in str(e)
 
         try:
             twin.get_snapshot_filepath(rom_name="test")
@@ -579,31 +579,31 @@ class TestTwinModel:
         try:
             twin._tbrom_resource_directory(rom_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
+            assert "Twin model does not include any TBROMs" in str(e)
 
         try:
             twin.get_geometry_filepath(rom_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
+            assert "Twin model does not include any TBROMs" in str(e)
         try:
             twin.get_snapshot_filepath(rom_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
+            assert "Twin model does not include any TBROMs" in str(e)
 
         try:
             twin.get_available_view_names(rom_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
+            assert "Twin model does not include any TBROMs" in str(e)
 
         try:
             twin.get_image_filepath(rom_name="test", view_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
+            assert "Twin model does not include any TBROMs" in str(e)
 
         try:
             twin.get_rom_directory(rom_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
+            assert "Twin model does not include any TBROMs" in str(e)
 
     def test_raised_errors_with_tbrom_bad_name(self):
         reinit_settings()
@@ -659,14 +659,14 @@ class TestTwinModel:
             os.remove(filepath)
             twin.get_geometry_filepath(rom_name=twin.tbrom_names[0])
         except TwinModelError as e:
-            assert "Could not find the geometry file for given available rom_name" in str(e)
+            assert "Could not find the geometry file for the given ROM name" in str(e)
 
         # Raise a warning if SNAPSHOT FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
         twin.get_snapshot_filepath(rom_name=twin.tbrom_names[0], evaluation_time=1.234567)
         log_file = get_pytwin_log_file()
         with open(log_file, "r") as log:
             log_str = log.readlines()
-        assert "Could not find the snapshot file for given available rom_name" in "".join(log_str)
+        assert "Could not find the snapshot file for the given ROM name" in "".join(log_str)
 
         # Verify IMAGE IS GENERATED AT INITIALIZATION
         if sys.platform != "linux":
@@ -687,7 +687,7 @@ class TestTwinModel:
         log_file = get_pytwin_log_file()
         with open(log_file, "r") as log:
             log_str = log.readlines()
-        assert "Could not find the image file for given available rom_name" in "".join(log_str)
+        assert "Could not find the image file for given ROM name" in "".join(log_str)
 
     def test_clean_unit_test(self):
         reinit_settings()
