@@ -5,6 +5,7 @@ Twin Builder
 Twin Deployer
 Deployer
 PyAnsys
+pyansys
 PyTwin
 APIs
 License Manager
@@ -13,6 +14,7 @@ pytest
 Postprocessing
 postprocessing
 postprocess
+Pythonic
 ROM
 ROMs
 runtimes
