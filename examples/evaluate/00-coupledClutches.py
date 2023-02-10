@@ -35,6 +35,7 @@ twin_config = download_file("CoupledClutches_config.json", "twin_input_files")
 # Define auxiliary functions for comparing and plotting the results from
 # different simulations executed on the same twin model.
 
+
 def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd.DataFrame):
     """Compare the results obtained from two different simulations executed
     on the same twin model. The two results datasets are provided as Pandas

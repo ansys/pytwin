@@ -67,6 +67,7 @@ rom_parameters = {"ThermalROM23R1_1_store_snapshots": 1}
 # Define an auxiliary function for converting the ROM snapshot for data mapping
 # on an FEA mesh.
 
+
 def snapshot_to_fea(snapshot_file, geometry_file):
     """Create a Pandas dataframe containing the x, y , z coordinates for the ROM
     and snapshot file results."""
