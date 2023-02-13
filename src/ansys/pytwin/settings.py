@@ -427,7 +427,6 @@ class _PyTwinSettings(object):
 
     @staticmethod
     def modify_logging(new_option: PyTwinLogOption, new_level: PyTwinLogLevel):
-
         pytwin_logger = logging.getLogger(_PyTwinSettings.LOGGER_NAME)
 
         # Modifications in case of new option

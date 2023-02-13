@@ -120,6 +120,7 @@ for dp in sweep:
 
     # Inititialize twin model with the correct parameters values and collect
     # initial output values
+    
     twin_model.initialize_evaluation(parameters=dp)
     outputs = [twin_model.evaluation_time]
     for item in twin_model.outputs:
