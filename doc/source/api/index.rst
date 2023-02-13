@@ -5,7 +5,7 @@ API reference
 =============
 
 This section describes the core Pythonic interfaces for twin runtimes.
-Here, you can find the APIs for using twin runtime functionalities
+Here, you can find the APIs for using twin runtime functionalities and
 the higher-level abstraction class for evaluating twin runtimes.
 
 Twin runtimes
