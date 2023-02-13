@@ -116,7 +116,6 @@ sweep = [dp1, dp2, dp3]
 
 results = []
 for dp in sweep:
-
     # Twin initialization with the right parameters values and collection of initial outputs values
     twin_model.initialize_evaluation(parameters=dp)
     outputs = [twin_model.evaluation_time]
