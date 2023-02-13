@@ -107,9 +107,8 @@ twin_model = TwinModel(twin_file)
 results = []
 input_name = list(twin_model.inputs.keys())[0]
 for dp in numpy.linspace(start=heat_flow_min, stop=heat_flow_max, num=int((heat_flow_max - heat_flow_min) / step + 1)):
-
     # Initialize twin with input values and collect output value
-    
+
     dp_input = {input_name: dp}
     twin_model.initialize_evaluation(inputs=dp_input)
     outputs = [dp]
