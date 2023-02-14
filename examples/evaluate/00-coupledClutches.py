@@ -148,6 +148,6 @@ results_batch_pd = twin_model.evaluate_batch(twin_model_input_df)
 ###############################################################################
 # Plot results
 # ~~~~~~~~~~~~
-# Plot the results and save the imagees on disk.
+# Plot the results and save the images on disk.
 
 plot_result_comparison(results_step_pd, results_batch_pd)

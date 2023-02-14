@@ -113,11 +113,11 @@ sweep = [dp1, dp2, dp3]
 # Simulate the twin for each set of parameter values
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Simulate the twin for each set of parameters values, one time step at a
-# time and collecting corresponding output values.
+# time and collect corresponding output values.
 
 results = []
 for dp in sweep:
-    # Inititialize twin model with the correct parameters values and collect
+    # Initialize twin model with the correct parameters values and collect
     # initial output values
 
     twin_model.initialize_evaluation(parameters=dp)
@@ -142,6 +142,6 @@ for dp in sweep:
 ###############################################################################
 # Plot results
 # ~~~~~~~~~~~~
-# Plotg the results and save the images on disk.
+# Plot the results and save the images on disk.
 
 plot_result_comparison(results, sweep)

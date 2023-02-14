@@ -123,6 +123,6 @@ sim_results = pd.DataFrame(results, columns=[input_name] + list(twin_model.outpu
 ###############################################################################
 # Plot results
 # ~~~~~~~~~~~~
-# Plotg the results and save the image on disk.
+# Plot the results and save the image on disk.
 
 plot_result_comparison(sim_results)
