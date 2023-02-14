@@ -101,7 +101,7 @@ PyTwin is licensed under the MIT license.
 .. _Ansys Twin Builder: https://www.ansys.com/products/digital-twin/ansys-twin-builder
 .. _Documentation: https://twin.docs.pyansys.com/
 .. _Getting started: https://twin.docs.pyansys.com/release/0.2/getting_started/index.html
-.. _User guide: https://twin.docs.pyansys.com/release/0.1/user_guide/index.html
-.. _API reference: https://twin.docs.pyansys.com/release/0.1/api/index.html
-.. _Examples: https://twin.docs.pyansys.com/release/0.1/examples/index.html
-.. _Contributing: https://twin.docs.pyansys.com/release/0.1/contributing.html
+.. _User guide: https://twin.docs.pyansys.com/release/0.2/user_guide/index.html
+.. _API reference: https://twin.docs.pyansys.com/release/0.2/api/index.html
+.. _Examples: https://twin.docs.pyansys.com/release/0.2/examples/index.html
+.. _Contributing: https://twin.docs.pyansys.com/release/0.2/contributing.html
