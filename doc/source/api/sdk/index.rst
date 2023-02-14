@@ -20,9 +20,8 @@ This code shows how to load the ``TwinRuntime`` module and print twin informatio
 
 .. code-block:: pycon
 
-   >>> from pytwin import TwinRuntime, LogLevel
-   >>> from pytwin import examples
-   >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
+   >>> from pytwin import TwinModel, download_file, load_data
+   >>> twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files")
    >>> twin_runtime = TwinRuntime(twin_model)  # Load the Runtime
    >>> twin_runtime.print_model_info(max_var_to_print=10)  # Print twin information
    ------------------------------------- Model Info -------------------------------------

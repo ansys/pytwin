@@ -20,16 +20,15 @@ This code shows how to set up and evaluate a twin model.
 
 .. code-block:: pycon
 
-   >>> from pytwin import TwinModel
-   >>> from pytwin import examples
+   >>> from pytwin import TwinModel, download_file, load_data
 
    # Download the input files
-   >>> twin_file = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files")
-   >>> csv_input = examples.download_file("CoupledClutches_input.csv", "twin_input_files")
-   >>> twin_config = examples.download_file("CoupledClutches_config.json", "twin_input_files")
+   >>> twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files")
+   >>> csv_input = download_file("CoupledClutches_input.csv", "twin_input_files")
+   >>> twin_config = download_file("CoupledClutches_config.json", "twin_input_files")
 
    # Load the CSV file containing the twin input data over time
-   >>> twin_model_input_df = examples.load_data(csv_input)
+   >>> twin_model_input_df = load_data(csv_input)
    # Load and instantiate the twin model
    >>> twin_model = TwinModel(twin_file)
 
