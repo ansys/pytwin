@@ -44,7 +44,7 @@ that consists of two parts:
 - The runtime SDK, which is the shared library for consuming the twin model within
   the deployment workflow.
 
-Because PyTwin wraps a Twin Runtime in a Python interface, you do not need a Twin Builder
+Because PyTwin wraps a twin runtime in a Python interface, you do not need a Twin Builder
 installation to deploy it.
 
 For more information on digital twins and Ansys Twin Builder, see
