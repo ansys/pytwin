@@ -1,16 +1,15 @@
 """.. _ref_example_electricRange:
 
-Parametric dynamic Twin evaluation example
-------------------------------------------
-This example shows how you can
-use PyTwin to load and evaluate a Twin model and simulate multiple
-parametric variations. The model is used for determining the range of an
-electric vehicle. The vehicle is represented by a battery, the electric
-loads of the vehicle, and an electric machine connected to a simple 1D
-chassis. The driver controls the vehicle speed to follow a repeated
-sequence of the WLTP cycle (class 3). The mass of the vehicle as well
-as the electric power loads are parameterized so that we can see their
-effects on the overall electric range
+Parametric dynamic twin evaluation
+----------------------------------
+This example shows how you can use PyTwin to load and evaluate a twin model
+and simulate multiple parametric variations. The model is used for
+determining the range of an electric vehicle. The vehicle is represented
+by a battery, the electric loads of the vehicle, and an electric machine
+connected to a simple 1D chassis. The driver controls the vehicle speed
+to follow a repeated sequence of the WLTP cycle (class 3). The mass of the
+vehicle and the electric power loads are parameterized so that their
+effects on the overall electric range can be seen.
 """
 
 ###############################################################################
@@ -23,7 +22,8 @@ effects on the overall electric range
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Perform required imports, which includes downloading and importing the input files
+# Perform required imports, which include downloading and importing the input
+# files.
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -32,31 +32,32 @@ from pytwin import TwinModel, download_file
 twin_file = download_file("ElectricRange_23R1_other.twin", "twin_files")
 
 ###############################################################################
-# Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Definition of plot_result_comparison for post-processing the results
+# Define auxiliary functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define auxiliary functions for comparing and plotting the results from
+# different parametric simulations executed on the same twin model.
 
 
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
-    """Compare the results obtained from the different parametric simulations executed on the same TwinModel. The
-    results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest"""
+    """Compare the results obtained from the different parametric simulations executed
+    on the same TwinModel. The results datasets are provided as Pandas dataframes. The
+    function plots the results for a few variables of particular interest."""
+
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.expand_frame_repr", False)
 
     color = ["g", "b", "r"]
-    # output ordering : time, battery_loss, loads_loss, machine_loss, pack_SoC, position, speed_m, speed_ref,
-    # tau_ref, tau_sns
+    # Output ordering: time, battery_loss, loads_loss, machine_loss, pack_SoC, position,
+    # speed_m, speed_ref, tau_ref, tau_sns
     x0_ind = 0
     y0_ind = 6
     z0_ind = 7
     x1_ind = 4
     y1_ind = 5
 
-    # Plotting the runtime outputs
-    # We will plot 2 different results : the drive cycle results as well as the distance
-    # achieved vs battery state of charge for all the parametric variations
+    # Plot the runtime outputs for two results: the drive cycle and the distance
+    # achieved versus the battery state of the charge for all parametric variations
     fig, ax = plt.subplots(ncols=1, nrows=2, figsize=(18, 7))
 
     fig.subplots_adjust(hspace=0.5)
@@ -88,21 +89,20 @@ def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
 
 
 ###############################################################################
-# Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loading the Twin Runtime and instantiating it.
-
+# Load the twin runtime and instantiate it
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and instantiate it.
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
-# User inputs
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining user inputs and simulation settings
+# Define inputs and simulation settings
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the inputs and simulation settings.
 
 time_step = 1.0
-time_end = 24000.0  # simulating the model for 400 minutes
+time_end = 24000.0  # Simulate the model for 400 minutes
 print("Twin parameters : {}".format(twin_model.parameters))
 dp1 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 2000.0}
 dp2 = {"ElectricRange_powerLoad": 3000.0, "ElectricRange_vehicleMass": 2000.0}
@@ -110,13 +110,16 @@ dp3 = {"ElectricRange_powerLoad": 2000.0, "ElectricRange_vehicleMass": 1500.0}
 sweep = [dp1, dp2, dp3]
 
 ###############################################################################
-# Parametric sweep over the different design points
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Simulating the Twin for each set of parameters values, one time step at a time and collecting corresponding outputs
+# Simulate the twin for each set of parameter values
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Simulate the twin for each set of parameters values, one time step at a
+# time and collecting corresponding output values.
 
 results = []
 for dp in sweep:
-    # Twin initialization with the right parameters values and collection of initial outputs values
+    # Inititialize twin model with the correct parameters values and collect
+    # initial output values
+
     twin_model.initialize_evaluation(parameters=dp)
     outputs = [twin_model.evaluation_time]
     for item in twin_model.outputs:
@@ -137,8 +140,8 @@ for dp in sweep:
     results.append(sim_results)
 
 ###############################################################################
-# Post processing
-# ~~~~~~~~~~~~~~~~~~~
-# Plotting the different results and saving the image on disk
+# Plot results
+# ~~~~~~~~~~~~
+# Plotg the results and save the images on disk.
 
 plot_result_comparison(results, sweep)

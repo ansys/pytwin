@@ -1,14 +1,14 @@
 """.. _ref_example_heatExchangerRS:
 
-Parametric response surface ROM Twin evaluation example
--------------------------------------------------------
-This example shows how you can use PyTwin to load and evaluate a Twin model
+Parametric twin evaluation of a response surface ROM
+----------------------------------------------------
+This example shows how you can use PyTwin to load and evaluate a twin model
 and simulate multiple parametric variations. The model is based on a
-Response Surface ROM created out of a steady state thermal model of a heat
-exchanger. The model takes as input the heat flow supplied on the inner face
-and outputs several temperature probes (inner temperature, 3 temperature probes
-within the solid and outer temperature). The model will be tested against
-different input values to evaluate the corresponding temperature responses
+response surface ROM created from a steady state thermal model of a heat
+exchanger. The inputs are the minimum and maximum heat flows on the inner face.
+The outputs are the inner temperature and the temperatures from three
+temperature probes within the solid and outer temperature. The model is tested
+against different input values to evaluate the corresponding temperature responses.
 """
 
 ###############################################################################
@@ -21,7 +21,7 @@ different input values to evaluate the corresponding temperature responses
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Perform required imports, which includes downloading and importing the input files
+# Perform required imports, which include downloading and importing the input files.
 
 import matplotlib.pyplot as plt
 import numpy
@@ -31,30 +31,32 @@ from pytwin import TwinModel, download_file
 twin_file = download_file("HeatExchangerRS_23R1_other.twin", "twin_files")
 
 ###############################################################################
-# User inputs
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining user inputs and simulation settings
+# Define inputs and simulation settings
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the inputs and simulation settings.
 
 heat_flow_min = 0.0
 heat_flow_max = 50000.0
 step = 50.0
 
 ###############################################################################
-# Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Definition of plot_result_comparison for post-processing the results
+# Define auxiliary functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define auxiliary functions for comparing and plotting the results from
+# different input values evaluated on the twin model.
 
 
 def plot_result_comparison(results: pd.DataFrame):
-    """Compare the results obtained from the different input values evaluated on the TwinModel. The
-    results dataset are provided as Pandas Dataframe. The function will plot the different results for few particular
-    variables of interest"""
+    """Compare the results obtained from the different input values evaluated on
+    the twin model. The results datasets are provided as Pandas dataframes. The
+    function plots the results for few variables of particular interest."""
+
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.expand_frame_repr", False)
 
     color = ["g"]
-    # output ordering : T_inner, T1_out, T_outer, T2_out, T3_out
+    # Output ordering: T_inner, T1_out, T_outer, T2_out, T3_out
     x_ind = 0
     y0_ind = 1
     y1_ind = 2
@@ -62,7 +64,7 @@ def plot_result_comparison(results: pd.DataFrame):
     y3_ind = 5
     y4_ind = 3
 
-    # Plotting the simulation results (outputs vs input)
+    # Plot simulation results (outputs versus input)
     fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(18, 7))
 
     fig.subplots_adjust(hspace=0.5)
@@ -85,27 +87,28 @@ def plot_result_comparison(results: pd.DataFrame):
 
 
 ###############################################################################
-# Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loading the Twin Runtime and instantiating it.
-
+# Load the twin runtime and instantiate it
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and instantiate it.
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
-# Evaluating the Twin with different input values and collecting the corresponding outputs
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Since the Twin is based on a static model, 2 different options can be considered :
+# Evaluate the twin with different input values and collect corresponding outputs
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Because the twin is based on a static model, two options can be considered:
 #
-# - setting the initial input value to evaluate and run the initialization function (current approach)
-# - create an input dataframe considering all the input values to evaluate and run the evaluate batch function
-# (in that case, a time dimension needs to be defined arbitrarily to execute the transient simulation)
+# - Set the initial input value to evaluate and run the initialization function (current approach).
+# - Create an input dataframe considering all input values to evaluate and run the batch function
+#   to evaluate. In this case, to execute the transient simulation, a time dimension must be
+#   arbitrarily defined.
 
 results = []
 input_name = list(twin_model.inputs.keys())[0]
 for dp in numpy.linspace(start=heat_flow_min, stop=heat_flow_max, num=int((heat_flow_max - heat_flow_min) / step + 1)):
-    # Twin initialization with the right input values and collection of initial outputs values
+    # Initialize twin with input values and collect output value
+
     dp_input = {input_name: dp}
     twin_model.initialize_evaluation(inputs=dp_input)
     outputs = [dp]
@@ -118,8 +121,8 @@ sim_results = pd.DataFrame(results, columns=[input_name] + list(twin_model.outpu
 
 
 ###############################################################################
-# Post processing
-# ~~~~~~~~~~~~~~~~~~~
-# Plotting the different results and saving the image on disk
+# Plot results
+# ~~~~~~~~~~~~
+# Plotg the results and save the image on disk.
 
 plot_result_comparison(sim_results)
