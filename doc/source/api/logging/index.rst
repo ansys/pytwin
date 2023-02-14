@@ -1,9 +1,9 @@
 .. _ref_index_api_logging:
 
-Global Settings
+Global settings
 ===============
 
-Global settings available from the PyTwin package to configure and change the logging and working directory options.
+PyTwin provides global settings for configuring and changing both logging and directory options.
 
 .. currentmodule:: pytwin
 
@@ -15,7 +15,6 @@ Global settings available from the PyTwin package to configure and change the lo
    pytwin.modify_pytwin_working_dir
    pytwin.modify_pytwin_logging
 
-Workflow Example
+Workflow example
 ----------------
-
-See :ref:`ref_user_guide` for workflow examples
+For a workflow example, see :ref:`ref_user_guide`.
