@@ -70,7 +70,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
         axes0.legend(loc=2)
         axes0.set_xlabel("Time [s]")
 
-        # Plot Twin results in CSV file in batch mode
+        # Plot twin results in CSV file in batch mode
         batch_results.plot(x=0, y=col_name, ax=axes1, ls="-.", color="g", title="Twin Runtime - Batch Mode")
         axes1.legend(loc=2)
         axes1.set_xlabel("Time [s]")
