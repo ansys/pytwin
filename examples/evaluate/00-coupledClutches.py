@@ -96,7 +96,7 @@ number_of_datapoints = data_dimensions[0] - 1
 
 ###############################################################################
 # Define the initial inputs of the twin model and initialize it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the inputs of the twin model, initialize it, and collect
 # the output values.
 
