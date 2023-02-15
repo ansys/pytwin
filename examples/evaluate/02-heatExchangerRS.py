@@ -49,7 +49,7 @@ step = 50.0
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on
     the twin model. The results datasets are provided as Pandas dataframes. The
-    method plots the results for few variables of particular interest."""
+    function plots the results for few variables of particular interest."""
 
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)

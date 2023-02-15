@@ -41,7 +41,7 @@ twin_file = download_file("ElectricRange_23R1_other.twin", "twin_files")
 def plot_result_comparison(results: list[pd.DataFrame], sweep: list[dict]):
     """Compare the results obtained from the different parametric simulations executed
     on the same TwinModel. The results datasets are provided as Pandas dataframes. The
-    method plots the results for a few variables of particular interest."""
+    function plots the results for a few variables of particular interest."""
 
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
