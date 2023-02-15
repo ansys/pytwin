@@ -8,7 +8,7 @@ heat exchanger. The input is the heat flow. The outputs are the temperatures
 from three temperature probes. The workflow for this example performs what-if
 analysis by deploying a second twin in parallel while simulating the original twin
 so that results from the different predictions can be compared. This comparison
-is done using functions for saving and loading twin states. This example also
+is done using methods for saving and loading twin states. This example also
 shows how to change the PyTwin working directory location from the default (%temp%)
 to a specified location, where logging files are available.
 """
