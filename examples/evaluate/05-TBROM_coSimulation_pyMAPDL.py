@@ -135,7 +135,7 @@ inter_grid = grid.interpolate(
 inter_grid.plot(show_edges=False)  # Plot the interpolated data on MAPDL grid
 temperature_load_val = pv.convert_array(
     pv.convert_array(inter_grid.active_scalars)
-)  # Save temperatures interpolated to each node as an NumPy array
+)  # Save temperatures interpolated to each node as a NumPy array
 node_num = inter_grid.point_data["ansys_node_num"]  # Save node numbers as an NumPy array
 
 ###############################################################################
