@@ -108,8 +108,8 @@ for item in twin_model.outputs:
 ###############################################################################
 # Simulate the twin for each time step
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loop over all inputs, simulating the twin one time step at a
-# time and collecting the corresponding output values.
+# Loop over all inputs, simulating the twin at each time step
+# and collecting the corresponding output values.
 
 sim_output_list_step = [outputs]
 data_index = 0
