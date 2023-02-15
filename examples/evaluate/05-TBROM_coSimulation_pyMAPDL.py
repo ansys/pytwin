@@ -69,7 +69,7 @@ rom_parameters = {"ThermalROM23R1_1_store_snapshots": 1}
 
 
 def snapshot_to_fea(snapshot_file, geometry_file):
-    """Create a Pandas dataframe containing the x, y , z coordinates for the ROM
+    """Create a Pandas dataframe containing the x, y, z coordinates for the ROM
     and snapshot file results."""
 
     with open(geometry_file, "rb") as geo, open(snapshot_file, "rb") as snp:
