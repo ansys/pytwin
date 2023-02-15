@@ -5,7 +5,7 @@ Twin evaluation of a 3D field ROM co-simulation with an FEA model
 
 This example shows how PyTwin can be used to load and evaluate a twin model to
 predict CFD results in the form of temperature fields. Temperature fields are
-used as inputs for an FEA thermal-structural analysis of T-junction that considers
+used as inputs for an FEA thermal structural analysis of a T-junction that considers
 the mixing of two different flow temperatures. The example uses PyTwin to evaluate
 the twin results and convert them to an appropriate format. It then uses PyMAPDL to
 load the FEA model, apply the temperature loads coming from the twin, and perform
