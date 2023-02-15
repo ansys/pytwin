@@ -112,8 +112,8 @@ sweep = [dp1, dp2, dp3]
 ###############################################################################
 # Simulate the twin for each set of parameter values
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Simulate the twin for each set of parameters values, one time step at a
-# time and collect corresponding output values.
+# Simulate the twin for each set of parameters values for each time step
+# and collect corresponding output values.
 
 results = []
 for dp in sweep:
