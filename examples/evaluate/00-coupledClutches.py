@@ -106,8 +106,8 @@ for item in twin_model.outputs:
     outputs.append(twin_model.outputs[item])
 
 ###############################################################################
-# Simulate the twin for each time step
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Simulate the twin in step by step mode
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loop over all inputs, simulating the twin at each time step
 # and collecting the corresponding output values.
 
