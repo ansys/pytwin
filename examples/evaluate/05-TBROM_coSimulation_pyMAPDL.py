@@ -164,7 +164,7 @@ with mapdl.non_interactive:
     for node, temp in zip(node_num, temperature_load_val):
         mapdl.bf(node, "TEMP", temp)
 # Use the X and Y minimum bounds to select nodes from five surfaces that are to be fixed
-# Create a component and fix all DOFs
+# Create a component and fix all degrees of freedom (DoFs)
 mapdl.nsel("s", "LOC", "X", Xmax)  # Select all nodes whose X coord.=Xmax
 mapdl.nsel("a", "LOC", "Y", Ymin)  # Select all nodes whose Y coord.=Ymin and add to previous selection
 mapdl.nsel("a", "LOC", "Y", Ymax)  # Select all nodes whose Y coord.=Ymax and add to previous selection
