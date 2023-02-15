@@ -9,7 +9,7 @@ used as inputs for an FEA thermal structural analysis of a T-junction that consi
 the mixing of two different flow temperatures. The example uses PyTwin to evaluate
 the twin results and convert them to an appropriate format. It then uses PyMAPDL to
 load the FEA model, apply the temperature loads coming from the twin, and perform
-the thermal-structural analysis.
+the thermal structural analysis.
 
 .. note::
    To generate snapshot files at initialization time, the ROM included in the twin
