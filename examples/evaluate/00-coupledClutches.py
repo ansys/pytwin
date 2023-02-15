@@ -2,7 +2,7 @@
 
 Twin evaluation
 ---------------
-This example shows how you can use PyTwin to load and evaluate a Twin model.
+This example shows how you can use PyTwin to load and evaluate a twin model.
 The model consists of three coupled clutches and has four inputs (applied torque
 and the three clutch openings) and three outputs (the computed torque on each clutch.
 """
