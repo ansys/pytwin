@@ -1,10 +1,10 @@
 .. _ref_index_api_sdk:
 
-Twin Runtime SDK
-================
+Twin runtimes
+=============
 
-Implementation of the Twin Runtime SDK class enabling access to the core
-Twin Runtime SDK functionalities.
+The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to
+twin runtime functionalities.
 
 .. currentmodule:: pytwin
 
@@ -13,15 +13,17 @@ Twin Runtime SDK functionalities.
 
    TwinRuntime
 
-Workflow Example
+Workflow example
 ----------------
+
+This code shows how to load the ``TwinRuntime`` module and print twin information. 
 
 .. code-block:: pycon
 
    >>> from pytwin import TwinRuntime, download_file
    >>> twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files")
    >>> twin_runtime = TwinRuntime(twin_file)  # Load the Runtime
-   >>> twin_runtime.print_model_info(max_var_to_print=10)  # Print Twin information
+   >>> twin_runtime.print_model_info(max_var_to_print=10)  # Print twin information
    ------------------------------------- Model Info -------------------------------------
    Twin Runtime Version: 2.4.0.0
    Model Name: CoupledClutchesTwin
@@ -59,8 +61,8 @@ Workflow Example
 
    [3 rows x 9 columns]
    >>> twin_runtime.twin_instantiate()  # Instantiate the Runtime
-   >>> twin_runtime.twin_initialize()  # Initialize the Twin simulation
-   >>> print(twin_runtime.twin_get_outputs())  # Collect and print the initial outputs values
+   >>> twin_runtime.twin_initialize()  # Initialize the twin simulation
+   >>> print(twin_runtime.twin_get_outputs())  # Collect and print initial output values
    [0.0, 0.0, 0.0]
-   >>> twin_runtime.twin_simulate(0.001)  # Simulate the Twin till time_end
+   >>> twin_runtime.twin_simulate(0.001)  # Simulate the twin until the end time
    >>> twin_runtime.twin_close()  # Close the Runtime
