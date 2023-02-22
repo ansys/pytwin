@@ -112,31 +112,33 @@ def download_file(
     file_name: str, directory: str, force_download: Optional[bool] = False, destination: Optional[str] = None
 ):
     """
-    Download the input file for an example.
+    Download a file that is used for a PyTwin example.
 
-    Input files for examples are downloaded to a persistent cache to avoid downloading the same file twice.
+    The files are downloaded from the PyTwin example files repository whose URL is given by the
+    ``pytwin.examples.downloads.EXAMPLES_REPO`` constant. All example files are downloaded to a persistent cache to
+    avoid downloading the same file twice.
 
     Parameters
     ----------
     file_name : str
-        Name of the input file.
+        Name of the example file.
     directory : str
-        Path to the input file.
+        Path to the directory in the example files repository where to find the example file.
     force_download : bool, optional
-        Whether to force deletion of an input file so that it can be downloaded again. The default is ``False``.
+        Whether to force deletion of an example file so that it can be downloaded again. The default is ``False``.
     destination : str, optional
-        Path to download the input file to. The default is ``None``, in which case the input file is
+        Path to download the example file to. The default is ``None``, in which case the example file is
         downloaded to the user's temporary folder.
 
     Returns
     -------
     str
-        Path to the downloaded input file.
+        Path to the downloaded example file.
 
     Examples
     --------
-    >>> from pytwin import examples
-    >>> path = examples.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
+    >>> from pytwin import download_file
+    >>> path = download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
     """
     if not destination:
         destination = EXAMPLES_PATH
@@ -149,13 +151,12 @@ def download_file(
 
 def load_data(inputs: str):
     """
-    Load the input data in a CVS file into a Pandas dataframe.
+    Load the input data from a CVS file into a Pandas dataframe.
 
     Parameters
     ----------
     inputs : str
-        Path of the CSV file. This file must containing the `Time` column and all input data
-        for the twin model.
+        Path of the CSV file. This file must contain the `Time` column and all input data for the twin model.
 
     Returns
     -------
@@ -179,11 +180,10 @@ def load_data(inputs: str):
 
         return column_names
 
-    # #### Load data into a Pandas dataframe and preprocess ###### #
-    # Because C engine can't read rows with quotes, read just the first row
+    # Read column header names
     input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r",\s+", engine="python", quoting=csv.QUOTE_ALL)
 
-    # Read all values from the CSV file but skip the first row
+    # Read data, clean header names and assemble final dataframe
     inputs_df = pd.read_csv(inputs, header=None, skiprows=1)
     inputs_header_values = input_header_df.iloc[0][0].split(",")
     clean_column_names(inputs_header_values)
