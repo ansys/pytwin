@@ -76,7 +76,7 @@ def modify_pytwin_logging(
     Parameters
     ----------
     new_option : PyTwinLogOption
-        Option to use for Pytwin logging.
+        Option to use for PyTwin logging.
     new_level: PyTwinLogLevel
         Level to use for PyTwin logging.
 
