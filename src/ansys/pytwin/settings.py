@@ -88,9 +88,10 @@ def modify_pytwin_logging(
 
     Examples
     --------
-    >>> # Redirect logging to a file in the working directory
     >>> from pytwin import modify_pytwin_logging, get_pytwin_log_file
     >>> from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_DEBUG
+    >>> #
+    >>> # Redirect logging to a file in the working directory and set logging level to DEBUG level
     >>> modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_DEBUG)
     >>> print(get_pytwin_log_file())
     >>> #
@@ -145,9 +146,9 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     new_path: str
         Absolute path to the working directory to use for PyTwin. The directory is created if it does not exist.
     erase: bool, optional
-        Whether to erase a non-empty existing working directory and create a new one. The default is ``True``.
-        If ``False``, the existing working directory is used as it is. This parameter has no effect if the
-        directory does not exist.
+        Whether to erase a non-empty existing working directory or not. If ``True``, the existing working directory is
+        erased and a new one is created. If ``False``, the existing working directory is used as it is. This argument
+        has no effect if the directory does not exist. The default is ``True``.
 
     Raises
     ------
@@ -216,7 +217,7 @@ def get_pytwin_log_file():
 
 def get_pytwin_log_level():
     """
-    Get the path to PyTwin log level.
+    Get PyTwin log level.
     """
     return PYTWIN_SETTINGS.loglevel
 
