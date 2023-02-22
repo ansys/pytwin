@@ -184,7 +184,7 @@ def load_data(inputs: str):
     # Read column header names
     input_header_df = pd.read_csv(inputs, header=None, nrows=1, sep=r",\s+", engine="python", quoting=csv.QUOTE_ALL)
 
-    # Read data, clean header names and assemble final dataframe
+    # Read data, clean header names, and assemble final dataframe
     inputs_df = pd.read_csv(inputs, header=None, skiprows=1)
     inputs_header_values = input_header_df.iloc[0][0].split(",")
     clean_column_names(inputs_header_values)
