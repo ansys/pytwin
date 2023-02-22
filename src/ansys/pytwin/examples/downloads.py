@@ -123,7 +123,7 @@ def download_file(
     file_name : str
         Name of the example file.
     directory : str
-        Path to the directory in the example files repository where to find the example file.
+        Path to the directory in the example files repository where the example file is stored.
     force_download : bool, optional
         Whether to force deletion of an example file so that it can be downloaded again. The default is ``False``.
     destination : str, optional
