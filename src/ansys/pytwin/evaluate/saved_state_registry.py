@@ -19,7 +19,7 @@ class SavedState:
     PARAMETERS_KEY = "parameters"
 
     def __init__(self):
-        self._id = f"{uuid.uuid4()}"[0:8]
+        self._id = f"{uuid.uuid4()}"[0:24].replace("-", "")
         self.time = None
         self.inputs = None
         self.outputs = None
