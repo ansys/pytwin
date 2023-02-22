@@ -4,33 +4,36 @@
 API reference
 =============
 
-This section describes the core Pythonic interfaces for Twin Runtimes.
-Here, you can find the application programming interfaces for 
-using the core Twin Runtime SDK functionalities, as well as an example
-of higher level abstraction class to evaluate the Runtimes.
+This section describes the core Pythonic interfaces for twin runtimes.
+Here, you can find all APIs for consuming twin runtimes, from the lowest-level APIs
+with the :class:`ansys.pytwin.TwinRuntime` class to the higher-level
+APIs with the :class:`ansys.pytwin.TwinModel` class.
 
-Twin Runtime SDK
-----------------
+Twin runtimes
+-------------
 
-Implementation of the :ref:`ref_index_api_sdk` class enabling access to the core
-Twin Runtime SDK functionalities.
+The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to all
+the twin runtime functionalities. It is the lowest-level API of the twin runtime SDK.
+For a workflow example, see :ref:`ref_index_api_sdk`.
 
 Evaluate
 --------
 
-:ref:`ref_index_api_evaluate` class is an example of higher level abstraction implementation
-to facilitate the manipulation and execution of Twin Runtimes.
+The :class:`TwinModel <ansys.pytwin.TwinModel` class implements a higher-level
+abstraction to facilitate the manipulation and execution of a twin model. For more
+information, see :ref:`ref_index_api_sdk`.
 
-Global Settings
+Global settings
 ---------------
 
-:ref:`ref_index_api_logging` describe the global settings (e.g. logging and working directory options) available from
-PyTwin package and how to change them from their default values
+PyTwin provides global settings for configuring and changing both logging and directory options.
+For more information, see :ref:`ref_index_api_logging`.
 
-Other Functions
+Other functions
 ---------------
 
-Additional useful functions used for the examples implementation are described in :ref:`ref_index_api_example`.
+Some other PyTwin functions are available and used in examples. For more information,
+see :ref:`ref_index_api_example`.
 
 .. currentmodule:: pytwin
 
