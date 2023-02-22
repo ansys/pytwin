@@ -156,7 +156,8 @@ def load_data(inputs: str):
     Parameters
     ----------
     inputs : str
-        Path of the CSV file. This file must contain the `Time` column and all input data for the twin model.
+        Path of the CSV file. This file must contain the ``Time`` column and all input data
+        for the twin model.
 
     Returns
     -------
