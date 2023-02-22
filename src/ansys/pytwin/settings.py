@@ -8,20 +8,23 @@ import tempfile
 
 class PyTwinLogLevel(Enum):
     """
-    Enum to choose logging level to be used by all pytwin objects.
-    It follows standard python logging levels.
+    Provides an enum for choosing the logging level for use by all PyTwin objects.
+    PyTwin logging levels follow standard Python logging levels.
 
     PYTWIN_LOG_DEBUG:
-        Detailed information, typically of interest only when diagnosing problems.
+        Provide detailed information that is typically of interest only when diagnosing problems.
     PYTWIN_LOG_INFO:
-        Confirmation that things are working as expected.
+        Provide confirmation that things are working as expected.
     PYTWIN_LOG_WARNING:
-        An indication that something unexpected happened, or indicative of some problem in the near future
-        (e.g. ‘disk space low’). The software is still working as expected.
+        Provide an indication that something unexpected has happened or a problem might occur
+        in the near future. For example, ``disk space low`` is a warning that is shown when
+        the software is still working as expected but a problem might soon be encountered.
     PYTWIN_LOG_ERROR:
-        Due to a more serious problem, the software has not been able to perform some function.
+        Provide notice that due to a more serious problem, the software has not been able
+        to perform some function.
     PYTWIN_LOG_CRITICAL:
-        A serious error, indicating that the program itself may be unable to continue running.
+       Provide notice of a serious error, indicating that the software may be unable to
+       continue running.
 
     """
 
@@ -34,18 +37,18 @@ class PyTwinLogLevel(Enum):
 
 class PyTwinLogOption(Enum):
     """
-    Enum to choose logging options to be used by all pytwin objects.
+    Provides an enum for choosing the logging option for use by all PyTwin objects.
 
     PYTWIN_LOGGING_OPT_FILE:
-        Redirect logging to the pytwin log file stored in the pytwin working directory.
+        Redirect logging to the PyTwin log file stored in the PyTwin working directory.
     PYTWIN_LOGGING_OPT_CONSOLE:
-        Redirect logging to console.
+        Redirect logging to the console.
     PYTWIN_LOGGING_OPT_NOLOGGING:
-        Disable pytwin logging.
+        Disable logging.
 
     """
 
-    PYTWIN_LOGGING_OPT_FILE = 0  # Redirect logging to pytwin log file
+    PYTWIN_LOGGING_OPT_FILE = 0  # Redirect logging to PyTwin log file
     PYTWIN_LOGGING_OPT_CONSOLE = 1  # Redirect logging to console
     PYTWIN_LOGGING_OPT_NOLOGGING = 2  # No logging
 
@@ -60,33 +63,42 @@ def modify_pytwin_logging(
     new_level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_INFO,
 ):
     """
-    Modify global pytwin logging. You can: (1) redirect logging to a log file, (2) redirect logging to the console
-    or (3) disable logging (see examples). Use level parameter to fine tune logging level. All pytwin objects (from the
-    same python process) share the same logging options.
+    Modify global PyTwin logging. You can choose to take these actions:
+
+    - Redirect logging to a log file.
+    - Redirect logging to the console.
+    - Disable logging.
+
+    All PyTwin objects from the same Python process share the same logging options.
+    To fine tune the logging level, use the ``new_level`` parameter. For more
+    information, see the examples.
 
     Parameters
     ----------
     new_option : PyTwinLogOption
-        Option you want to use for pytwin logging.
+        Option to use for PyTwin logging.
     new_level: PyTwinLogLevel
-        Level you want to use for pytwin logging.
+        Level to use for PyTwin logging.
 
     Raises
     ------
     PyTwinSettingsError
-        If new_option is not a valid PyTwinLogOption attribute.
-        if new_level is not a valid PyTwinLogLevel attribute.
+        If ``new_option`` is not a valid ``PyTwinLogOption`` attribute.
+        If ``new_level`` is not a valid ``PyTwinLogLevel`` attribute.
 
     Examples
     --------
-    >>> # Redirect logging to a file in the working directory
     >>> from pytwin import modify_pytwin_logging, get_pytwin_log_file
     >>> from pytwin import PYTWIN_LOGGING_OPT_FILE, PYTWIN_LOG_DEBUG
+    >>> #
+    >>> # Redirect logging to a file in the working directory and set logging level to DEBUG level
     >>> modify_pytwin_logging(new_option=PYTWIN_LOGGING_OPT_FILE, new_level=PYTWIN_LOG_DEBUG)
     >>> print(get_pytwin_log_file())
+    >>> #
     >>> # Redirect logging to the console
     >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_CONSOLE
     >>> modify_pytwin_logging(PYTWIN_LOGGING_OPT_CONSOLE)
+    >>> #
     >>> # Disable logging
     >>> from pytwin import modify_pytwin_logging, PYTWIN_LOGGING_OPT_NOLOGGING
     >>> modify_pytwin_logging(PYTWIN_LOGGING_OPT_NOLOGGING)
@@ -95,25 +107,25 @@ def modify_pytwin_logging(
     def _check_log_level_is_valid(_level: PyTwinLogLevel):
         if isinstance(_level, PyTwinLogLevel):
             if _level.name not in PyTwinLogLevel.__members__:
-                msg = "Error while setting pytwin logging!"
-                msg += f"\nProvided log level is unknown (provided: {_level})"
-                msg += f"\nPlease choose among {PyTwinLogLevel.__members__} enum."
+                msg = "Error occurred while setting PyTwin logging level."
+                msg += f"\nProvided log level is unknown (provided: {_level}.)"
+                msg += f"\nChoose a value from the {PyTwinLogLevel.__members__} enum."
                 raise PyTwinSettingsError(msg)
         else:
-            msg = "Error while setting pytwin logging options!"
-            msg += f"\nPlease use {PyTwinLogLevel} enum to set level argument value."
+            msg = "Error occurred while setting PyTwin logging level."
+            msg += f"\nUse the {PyTwinLogLevel} enum to set the log level."
             raise PyTwinSettingsError(msg)
 
     def _check_log_option_is_valid(_option: PyTwinLogOption):
         if isinstance(_option, PyTwinLogOption):
             if _option.name not in PyTwinLogOption.__members__:
-                msg = "Error while setting pytwin logging!"
-                msg += f"\nProvided log option is unknown (provided: {_option})"
-                msg += f"\nPlease choose among {PyTwinLogOption.__members__} enum."
+                msg = "Error occurred while setting PyTwin logging option."
+                msg += f"\nProvided logging option is unknown (provided: {_option}.)"
+                msg += f"\nChoose a value from the {PyTwinLogOption.__members__} enum."
                 raise PyTwinSettingsError(msg)
         else:
-            msg = "Error while setting pytwin logging options!"
-            msg += f"\nPlease use {PyTwinLogOption} enum to set option argument value."
+            msg = "Error occurred while setting PyTwin logging option."
+            msg += f"\nUse the {PyTwinLogOption} enum to set the logging option."
             raise PyTwinSettingsError(msg)
 
     if new_option is not None:
@@ -127,23 +139,27 @@ def modify_pytwin_logging(
 
 def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     """
-    Modify global pytwin working directory.
+    Modify the global PyTwin working directory.
 
     Parameters
     ----------
     new_path: str
-        Absolute path to the working directory you want to use for pytwin package. It is created if it does not exist.
-    erase: bool
-        if True, erase non-empty existing working directory and create a new one. If False, use existing working
-        directory as it is. Value has no effect if directory does not exist.
+        Absolute path to the working directory to use for PyTwin. The directory is created if it does not exist.
+    erase: bool, optional
+        Whether to erase a non-empty existing working directory. The default is ``True``,
+        in which case the existing working directory is erased and a new one is created.
+        If ``False``, the existing working directory is used as it is. This parameter has no
+        effect if the directory does not exist.
 
     Raises
     ------
     PyTwinSettingsError
-        If provided path is None.
-        If provided path does not exist AND some parent directories do not exist or last parent directory does not have
-        writing permission.
-        If erase is not a boolean.
+        If provided path is ``None``.
+
+        If provided path does not exist and some parent directories do not exist or the last parent
+        directory does not have write permission.
+
+        If ``erase`` is not a Boolean value.
 
     Examples
     --------
@@ -154,27 +170,27 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
 
     def _check_wd_path_is_valid(_wd: str):
         if new_path is None:
-            msg = "Error while setting pytwin working directory!"
-            msg += "\nGiven path is None. Please give a valid path."
+            msg = "Error occurred while setting the PyTwin working directory."
+            msg += "\nGiven path is None. Provide a valid path."
             raise PyTwinSettingsError(msg)
         parent_dir = os.path.split(_wd)[0]
         if not os.path.exists(_wd):
-            # Check we can create the provided working dir if it does not exist.
+            # Check if the provided working director can be created if it does not exist.
             if not os.path.exists(parent_dir):
-                msg = f"Error while setting pytwin working directory!"
-                msg += f"\nSome parent directory ({parent_dir}) in the provided folder path ({_wd}) does not exists!"
-                msg += f"\nPlease provide a folder path in which all parents exist."
+                msg = f"Error occurred while setting the PyTwin working directory"
+                msg += f"\nSome parent directory ({parent_dir}) in the provided path ({_wd}) does not exist."
+                msg += f"\nProvide a folder path in which all parents exist."
                 raise PyTwinSettingsError(msg)
             if not os.access(parent_dir, os.W_OK):
-                msg = f"Error while setting pytwin working directory!"
-                msg += f"\nParent directory ({parent_dir}) has not the writing permission."
-                msg += f"\nPlease provide writing permission to '{parent_dir}'"
+                msg = f"Error occurred while setting the PyTwin working directory."
+                msg += f"\nParent directory ({parent_dir}) does not have write permission."
+                msg += f"\nProvide write permission to '{parent_dir}'."
                 raise PyTwinSettingsError(msg)
 
     def _check_wd_erase_is_valid(_erase: bool):
         if not isinstance(_erase, bool):
-            msg = "Error while setting pytwin working directory!"
-            msg += f"\n'erase' argument must be boolean (provided: {_erase})"
+            msg = "Error occurred while setting the PyTwin working directory"
+            msg += f"\n'erase' argument must be Boolean (provided: {_erase})."
             raise PyTwinSettingsError(msg)
 
     _check_wd_path_is_valid(new_path)
@@ -188,28 +204,28 @@ def pytwin_logging_is_enabled():
 
 def get_pytwin_logger():
     """
-    Get pytwin logger (if any).
+    Get the PyTwin logger (if any).
     """
     return PYTWIN_SETTINGS.logger
 
 
 def get_pytwin_log_file():
     """
-    Get path to pytwin log file (if any).
+    Get the path to the PyTwin log file (if any).
     """
     return PYTWIN_SETTINGS.logfile
 
 
 def get_pytwin_log_level():
     """
-    Get path to pytwin log level.
+    Get PyTwin log level.
     """
     return PYTWIN_SETTINGS.loglevel
 
 
 def get_pytwin_working_dir():
     """
-    Get path to pytwin working directory.
+    Get the path to the PyTwin working directory.
     """
     return PYTWIN_SETTINGS.working_dir
 
@@ -226,18 +242,18 @@ def reinit_settings_for_unit_tests():
 
 class _PyTwinSettings(object):
     """
-    This private class hosts pytwin package settings (that are mutable and immutable attributes) that are seen by all
-    pytwin object instances. Helpers are provided to manipulate these attributes. Explicit modification of attributes is
-    forbidden and may cause unexpected behavior.
+    This private class hosts PyTwin package settings (that are mutable and immutable attributes) that are seen by all
+    PyTwin object instances. Helpers are provided to manipulate these attributes. Explicit modification of attributes is
+    forbidden because they may cause unexpected behavior.
     """
 
-    # Below constants are mutable
+    # Mutable constants
     LOGGING_OPTION = None
     LOGGING_LEVEL = None
     MULTI_PROCESS_IS_ENABLED = False
     WORKING_DIRECTORY_PATH = None
 
-    # Below constants are immutable
+    # Immutable constants
     LOGGER_NAME = "pytwin_logger"
     LOGGING_FILE_NAME = "pytwin.log"
     WORKING_DIRECTORY_NAME = "pytwin"
@@ -250,7 +266,7 @@ class _PyTwinSettings(object):
         if _PyTwinSettings.LOGGING_OPTION == PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE:
             return None
         if _PyTwinSettings.WORKING_DIRECTORY_PATH is None:
-            msg = "Working directory has not been set!"
+            msg = "Working directory has not been set."
             raise PyTwinSettingsError(msg)
         return os.path.join(_PyTwinSettings.WORKING_DIRECTORY_PATH, _PyTwinSettings.LOGGING_FILE_NAME)
 
@@ -261,14 +277,14 @@ class _PyTwinSettings(object):
     @property
     def logger(self):
         if _PyTwinSettings.LOGGING_OPTION is None:
-            msg = "Logging has not been set!"
+            msg = "Logging option has not been set."
             raise PyTwinSettingsError(msg)
         return logging.getLogger(_PyTwinSettings.LOGGER_NAME)
 
     @property
     def working_dir(self):
         if _PyTwinSettings.WORKING_DIRECTORY_PATH is None:
-            msg = "Working directory has not been set!"
+            msg = "Working directory has not been set."
             raise PyTwinSettingsError(msg)
         return _PyTwinSettings.WORKING_DIRECTORY_PATH
 
@@ -313,7 +329,7 @@ class _PyTwinSettings(object):
     @staticmethod
     def _initialize_logging():
         """
-        Default logging settings (log to file with info level)
+        Provides default logging settings (log to file with INFO level).
         """
         # Set default logging settings
         _PyTwinSettings.LOGGING_OPTION = PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE
@@ -326,9 +342,9 @@ class _PyTwinSettings(object):
     @staticmethod
     def _initialize_wd():
         """
-        Default working directory settings.
+        Provides default settings for the PyTwin working directory.
         """
-        # Clean pytwin temporary directory, each time pytwin is imported.
+        # Clean the PyTwin temporary directory each time the pytwin package is imported.
         if _PyTwinSettings.MULTI_PROCESS_IS_ENABLED:
             pytwin_temp_dir = os.path.join(
                 tempfile.gettempdir(), str(os.getpid()), _PyTwinSettings.WORKING_DIRECTORY_NAME
@@ -343,7 +359,7 @@ class _PyTwinSettings(object):
             except PermissionError as e:
                 import time
 
-                logging.warning(f"_PyTwinSettings failed to clear working dir (attempt #{i})! \n {str(e)}")
+                logging.warning(f"_PyTwinSettings failed to clear the working directory (attempt #{i})! \n {str(e)}.")
                 time.sleep(1)
 
         os.mkdir(pytwin_temp_dir)
@@ -360,7 +376,7 @@ class _PyTwinSettings(object):
                 has_file_handler = True
 
         if has_file_handler:
-            # Clear existing handlers, copy old log content into new one, add a new file handler to pytwin logger
+            # Clear existing handlers, copy old log content into new one, add a new file handler to PyTwin logger
             pytwin_logger.handlers.clear()
             old_logfile_path = os.path.join(old_path, _PyTwinSettings.LOGGING_FILE_NAME)
             new_logfile_path = os.path.join(new_path, _PyTwinSettings.LOGGING_FILE_NAME)
@@ -378,7 +394,7 @@ class _PyTwinSettings(object):
                 dirs_exist_ok=True,
             )
         else:
-            """Copy a directory structure overwriting existing files"""
+            """Copy a directory structure, overwriting existing files."""
             src = old_path
             dst = new_path
             for root, dirs, files in os.walk(src):
@@ -418,7 +434,7 @@ class _PyTwinSettings(object):
         # Modifications in case of new option
         if new_option is not None:
             if new_option != _PyTwinSettings.LOGGING_OPTION:
-                # Update pytwin settings and clear existing handles
+                # Update PyTwin settings and clear existing handles
                 _PyTwinSettings.LOGGING_OPTION = new_option
                 pytwin_logger.handlers.clear()
                 # Create new handles if needed
