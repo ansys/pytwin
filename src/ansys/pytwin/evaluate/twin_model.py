@@ -829,7 +829,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROM.
+            If ``TwinModel`` does not include any TBROMs.
             If provided ROM name is not available.
 
         Examples
