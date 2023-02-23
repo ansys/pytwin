@@ -621,7 +621,7 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROM.")
+            self._raise_error("Twin model does not include any TBROMs.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
