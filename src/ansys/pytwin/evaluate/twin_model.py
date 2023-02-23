@@ -482,7 +482,7 @@ class TwinModel(Model):
         Returns
         -------
         list
-            List of outputs values at time instant t plus the step size, ordered by output names.
+            List of outputs values at time instant `t` plus the step size, ordered by output names.
 
         Examples
         --------
