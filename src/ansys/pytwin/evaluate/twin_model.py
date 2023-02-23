@@ -810,7 +810,7 @@ class TwinModel(Model):
 
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
-        Get the snapshot file associated with a ROM (reduced order model) in the twin model and evaluated at the
+        Get the snapshot file associated with a ROM in the twin model and evaluated at the
         given time instant.
 
         The snapshot file contains the field results of the ROM.
