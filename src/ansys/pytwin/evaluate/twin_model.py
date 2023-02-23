@@ -942,7 +942,7 @@ class TwinModel(Model):
         Examples
         --------
         >>> from pytwin import TwinModel
-        >>> # Instantiate a twin model, initialize it and evaluate it step by step until you want to save its state
+        >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
         >>> model1 = TwinModel('model.twin')
         >>> model1.initialize_evaluation()
         >>> model1.evaluate_step_by_step(step_size=0.1)
