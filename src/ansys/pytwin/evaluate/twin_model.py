@@ -476,7 +476,7 @@ class TwinModel(Model):
             Step size in seconds to reach the next time step. The value must be positive.
         inputs : dict (optional)
             Dictionary of input values ({"name": value}) at time instant `t`. An input is not updated if
-            the associated key is not found in the twin model ``input_names`` property. If values for
+            the associated key is not found in the twin model's ``input_names`` property. If values for
             inputs are not provided in the dictionary, their current values are kept.
 
         Returns
