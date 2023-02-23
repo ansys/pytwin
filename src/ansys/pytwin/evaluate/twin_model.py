@@ -515,7 +515,7 @@ class TwinModel(Model):
         except Exception as e:
             msg = f"Something went wrong during evaluation at time step {self._evaluation_time}:"
             msg += f"\n{str(e)}"
-            msg += f"\Reinitialize the model evaluation and restart the evaluation."
+            msg += f"Reinitialize the model evaluation and restart the evaluation."
             msg += f"\nFor more information, see the model log file: {self.model_log}."
             self._raise_error(msg)
 
