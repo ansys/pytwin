@@ -714,7 +714,7 @@ class TwinModel(Model):
 
     def get_geometry_filepath(self, rom_name: str):
         """
-        Get the geometry file associated with a ROM (reduced order model) available in the twin model.
+        Get the geometry file associated with a ROM available in the twin model.
 
         The geometry file contains the coordinates of the points that are used to define the
         geometrical support of the ROM field output.
