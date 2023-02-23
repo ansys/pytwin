@@ -626,7 +626,7 @@ class TwinModel(Model):
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
             msg += f"Call this method with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}"
+            msg += f"\nAvailable TBROM names are: {self.tbrom_names}"
             self._raise_error(msg)
 
         view_names = list(self._tbrom_info[rom_name][self.TBROM_VIEWS_KEY])
