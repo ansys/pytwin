@@ -80,7 +80,7 @@ class Model:
 
     @property
     def model_log(self):
-        """Path to the model log file that is used at Twin Runtime instantiation."""
+        """Path to the model log file that is used at twin runtime instantiation."""
         return os.path.join(self.model_temp, f"{self._id}.log")
 
     @property
