@@ -82,7 +82,7 @@ class TwinModel(Model):
 
     def _check_model_filepath_is_valid(self, model_filepath):
         """
-        Check if the filepath provided for the twin model is valid. Raise a TwinModelError if not.
+        Check if the filepath provided for the twin model is valid. Raise a ``TwinModelError`` message if not.
         """
         if model_filepath is None:
             msg = f"TwinModel cannot be called with {model_filepath} as the model's filepath."
