@@ -473,7 +473,7 @@ class TwinModel(Model):
         Parameters
         ----------
         step_size : float
-            Step size in second to reach next time step. The value must be positive.
+            Step size in seconds to reach the next time step. The value must be positive.
         inputs : dict (optional)
             Dictionary of input values ({"name": value}) at time instant `t`. An input is not updated if
             the associated key is not found in the twin model ``input_names`` property. If values for
