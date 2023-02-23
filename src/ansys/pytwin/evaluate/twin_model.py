@@ -85,8 +85,8 @@ class TwinModel(Model):
         Check if the filepath provided for the twin model is valid. Raise a ``TwinModelError`` message if not.
         """
         if model_filepath is None:
-            msg = f"TwinModel cannot be called with {model_filepath} as the model's filepath."
-            msg += "\nProvide valid filepath to initialize the TwinModel object."
+            msg = f"Twin model cannot be called with {model_filepath} as the model's filepath."
+            msg += "\nProvide a valid filepath to initialize the ``TwinModel`` object."
             raise self._raise_error(msg)
         if not os.path.exists(model_filepath):
             msg = f"The provided filepath does not exist: {model_filepath}."
