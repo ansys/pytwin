@@ -528,7 +528,7 @@ class TwinModel(Model):
         inputs_df: pandas.DataFrame
             Historical input values stored in a pandas dataframe. It must have a 'Time' column and all history
             for the twin model inputs that you want to simulate. The dataframe must have one input per column,
-            starting at time instant ``t=0.(s)``. If a twin model input is not found in a dataframe column,
+            starting at time instant `t=0.(s)`. If a twin model input is not found in a dataframe column,
             this input is kept constant to its initialization value. The column header must match with a
             a twin model input name.
 
