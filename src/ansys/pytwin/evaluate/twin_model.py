@@ -90,7 +90,7 @@ class TwinModel(Model):
             raise self._raise_error(msg)
         if not os.path.exists(model_filepath):
             msg = f"The provided filepath does not exist: {model_filepath}."
-            msg += "\nProvide the correct filepath to initialize the TwinModel object."
+            msg += "\nProvide the correct filepath to initialize the ``TwinModel`` object."
             raise self._raise_error(msg)
         return True
 
