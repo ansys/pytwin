@@ -570,7 +570,7 @@ class TwinModel(Model):
         t0 = inputs_df["Time"][0]
         if not np.isclose(t0, 0.0, atol=np.spacing(0.0)):
             msg = "Dataframe given for inputs has no time instant 't=0.s'."
-            msg += f" The first provided time instant is : {t0})."
+            msg += f" The first provided time instant is: {t0})."
             msg += "\nProvide inputs at time instant 't=0.s'."
             self._raise_error(msg)
 
