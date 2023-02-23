@@ -12,7 +12,7 @@ class Model:
     This class handles the model ID, working directory paths, logging,
     and error raising.
 
-    A base class can overload the ``raise_model_error(self, msg)`` method
+    A child class can overload the ``raise_model_error(self, msg)`` method
     to provide its own exception.
     """
 
@@ -46,7 +46,7 @@ class Model:
 
     def _raise_model_error(self, msg):
         """
-        Provides a base class method for suppling your own exception class to catch errors explicitly.
+        Overload this method in the child class for supplying your own exception class to catch errors explicitly.
         """
         raise ModelError(msg)
 
@@ -80,15 +80,12 @@ class Model:
 
     @property
     def model_log(self):
-        """Path to the model log file to used at Twin Runtime instantiation.
-        Because the the model name is unknown before the model is instantiated, the
-        ``model_dir`` attribute in the log file path is given at instantiation."""
+        """Path to the model log file that is used at Twin Runtime instantiation."""
         return os.path.join(self.model_temp, f"{self._id}.log")
 
     @property
     def model_log_link(self):
-        """Path to the symbolic link to the log file in the temporary folder. This path is stored in the
-        ``model_dir`` attribute in the log file path is given at instantiation."""
+        """Path to the symbolic link to the model log file."""
         return os.path.join(self.model_dir, f"link.log")
 
 

@@ -9,7 +9,7 @@ from pytwin.evaluate.model import Model
 
 class SavedState:
     """
-    Provides the metadata of a twin model on a save state request.
+    Provides the metadata of the saved state of a twin model.
     """
 
     ID_KEY = "id"
@@ -67,7 +67,7 @@ class SavedStateRegistry:
     Manages a registry of saved states for the twin model.
 
     This class registers metadata associated with the saved state, persists
-    the saved state, and provide methods for appending and extracting saved states.
+    the saved state, and provides methods for appending and extracting saved states.
     """
 
     SAVED_STATES_KEY = "saved_states"

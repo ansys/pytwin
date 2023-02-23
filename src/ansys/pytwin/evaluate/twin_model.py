@@ -291,10 +291,10 @@ class TwinModel(Model):
             self._raise_error("Twin model has not been successfully instantiated.")
 
         if not self.evaluation_is_initialized:
-            self._raise_error("Twin model evaluation has not been initialized. Initialize the evaluation.")
+            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            self._raise_error("Twin model does not include any TBROM.")
 
         if rom_name not in self.tbrom_info:
             self._raise_error(f"Twin model does not include a TBROM named {rom_name}.")
@@ -498,7 +498,7 @@ class TwinModel(Model):
             self._raise_error("Twin model has not been successfully instantiated.")
 
         if not self.evaluation_is_initialized:
-            self._raise_error("Twin model evaluation has not been initialized. Initialize the evaluation.")
+            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
 
         if step_size <= 0.0:
             msg = f"Step size must be greater than zero. The value provided was {step_size}.)"
@@ -559,7 +559,7 @@ class TwinModel(Model):
             self._raise_error("Twin model has not been successfully instantiated.")
 
         if not self.evaluation_is_initialized:
-            self._raise_error("Twin model evaluation has not been initialized. Initialize the evaluation.")
+            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
 
         if "Time" not in inputs_df:
             msg = "Dataframe given for inputs has no 'Time' column."
@@ -603,7 +603,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROMs.
+            If ``TwinModel`` does not include any TBROM.
             If the provided ROM name is not available.
 
         Examples
@@ -616,12 +616,12 @@ class TwinModel(Model):
         self._log_key = "GetImageViewNames"
 
         if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized. "
+            msg = "Twin model has not been initialized. "
             msg += "Initialize the evaluation before calling this method."
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs")
+            self._raise_error("Twin model does not include any TBROM.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
@@ -662,7 +662,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROMs.
+            If ``TwinModel`` does not include any TBROM.
             If the provided ROM name is not available.
             If the provided view name is not available.
 
@@ -678,12 +678,12 @@ class TwinModel(Model):
         self._log_key = "GetImageFilePath"
 
         if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized. "
+            msg = "Twin model has not been initialized. "
             msg += "Initialize evaluation before calling this method."
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            self._raise_error("Twin model does not include any TBROM.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
@@ -729,7 +729,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If TwinModel has not been initialized.
-            If TwinModel does not include any TBROMs.
+            If TwinModel does not include any TBROM.
             If the given ROM name is not available.
             If the given geometry file cannot be found for the ROM.
 
@@ -744,12 +744,12 @@ class TwinModel(Model):
         self._log_key = "GetGeometryFilePath"
 
         if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized. "
+            msg = "Twin model has not been initialized. "
             msg += "Initialize evaluation before calling the geometry file getter."
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            self._raise_error("Twin model does not include any TBROM.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
@@ -780,7 +780,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROMs.
+            If ``TwinModel`` does not include any TBROM.
             If the provided ROM name is not available.
 
         Examples
@@ -793,12 +793,12 @@ class TwinModel(Model):
         self._log_key = "GetRomDirectory"
 
         if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized. "
+            msg = "Twin model has not been initialized. "
             msg += "Initialize evaluation before calling this method."
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            self._raise_error("Twin model does not include any TBROM.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
@@ -829,7 +829,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROMs.
+            If ``TwinModel`` does not include any TBROM.
             If provided ROM name is not available.
 
         Examples
@@ -843,12 +843,12 @@ class TwinModel(Model):
         self._log_key = "GetSnapshotFilePath"
 
         if not self.evaluation_is_initialized:
-            msg = "TwinModel has not been initialized. "
+            msg = "Twin model has not been initialized. "
             msg += "Initialize evaluation before calling the snapshot file getter."
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            self._raise_error("Twin model does not include any TBROM.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
