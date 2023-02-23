@@ -23,7 +23,7 @@ class Model:
 
     def _log_message(self, msg: str, level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_INFO):
         """
-        Provides a base class method for logging message at key steps in the code logic.
+        Provides a base class method for logging messages at key steps in the code logic.
         """
         msg = f"[{self._model_name}.{self._id}][{self._log_key}] {msg}"
         logger = get_pytwin_logger()

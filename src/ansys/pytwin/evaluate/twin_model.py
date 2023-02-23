@@ -242,7 +242,7 @@ class TwinModel(Model):
 
     def _raise_model_error(self, msg):
         """
-        Raise a TwinModelError with a formatted message.
+        Raise a formatted ``TwinModelError`` message.
         """
         raise TwinModelError(msg)
 
@@ -602,8 +602,8 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROM.
+            If ``TwinModel`` object has not been initialized.
+            If ``TwinModel`` object does not include any TBROM.
             If the provided ROM name is not available.
 
         Examples
@@ -654,15 +654,15 @@ class TwinModel(Model):
             a list of available rendering view names for a given ROM, use the
             :func:`pytwin.TwinModel.get_available_view_names` method.
         evaluation_time: float, optional
-            Evaluation time at which to get the snapshot file. The default is ``0.0``. If no
-            snapshot file is available at the time specified, this method returns ``None``.
+            Evaluation time at which to get the image file. The default is ``0.0``. If no
+            image file is available at the time specified, this method returns ``None``.
             Two evaluation times can be distinguished up to six digits after the comma.
 
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROM.
+            If ``TwinModel`` object has not been initialized.
+            If ``TwinModel`` object does not include any TBROM.
             If the provided ROM name is not available.
             If the provided view name is not available.
 
@@ -728,8 +728,8 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If TwinModel has not been initialized.
-            If TwinModel does not include any TBROM.
+            If ``TwinModel`` obbject has not been initialized.
+            If ``TwinModel`` obbject does not include any TBROM.
             If the given ROM name is not available.
             If the given geometry file cannot be found for the ROM.
 
@@ -779,8 +779,8 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROM.
+            If ``TwinModel`` object has not been initialized.
+            If ``TwinModel`` object does not include any TBROM.
             If the provided ROM name is not available.
 
         Examples
@@ -828,8 +828,8 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` has not been initialized.
-            If ``TwinModel`` does not include any TBROMs.
+            If ``TwinModel`` object has not been initialized.
+            If ``TwinModel`` object does not include any TBROMs.
             If provided ROM name is not available.
 
         Examples
