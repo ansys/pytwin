@@ -639,8 +639,7 @@ class TwinModel(Model):
 
     def get_image_filepath(self, rom_name: str, view_name: str, evaluation_time: float = 0.0):
         """
-        Get the image file associated with a ROM in the twin model and evaluated at a
-        given time instant.
+        Get the image file that was created by the given ROM at the given time instant.
 
         The image file shows the field results of the ROM in the given predefined view.
 
@@ -810,8 +809,7 @@ class TwinModel(Model):
 
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
-        Get the snapshot file associated with a ROM in the twin model and evaluated at the
-        given time instant.
+        Get the snapshot file that was created by the given ROM at the given time instant.
 
         The snapshot file contains the field results of the ROM.
 
