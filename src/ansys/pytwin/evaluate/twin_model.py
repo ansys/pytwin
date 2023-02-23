@@ -133,7 +133,7 @@ class TwinModel(Model):
         """
         Initialize the twin model evaluation with dictionaries:
         (1) Initialize parameters and/or inputs values to their start values (default values found in the twin file).
-        (2) Update parameters and/or inputs values with provided dictionaries. Ignore value whose names are not found
+        (2) Update parameters and/or inputs values with provided dictionaries. Ignore values whose names are not found
         in the list of parameters/inputs names of the twin model. (Value is kept to the default value in this case.)
         (3) Initialize evaluation time to 0.
         (4) Save universal time (time since epoch) at which the method is called.
