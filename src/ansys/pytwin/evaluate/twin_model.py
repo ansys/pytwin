@@ -535,7 +535,7 @@ class TwinModel(Model):
         Returns
         -------
         output_df: pandas.DataFrame
-            Twin output values associated with the input values stored in the pandas dataframe.
+            Twin output values associated with the input values stored in the Pandas dataframe.
 
         Raises
         ------
