@@ -632,7 +632,7 @@ class TwinModel(Model):
         view_names = list(self._tbrom_info[rom_name][self.TBROM_VIEWS_KEY])
 
         if len(view_names) == 0:
-            msg = f"No views are available for the given RON name: {rom_name}."
+            msg = f"No views are available for the given ROM name: {rom_name}."
             self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return view_names
