@@ -1,16 +1,16 @@
 """.. _ref_example_scalarDROM:
 
-Scalar dynamic ROM Twin evaluation example
-------------------------------------------
-This example shows how you can use PyTwin to load and evaluate a Twin model.
-The model is a scalar dynamic ROM created out of a 3D thermal model of a
-Heat Exchanger, having a heat flow as input and three temperature probes
-as outputs. The example shows a workflow for what-if analysis by deploying
-a second twin in parallel while simulating the original twin and comparing
-the different predictions. This is done using the specific functions for saving
-and loading the twin states. It also illustrates the usage of modify_pytwin_working_dir
-to change the default working directory location (%temp%) to a user specified location
-where the different logging files will be available.
+Twin evaluation of a scalar dynamic ROM
+---------------------------------------
+This example shows how you can use PyTwin to load and evaluate a twin model
+of a scalar dynamic ROM. The ROM is created from a 3D thermal model of a
+heat exchanger. The input is the heat flow. The outputs are the temperatures
+from three temperature probes. The workflow for this example performs what-if
+analysis by deploying a second twin in parallel while simulating the original twin
+so that results from the different predictions can be compared. This comparison
+is done using methods for saving and loading twin states. This example also
+shows how to change the PyTwin working directory location from the default (%temp%)
+to a specified location, where logging files are available.
 """
 
 ###############################################################################
@@ -23,7 +23,8 @@ where the different logging files will be available.
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Perform required imports, which includes downloading and importing the input files
+# Perform required imports, which include downloading and importing the input
+# files.
 
 import os
 
@@ -36,20 +37,22 @@ csv_input = download_file("HX_scalarDRB_input.csv", "twin_input_files")
 
 
 ###############################################################################
-# Auxiliary functions definition
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Post processing for results comparison.
+# Define auxiliary functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define auxiliary functions for comparing and plotting the results from
+# two different simulations executed on the same twin model.
 
 
 def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataFrame):
-    """Compare the results obtained from 2 different simulations executed on the same TwinModel.
-    The 2 results dataset are provided as Pandas Dataframe. The function will plot the different results for all the
-    outputs"""
+    """Compare the results obtained from two different simulations executed on the same
+    twin model. The two results datasets are provided as Pandas dataframes. The function
+    plots the results for all the outputs."""
+
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.expand_frame_repr", False)
 
-    # Plotting the runtime outputs
+    # Plot runtime outputs
     columns = step_by_step_results.columns[1::]
     columns_what_if = what_if.columns[1::]
     result_sets = 1  # Results from only step-by-step + what-if analysis
@@ -70,7 +73,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataF
         axes0.legend(loc=2)
         axes0.set_xlabel("Time [s]")
 
-        # Plot Twin what-if analysis results
+        # Plot twin what-if analysis results
         what_if.plot(x=0, y=columns_what_if[ind], ax=axes0, ls="-.", color="g", title="Twin Runtime - What if analysis")
 
         if ind > 0:
@@ -81,9 +84,10 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, what_if: pd.DataF
 
 
 ###############################################################################
-# Defining external files path
+# Change the working directory
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Changing the working directory (by default in %temp%) to user defined location, and loading the input data
+# Change the working directory from the default location (%temp%) to a specified
+# location and load the input data.
 
 modify_pytwin_working_dir(os.path.join(os.path.dirname(twin_file), "pyTwinWorkingDir"))
 
@@ -92,20 +96,19 @@ data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
 
 ###############################################################################
-# Loading the Twin Runtime and instantiating it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loading the Twin Runtime and instantiating it.
-
+# Load the twin runtime and instantiate it
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and instantiate it.
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 twin_model_what_if = None  # the second twin used for what-if analysis
 
 ###############################################################################
-# Setting up the initial settings of the Twin and initializing it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining the initial inputs of the Twin, initializing it and collecting the initial outputs values
-
+# Define the inputs of the twin model and initialize it
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the inputs of the twin model, initialize it, and collect
+# the output values.
 
 twin_model.initialize_evaluation()
 outputs = [twin_model.evaluation_time]
@@ -113,10 +116,10 @@ for item in twin_model.outputs:
     outputs.append(twin_model.outputs[item])
 
 ###############################################################################
-# Step by step simulation mode
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Looping over all the input data, simulating the Twin one time step at a time and collecting corresponding outputs
-
+# Simulate the twin for each time step
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Loop over all inputs, simulating the twin one time step at a
+# time and collecting the corresponding output values.
 
 sim_output_list_step = [outputs]
 sim_what_if_output_list_step = []
@@ -125,12 +128,12 @@ while data_index < number_of_datapoints:
     if data_index == int(number_of_datapoints / 4) and twin_model_what_if is None:
         # Save the original model's current states
         twin_model.save_state()
-        # Instantiate a new TwinModel with same twin file and load the saved state
+        # Instantiate a new twin model with same TWIN file and load the saved state
         twin_model_what_if = TwinModel(twin_file)
         twin_model_what_if.load_state(model_id=twin_model.id, evaluation_time=twin_model.evaluation_time)
         sim_what_if_output_list_step.append(outputs)
 
-    # Gets the stop time of the current simulation step
+    # Get the stop time of the current simulation step
     time_end = twin_model_input_df.iloc[data_index + 1][0]
     step = time_end - twin_model.evaluation_time
     inputs = dict()
@@ -146,7 +149,7 @@ while data_index < number_of_datapoints:
         for column in twin_model_input_df.columns[1::]:
             inputs[column] = (
                 twin_model_input_df[column][data_index] * 0.9
-            )  # the second Twin will be evaluated using same inputs reduced by 10%
+            )  # Evaluate the second twin using the same inputs reduced by 10%
         twin_model_what_if.evaluate_step_by_step(step_size=step, inputs=inputs)
         outputs = [twin_model_what_if.evaluation_time]
         for item in twin_model_what_if.outputs:
@@ -164,8 +167,8 @@ results_what_if_step_pd = pd.DataFrame(
 )
 
 ###############################################################################
-# Post processing
-# ~~~~~~~~~~~~~~~~~~~
-# Plotting the different results and saving the image on disk
+# Plot results
+# ~~~~~~~~~~~~
+# Plot the results and save the images on disk.
 
 plot_result_comparison(results_step_pd, results_what_if_step_pd)

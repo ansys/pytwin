@@ -56,11 +56,11 @@ class TestDefaultSettings:
         # Raises error if new_option is not a valid PyTwinLogOption attribute.
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_logging(new_option="unknown")
-        assert "Error while setting pytwin logging options!" in str(e)
+        assert "Error occurred while setting PyTwin logging option." in str(e)
         # Raises error if new_option is not a valid PyTwinLogLevel attribute.
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_logging(new_level="unknown")
-        assert "Error while setting pytwin logging options!" in str(e)
+        assert "Error occurred while setting PyTwin logging level." in str(e)
 
     def test_modify_logging_no_logging(self):
         from pytwin import TwinModel
@@ -174,11 +174,15 @@ class TestDefaultSettings:
         # Raises error if None is provided as working dir
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_working_dir(new_path=None)
-        assert "Error while setting pytwin working directory!" in str(e)
+        assert "Error occurred while setting the PyTwin working directory." in str(e)
         # Raises error if provided path does not exist and parent directory does not exists
         with pytest.raises(PyTwinSettingsError) as e:
             modify_pytwin_working_dir(new_path=os.path.join(os.path.dirname(__file__), "unknown_folder", "wd"))
-        assert "Please provide a folder path in which all parents exist." in str(e)
+        assert "Provide a folder path in which all parents exist." in str(e)
+        # Raises error if erase argument is not boolean
+        with pytest.raises(PyTwinSettingsError) as e:
+            modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase="wrong_type")
+        assert "'erase' argument must be Boolean" in str(e)
 
     def test_modify_working_dir_with_not_existing(self):
         # Init unit test
