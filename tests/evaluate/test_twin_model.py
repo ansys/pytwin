@@ -36,7 +36,7 @@ class TestTwinModel:
         try:
             TwinModel(model_filepath=None)
         except TwinModelError as e:
-            assert "Provide valid filepath" in str(e)
+            assert "Provide a valid filepath" in str(e)
         try:
             TwinModel(model_filepath="")
         except TwinModelError as e:

@@ -603,7 +603,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` object has not been initialized.
-            If ``TwinModel`` object does not include any TBROM.
+            If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
 
         Examples
@@ -662,7 +662,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` object has not been initialized.
-            If ``TwinModel`` object does not include any TBROM.
+            If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
             If the provided view name is not available.
 
@@ -683,7 +683,7 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROM.")
+            self._raise_error("Twin model does not include any TBROMs.")
 
         if rom_name not in self.tbrom_names:
             msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
@@ -729,7 +729,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` obbject has not been initialized.
-            If ``TwinModel`` obbject does not include any TBROM.
+            If ``TwinModel`` obbject does not include any TBROMs.
             If the given ROM name is not available.
             If the given geometry file cannot be found for the ROM.
 
@@ -780,7 +780,7 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If ``TwinModel`` object has not been initialized.
-            If ``TwinModel`` object does not include any TBROM.
+            If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
 
         Examples
