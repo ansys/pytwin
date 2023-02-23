@@ -639,7 +639,7 @@ class TwinModel(Model):
 
     def get_image_filepath(self, rom_name: str, view_name: str, evaluation_time: float = 0.0):
         """
-        Get the image file associated with a ROM (reduced order model) in the twin model and evaluated at a
+        Get the image file associated with a ROM in the twin model and evaluated at a
         given time instant.
 
         The image file shows the field results of the ROM in the given predefined view.
