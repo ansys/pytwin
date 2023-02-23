@@ -598,7 +598,7 @@ class TestTwinModel:
         try:
             twin.get_image_filepath(rom_name="test", view_name="test")
         except TwinModelError as e:
-            assert "Twin model does not include any TBROM." in str(e)
+            assert "Twin model does not include any TBROMs." in str(e)
 
         try:
             twin.get_rom_directory(rom_name="test")
