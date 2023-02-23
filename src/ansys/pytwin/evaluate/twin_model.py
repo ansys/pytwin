@@ -15,7 +15,7 @@ class TwinModel(Model):
     """
     Evaluates a twin model in a TWIN file created by Ansys Twin Builder.
 
-    After a twin model is initialized, it can be evaluated with two modes (step-by-step or batch)
+    After a twin model is initialized, it can be evaluated with two modes (step-by-step or batch).
     to make predictions. Parametric workflows are also supported.
 
     Parameters
