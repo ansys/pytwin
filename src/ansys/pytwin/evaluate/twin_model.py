@@ -768,7 +768,7 @@ class TwinModel(Model):
 
     def get_rom_directory(self, rom_name):
         """
-        Get the working directory path for a ROM (reduced order model in the twin model.
+        Get the working directory path for a ROM in the twin model.
 
         Parameters
         ----------
