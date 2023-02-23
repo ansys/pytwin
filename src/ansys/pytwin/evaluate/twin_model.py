@@ -294,7 +294,7 @@ class TwinModel(Model):
             self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROM.")
+            self._raise_error("Twin model does not include any TBROMs.")
 
         if rom_name not in self.tbrom_info:
             self._raise_error(f"Twin model does not include a TBROM named {rom_name}.")
