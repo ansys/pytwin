@@ -541,8 +541,8 @@ class TwinModel(Model):
         ------
         TwinModelError:
             If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
-            If there is no 'Time' column in the input values stored in the pandas dataframe.
-            If there is no time instant ``t=0.s`` in the input values stored in the pandas dataframe.
+            If there is no 'Time' column in the input values stored in the Pandas dataframe.
+            If there is no time instant `t=0.s` in the input values stored in the Pandas dataframe.
 
         Examples
         --------
