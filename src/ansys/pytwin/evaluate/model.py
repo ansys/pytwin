@@ -7,10 +7,13 @@ from pytwin.settings import PYTWIN_SETTINGS
 
 class Model:
     """
-    Model is the private base class to manage twin model evaluation. It handles model id, working directories paths,
-    logging and error raising.
+    Provides the private base class for managing twin model evaluation.
 
-    A Base class can overload the raise_model_error(self, msg) method to provide its own exception.
+    This class handles the model ID, working directory paths, logging,
+    and error raising.
+
+    A child class can overload the ``raise_model_error(self, msg)`` method
+    to provide its own exception.
     """
 
     def __init__(self):
@@ -20,7 +23,7 @@ class Model:
 
     def _log_message(self, msg: str, level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_INFO):
         """
-        Use this method in base class to log message at key steps in the code logic.
+        Provides a base class method for logging messages at key steps in the code logic.
         """
         msg = f"[{self._model_name}.{self._id}][{self._log_key}] {msg}"
         logger = get_pytwin_logger()
@@ -43,20 +46,20 @@ class Model:
 
     def _raise_model_error(self, msg):
         """
-        Over load this method in base class to provide your own exception class so that it can be caught explicitly.
+        Overload this method in the child class for supplying your own exception class to catch errors explicitly.
         """
         raise ModelError(msg)
 
     def _raise_error(self, msg):
         """
-        Use this method in base class to raise an error with meaningful message.
+        Provides a base class method for raising an error with a meaningful message.
         """
         self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_ERROR)
         self._raise_model_error(msg)
 
     @property
     def id(self):
-        """Model unique id"""
+        """Model unique ID."""
         return self._id
 
     @property
@@ -66,23 +69,23 @@ class Model:
 
     @property
     def model_dir(self):
-        """Model directory (within the global working directory)"""
+        """Model directory (within the global working directory)."""
         return os.path.join(get_pytwin_working_dir(), f"{self._model_name}.{self._id}")
 
     @property
     def model_temp(self):
-        """Model temporary directory (within the global working directory). It is shared by all models."""
+        """Model temporary directory (within the global working directory). This temporary directory
+        is shared by all models."""
         return os.path.join(get_pytwin_working_dir(), PYTWIN_SETTINGS.TEMP_WD_NAME)
 
     @property
     def model_log(self):
-        """Path to model log file that is used at TwinRuntime instantiation (because we don't know the model name before
-        having instantiated it and this can't use the model_dir in the log file path that is given at instantiation)."""
+        """Path to the model log file that is used at twin runtime instantiation."""
         return os.path.join(self.model_temp, f"{self._id}.log")
 
     @property
     def model_log_link(self):
-        """Path to symbolic link to the log file in the temporary folder and that is stored in the model_dir."""
+        """Path to the symbolic link to the model log file."""
         return os.path.join(self.model_dir, f"link.log")
 
 
