@@ -783,7 +783,7 @@ class TwinRuntime:
         if len(input_array) != self.number_inputs:
             raise TwinRuntimeError("The input array size must match the the models number of inputs!")
 
-        array_np = np.array(input_array, dtype=float)
+        array_np = np.array(input_array)
         array_ctypes = array_np.ctypes.data_as(POINTER(c_double * self.number_inputs))
 
         self._TwinSetInputs.argtypes = [c_void_p, POINTER(c_double * self.number_inputs), c_int]
@@ -1008,17 +1008,15 @@ class TwinRuntime:
         self.twin_status = self._TwinSaveState(self._modelPointer, c_char_p(save_to))
         self.evaluate_twin_status(self.twin_status, self, 'twin_save_state')
 
-    def twin_load_state(self, load_from, do_fmi_init=True):
+    def twin_load_state(self, load_from):
         load_from = load_from.encode()
         try:
-            self.twin_status = self._TwinLoadState(self._modelPointer, c_char_p(load_from), c_bool(do_fmi_init))
+            self.twin_status = self._TwinLoadState(self._modelPointer, c_char_p(load_from))
             self.evaluate_twin_status(self.twin_status, self, 'twin_load_state')
         except OSError as err:
             msg = 'Fatal error when loading the model state'
             raise TwinRuntimeError(msg, self, TwinStatus.TWIN_STATUS_FATAL.value)
 
-        # The TwinRuntimeSDK always puts the model at least in INITIALIZED state when loading a state
-        self.is_model_initialized = True
 
     """
     Status message retrieval
