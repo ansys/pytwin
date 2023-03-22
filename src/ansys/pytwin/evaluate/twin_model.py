@@ -129,7 +129,7 @@ class TwinModel(Model):
         if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
             return LogLevel.TWIN_LOG_FATAL
 
-    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None):
+    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, runtime_init: bool = True):
         """
         Initialize the twin model evaluation with dictionaries:
         (1) Initialize parameters and/or inputs values to their start values (default values found in the twin file).
@@ -139,6 +139,7 @@ class TwinModel(Model):
         (4) Save universal time (time since epoch) at which the method is called.
         (5) Evaluate twin model at time instance 0. Store its results into an outputs dictionary.
         Twin runtime is reset in case of already initialized twin model.
+        Twin runtime is not initialized in case runtime_init is False.
         """
         if self._twin_runtime is None:
             self._raise_error("Twin model has not been successfully instantiated.")
@@ -169,14 +170,15 @@ class TwinModel(Model):
                 for model_name, data in tbrom_info.items():
                     self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
 
-            self._twin_runtime.twin_initialize()
+            if runtime_init:
+                self._twin_runtime.twin_initialize()
+                self._update_outputs()
+
         except Exception as e:
             msg = f"Something went wrong during model initialization."
             msg += f"\n{str(e)}"
             msg += f"\nFor more information, see the model log file: {self.model_log}."
             self._raise_error(msg)
-
-        self._update_outputs()
 
     def _initialize_inputs_with_start_values(self):
         """
@@ -914,12 +916,12 @@ class TwinModel(Model):
             ss_filepath = ss_registry.return_saved_state_filepath(ss)
 
             # Initialize model accordingly and load existing state
-            self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs)
+            self._initialize_evaluation(parameters=ss.parameters, inputs=ss.inputs, runtime_init=False)
             self._twin_runtime.twin_load_state(ss_filepath)
             self._evaluation_time = ss.time
 
-            BU732106_WORKAROUND = True
-            if BU732106_WORKAROUND:
+            BUG732106_WORKAROUND = True
+            if BUG732106_WORKAROUND:
                 # Rather we call a step-by-step evaluation with a small time step OR we use the registry outputs
                 # self.evaluate_step_by_step(step_size=ss.time * 1e-12, inputs=ss.inputs)
                 self._outputs = ss.outputs
