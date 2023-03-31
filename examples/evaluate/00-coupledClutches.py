@@ -24,9 +24,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pytwin import TwinModel, download_file, load_data
 
-twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files")
-csv_input = download_file("CoupledClutches_input.csv", "twin_input_files")
-twin_config = download_file("CoupledClutches_config.json", "twin_input_files")
+twin_file = download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
+csv_input = download_file("CoupledClutches_input.csv", "twin_input_files", force_download=True)
+twin_config = download_file("CoupledClutches_config.json", "twin_input_files", force_download=True)
 
 
 ###############################################################################

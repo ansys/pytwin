@@ -32,8 +32,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pytwin import TwinModel, download_file, load_data, modify_pytwin_working_dir
 
-twin_file = download_file("HX_scalarDRB_23R1_other.twin", "twin_files")
-csv_input = download_file("HX_scalarDRB_input.csv", "twin_input_files")
+twin_file = download_file("HX_scalarDRB_23R1_other.twin", "twin_files", force_download=True)
+csv_input = download_file("HX_scalarDRB_input.csv", "twin_input_files", force_download=True)
 
 
 ###############################################################################

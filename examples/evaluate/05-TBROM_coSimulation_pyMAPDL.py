@@ -46,8 +46,8 @@ import pandas as pd
 from pytwin import TwinModel, download_file
 import pyvista as pv
 
-twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-fea_file = download_file("ThermalTBROM.dat", "other_files")
+twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
+fea_file = download_file("ThermalTBROM.dat", "other_files", force_download=True)
 
 # start mapdl
 mapdl = launch_mapdl()
