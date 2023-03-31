@@ -39,7 +39,7 @@ the thermal structural analysis.
 # files, and launch an instance of MAPDL.
 
 import struct
-git
+
 from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd
