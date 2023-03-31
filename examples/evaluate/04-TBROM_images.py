@@ -50,8 +50,8 @@ import matplotlib.image as img
 import matplotlib.pyplot as plt
 from pytwin import TwinModel, download_file
 
-twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-cfd_file = download_file("T_Junction.cas.h5", "other_files")
+twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
+cfd_file = download_file("T_Junction.cas.h5", "other_files", force_download=True)
 
 set_config(blocking=True, set_view_on_display="isometric")
 

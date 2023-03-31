@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pytwin import TwinModel, download_file
 
-twin_file = download_file("ElectricRange_23R1_other.twin", "twin_files")
+twin_file = download_file("ElectricRange_23R1_other.twin", "twin_files", force_download=True)
 
 ###############################################################################
 # Define auxiliary functions
