@@ -1,5 +1,6 @@
-from pytwin import TwinModel, TwinRuntime
 import pytwin.examples.downloads as dld
+
+from pytwin import TwinModel, TwinRuntime
 
 
 class TestExamples:
@@ -26,7 +27,7 @@ class TestExamples:
             assert TwinRuntime.twin_is_cross_platform(model_fp)
             model_v, twin_v = TwinRuntime.get_twin_version(model_fp)
             assert model_v
-            assert twin_v == "23.1"
+            assert twin_v == "23.1.1"
             model._twin_runtime.print_model_info()
 
             if model.parameters:
