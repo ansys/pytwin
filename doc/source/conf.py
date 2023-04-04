@@ -3,9 +3,10 @@ from datetime import datetime
 import os
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
-from pytwin import __version__
 import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
+
+from pytwin import __version__
 
 # -- Project information -----------------------------------------------------
 project = "pytwin"
@@ -143,10 +144,9 @@ html_theme_options = {
     ],
     "navigation_depth": -1,
     "switcher": {
-        "json_url": f"https://{cname}/release/versions.json",
+        "json_url": f"https://{cname}/versions.json",
         "version_match": get_version_match(__version__),
     },
-    "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
