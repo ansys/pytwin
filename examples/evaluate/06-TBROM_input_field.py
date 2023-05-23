@@ -164,7 +164,8 @@ inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
 twin_model2 = TwinModel(twin_file)
 twin_model2.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
 rom_name = twin_model2.tbrom_names[0]
-twin_model.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: inputSnapshot})
+#twin_model.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {"inputTemperature":inputSnapshot}})
+twin_model.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
 twin_model2.snapshot_generation(rom_name, True, snapshotfile2)
 res2 = twin_model2.snapshot_generation(rom_name, False, snapshotfile2)
 print(res2)
