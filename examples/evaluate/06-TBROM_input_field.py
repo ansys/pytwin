@@ -117,6 +117,15 @@ twin_model.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be ini
 
 rom_name = twin_model.tbrom_names[0]
 
+rom_path = twin_model._tbrom_resource_directory(rom_name)
+
+files = os.listdir(rom_path)
+
+for file in files:
+   if 'binaryInputField' in file:
+       folder = file.split('_')
+       inputFieldName = folder[1]
+
 inputSVDpath = os.path.join(twin_model._tbrom_resource_directory(rom_name), "binaryInputField_inputTemperature", "basis.svd")
 inputSVD = read_basis(inputSVDpath)
 
@@ -135,18 +144,27 @@ for i in range(0, len(inputSVD)):
     input = {list(twin_model.inputs.keys())[i]:twin_model.inputModeCoef[i]}
     rom_inputs.update(input)
 twin_model.initialize_evaluation(inputs=rom_inputs)
-print(twin_model.inputs)
 
 outputModeCoef = []
-print(twin_model.outputs)
 for key, item in twin_model.outputs.items():
     if "outField" in key:
         outputModeCoef.append(item)
 
-print(outputModeCoef)
 twin_model.outputModeCoef = outputModeCoef
 
 snapshotfile = os.path.join(twin_model.tbrom_directory_path, rom_name, 'snapshot_test.bin')
+
 snapshot_generation(twin_model, True, snapshotfile) # generation snapshot on the disk
+
 res = snapshot_generation(twin_model, False, snapshotfile) # generation snasphot in memory
+
 print(res)
+snapshotfile2 = os.path.join(twin_model.tbrom_directory_path, rom_name, 'snapshot_test_tbrom.bin')
+inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
+twin_model2 = TwinModel(twin_file)
+twin_model2.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
+rom_name = twin_model2.tbrom_names[0]
+twin_model.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: inputSnapshot})
+twin_model2.snapshot_generation(rom_name, True, snapshotfile2)
+res2 = twin_model2.snapshot_generation(rom_name, False, snapshotfile2)
+print(res2)

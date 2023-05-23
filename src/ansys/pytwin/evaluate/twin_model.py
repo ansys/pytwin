@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import SavedState, SavedStateRegistry
+from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
@@ -68,6 +69,7 @@ class TwinModel(Model):
         self._ss_registry = None
         self._twin_runtime = None
         self._tbrom_info = None
+        self._tbrom = None
 
         if self._check_model_filepath_is_valid(model_filepath):
             self._model_filepath = model_filepath
@@ -129,7 +131,7 @@ class TwinModel(Model):
         if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
             return LogLevel.TWIN_LOG_FATAL
 
-    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, runtime_init: bool = True):
+    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, input_field: dict = None, runtime_init: bool = True): # input field = dict of rom_name, snapshot file path
         """
         Initialize the twin model evaluation with dictionaries:
         (1) Initialize parameters and/or inputs values to their start values (default values found in the twin file).
@@ -154,6 +156,11 @@ class TwinModel(Model):
         self._initialize_inputs_with_start_values()
         if inputs is not None:
             self._update_inputs(inputs)
+            if input_field is not None: # todo if snapshot provided make the projection and update input mode coef + corner case of multiple input field and even multiple tbrom
+                for key, item in input_field.items():
+                    tbrom = self._tbrom[key]
+                    tbrom.snapshot_projection(item)
+                    self._update_tbrom_input_mode_coefficents(tbrom)
 
         self._warns_if_parameter_key_not_found(parameters)
         self._warns_if_input_key_not_found(inputs)
@@ -172,6 +179,12 @@ class TwinModel(Model):
 
             if runtime_init:
                 self._twin_runtime.twin_initialize()
+                tbrom_dict = dict()
+                for model_name, data in tbrom_info.items():
+                    tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
+                    self._tbrom_init(tbrom)
+                    tbrom_dict.update({model_name: tbrom})
+                self._tbrom = tbrom_dict
                 self._update_outputs()
 
         except Exception as e:
@@ -277,6 +290,9 @@ class TwinModel(Model):
     def _update_outputs(self):
         """Update output values with twin model results at the current evaluation time."""
         self._outputs = dict(zip(self._twin_runtime.twin_get_output_names(), self._twin_runtime.twin_get_outputs()))
+        for key, item in self._tbrom.items():
+            if item.hasInputModeCoefficients:
+                self._update_tbrom_output_mode_coefficents(item)
 
     def _update_parameters(self, parameters: dict):
         """Update parameter values with the given dictionary."""
@@ -317,6 +333,32 @@ class TwinModel(Model):
                 if param not in self.parameters:
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
+    def _tbrom_init(self, tbrom: TbRom):
+        # at the twin_model level, based on the tbrom array, create new TBROM instance, Twin and mode coefficients
+        # inputs/outputs are mapped based on the syntax/rules implemented below
+        inputModeCoefficients = dict()
+        for key, item in self.inputs.items():
+            if "_mode_" in key:  # syntax/rules need to be clearly defined/documented - todo treat corner case of having multiple input fields
+                inputModeCoefficients.update({key: item})
+        if len(inputModeCoefficients) > 0:
+            tbrom._inputModeCoefficients = inputModeCoefficients
+            tbrom._hasInputModeCoefficients = True
+        outputModeCoefficients = dict()
+        for key, item in self.outputs.items():
+            if "outField" in key:  # syntax/rules need to be clearly defined/documented - output should be fine 1 single output per ROM
+                outputModeCoefficients.update({key: item})
+        if len(outputModeCoefficients) > 0:
+            tbrom._outputModeCoefficients = outputModeCoefficients
+            tbrom._hasOutputModeCoefficients = True
+
+    def _update_tbrom_output_mode_coefficents(self, tbrom: TbRom): # this needs to be called whenever twin outputs are evaluated
+        for key, item in tbrom._outputModeCoefficients.items():
+            tbrom._outputModeCoefficients[key] = self.outputs[key]
+
+    def _update_tbrom_input_mode_coefficents(self, tbrom: TbRom): # this needs to be called whenever input field is projected
+        for key, item in tbrom._inputModeCoefficients.items():
+            self.inputs[key] = tbrom._inputModeCoefficients[key]
 
     @property
     def evaluation_is_initialized(self):
@@ -402,7 +444,7 @@ class TwinModel(Model):
         """
         return os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
 
-    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, json_config_filepath: str = None):
+    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, input_field: dict = None, json_config_filepath: str = None): # input field = dict of rom_name, snapshot file path
         """
         Initialize evaluation of a twin model.
 
@@ -452,7 +494,7 @@ class TwinModel(Model):
 
         if json_config_filepath is None:
             self._log_key += "WithDictionary"
-            self._initialize_evaluation(parameters=parameters, inputs=inputs)
+            self._initialize_evaluation(parameters=parameters, inputs=inputs, input_field=input_field)
         else:
             self._log_key += "WithConfigFile"
             cfg = self._read_eval_init_config(json_config_filepath)
@@ -463,9 +505,9 @@ class TwinModel(Model):
                     _parameters = cfg["model"]["parameters"]
                 if "inputs" in cfg["model"]:
                     _inputs = cfg["model"]["inputs"]
-            self._initialize_evaluation(parameters=_parameters, inputs=_inputs)
+            self._initialize_evaluation(parameters=_parameters, inputs=_inputs, input_field=input_field)
 
-    def evaluate_step_by_step(self, step_size: float, inputs: dict = None):
+    def evaluate_step_by_step(self, step_size: float, inputs: dict = None, input_field: dict = None): # input field = dict of rom_name, snapshot file path
         """
         Evaluate the twin model at time instant `t` plus a step size given inputs at time instant `t`.
 
@@ -509,6 +551,11 @@ class TwinModel(Model):
         self._warns_if_input_key_not_found(inputs)
         if inputs is not None:
             self._update_inputs(inputs)
+            if input_field is not None: # todo if snapshot provided make the projection and update input mode coef + corner case of multiple input field and even multiple tbrom
+                for key, item in input_field.items():
+                    tbrom = self._tbrom[key]
+                    tbrom.snapshot_projection(item)
+                    self._update_tbrom_input_mode_coefficents(tbrom)
 
         try:
             self._twin_runtime.twin_simulate(self._evaluation_time + step_size)
@@ -580,7 +627,8 @@ class TwinModel(Model):
         _inputs_df = self._create_dataframe_inputs(inputs_df)
         _output_col_names = ["Time"] + list(self._outputs.keys())
 
-        try:
+        try: # TODO should we have twin_inputs update with latest row of batch and twin outputs update with latest results ?
+            # so that we can then update any tbrom mode coef and have access to their functionalities
             return self._twin_runtime.twin_simulate_batch_mode(
                 input_df=_inputs_df, output_column_names=_output_col_names
             )
@@ -974,6 +1022,9 @@ class TwinModel(Model):
             msg = f"Something went wrong while saving the state:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
+
+    def snapshot_generation(self, rom_name: str, on_disk: bool, output_file: str): # todo treat corner cases (e.g. no tbrom, no output coef modes,...)
+        return self._tbrom[rom_name].snapshot_generation(on_disk, output_file)
 
 
 class TwinModelError(Exception):
