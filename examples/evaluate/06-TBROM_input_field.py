@@ -28,10 +28,13 @@ This example shows .....
 
 import os
 import struct
+import time
+
 import numpy as np
 from pytwin import TwinModel, download_file
 
 twin_file = download_file("TwinModelInOutField_23R11.twin", "twin_files", force_download=False)
+twin_file2 = download_file("test_new_ids.twin", "twin_files", force_download=False)
 
 ###############################################################################
 # Define ROM inputs
@@ -153,19 +156,49 @@ for key, item in twin_model.outputs.items():
 twin_model.outputModeCoef = outputModeCoef
 
 snapshotfile = os.path.join(twin_model.tbrom_directory_path, rom_name, 'snapshot_test.bin')
+print(snapshotfile)
 
 snapshot_generation(twin_model, True, snapshotfile) # generation snapshot on the disk
 
 res = snapshot_generation(twin_model, False, snapshotfile) # generation snasphot in memory
 
 print(res)
-snapshotfile2 = os.path.join(twin_model.tbrom_directory_path, rom_name, 'snapshot_test_tbrom.bin')
+
+
 inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
 twin_model2 = TwinModel(twin_file)
 twin_model2.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
+
 rom_name = twin_model2.tbrom_names[0]
-#twin_model.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {"inputTemperature":inputSnapshot}})
-twin_model.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
+snapshotfile2 = os.path.join(twin_model2.tbrom_directory_path, rom_name, 'snapshot_test_tbrom.bin')
+print(snapshotfile2)
+twin_model2.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {"inputTemperature":inputSnapshot}})
+#twin_model2.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
 twin_model2.snapshot_generation(rom_name, True, snapshotfile2)
 res2 = twin_model2.snapshot_generation(rom_name, False, snapshotfile2)
 print(res2)
+
+
+inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
+twin_model3 = TwinModel(twin_file2)
+twin_model3.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
+
+rom_name = twin_model3.tbrom_names[0]
+snapshotfile3a = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2a.bin')
+snapshotfile3b = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2b.bin')
+print(snapshotfile3a)
+print(snapshotfile3b)
+NS = twin_model3._tbrom[rom_name].NamedSelectionNames
+print(NS)
+print(twin_model3._tbrom[rom_name]._NsIdsList)
+twin_model3.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {"inputTemperature":inputSnapshot}})
+#twin_model3.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
+twin_model3.snapshot_generation(rom_name, True, snapshotfile3a, NS[0])
+res3a = twin_model3.snapshot_generation(rom_name, False, snapshotfile3a, NS[0])
+print(res3a)
+twin_model3.snapshot_generation(rom_name, True, snapshotfile3b, NS[1])
+res3b = twin_model3.snapshot_generation(rom_name, False, snapshotfile3b, NS[1])
+print(res3b)
+print(len(res2))
+print(len(res3a))
+print(len(res3b))

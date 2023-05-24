@@ -132,7 +132,7 @@ class TwinModel(Model):
             return LogLevel.TWIN_LOG_FATAL
 
     def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, input_field: dict = None,
-                               runtime_init: bool = True):  # input field = dict of {rom_name, {field_name, snapshot file path}}
+                               runtime_init: bool = True):
         """
         Initialize the twin model evaluation with dictionaries:
         (1) Initialize parameters and/or inputs values to their start values (default values found in the twin file).
@@ -180,10 +180,10 @@ class TwinModel(Model):
                     tbrom_dict = dict()
                     for model_name in self.tbrom_names:
                         tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
-                        self._tbrom_init(tbrom, numberTbRom)
+                        self._tbrom_init(tbrom)
                         tbrom_dict.update({model_name: tbrom})
                     self._tbrom = tbrom_dict
-                if input_field is not None:  # todo if snapshot provided make the projection and update input mode coef + corner case of multiple input field and even multiple tbrom
+                if input_field is not None:
                     for key, item in input_field.items():
                         tbrom = self._tbrom[key]
                         for field_name, snapshot in item.items():
@@ -338,9 +338,9 @@ class TwinModel(Model):
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
-    def _tbrom_init(self, tbrom: TbRom, numberTbRom: int):
-        if numberTbRom > 1: # syntax rules are more constrained tbRomName_inputFieldName_mode_i and tbRomName_outField_mode_i
-            if tbrom.NumberInputField > 1:
+    def _tbrom_init(self, tbrom: TbRom):
+        if len(self.tbrom_names) > 1:
+            if tbrom.NumberInputField > 0:
                 inputFieldModeCoefficients = dict()
                 for field in tbrom.NameInputFields:
                     inputModeCoefficients = dict()
@@ -352,16 +352,6 @@ class TwinModel(Model):
                         tbrom._hasInputModeCoefficients = True
                 if tbrom._hasInputModeCoefficients == True:
                     tbrom._inputFieldsModeCoefficients = inputFieldModeCoefficients
-            elif tbrom.NumberInputField == 1:
-                inputModeCoefficients = dict()
-                for key, item in self.inputs.items():
-                    if tbrom._tbrom_name+"_"+tbrom.NameInputFields[0]+"_mode_" in key:
-                        inputModeCoefficients.update({key: item})
-                if len(inputModeCoefficients) > 0:
-                    inputFieldModeCoefficients = dict()
-                    inputFieldModeCoefficients.update({tbrom.NameInputFields[0]: inputModeCoefficients})
-                    tbrom._inputFieldsModeCoefficients = inputFieldModeCoefficients
-                    tbrom._hasInputModeCoefficients = True
 
             outputModeCoefficients = dict()
             for key, item in self.outputs.items():
@@ -371,8 +361,8 @@ class TwinModel(Model):
                 tbrom._outputModeCoefficients = outputModeCoefficients
                 tbrom._hasOutputModeCoefficients = True
 
-        else: # syntax rules are less constrained inputFieldName_mode_i and outField_mode_i
-            if tbrom.NumberInputField > 1:
+        else:
+            if tbrom.NumberInputField > 0:
                 inputFieldModeCoefficients = dict()
                 for field in tbrom.NameInputFields:
                     inputModeCoefficients = dict()
@@ -384,16 +374,6 @@ class TwinModel(Model):
                         tbrom._hasInputModeCoefficients = True
                 if tbrom._hasInputModeCoefficients == True:
                     tbrom._inputFieldsModeCoefficients = inputFieldModeCoefficients
-            elif tbrom.NumberInputField == 1:
-                inputModeCoefficients = dict()
-                for key, item in self.inputs.items():
-                    if "_mode_" in key:
-                        inputModeCoefficients.update({key: item})
-                if len(inputModeCoefficients) > 0:
-                    inputFieldModeCoefficients = dict()
-                    inputFieldModeCoefficients.update({tbrom.NameInputFields[0]: inputModeCoefficients})
-                    tbrom._inputFieldsModeCoefficients = inputFieldModeCoefficients
-                    tbrom._hasInputModeCoefficients = True
 
             outputModeCoefficients = dict()
             for key, item in self.outputs.items():
@@ -403,11 +383,11 @@ class TwinModel(Model):
                 tbrom._outputModeCoefficients = outputModeCoefficients
                 tbrom._hasOutputModeCoefficients = True
 
-    def _update_tbrom_output_mode_coefficents(self,tbrom: TbRom):  # this needs to be called whenever twin outputs are evaluated
+    def _update_tbrom_output_mode_coefficents(self,tbrom: TbRom):
         for key, item in tbrom._outputModeCoefficients.items():
             tbrom._outputModeCoefficients[key] = self.outputs[key]
 
-    def _update_tbrom_input_mode_coefficents(self, tbrom: TbRom, inputField: str = None):  # this needs to be called whenever input field is projected
+    def _update_tbrom_input_mode_coefficents(self, tbrom: TbRom, inputField: str = None):
         if inputField is None:
             dic = list(tbrom._inputFieldsModeCoefficients.values())[0]
             for key, item in dic.items():
@@ -565,7 +545,7 @@ class TwinModel(Model):
             self._initialize_evaluation(parameters=_parameters, inputs=_inputs, input_field=input_field)
 
     def evaluate_step_by_step(self, step_size: float, inputs: dict = None,
-                              input_field: dict = None):  # input field = dict of {rom_name, {input_field_name, snapshot file path}}
+                              input_field: dict = None):
         """
         Evaluate the twin model at time instant `t` plus a step size given inputs at time instant `t`.
 
@@ -609,7 +589,7 @@ class TwinModel(Model):
         self._warns_if_input_key_not_found(inputs)
         if inputs is not None:
             self._update_inputs(inputs)
-            if input_field is not None:  # todo if snapshot provided make the projection and update input mode coef + corner case of multiple input field and even multiple tbrom
+            if input_field is not None:
                 for key, item in input_field.items():
                     tbrom = self._tbrom[key]
                     for field_name, snapshot in item.items():
@@ -1082,9 +1062,8 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def snapshot_generation(self, rom_name: str, on_disk: bool,
-                            output_file: str):  # todo treat corner cases (e.g. no tbrom, no output coef modes,...)
-        return self._tbrom[rom_name].snapshot_generation(on_disk, output_file)
+    def snapshot_generation(self, rom_name: str, on_disk: bool, output_file: str, named_selection: str = None):
+        return self._tbrom[rom_name].snapshot_generation(on_disk, output_file, named_selection)
 
 
 class TwinModelError(Exception):

@@ -1,23 +1,35 @@
+import json
 import os
 import struct
 
 import numpy as np
 
-# method to update
-# tbrom output mode coef based on Twin Outputs -> this needs to be called whenver twin outputs are updated (to do batch mode) -> to discuss
-# tbrom functionalities should be available based on hasInputMode/hasOutputModeCoef -> twin_model methods to expose snapshot generaton/projection
-# treat corner cases when no tbrom, or no output mode coef are exposed and/or input mode coef (or with different names than ones expected)
-# corner cases with multiple input fields and even multiple tbrom
-# optional arguemtn to output snapshot on specified parts (ASML workflow)
 
 # need a clear convention as long as we don't have direct apis
 # for example :
 # - outputs :
 # if 1 single TBROM: that's fine as long as it contains _mode_
-# if >1 TBROM: twin output name needs to contain tbrom_name
+# if >0 TBROM: twin output name needs to contain tbrom_name
 # - inputs :
-# if 1 single TBROM: it contains name of field + _mode_
-# if >1 : needs to contain tbrom_name
+# if >0 single TBROM: it contains name of field + _mode_
+# if >0 : needs to contain tbrom_name
+
+# input field = dict of {rom_name, {field_name, snapshot file path}}
+
+# corner cases to handle/test
+# 1 Twin with no TBROMs (new implementation should work on existing examples)
+# 1 Twin with multiple TBROMs with all mode coef connected as Twin inputs/outputs
+# - without input field
+# - with 1 input field
+# - with mulitple input fields
+# 1 Twin with multiple TBROMs with 1 TBROM having inputs/outputs not connected or wrong names exposed (existing examples)
+# same as above
+# snapshot_projection and snapshot_generation
+# - what about wrong arguments passed
+# - arguemtns are not consistent (e.g. input snapshot not consistent with input field SVD)
+# - return output if function not applicable
+
+
 
 class TbRom():
     def __init__(self, tbrom_name: str, tbrom_path: str):
@@ -46,8 +58,10 @@ class TbRom():
 
         outputSVDpath = os.path.join(tbrom_path, "binaryOutputField", "basis.svd")
         self._outputSVD = TbRom._read_basis(outputSVDpath)
+        settingsPath = os.path.join(tbrom_path, "binaryOutputField", "settings.json")
+        self._NsIdsList = TbRom._read_settings(settingsPath)
 
-    def snapshot_projection(self, snapshot: str, fieldname: str = None): # todo what about fieldname incorrect or None while expected to be meaningful
+    def snapshot_projection(self, snapshot: str, fieldname: str = None):
         if self.hasInputModeCoefficients:
             modes_coef = []
             vec = TbRom._read_binary(snapshot)
@@ -71,10 +85,10 @@ class TbRom():
                 for item, key in self._inputFieldsModeCoefficients[fieldname].items():
                     self._inputFieldsModeCoefficients[fieldname][item] = modes_coef[index]
                     index = index + 1
-        else: # todo return meaningful output/error if using the function when not expected
+        else:
             return []
 
-    def snapshot_generation(self, on_disk, output_file):
+    def snapshot_generation(self, on_disk, output_file, NamedSelection: str = None):
         if self.hasOutputModeCoefficients:
             basis = self._outputSVD
             vec = np.zeros(len(basis[0]))
@@ -83,12 +97,20 @@ class TbRom():
             for i in range(nb_modes):
                 modenp = np.array(basis[i])
                 vec = vec + modes_coefs[i] * modenp
+            if NamedSelection is not None:
+                vec = vec[self.namedselectionids(NamedSelection)]
             if on_disk:
                 TbRom._write_binary(output_file, vec)
             else:
                 return vec
-        else: # todo return meaningful output/error if using the function when not expected
+        else:
             return []
+
+    def namedselectionids(self, NsName: str):
+        return self._NsIdsList[NsName]
+
+    def fieldinputmodecoefficients(self, fieldName: str):
+        return self._inputFieldsModeCoefficients[fieldName]
 
     @staticmethod
     def _read_basis(fn):
@@ -123,13 +145,28 @@ class TbRom():
             fw.write(struct.pack("d", i))
         return True
 
+    @staticmethod
+    def _read_settings(settingsPath):
+        f = open(settingsPath)
+        data = json.load(f)
+        namedSelection = data['namedSelections']
+        tbRomNS = dict()
+        for name, idsList in namedSelection.items():
+            finalList = []
+            for i in range(0,len(idsList)-1):
+                if int(idsList[i])==-1:
+                    for j in range(int(idsList[i-1])+1,int(idsList[i+1])):
+                        finalList.append(j)
+                else:
+                    finalList.append(int(idsList[i]))
+            finalList.append(int(idsList[len(idsList)-1]))
+            tbRomNS.update({name:finalList})
+        return tbRomNS
+
+
     @property
     def outputModeCoefficients(self):
         return self._outputModeCoefficients
-
-    #@property
-    #def inputModeCoefficients(self, fieldName: str):
-    #    return self._inputModeCoefficients
 
     @property
     def hasInputModeCoefficients(self):
@@ -150,3 +187,11 @@ class TbRom():
     @property
     def NameInputFields(self):
         return list(self._inputFieldsSVD.keys())
+
+    @property
+    def NamedSelectionNames(self):
+        return list(self._NsIdsList.keys())
+
+
+
+
