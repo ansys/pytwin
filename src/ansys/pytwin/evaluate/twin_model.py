@@ -131,7 +131,7 @@ class TwinModel(Model):
         if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
             return LogLevel.TWIN_LOG_FATAL
 
-    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, input_field: dict = None,
+    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, inputfields: dict = None,
                                runtime_init: bool = True):
         """
         Initialize the twin model evaluation with dictionaries:
@@ -175,20 +175,18 @@ class TwinModel(Model):
 
             if runtime_init:
                 self._twin_runtime.twin_initialize()
-                numberTbRom = len(self.tbrom_names)
-                if numberTbRom > 0:
+                if self.nb_tbrom > 0:
                     tbrom_dict = dict()
                     for model_name in self.tbrom_names:
                         tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
                         self._tbrom_init(tbrom)
                         tbrom_dict.update({model_name: tbrom})
                     self._tbrom = tbrom_dict
-                if input_field is not None:
-                    for key, item in input_field.items():
-                        tbrom = self._tbrom[key]
+                if inputfields is not None:
+                    for key, item in inputfields.items():
                         for field_name, snapshot in item.items():
-                            tbrom.snapshot_projection(snapshot, field_name)
-                            self._update_tbrom_input_mode_coefficents(tbrom, field_name)
+                            self._tbrom[key].snapshot_projection(snapshot, field_name)
+                            self._update_tbrom_input_mode_coefficents(self._tbrom[key], field_name)
                 self._update_outputs()
 
         except Exception as e:
@@ -294,9 +292,10 @@ class TwinModel(Model):
     def _update_outputs(self):
         """Update output values with twin model results at the current evaluation time."""
         self._outputs = dict(zip(self._twin_runtime.twin_get_output_names(), self._twin_runtime.twin_get_outputs()))
-        for key, item in self._tbrom.items():
-            if item.hasOutputModeCoefficients:
-                self._update_tbrom_output_mode_coefficents(item)
+        if self.nb_tbrom > 0:
+            for key, item in self._tbrom.items():
+                if item.hasOutputModeCoefficients:
+                    self._update_tbrom_output_mode_coefficents(item)
 
     def _update_parameters(self, parameters: dict):
         """Update parameter values with the given dictionary."""
@@ -339,62 +338,74 @@ class TwinModel(Model):
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
     def _tbrom_init(self, tbrom: TbRom):
-        if len(self.tbrom_names) > 1:
+        if self.nb_tbrom > 1:
             if tbrom.NumberInputField > 0:
-                inputFieldModeCoefficients = dict()
+                inputfieldmodecoefficients = dict()
+                hasinputfieldmodecoefficients = dict()
                 for field in tbrom.NameInputFields:
-                    inputModeCoefficients = dict()
-                    for key, item in self.inputs.items():
-                        if tbrom._tbrom_name+"_"+field+"_mode_" in key:
-                            inputModeCoefficients.update({key: item})
-                    if len(inputModeCoefficients) > 0:
-                        inputFieldModeCoefficients.update({field: inputModeCoefficients})
-                        tbrom._hasInputModeCoefficients = True
-                if tbrom._hasInputModeCoefficients == True:
-                    tbrom._inputFieldsModeCoefficients = inputFieldModeCoefficients
+                    inputmodecoefficients = dict()
+                    for i in range(0, len(tbrom._inputFieldsSVD[field])):
+                        for key, item in self.inputs.items():
+                            if field+"_mode_"+str(i)+"_"+tbrom.TbRomName in key:
+                                inputmodecoefficients.update({key: item})
+                    if len(inputmodecoefficients) == len(tbrom._inputFieldsSVD[field]):
+                        inputfieldmodecoefficients.update({field: inputmodecoefficients})
+                        hasinputfieldmodecoefficients.update({field: True})
+                    else:
+                        hasinputfieldmodecoefficients.update({field: False})
+                tbrom._inputFieldsModeCoefficients = inputfieldmodecoefficients
+                tbrom._hasInputFieldsModeCoefficients = hasinputfieldmodecoefficients
 
-            outputModeCoefficients = dict()
-            for key, item in self.outputs.items():
-                if tbrom._tbrom_name+"_"+"outField" in key:
-                    outputModeCoefficients.update({key: item})
-            if len(outputModeCoefficients) > 0:
-                tbrom._outputModeCoefficients = outputModeCoefficients
+            outputmodecoefficients = dict()
+            for i in range(1, len(tbrom._outputSVD)+1):
+                for key, item in self.outputs.items():
+                    if "outField"+"_mode_"+str(i)+"_"+tbrom.TbRomName in key:
+                        outputmodecoefficients.update({key: item})
+            if len(outputmodecoefficients) == len(tbrom._outputSVD):
+                tbrom._outputModeCoefficients = outputmodecoefficients
                 tbrom._hasOutputModeCoefficients = True
 
         else:
             if tbrom.NumberInputField > 0:
-                inputFieldModeCoefficients = dict()
+                inputfieldmodecoefficients = dict()
+                hasinputfieldmodecoefficients = dict()
                 for field in tbrom.NameInputFields:
-                    inputModeCoefficients = dict()
-                    for key, item in self.inputs.items():
-                        if field+"_mode_" in key:
-                            inputModeCoefficients.update({key: item})
-                    if len(inputModeCoefficients) > 0:
-                        inputFieldModeCoefficients.update({field: inputModeCoefficients})
-                        tbrom._hasInputModeCoefficients = True
-                if tbrom._hasInputModeCoefficients == True:
-                    tbrom._inputFieldsModeCoefficients = inputFieldModeCoefficients
+                    inputmodecoefficients = dict()
+                    for i in range(0, len(tbrom._inputFieldsSVD[field])):
+                        for key, item in self.inputs.items():
+                            if field+"_mode_"+str(i) in key:
+                                inputmodecoefficients.update({key: item})
+                    if len(inputmodecoefficients) == len(tbrom._inputFieldsSVD[field]):
+                        inputfieldmodecoefficients.update({field: inputmodecoefficients})
+                        hasinputfieldmodecoefficients.update({field: True})
+                    else:
+                        hasinputfieldmodecoefficients.update({field: False})
+                tbrom._inputFieldsModeCoefficients = inputfieldmodecoefficients
+                tbrom._hasInputFieldsModeCoefficients = hasinputfieldmodecoefficients
 
-            outputModeCoefficients = dict()
-            for key, item in self.outputs.items():
-                if "outField" in key:
-                    outputModeCoefficients.update({key: item})
-            if len(outputModeCoefficients) > 0:
-                tbrom._outputModeCoefficients = outputModeCoefficients
+            outputmodecoefficients = dict()
+            for i in range(1, len(tbrom._outputSVD)+1):
+                for key, item in self.outputs.items():
+                    if "outField"+"_mode_"+str(i) in key:
+                        outputmodecoefficients.update({key: item})
+            if len(outputmodecoefficients) == len(tbrom._outputSVD):
+                tbrom._outputModeCoefficients = outputmodecoefficients
                 tbrom._hasOutputModeCoefficients = True
 
-    def _update_tbrom_output_mode_coefficents(self,tbrom: TbRom):
-        for key, item in tbrom._outputModeCoefficients.items():
-            tbrom._outputModeCoefficients[key] = self.outputs[key]
+        tbrom._outputFilesPath = os.path.join(self.tbrom_directory_path, tbrom.TbRomName)
 
-    def _update_tbrom_input_mode_coefficents(self, tbrom: TbRom, inputField: str = None):
-        if inputField is None:
-            dic = list(tbrom._inputFieldsModeCoefficients.values())[0]
+    def _update_tbrom_output_mode_coefficents(self, tbrom: TbRom):
+        for key, item in tbrom.OutputFieldModeCoefficients.items():
+            tbrom.OutputFieldModeCoefficients[key] = self.outputs[key]
+
+    def _update_tbrom_input_mode_coefficents(self, tbrom: TbRom, inputfield: str = None):
+        if inputfield is None:
+            dic = list(tbrom.InputFieldsModeCoefficients.values())[0]
             for key, item in dic.items():
                 self.inputs[key] = dic[key]
         else:
-            for key, item in tbrom._inputFieldsModeCoefficients[inputField].items():
-                self.inputs[key] = tbrom._inputFieldsModeCoefficients[inputField][key]
+            for key, item in tbrom.InputFieldsModeCoefficients[inputfield].items():
+                self.inputs[key] = tbrom.InputFieldsModeCoefficients[inputfield][key]
 
     @property
     def evaluation_is_initialized(self):
@@ -480,8 +491,16 @@ class TwinModel(Model):
         """
         return os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
 
-    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, input_field: dict = None,
-                              json_config_filepath: str = None):  # input field = dict of {rom_name, {field_name, snapshot file path}}
+    @property
+    def nb_tbrom(self):
+        """
+        Return number of TBROM contained in the Twin. If a twin model has not been initialized, or if there is no TBROM
+        in the twin model, it returns 0.
+        """
+        return len(self.tbrom_names)
+
+    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, inputfields: dict = None,
+                              json_config_filepath: str = None):
         """
         Initialize evaluation of a twin model.
 
@@ -510,6 +529,9 @@ class TwinModel(Model):
             Dictionary of parameter values ({"name": value}) to use for the next evaluation.
         inputs : dict, optional
             Dictionary of input values ({"name": value}) to use for twin model initialization.
+        inputfields : dict, optional
+            Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpatt}}) to use for twin model
+            initialization.
         json_config_filepath : str, optional
             Filepath to a JSON configuration file to use to initialize the evaluation.
 
@@ -531,7 +553,7 @@ class TwinModel(Model):
 
         if json_config_filepath is None:
             self._log_key += "WithDictionary"
-            self._initialize_evaluation(parameters=parameters, inputs=inputs, input_field=input_field)
+            self._initialize_evaluation(parameters=parameters, inputs=inputs, inputfields=inputfields)
         else:
             self._log_key += "WithConfigFile"
             cfg = self._read_eval_init_config(json_config_filepath)
@@ -542,10 +564,9 @@ class TwinModel(Model):
                     _parameters = cfg["model"]["parameters"]
                 if "inputs" in cfg["model"]:
                     _inputs = cfg["model"]["inputs"]
-            self._initialize_evaluation(parameters=_parameters, inputs=_inputs, input_field=input_field)
+            self._initialize_evaluation(parameters=_parameters, inputs=_inputs, inputfields=inputfields)
 
-    def evaluate_step_by_step(self, step_size: float, inputs: dict = None,
-                              input_field: dict = None):
+    def evaluate_step_by_step(self, step_size: float, inputs: dict = None, inputfields: dict = None):
         """
         Evaluate the twin model at time instant `t` plus a step size given inputs at time instant `t`.
 
@@ -560,6 +581,9 @@ class TwinModel(Model):
             Dictionary of input values ({"name": value}) at time instant `t`. An input is not updated if
             the associated key is not found in the twin model's ``input_names`` property. If values for
             inputs are not provided in the dictionary, their current values are kept.
+        inputfields : dict (optional)
+            Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpatt}}) to use for twin model
+            initialization.
 
         Returns
         -------
@@ -589,8 +613,8 @@ class TwinModel(Model):
         self._warns_if_input_key_not_found(inputs)
         if inputs is not None:
             self._update_inputs(inputs)
-            if input_field is not None:
-                for key, item in input_field.items():
+            if inputfields is not None:
+                for key, item in inputfields.items():
                     tbrom = self._tbrom[key]
                     for field_name, snapshot in item.items():
                         tbrom.snapshot_projection(snapshot, field_name)
@@ -1062,7 +1086,12 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def snapshot_generation(self, rom_name: str, on_disk: bool, output_file: str, named_selection: str = None):
+    def snapshot_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
+        if named_selection is not None:
+            output_file = self._tbrom[rom_name].OutputFieldName+"_"+named_selection+"_"+str(self.evaluation_time)+".bin"
+        else:
+            output_file = self._tbrom[rom_name].OutputFieldName+"_"+str(self.evaluation_time)+".bin"
+
         return self._tbrom[rom_name].snapshot_generation(on_disk, output_file, named_selection)
 
 

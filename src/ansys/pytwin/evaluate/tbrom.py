@@ -28,41 +28,70 @@ import numpy as np
 # - what about wrong arguments passed
 # - arguemtns are not consistent (e.g. input snapshot not consistent with input field SVD)
 # - return output if function not applicable
-
+# naming obstrufaction
+# unit testing
+# - check if given twin with tbrom has input/output mode coef
+#    - ok for 1 tbrom
+#    - test same with multiple tbrom
+# - check if ns selection ids returned are correct
+# - check if input mode coef returned are correct
+# - check snapshot generation method
+# - check twin initialization with tbrom / without tbrom -> OK
+# - check twin outputs update / inputs update
+# _attributes vs public
+# documentation
 
 
 class TbRom():
     def __init__(self, tbrom_name: str, tbrom_path: str):
-        self._tbrom_path = tbrom_path
+        if self._check_path_is_valid:
+            self._tbrom_path = tbrom_path
         self._tbrom_name = tbrom_name
         self._inputFieldsModeCoefficients = None
         self._outputModeCoefficients = None
         self._inputFieldsSVD = None
         self._outputSVD = None
-        self._hasInputModeCoefficients = False  # this will indicate whether the upper Twin has inputs connected to
-        # TBROM input mode coefficients (if any input field)
-        self._hasOutputModeCoefficients = False  # this will indicate whether the upper Twin has outputs connected to
-        # TBROM output mode coefficient (if any defined)
+        self._outputFilesPath = None
+        self._hasInputFieldsModeCoefficients = None
+        self._hasOutputModeCoefficients = False
 
-        # based on tbrom_path, find inputSVD (if any) and outputSVD
         files = os.listdir(tbrom_path)
-        inputFieldData = dict()
+        inputfielddata = dict()
         for file in files:
             if 'binaryInputField' in file:
                 folder = file.split('_')
                 fieldName = folder[1]
                 inputSVDpath = os.path.join(tbrom_path, file, "basis.svd")
                 svd_basis = TbRom._read_basis(inputSVDpath)
-                inputFieldData.update({fieldName: svd_basis})
-        self._inputFieldsSVD = inputFieldData
+                inputfielddata.update({fieldName: svd_basis})
+        self._inputFieldsSVD = inputfielddata
 
         outputSVDpath = os.path.join(tbrom_path, "binaryOutputField", "basis.svd")
         self._outputSVD = TbRom._read_basis(outputSVDpath)
         settingsPath = os.path.join(tbrom_path, "binaryOutputField", "settings.json")
-        self._NsIdsList = TbRom._read_settings(settingsPath)
+        [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingsPath)
+        self._nsIdsList = nsidslist
+        self._outputFieldDimensionality = int(dimensionality[0])
+        self._outputFieldName = outputname
+        self._outputFieldUnit = unit
+        self._outputFilesPath = None
+
+    def _check_path_is_valid(self, folderpath):
+        """
+        Check if the filepath provided for the tbrom model is valid. Raise a ``TwinModelError`` message if not.
+        """
+        if folderpath is None:
+            msg = f"TbRom model cannot be called with {folderpath} as the model's filepath."
+            msg += "\nProvide a valid filepath to initialize the ``TbRom`` object."
+            raise self._raise_error(msg)
+        if not os.path.exists(folderpath):
+            msg = f"The provided filepath does not exist: {folderpath}."
+            msg += "\nProvide the correct filepath to initialize the ``TbRom`` object."
+            raise self._raise_error(msg)
+        return True
 
     def snapshot_projection(self, snapshot: str, fieldname: str = None):
-        if self.hasInputModeCoefficients:
+        if self._hasInputFieldsModeCoefficients[fieldname]:
             modes_coef = []
             vec = TbRom._read_binary(snapshot)
             vecnp = np.array(vec)
@@ -88,7 +117,7 @@ class TbRom():
         else:
             return []
 
-    def snapshot_generation(self, on_disk, output_file, NamedSelection: str = None):
+    def snapshot_generation(self, on_disk, output_file_name, NamedSelection: str = None):
         if self.hasOutputModeCoefficients:
             basis = self._outputSVD
             vec = np.zeros(len(basis[0]))
@@ -98,19 +127,41 @@ class TbRom():
                 modenp = np.array(basis[i])
                 vec = vec + modes_coefs[i] * modenp
             if NamedSelection is not None:
-                vec = vec[self.namedselectionids(NamedSelection)]
+                pointsIds = self.namedselectionids(NamedSelection)
+                listIds = []
+                for i in pointsIds:
+                    for k in range(0, self.OutputFieldDimensionality):
+                        listIds.append(i * self.OutputFieldDimensionality + k)
+                vec = vec[listIds]
             if on_disk:
-                TbRom._write_binary(output_file, vec)
+                TbRom._write_binary(os.path.join(self._outputFilesPath, output_file_name), vec)
             else:
                 return vec
         else:
             return []
 
-    def namedselectionids(self, NsName: str):
-        return self._NsIdsList[NsName]
+    def namedselectionids(self, nsname: str):
+        return self._nsIdsList[nsname]
 
-    def fieldinputmodecoefficients(self, fieldName: str):
-        return self._inputFieldsModeCoefficients[fieldName]
+    def fieldinputmodecoefficients(self, fieldname: str):
+        return self._inputFieldsModeCoefficients[fieldname]
+
+    def hasInputFieldsModeCoefficients(self, fieldname: str):
+        return self._hasInputFieldsModeCoefficients[fieldname]
+
+    def _points_generation(self, on_disk, output_file_name, NamedSelection):
+        pointpath = os.path.join(self._tbrom_path, "binaryOutputField", "points.bin")
+        points = np.array(TbRom._read_binary(pointpath))
+        pointsIds = self.namedselectionids(NamedSelection)
+        listIds = []
+        for i in pointsIds:
+            for k in range(0, 3):
+                listIds.append(i * 3 + k)
+        vec = points[listIds]
+        if on_disk:
+            TbRom._write_binary(os.path.join(self._outputFilesPath, output_file_name), vec)
+        else:
+            return vec
 
     @staticmethod
     def _read_basis(fn):
@@ -141,6 +192,7 @@ class TbRom():
     def _write_binary(fn, vec):
         fw = open(fn, "wb")
         fw.write(struct.pack("Q", len(vec)))
+        print(fn)
         for i in vec:
             fw.write(struct.pack("d", i))
         return True
@@ -150,27 +202,26 @@ class TbRom():
         f = open(settingsPath)
         data = json.load(f)
         namedSelection = data['namedSelections']
+        dimensionality = data['dimensionality']
+        name = data['name']
+        unit = data['unit']
         tbRomNS = dict()
+        outputname = name.replace(' ', '_')
         for name, idsList in namedSelection.items():
             finalList = []
-            for i in range(0,len(idsList)-1):
-                if int(idsList[i])==-1:
-                    for j in range(int(idsList[i-1])+1,int(idsList[i+1])):
+            for i in range(0, len(idsList) - 1):
+                if int(idsList[i]) == -1:
+                    for j in range(int(idsList[i - 1]) + 1, int(idsList[i + 1])):
                         finalList.append(j)
                 else:
                     finalList.append(int(idsList[i]))
-            finalList.append(int(idsList[len(idsList)-1]))
-            tbRomNS.update({name:finalList})
-        return tbRomNS
-
+            finalList.append(int(idsList[len(idsList) - 1]))
+            tbRomNS.update({name: finalList})
+        return [tbRomNS, dimensionality, outputname, unit]
 
     @property
     def outputModeCoefficients(self):
         return self._outputModeCoefficients
-
-    @property
-    def hasInputModeCoefficients(self):
-        return self._hasInputModeCoefficients
 
     @property
     def hasOutputModeCoefficients(self):
@@ -189,9 +240,25 @@ class TbRom():
         return list(self._inputFieldsSVD.keys())
 
     @property
+    def OutputFieldModeCoefficients(self):
+        return self._outputModeCoefficients
+
+    @property
+    def InputFieldsModeCoefficients(self):
+        return self._inputFieldsModeCoefficients
+
+    @property
     def NamedSelectionNames(self):
-        return list(self._NsIdsList.keys())
+        return list(self._nsIdsList.keys())
 
+    @property
+    def OutputFieldName(self):
+        return self._outputFieldName
 
+    @property
+    def OutputFieldUnit(self):
+        return self._outputFieldUnit
 
-
+    @property
+    def OutputFieldDimensionality(self):
+        return self._outputFieldDimensionality

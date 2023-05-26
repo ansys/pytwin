@@ -171,11 +171,10 @@ twin_model2.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be in
 
 rom_name = twin_model2.tbrom_names[0]
 snapshotfile2 = os.path.join(twin_model2.tbrom_directory_path, rom_name, 'snapshot_test_tbrom.bin')
-print(snapshotfile2)
-twin_model2.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {"inputTemperature":inputSnapshot}})
+twin_model2.initialize_evaluation(inputs=rom_inputs, inputfields={rom_name: {"inputTemperature":inputSnapshot}})
 #twin_model2.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
-twin_model2.snapshot_generation(rom_name, True, snapshotfile2)
-res2 = twin_model2.snapshot_generation(rom_name, False, snapshotfile2)
+twin_model2.snapshot_generation(rom_name, True)
+res2 = twin_model2.snapshot_generation(rom_name, False)
 print(res2)
 
 
@@ -186,19 +185,18 @@ twin_model3.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be in
 rom_name = twin_model3.tbrom_names[0]
 snapshotfile3a = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2a.bin')
 snapshotfile3b = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2b.bin')
-print(snapshotfile3a)
-print(snapshotfile3b)
 NS = twin_model3._tbrom[rom_name].NamedSelectionNames
 print(NS)
-print(twin_model3._tbrom[rom_name]._NsIdsList)
-twin_model3.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {"inputTemperature":inputSnapshot}})
+twin_model3.initialize_evaluation(inputs=rom_inputs, inputfields={rom_name: {"inputTemperature":inputSnapshot}})
 #twin_model3.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
-twin_model3.snapshot_generation(rom_name, True, snapshotfile3a, NS[0])
-res3a = twin_model3.snapshot_generation(rom_name, False, snapshotfile3a, NS[0])
+twin_model3.snapshot_generation(rom_name, True, NS[0])
+res3a = twin_model3.snapshot_generation(rom_name, False, NS[0])
 print(res3a)
-twin_model3.snapshot_generation(rom_name, True, snapshotfile3b, NS[1])
-res3b = twin_model3.snapshot_generation(rom_name, False, snapshotfile3b, NS[1])
+twin_model3.snapshot_generation(rom_name, True, NS[1])
+res3b = twin_model3.snapshot_generation(rom_name, False, NS[1])
 print(res3b)
 print(len(res2))
 print(len(res3a))
 print(len(res3b))
+twin_model3._tbrom[rom_name]._points_generation(True, 'points1.bin', NS[0])
+twin_model3._tbrom[rom_name]._points_generation(True, 'points2.bin', NS[1])
