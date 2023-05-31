@@ -17,13 +17,6 @@ import numpy as np
 # input field = dict of {rom_name, {field_name, snapshot file path}}
 
 # corner cases to handle/test
-# 1 Twin with no TBROMs (new implementation should work on existing examples)
-# 1 Twin with multiple TBROMs with all mode coef connected as Twin inputs/outputs
-# - without input field
-# - with 1 input field
-# - with mulitple input fields
-# 1 Twin with multiple TBROMs with 1 TBROM having inputs/outputs not connected or wrong names exposed (existing examples)
-# same as above
 # snapshot_projection and snapshot_generation
 # - what about wrong arguments passed
 # - arguemtns are not consistent (e.g. input snapshot not consistent with input field SVD)
