@@ -59,10 +59,10 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
         tbrom1 = twinmodel._tbrom[tbromname2field]
-        assert tbrom1.NumberInputField is 2
-        assert tbrom1.hasOutputModeCoefficients is False
-        assert tbrom1.hasInputFieldsModeCoefficients(field1) is False
-        assert tbrom1.hasInputFieldsModeCoefficients(field2) is False
+        assert tbrom1.numberinputfields is 2
+        assert tbrom1.hasoutmcs is False
+        assert tbrom1.hasinfmcs(field1) is False
+        assert tbrom1.hasinfmcs(field2) is False
 
         model_filepath = TEST_TB_ROM3 # Twin with 1 TBROM and 2 input fields both connected, 1 output
         # field connected
@@ -71,10 +71,10 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
         tbrom1 = twinmodel._tbrom[tbromname2field]
-        assert tbrom1.NumberInputField is 2
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(field1) is True
-        assert tbrom1.hasInputFieldsModeCoefficients(field2) is True
+        assert tbrom1.numberinputfields is 2
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(field1) is True
+        assert tbrom1.hasinfmcs(field2) is True
 
         model_filepath = TEST_TB_ROM4 # Twin with 1 TBROM and 2 input fields, 1st partially connected, second
         # fully connected, 1 output field connected
@@ -83,10 +83,10 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
         tbrom1 = twinmodel._tbrom[tbromname2field]
-        assert tbrom1.NumberInputField is 2
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(field1) is True # pressure
-        assert tbrom1.hasInputFieldsModeCoefficients(field2) is False # temperature
+        assert tbrom1.numberinputfields is 2
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(field1) is True # pressure
+        assert tbrom1.hasinfmcs(field2) is False # temperature
 
         model_filepath = TEST_TB_ROM5 # Twin with 1 TBROM and 1 input fields connected with error, 1 output
         # field connected
@@ -95,10 +95,10 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
         tbrom1 = twinmodel._tbrom[tbromname1field]
-        assert tbrom1.NumberInputField is 1
-        field = tbrom1.NameInputFields[0]
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(field) is False
+        assert tbrom1.numberinputfields is 1
+        field = tbrom1.nameinputfields[0]
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(field) is False
 
         model_filepath = TEST_TB_ROM6 # Twin with 2 TBROM, 1st has 2 input field connected, 1 output field connected,
         # second has no connection
@@ -108,16 +108,16 @@ class TestTbRom:
         assert twinmodel.nb_tbrom is 2
         tbrom1 = twinmodel._tbrom[tbromname2field] # tbrom with 2 field
         tbrom2 = twinmodel._tbrom[tbromname1field] # tbrom with 1 field
-        assert tbrom1.NumberInputField is 2
-        assert tbrom2.NumberInputField is 1
+        assert tbrom1.numberinputfields is 2
+        assert tbrom2.numberinputfields is 1
         tb1field1 = field1
         tb1field2 = field2
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field1) is True # pressure
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field2) is True # temperature
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(tb1field1) is True # pressure
+        assert tbrom1.hasinfmcs(tb1field2) is True # temperature
         tb2field1 = field2
-        assert tbrom2.hasOutputModeCoefficients is False
-        assert tbrom2.hasInputFieldsModeCoefficients(tb2field1) is False
+        assert tbrom2.hasoutmcs is False
+        assert tbrom2.hasinfmcs(tb2field1) is False
 
         model_filepath = TEST_TB_ROM7 # Twin with 2 TBROM, 1st has 2 input field connected with 1st field with errors,
         # 1 output field connected, second has 1 input field connected and 1 output field connected
@@ -127,16 +127,16 @@ class TestTbRom:
         assert twinmodel.nb_tbrom is 2
         tbrom1 = twinmodel._tbrom[tbromname2field] # tbrom with 2 field
         tbrom2 = twinmodel._tbrom[tbromname1field] # tbrom with 1 field
-        assert tbrom1.NumberInputField is 2
-        assert tbrom2.NumberInputField is 1
+        assert tbrom1.numberinputfields is 2
+        assert tbrom2.numberinputfields is 1
         tb1field1 = field1
         tb1field2 = field2
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field1) is True # pressure
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field2) is False # temperature
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(tb1field1) is True # pressure
+        assert tbrom1.hasinfmcs(tb1field2) is False # temperature
         tb2field1 = field2
-        assert tbrom2.hasOutputModeCoefficients is True
-        assert tbrom2.hasInputFieldsModeCoefficients(tb2field1) is True
+        assert tbrom2.hasoutmcs is True
+        assert tbrom2.hasinfmcs(tb2field1) is True
 
         model_filepath = TEST_TB_ROM8 # Twin with 2 TBROM, 1st has 2 input field connected,
         # 1 output field connected, second has 1 input field connected and 1 output field connected
@@ -146,16 +146,16 @@ class TestTbRom:
         assert twinmodel.nb_tbrom is 2
         tbrom1 = twinmodel._tbrom[tbromname2field] # tbrom with 2 field
         tbrom2 = twinmodel._tbrom[tbromname1field] # tbrom with 1 field
-        assert tbrom1.NumberInputField is 2
-        assert tbrom2.NumberInputField is 1
+        assert tbrom1.numberinputfields is 2
+        assert tbrom2.numberinputfields is 1
         tb1field1 = field1
         tb1field2 = field2
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field1) is True # pressure
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field2) is True # temperature
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(tb1field1) is True # pressure
+        assert tbrom1.hasinfmcs(tb1field2) is True # temperature
         tb2field1 = field2
-        assert tbrom2.hasOutputModeCoefficients is True
-        assert tbrom2.hasInputFieldsModeCoefficients(tb2field1) is True
+        assert tbrom2.hasoutmcs is True
+        assert tbrom2.hasinfmcs(tb2field1) is True
 
         model_filepath = TEST_TB_ROM9 # Twin with 2 TBROM, 1st has 2 input field connected with 1st field with errors,
         # 1 output field connected, second has 1 input field connected and 1 output field connected with error
@@ -165,13 +165,13 @@ class TestTbRom:
         assert twinmodel.nb_tbrom is 2
         tbrom1 = twinmodel._tbrom[tbromname2field] # tbrom with 2 field
         tbrom2 = twinmodel._tbrom[tbromname1field] # tbrom with 1 field
-        assert tbrom1.NumberInputField is 2
-        assert tbrom2.NumberInputField is 1
+        assert tbrom1.numberinputfields is 2
+        assert tbrom2.numberinputfields is 1
         tb1field1 = field1
         tb1field2 = field2
-        assert tbrom1.hasOutputModeCoefficients is True
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field1) is True # pressure
-        assert tbrom1.hasInputFieldsModeCoefficients(tb1field2) is False # temperature
+        assert tbrom1.hasoutmcs is True
+        assert tbrom1.hasinfmcs(tb1field1) is True # pressure
+        assert tbrom1.hasinfmcs(tb1field2) is False # temperature
         tb2field1 = field2
-        assert tbrom2.hasOutputModeCoefficients is False
-        assert tbrom2.hasInputFieldsModeCoefficients(tb2field1) is True
+        assert tbrom2.hasoutmcs is False
+        assert tbrom2.hasinfmcs(tb2field1) is True

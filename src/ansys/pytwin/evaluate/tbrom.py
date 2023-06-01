@@ -35,124 +35,128 @@ import numpy as np
 # documentation
 
 
-class TbRom():
+class TbRom:
+    """
+    Instantiates a TBROM model part of a TWIN file created by Ansys Twin Builder.
+
+    After a twin model is initialized and its tbrom are instantiated, additional functionalities are available to
+    generate snapshots (in memory or on disk), as well as to project input field data (in case the tbrom is
+    parameterized with an input field).
+
+    Parameters
+    ----------
+    tbrom_name : str
+        Name of the TBROM included in the Twin.
+    tbrom_path : str
+        File path to the TBROM files folder.
+    """
+
+    IN_F_KEY = 'binaryInputField'
+    OUT_F_KEY = 'binaryOutputField'
+    TBROM_BASIS = 'basis.svd'
+    TBROM_SET = 'settings.json'
+
     def __init__(self, tbrom_name: str, tbrom_path: str):
-        if self._check_path_is_valid:
-            self._tbrom_path = tbrom_path
+        self._tbrom_path = tbrom_path
         self._tbrom_name = tbrom_name
-        self._inputFieldsModeCoefficients = None
-        self._outputModeCoefficients = None
-        self._inputFieldsSVD = None
-        self._outputSVD = None
-        self._outputFilesPath = None
-        self._hasInputFieldsModeCoefficients = None
-        self._hasOutputModeCoefficients = False
+        self._infmcs = None
+        self._outmcs = None
+        self._infbasis = None
+        self._outbasis = None
+        self._hasinfmcs = None
+        self._hasoutmcs = False
 
         files = os.listdir(tbrom_path)
-        inputfielddata = dict()
+        infdata = dict()
         for file in files:
-            if 'binaryInputField' in file:
+            if TbRom.IN_F_KEY in file:
                 folder = file.split('_')
-                fieldName = folder[1]
-                inputSVDpath = os.path.join(tbrom_path, file, "basis.svd")
-                svd_basis = TbRom._read_basis(inputSVDpath)
-                inputfielddata.update({fieldName: svd_basis})
-        self._inputFieldsSVD = inputfielddata
+                fname = folder[1]
+                inpath = os.path.join(tbrom_path, file, TbRom.TBROM_BASIS)
+                inbasis = TbRom._read_basis(inpath)
+                infdata.update({fname: inbasis})
+        self._infbasis = infdata
 
-        outputSVDpath = os.path.join(tbrom_path, "binaryOutputField", "basis.svd")
-        self._outputSVD = TbRom._read_basis(outputSVDpath)
-        settingsPath = os.path.join(tbrom_path, "binaryOutputField", "settings.json")
-        [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingsPath)
-        self._nsIdsList = nsidslist
-        self._outputFieldDimensionality = int(dimensionality[0])
-        self._outputFieldName = outputname
-        self._outputFieldUnit = unit
-        self._outputFilesPath = None
+        outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
+        self._outbasis = TbRom._read_basis(outpath)
+        settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
+        [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingspath)
+        self._nsidslist = nsidslist
+        self._outdim = int(dimensionality[0])
+        self._outname = outputname
+        self._outunit = unit
+        self._outputfilespath = None
 
-    def _check_path_is_valid(self, folderpath):
-        """
-        Check if the filepath provided for the tbrom model is valid. Raise a ``TwinModelError`` message if not.
-        """
-        if folderpath is None:
-            msg = f"TbRom model cannot be called with {folderpath} as the model's filepath."
-            msg += "\nProvide a valid filepath to initialize the ``TbRom`` object."
-            raise self._raise_error(msg)
-        if not os.path.exists(folderpath):
-            msg = f"The provided filepath does not exist: {folderpath}."
-            msg += "\nProvide the correct filepath to initialize the ``TbRom`` object."
-            raise self._raise_error(msg)
-        return True
-
-    def snapshot_projection(self, snapshot: str, fieldname: str = None):
-        if self._hasInputFieldsModeCoefficients[fieldname]:
-            modes_coef = []
-            vec = TbRom._read_binary(snapshot)
-            vecnp = np.array(vec)
-            if fieldname is None or self.NumberInputField == 1:
-                basis = list(self._inputFieldsSVD.values())[0]
-            else:
-                basis = self._inputFieldsSVD[fieldname]
-            nb_modes = len(basis)
-            for i in range(nb_modes):
-                modenp = np.array(basis[i])
-                coef = modenp.dot(vecnp)
-                modes_coef.append(coef)
-            if fieldname is None or self.NumberInputField == 1:
-                index = 0
-                for item, key in self._inputFieldsModeCoefficients[self.NameInputFields[0]].items():
-                    self._inputFieldsModeCoefficients[self.NameInputFields[0]][item] = modes_coef[index]
-                    index = index + 1
-            else:
-                index = 0
-                for item, key in self._inputFieldsModeCoefficients[fieldname].items():
-                    self._inputFieldsModeCoefficients[fieldname][item] = modes_coef[index]
-                    index = index + 1
-        else:
-            return []
-
-    def snapshot_generation(self, on_disk, output_file_name, NamedSelection: str = None):
-        if self.hasOutputModeCoefficients:
-            basis = self._outputSVD
+    def snapshot_generation(self, on_disk, output_file_name, namedselection: str = None):
+        if self.hasoutmcs:
+            basis = self._outbasis
             vec = np.zeros(len(basis[0]))
-            nb_modes = len(basis)
-            modes_coefs = list(self._outputModeCoefficients.values())
-            for i in range(nb_modes):
-                modenp = np.array(basis[i])
-                vec = vec + modes_coefs[i] * modenp
-            if NamedSelection is not None:
-                pointsIds = self.namedselectionids(NamedSelection)
-                listIds = []
-                for i in pointsIds:
-                    for k in range(0, self.OutputFieldDimensionality):
-                        listIds.append(i * self.OutputFieldDimensionality + k)
-                vec = vec[listIds]
+            nb_mc = len(basis)
+            mc = list(self._outmcs.values())
+            for i in range(nb_mc):
+                mnp = np.array(basis[i])
+                vec = vec + mc[i] * mnp
+            if namedselection is not None:
+                pointsids = self.namedselectionids(namedselection)
+                listids = []
+                for i in pointsids:
+                    for k in range(0, self.outputfielddimensionality):
+                        listids.append(i * self.outputfielddimensionality + k)
+                vec = vec[listids]
             if on_disk:
-                TbRom._write_binary(os.path.join(self._outputFilesPath, output_file_name), vec)
+                TbRom._write_binary(os.path.join(self._outputfilespath, output_file_name), vec)
             else:
                 return vec
         else:
             return []
 
+    def snapshot_projection(self, snapshot: str, fieldname: str = None):
+        if self._hasinfmcs[fieldname]:
+            mc = []
+            vec = TbRom._read_binary(snapshot)
+            vecnp = np.array(vec)
+            if fieldname is None or self.numberinputfields == 1:
+                basis = list(self._infbasis.values())[0]
+            else:
+                basis = self._infbasis[fieldname]
+            nb_mc = len(basis)
+            for i in range(nb_mc):
+                mnp = np.array(basis[i])
+                mci = mnp.dot(vecnp)
+                mc.append(mci)
+            if fieldname is None or self.numberinputfields == 1:
+                index = 0
+                for item, key in self._infmcs[self.nameinputfields[0]].items():
+                    self._infmcs[self.nameinputfields[0]][item] = mc[index]
+                    index = index + 1
+            else:
+                index = 0
+                for item, key in self._infmcs[fieldname].items():
+                    self._infmcs[fieldname][item] = mc[index]
+                    index = index + 1
+        else:
+            return []
+
     def namedselectionids(self, nsname: str):
-        return self._nsIdsList[nsname]
+        return self._nsidslist[nsname]
 
     def fieldinputmodecoefficients(self, fieldname: str):
-        return self._inputFieldsModeCoefficients[fieldname]
+        return self._infmcs[fieldname]
 
-    def hasInputFieldsModeCoefficients(self, fieldname: str):
-        return self._hasInputFieldsModeCoefficients[fieldname]
+    def hasinfmcs(self, fieldname: str):
+        return self._hasinfmcs[fieldname]
 
-    def _points_generation(self, on_disk, output_file_name, NamedSelection):
-        pointpath = os.path.join(self._tbrom_path, "binaryOutputField", "points.bin")
+    def _points_generation(self, on_disk, output_file_name, namedselection):
+        pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, "points.bin")
         points = np.array(TbRom._read_binary(pointpath))
-        pointsIds = self.namedselectionids(NamedSelection)
-        listIds = []
-        for i in pointsIds:
+        pointsids = self.namedselectionids(namedselection)
+        listids = []
+        for i in pointsids:
             for k in range(0, 3):
-                listIds.append(i * 3 + k)
-        vec = points[listIds]
+                listids.append(i * 3 + k)
+        vec = points[listids]
         if on_disk:
-            TbRom._write_binary(os.path.join(self._outputFilesPath, output_file_name), vec)
+            TbRom._write_binary(os.path.join(self._outputfilespath, output_file_name), vec)
         else:
             return vec
 
@@ -161,9 +165,9 @@ class TbRom():
         fr = open(fn, "rb")
         var = struct.unpack('cccccccccccccccc', fr.read(16))[0]
         nb_val = struct.unpack('Q', fr.read(8))[0]
-        nb_modes = struct.unpack('Q', fr.read(8))[0]
+        nb_mc = struct.unpack('Q', fr.read(8))[0]
         basis = []
-        for i in range(nb_modes):
+        for i in range(nb_mc):
             vec = []
             for j in range(nb_val):
                 vec.append(struct.unpack('d', fr.read(8))[0])
@@ -191,67 +195,63 @@ class TbRom():
         return True
 
     @staticmethod
-    def _read_settings(settingsPath):
-        f = open(settingsPath)
+    def _read_settings(settingspath):
+        f = open(settingspath)
         data = json.load(f)
-        namedSelection = data['namedSelections']
+        namedselection = data['namedSelections']
         dimensionality = data['dimensionality']
         name = data['name']
         unit = data['unit']
-        tbRomNS = dict()
+        tbromns = dict()
         outputname = name.replace(' ', '_')
-        for name, idsList in namedSelection.items():
-            finalList = []
+        for name, idsList in namedselection.items():
+            finallist = []
             for i in range(0, len(idsList) - 1):
                 if int(idsList[i]) == -1:
                     for j in range(int(idsList[i - 1]) + 1, int(idsList[i + 1])):
-                        finalList.append(j)
+                        finallist.append(j)
                 else:
-                    finalList.append(int(idsList[i]))
-            finalList.append(int(idsList[len(idsList) - 1]))
-            tbRomNS.update({name: finalList})
-        return [tbRomNS, dimensionality, outputname, unit]
+                    finallist.append(int(idsList[i]))
+            finallist.append(int(idsList[len(idsList) - 1]))
+            tbromns.update({name: finallist})
+        return [tbromns, dimensionality, outputname, unit]
 
     @property
-    def outputModeCoefficients(self):
-        return self._outputModeCoefficients
+    def outmcs(self):
+        return self._outmcs
 
     @property
-    def hasOutputModeCoefficients(self):
-        return self._hasOutputModeCoefficients
+    def hasoutmcs(self):
+        return self._hasoutmcs
 
     @property
-    def TbRomName(self):
+    def tbromname(self):
         return self._tbrom_name
 
     @property
-    def NumberInputField(self):
-        return len(self._inputFieldsSVD)
+    def numberinputfields(self):
+        return len(self._infbasis)
 
     @property
-    def NameInputFields(self):
-        return list(self._inputFieldsSVD.keys())
+    def nameinputfields(self):
+        return list(self._infbasis.keys())
 
     @property
-    def OutputFieldModeCoefficients(self):
-        return self._outputModeCoefficients
+    def infmcs(self):
+        return self._infmcs
 
     @property
-    def InputFieldsModeCoefficients(self):
-        return self._inputFieldsModeCoefficients
+    def nsnames(self):
+        return list(self._nsidslist.keys())
 
     @property
-    def NamedSelectionNames(self):
-        return list(self._nsIdsList.keys())
+    def outputfieldname(self):
+        return self._outname
 
     @property
-    def OutputFieldName(self):
-        return self._outputFieldName
+    def outputfieldunit(self):
+        return self._outunit
 
     @property
-    def OutputFieldUnit(self):
-        return self._outputFieldUnit
-
-    @property
-    def OutputFieldDimensionality(self):
-        return self._outputFieldDimensionality
+    def outputfielddimensionality(self):
+        return self._outdim

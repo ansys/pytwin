@@ -185,7 +185,7 @@ twin_model3.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be in
 rom_name = twin_model3.tbrom_names[0]
 snapshotfile3a = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2a.bin')
 snapshotfile3b = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2b.bin')
-NS = twin_model3._tbrom[rom_name].NamedSelectionNames
+NS = twin_model3._tbrom[rom_name].nsnames
 print(NS)
 twin_model3.initialize_evaluation(inputs=rom_inputs, inputfields={rom_name: {"inputTemperature":inputSnapshot}})
 #twin_model3.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
