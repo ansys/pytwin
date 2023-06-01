@@ -1,14 +1,6 @@
 import os
-import sys
-import time
 
-import pandas as pd
-import pytest
 from pytwin import TwinModel, TwinModelError, download_file
-from pytwin.evaluate.tbrom import TbRom
-from pytwin.settings import get_pytwin_log_file, get_pytwin_logger, get_pytwin_working_dir, modify_pytwin_working_dir
-
-from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
 DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), "data", "HX_scalarDRB_23R1_other.twin")
@@ -29,6 +21,8 @@ TEST_TB_ROM10 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_10.t
 TEST_TB_ROM11 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_11.twin")
 TEST_TB_ROM12 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_12.twin")
 
+INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
+INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
 
 def reinit_settings():
     import shutil
@@ -175,3 +169,178 @@ class TestTbRom:
         tb2field1 = field2
         assert tbrom2.hasoutmcs is False
         assert tbrom2.hasinfmcs(tb2field1) is True
+
+    def test_initialization_Twin_with_TbRom_inputField(self):
+        model_filepath = TEST_TB_ROM3 # Twin with 1 TBROM and 2 input fields both connected, 1 output
+        # field connected
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = 'test' # -> exception that rom name provided is not valid
+        fieldname = 'test'
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+            assert "rom name provided" in str(e)
+
+        romname = twinmodel.tbrom_names[0]
+        fieldname = 'test' # -> exception that field name provided is not valid
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+           assert "field name provided" in str(e)
+
+        model_filepath = TEST_TB_ROM5 # Twin with 1 TBROM and 1 input fields connected with error, 1 output
+        # field connected
+        # -> exception that TBROM inputs are not properly connected to Twin inputs and therefore no field projection
+        # can be performed
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+            assert "no common inputs" in str(e)
+
+        model_filepath = TEST_TB_ROM3 # Twin with 1 TBROM and 2 input fields both connected, 1 output
+        # field connected
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: None}}) # -> not valid snapshot path
+        except TwinModelError as e:
+            assert "not a valid path" in str(e)
+
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: 'test'}}) # -> snapshot path does not
+            # exist
+        except TwinModelError as e:
+            assert "snapshot path does not exist" in str(e)
+
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}}) # -> wrong
+            # snapshot size
+        except TwinModelError as e:
+            assert "TbRom input field basis size" in str(e)
+
+        try:
+            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}}) # -> working as expected
+        except TwinModelError as e:
+            assert "" in str(e)
+
+    def test_step_by_step_Twin_with_TbRom_inputField(self):
+        model_filepath = TEST_TB_ROM3 # Twin with 1 TBROM and 2 input fields both connected, 1 output
+        # field connected
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = 'test' # -> exception that rom name provided is not valid
+        fieldname = 'test'
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+            assert "rom name provided" in str(e)
+
+        romname = twinmodel.tbrom_names[0]
+        fieldname = 'test' # -> exception that field name provided is not valid
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+           assert "field name provided" in str(e)
+
+        model_filepath = TEST_TB_ROM5 # Twin with 1 TBROM and 1 input fields connected with error, 1 output
+        # field connected
+        # -> exception that TBROM inputs are not properly connected to Twin inputs and therefore no field projection
+        # can be performed
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+            assert "no common inputs" in str(e)
+
+        model_filepath = TEST_TB_ROM3 # Twin with 1 TBROM and 2 input fields both connected, 1 output
+        # field connected
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: None}}) # -> not valid
+            # snapshot path
+        except TwinModelError as e:
+            assert "not a valid path" in str(e)
+
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: 'test'}}) # -> snapshot
+            # path does not
+            # exist
+        except TwinModelError as e:
+            assert "snapshot path does not exist" in str(e)
+
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})
+            # -> wrong snapshot size
+        except TwinModelError as e:
+            assert "TbRom input field basis size" in str(e)
+
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+            # -> working as expected
+        except TwinModelError as e:
+            print(str(e))
+
+    def test_snapshot_generation_Twin_with(self):
+        model_filepath = TEST_TB_ROM9 # Twin with 2 TBROM, 1st has 2 input field connected with 1st field with errors,
+        # 1 output field connected, second has 1 input field connected and 1 output field connected with error
+        # -> nbTBROM = 2, NbInputField = (2,1), hasInputField = (True, False) and True, hasOutputField = True and False
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = 'test'
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, False)
+            # -> wrong rom name
+        except TwinModelError as e:
+            assert "rom name provided" in str(e)
+
+        romname = twinmodel.tbrom_names[0]
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, False)
+            # -> first tbrom has outputs connection error
+        except TwinModelError as e:
+            assert "no common outputs" in str(e)
+
+        romname = twinmodel.tbrom_names[1]
+        nslist = twinmodel.get_rom_nslist(romname)
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, False, nslist[0])
+            # -> working as expected
+        except TwinModelError as e:
+            print(str(e))
+
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, False)
+            # -> working as expected
+        except TwinModelError as e:
+            print(str(e))
+
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, True, nslist[0])
+            # -> working as expected
+        except TwinModelError as e:
+            print(str(e))
+
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, True)
+            # -> working as expected
+        except TwinModelError as e:
+            print(str(e))
+
+        try:
+            fieldresults = twinmodel.snapshot_generation(romname, False, 'test')
+            # -> working as expected
+        except TwinModelError as e:
+            assert "provided named selection" in str(e)

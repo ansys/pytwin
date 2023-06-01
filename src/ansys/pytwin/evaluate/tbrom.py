@@ -87,55 +87,73 @@ class TbRom:
         self._outunit = unit
         self._outputfilespath = None
 
-    def snapshot_generation(self, on_disk, output_file_name, namedselection: str = None):
-        if self.hasoutmcs:
-            basis = self._outbasis
-            vec = np.zeros(len(basis[0]))
-            nb_mc = len(basis)
-            mc = list(self._outmcs.values())
-            for i in range(nb_mc):
-                mnp = np.array(basis[i])
-                vec = vec + mc[i] * mnp
-            if namedselection is not None:
-                pointsids = self.namedselectionids(namedselection)
-                listids = []
-                for i in pointsids:
-                    for k in range(0, self.outputfielddimensionality):
-                        listids.append(i * self.outputfielddimensionality + k)
-                vec = vec[listids]
-            if on_disk:
-                TbRom._write_binary(os.path.join(self._outputfilespath, output_file_name), vec)
-            else:
-                return vec
+    def snapshot_generation(self, on_disk: bool, output_file_name: str, namedselection: str = None):
+        """
+        Generate a field snapshot based on current states of the TBROM, either in memory or on disk, for the full field
+        or a specific part. If on disk, the snapshot is written in the output_file_name path
+
+        Parameters
+        ----------
+        on_disk: bool
+            Whether the snapshot file is saved on disk (True) or returned in memory (False)
+        output_file_name: str
+            Path where the snapshot file is written if on_disk is True
+        named_selection: str (optional)
+            Named selection on which the snasphot has to be generated
+        """
+        basis = self._outbasis
+        vec = np.zeros(len(basis[0]))
+        nb_mc = len(basis)
+        mc = list(self._outmcs.values())
+        for i in range(nb_mc):
+            mnp = np.array(basis[i])
+            vec = vec + mc[i] * mnp
+        if namedselection is not None:
+            pointsids = self.namedselectionids(namedselection)
+            listids = []
+            for i in pointsids:
+                for k in range(0, self.outputfielddimensionality):
+                    listids.append(i * self.outputfielddimensionality + k)
+            vec = vec[listids]
+        if on_disk:
+            TbRom._write_binary(os.path.join(self._outputfilespath, output_file_name), vec)
         else:
-            return []
+            return vec
 
     def snapshot_projection(self, snapshot: str, fieldname: str = None):
-        if self._hasinfmcs[fieldname]:
-            mc = []
-            vec = TbRom._read_binary(snapshot)
-            vecnp = np.array(vec)
-            if fieldname is None or self.numberinputfields == 1:
-                basis = list(self._infbasis.values())[0]
-            else:
-                basis = self._infbasis[fieldname]
-            nb_mc = len(basis)
-            for i in range(nb_mc):
-                mnp = np.array(basis[i])
-                mci = mnp.dot(vecnp)
-                mc.append(mci)
-            if fieldname is None or self.numberinputfields == 1:
-                index = 0
-                for item, key in self._infmcs[self.nameinputfields[0]].items():
-                    self._infmcs[self.nameinputfields[0]][item] = mc[index]
-                    index = index + 1
-            else:
-                index = 0
-                for item, key in self._infmcs[fieldname].items():
-                    self._infmcs[fieldname][item] = mc[index]
-                    index = index + 1
+        """
+        Project a given snapshot file on the basis associated to the input field name 'fieldname'
+
+        Parameters
+        ----------
+        snapshot: str
+            Path of the input field snapshot file
+        fieldname: str (optional)
+            Name of the input field for which the snapshot projection will be performed (it needs to be defined in case
+            the TBROM is parameterized with multiple input fields)
+        """
+        mc = []
+        vec = TbRom._read_binary(snapshot)
+        vecnp = np.array(vec)
+        if fieldname is None or self.numberinputfields == 1:
+            basis = list(self._infbasis.values())[0]
         else:
-            return []
+            basis = self._infbasis[fieldname]
+        nb_mc = len(basis)
+        for i in range(nb_mc):
+            mnp = np.array(basis[i])
+            mci = mnp.dot(vecnp)
+            mc.append(mci)
+        if fieldname is None or self.numberinputfields == 1:
+            index = 0
+            for item, key in self._infmcs[self.nameinputfields[0]].items():
+                self._infmcs[self.nameinputfields[0]][item] = mc[index]
+                index = index + 1
+        else:
+            index = 0
+            for item, key in self._infmcs[fieldname].items():
+                self._infmcs[fieldname][item] = mc[index]
+                index = index + 1
 
     def namedselectionids(self, nsname: str):
         return self._nsidslist[nsname]
@@ -192,7 +210,6 @@ class TbRom:
     def _write_binary(fn, vec):
         fw = open(fn, "wb")
         fw.write(struct.pack("Q", len(vec)))
-        print(fn)
         for i in vec:
             fw.write(struct.pack("d", i))
         return True
