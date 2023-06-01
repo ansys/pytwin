@@ -146,6 +146,9 @@ class TbRom:
     def hasinfmcs(self, fieldname: str):
         return self._hasinfmcs[fieldname]
 
+    def input_field_size(self, fieldname: str):
+        return len(self._infbasis[fieldname][0])
+
     def _points_generation(self, on_disk, output_file_name, namedselection):
         pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, "points.bin")
         points = np.array(TbRom._read_binary(pointpath))
@@ -215,6 +218,12 @@ class TbRom:
             finallist.append(int(idsList[len(idsList) - 1]))
             tbromns.update({name: finallist})
         return [tbromns, dimensionality, outputname, unit]
+
+    @staticmethod
+    def read_snapshot_size(file):
+        fr = open(file, "rb")
+        nbdof = struct.unpack('Q', fr.read(8))[0]
+        return nbdof
 
     @property
     def outmcs(self):
