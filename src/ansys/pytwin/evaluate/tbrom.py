@@ -5,36 +5,6 @@ import struct
 import numpy as np
 
 
-# need a clear convention as long as we don't have direct apis
-# for example :
-# - outputs :
-# if 1 single TBROM: that's fine as long as it contains _mode_
-# if >0 TBROM: twin output name needs to contain tbrom_name
-# - inputs :
-# if >0 single TBROM: it contains name of field + _mode_
-# if >0 : needs to contain tbrom_name
-
-# input field = dict of {rom_name, {field_name, snapshot file path}}
-
-# corner cases to handle/test
-# snapshot_projection and snapshot_generation
-# - what about wrong arguments passed
-# - arguemtns are not consistent (e.g. input snapshot not consistent with input field SVD)
-# - return output if function not applicable
-# naming obstrufaction
-# unit testing
-# - check if given twin with tbrom has input/output mode coef
-#    - ok for 1 tbrom
-#    - test same with multiple tbrom
-# - check if ns selection ids returned are correct
-# - check if input mode coef returned are correct
-# - check snapshot generation method
-# - check twin initialization with tbrom / without tbrom -> OK
-# - check twin outputs update / inputs update
-# _attributes vs public
-# documentation
-
-
 class TbRom:
     """
     Instantiates a TBROM model part of a TWIN file created by Ansys Twin Builder.
