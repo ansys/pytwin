@@ -136,18 +136,23 @@ class TwinModel(Model):
             tbrom = self._tbrom[tbrom_name]
         for fieldname, snapshot in inputfieldsdic.items():
             if fieldname not in tbrom.nameinputfields:
-                msg = f"The field name provided {fieldname} is not part of the list of input field names " \
-                      f"{tbrom.nameinputfields}."
+                msg = (
+                    f"The field name provided {fieldname} is not part of the list of input field names "
+                    f"{tbrom.nameinputfields}."
+                )
                 msg += "\nProvide a valid field name to use this method."
                 raise self._raise_error(msg)
             if not tbrom.hasinfmcs(fieldname):
                 msg = f"The tbrom {tbrom_name} has no common inputs with the Twin {self._model_name}."
-                msg += "\nMake sure the TBROM has its mode coefficients inputs properly connected to the Twin " \
-                       "inputs."
+                msg += (
+                    "\nMake sure the TBROM has its mode coefficients inputs properly connected to the Twin " "inputs."
+                )
                 raise self._raise_error(msg)
             if fieldname not in tbrom.nameinputfields:
-                msg = f"The field name provided {fieldname} is not part of the list of input field names " \
-                      f"{tbrom.nameinputfields}."
+                msg = (
+                    f"The field name provided {fieldname} is not part of the list of input field names "
+                    f"{tbrom.nameinputfields}."
+                )
                 msg += "\nProvide a valid field name to use this method."
                 raise self._raise_error(msg)
             if snapshot is None:
@@ -161,8 +166,10 @@ class TwinModel(Model):
             snapshotsize = TbRom.read_snapshot_size(snapshot)
             inputfieldsize = tbrom.input_field_size(fieldname)
             if snapshotsize != inputfieldsize:
-                msg = f"The provided snapshot size {snapshotsize} is not consistent with TbRom input field basis" \
-                      f" size {inputfieldsize}."
+                msg = (
+                    f"The provided snapshot size {snapshotsize} is not consistent with TbRom input field basis"
+                    f" size {inputfieldsize}."
+                )
                 msg += "\nProvide a valid input field snapshot to use this method."
                 raise self._raise_error(msg)
         return True
@@ -179,8 +186,10 @@ class TwinModel(Model):
             raise self._raise_error(msg)
         if namedselection is not None:
             if namedselection not in tbrom.nsnames:
-                msg = f"The provided named selection {namedselection} is not part of TbRom's list of named selection" \
-                      f"{tbrom.nsnames}."
+                msg = (
+                    f"The provided named selection {namedselection} is not part of TbRom's list of named selection"
+                    f"{tbrom.nsnames}."
+                )
                 msg += "\nProvide a valid named selection to use this method."
                 raise self._raise_error(msg)
         return True
@@ -220,8 +229,9 @@ class TwinModel(Model):
         if pytwin_level == PyTwinLogLevel.PYTWIN_LOG_CRITICAL:
             return LogLevel.TWIN_LOG_FATAL
 
-    def _initialize_evaluation(self, parameters: dict = None, inputs: dict = None, inputfields: dict = None,
-                               runtime_init: bool = True):
+    def _initialize_evaluation(
+        self, parameters: dict = None, inputs: dict = None, inputfields: dict = None, runtime_init: bool = True
+    ):
         """
         Initialize the twin model evaluation with dictionaries:
         (1) Initialize parameters and/or inputs values to their start values (default values found in the twin file).
@@ -602,8 +612,9 @@ class TwinModel(Model):
         """
         return len(self.tbrom_names)
 
-    def initialize_evaluation(self, parameters: dict = None, inputs: dict = None, inputfields: dict = None,
-                              json_config_filepath: str = None):
+    def initialize_evaluation(
+        self, parameters: dict = None, inputs: dict = None, inputfields: dict = None, json_config_filepath: str = None
+    ):
         """
         Initialize evaluation of a twin model.
 
@@ -1334,8 +1345,14 @@ class TwinModel(Model):
         try:
             if named_selection is not None:
                 if self._check_tbrom_snapshot_generation_args(rom_name, named_selection):
-                    output_file = self._tbrom[rom_name].outputfieldname + "_" + named_selection + "_" + \
-                                  str(self.evaluation_time) + ".bin"
+                    output_file = (
+                        self._tbrom[rom_name].outputfieldname
+                        + "_"
+                        + named_selection
+                        + "_"
+                        + str(self.evaluation_time)
+                        + ".bin"
+                    )
                     output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
                     return self._tbrom[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
             else:

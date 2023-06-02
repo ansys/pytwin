@@ -35,16 +35,18 @@ of snapshots.
 # files.
 import math
 
-import pandas as pd
-
 import matplotlib.pyplot as plt
+import pandas as pd
 from pytwin import TwinModel, download_file
 
-twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files",
-                          force_download=True)  # , force_download=True)
-inputfieldsnapshots = [download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
-                       download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
-                       download_file("TEMP_3.bin", "twin_input_files/inputFieldSnapshots", force_download=True)]
+twin_file = download_file(
+    "ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True
+)  # , force_download=True)
+inputfieldsnapshots = [
+    download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
+    download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
+    download_file("TEMP_3.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
+]
 
 ###############################################################################
 # Define ROM inputs
@@ -87,10 +89,16 @@ def plot_result_comparison(results: pd.DataFrame):
     axes0 = ax
 
     results.plot(x=x_ind, y=y0_ind, ax=axes0, ls="dashed", label="{}".format("Maximum Deformation (Twin output)"))
-    results.plot(x=x_ind, y=y1_ind, ax=axes0, ls="-.", label="{}".format("Maximum Deformation (output field "
-                                                                         "reconstruction)"))
-    results.plot(x=x_ind, y=y2_ind, ax=axes0, ls="-.",
-                 label="{}".format("Maximum Deformation (output field reconstruction on Group_2)"))
+    results.plot(
+        x=x_ind, y=y1_ind, ax=axes0, ls="-.", label="{}".format("Maximum Deformation (output field " "reconstruction)")
+    )
+    results.plot(
+        x=x_ind,
+        y=y2_ind,
+        ax=axes0,
+        ls="-.",
+        label="{}".format("Maximum Deformation (output field reconstruction on Group_2)"),
+    )
 
     axes0.set_title("T-junction deformation response")
     axes0.set_xlabel(results.columns[x_ind] + " [Pa]")
@@ -171,8 +179,9 @@ for i in range(0, len(rom_inputs)):
     outputs.append(max(norm_vector_field(outfield)))
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
-sim_results = pd.DataFrame(results, columns=[input_name] + output_name_without_mcs + ['MaxDefSnapshot',
-                                                                                      'MaxDefSnapshotNs'], dtype=float)
+sim_results = pd.DataFrame(
+    results, columns=[input_name] + output_name_without_mcs + ["MaxDefSnapshot", "MaxDefSnapshotNs"], dtype=float
+)
 
 ###############################################################################
 # Plot results

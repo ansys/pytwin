@@ -21,10 +21,10 @@ class TbRom:
         File path to the TBROM files folder.
     """
 
-    IN_F_KEY = 'binaryInputField'
-    OUT_F_KEY = 'binaryOutputField'
-    TBROM_BASIS = 'basis.svd'
-    TBROM_SET = 'settings.json'
+    IN_F_KEY = "binaryInputField"
+    OUT_F_KEY = "binaryOutputField"
+    TBROM_BASIS = "basis.svd"
+    TBROM_SET = "settings.json"
 
     def __init__(self, tbrom_name: str, tbrom_path: str):
         self._tbrom_path = tbrom_path
@@ -40,7 +40,7 @@ class TbRom:
         infdata = dict()
         for file in files:
             if TbRom.IN_F_KEY in file:
-                folder = file.split('_')
+                folder = file.split("_")
                 fname = folder[1]
                 inpath = os.path.join(tbrom_path, file, TbRom.TBROM_BASIS)
                 inbasis = TbRom._read_basis(inpath)
@@ -155,14 +155,14 @@ class TbRom:
     @staticmethod
     def _read_basis(fn):
         fr = open(fn, "rb")
-        var = struct.unpack('cccccccccccccccc', fr.read(16))[0]
-        nb_val = struct.unpack('Q', fr.read(8))[0]
-        nb_mc = struct.unpack('Q', fr.read(8))[0]
+        var = struct.unpack("cccccccccccccccc", fr.read(16))[0]
+        nb_val = struct.unpack("Q", fr.read(8))[0]
+        nb_mc = struct.unpack("Q", fr.read(8))[0]
         basis = []
         for i in range(nb_mc):
             vec = []
             for j in range(nb_val):
-                vec.append(struct.unpack('d', fr.read(8))[0])
+                vec.append(struct.unpack("d", fr.read(8))[0])
             basis.append(vec)
         fr.close()
         return basis
@@ -170,10 +170,10 @@ class TbRom:
     @staticmethod
     def _read_binary(file):
         fr = open(file, "rb")
-        nbdof = struct.unpack('Q', fr.read(8))[0]
+        nbdof = struct.unpack("Q", fr.read(8))[0]
         vec = []
         for i in range(nbdof):
-            vec.append(struct.unpack('d', fr.read(8))[0])
+            vec.append(struct.unpack("d", fr.read(8))[0])
         fr.close()
         return vec
 
@@ -189,12 +189,12 @@ class TbRom:
     def _read_settings(settingspath):
         f = open(settingspath)
         data = json.load(f)
-        namedselection = data['namedSelections']
-        dimensionality = data['dimensionality']
-        name = data['name']
-        unit = data['unit']
+        namedselection = data["namedSelections"]
+        dimensionality = data["dimensionality"]
+        name = data["name"]
+        unit = data["unit"]
         tbromns = dict()
-        outputname = name.replace(' ', '_')
+        outputname = name.replace(" ", "_")
         for name, idsList in namedselection.items():
             finallist = []
             for i in range(0, len(idsList) - 1):
@@ -210,7 +210,7 @@ class TbRom:
     @staticmethod
     def read_snapshot_size(file):
         fr = open(file, "rb")
-        nbdof = struct.unpack('Q', fr.read(8))[0]
+        nbdof = struct.unpack("Q", fr.read(8))[0]
         return nbdof
 
     @property
