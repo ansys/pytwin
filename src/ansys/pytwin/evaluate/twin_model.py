@@ -727,7 +727,8 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation()
         >>> romname = twin_model.tbrom_names[0]
         >>> fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
-        >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.}, inputfields={romname: {fieldname:'path_to_the_snapshot.bin'}})
+        >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.},
+        >>>                                  inputfields={romname: {fieldname:'path_to_the_snapshot.bin'}})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
         self._log_key = "EvaluateStepByStep"
