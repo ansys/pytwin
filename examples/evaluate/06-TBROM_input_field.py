@@ -41,10 +41,10 @@ import matplotlib.pyplot as plt
 from pytwin import TwinModel, download_file
 
 twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files",
-                          force_download=False)  # , force_download=True)
-inputfieldsnapshots = [download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=False),
-                       download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=False),
-                       download_file("TEMP_3.bin", "twin_input_files/inputFieldSnapshots", force_download=False)]
+                          force_download=True)  # , force_download=True)
+inputfieldsnapshots = [download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
+                       download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
+                       download_file("TEMP_3.bin", "twin_input_files/inputFieldSnapshots", force_download=True)]
 
 ###############################################################################
 # Define ROM inputs
