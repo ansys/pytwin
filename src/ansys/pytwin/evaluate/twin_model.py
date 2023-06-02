@@ -1132,7 +1132,7 @@ class TwinModel(Model):
 
         return tbrom.nameinputfields
 
-    def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0): 
+    def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
         Get the snapshot file that was created by the given ROM at the given time instant.
 
