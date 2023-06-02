@@ -3,14 +3,22 @@
 3D field ROM example for input field snapshot projection as well as snapshot generation on demand
 -------------------------------------------------------------------------------------------------
 
-This example shows .....
+This example shows how PyTwin can be used to load and evaluate a twin model which has a field ROM with inputs
+parameterized by both scalar and field data. The example shows also how to evaluate the output field data in the form
+of snapshots.
 
 .. note::
-   To be able to use the input field snapshot projection capability, the ROM must be created with input field data,
-   and the associated input mode coefficients must be exposed as Twin inputs
-   To be able to use the output field snapshot generation on demand capability, the ROM must be exported with the option
-   to expose mode coefficients as outputs, and these coefficients must be exposed as Twin outputs
+   To be able to use the functionalities to project an input field snapshot, you need to have a Twin with 1 or more
+   TBROM parameterized by input field data, for which its input mode coefficients are connected to Twin inputs with the
+   following convention :
+   if there are multiple TBROM in the Twin, Twin input named as : "input field name"_mode_"i"_"tbrom name"
+   if there is a single TBROM in the Twin, Twin input named as : "input field name"_mode_"i"
 
+   To be able to use the functionalities to generate output field snapshot on demand, you need to have a Twin with 1 or
+   more TBROM, for which its output mode coefficients are enabled when exporting the TBROM, and connected to Twin
+   outputs with the following convention :
+   if there are multiple TBROM in the Twin, Twin output named as : outField_mode_"i"_"tbrom name"
+   if there is a single TBROM in the Twin, Twin output named as : outField_mode_mode_"i"
 """
 
 ###############################################################################
@@ -25,87 +33,83 @@ This example shows .....
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which include downloading and importing the input
 # files.
+import math
 
-import os
-import struct
-import time
+import pandas as pd
 
-import numpy as np
+import matplotlib.pyplot as plt
 from pytwin import TwinModel, download_file
 
-twin_file = download_file("TwinModelInOutField_23R11.twin", "twin_files", force_download=False)
-twin_file2 = download_file("test_new_ids.twin", "twin_files", force_download=False)
+twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files",
+                          force_download=False)  # , force_download=True)
+inputfieldsnapshots = [download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=False),
+                       download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=False),
+                       download_file("TEMP_3.bin", "twin_input_files/inputFieldSnapshots", force_download=False)]
 
 ###############################################################################
 # Define ROM inputs
 # ~~~~~~~~~~~~~~~~~
 # Define the ROM inputs.
 
-rom_inputs = {"Pressure_Magnitude": 3000000.0}
+rom_inputs = [4000000, 5000000, 6000000]
+
 
 ###############################################################################
 # Define auxiliary functions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define auxiliary functions for comparing and plotting the results from
+# different input values evaluated on the twin model, as well as to compute
+# the norm of output field
 
 
+def plot_result_comparison(results: pd.DataFrame):
+    """Compare the results obtained from the different input values evaluated on
+    the twin model. The results datasets are provided as Pandas dataframes. The
+    function plots the results for few variables of particular interest."""
 
-def read_basis(fn):
-    #print('Reading SVDBasis...')
-    fr = open(fn,"rb")
-    struct.unpack('cccccccccccccccc', fr.read(16))[0]
-    nb_val = struct.unpack('Q', fr.read(8))[0]
-    nb_modes = struct.unpack('Q', fr.read(8))[0]
-    basis = []
-    for i in range(nb_modes):
-        vec = []
-        for j in range(nb_val):
-            vec.append (struct.unpack('d', fr.read(8))[0])
-        basis.append(vec)
-    fr.close()
-    return basis
+    pd.set_option("display.precision", 12)
+    pd.set_option("display.max_columns", 20)
+    pd.set_option("display.expand_frame_repr", False)
 
-def read_binary(file):
-    fr = open(file,"rb")
-    nbdof = struct.unpack('Q', fr.read(8))[0]
-    vec = []
-    for i in range(nbdof):
-        vec.append(struct.unpack('d', fr.read(8))[0])
-    fr.close()
-    return vec
+    color = ["g"]
+    # Output ordering: T_inner, T1_out, T_outer, T2_out, T3_out
+    x_ind = 0
+    y0_ind = 2
+    y1_ind = 3
+    y2_ind = 4
 
-def write_binary(fn, vec):
-    fw = open(fn, "wb")
-    fw.write(struct.pack("Q", len(vec)))
-    for i in vec:
-        fw.write(struct.pack("d", i))
-    return True
+    # Plot simulation results (outputs versus input)
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(18, 7))
 
-# the following functions are prototyped (should be part of the TwinModel/TBROM class ultimately with associated attributes)
+    fig.subplots_adjust(hspace=0.5)
+    fig.set_tight_layout({"pad": 0.0})
 
-def snapshot_projection(twin_model, snapshot):
-    modes_coef = []
-    vec = read_binary(snapshot)
-    vecnp = np.array(vec)
-    basis = twin_model.inputSVD
-    nb_modes = len(basis)
-    for i in range(nb_modes):
-        modenp = np.array(basis[i])
-        coef = modenp.dot(vecnp)
-        modes_coef.append(coef)
-    twin_model.inputModeCoef = modes_coef # probably need to distinguish inputModeCoef from regular inputs
+    axes0 = ax
 
-def snapshot_generation(twin_model, on_disk, output_file):
-    basis = twin_model.outputSVD
-    vec = np.zeros(len(basis[0]))
-    nb_modes = len(basis)
-    for i in range(nb_modes):
-        modenp = np.array(basis[i])
-        vec = vec + twin_model.outputModeCoef[i]*modenp # probably need to distinguish outputModeCoef from regular outputs
-    if on_disk:
-        write_binary(output_file, vec)
-    else:
-        return vec
+    results.plot(x=x_ind, y=y0_ind, ax=axes0, ls="dashed", label="{}".format("Maximum Deformation (Twin output)"))
+    results.plot(x=x_ind, y=y1_ind, ax=axes0, ls="-.", label="{}".format("Maximum Deformation (output field "
+                                                                         "reconstruction)"))
+    results.plot(x=x_ind, y=y2_ind, ax=axes0, ls="-.",
+                 label="{}".format("Maximum Deformation (output field reconstruction on Group_2)"))
 
+    axes0.set_title("T-junction deformation response")
+    axes0.set_xlabel(results.columns[x_ind] + " [Pa]")
+    axes0.set_ylabel("Deformation [m]")
+
+    # Show plot
+    plt.show()
+
+
+def norm_vector_field(field: list):
+    """Compute the norm of a vector field."""
+
+    norm = []
+    for i in range(0, int(len(field) / 3)):
+        x = field[i * 3]
+        y = field[i * 3 + 1]
+        z = field[i * 3 + 2]
+        norm.append(math.sqrt(x * x + y * y + z * z))
+    return norm
 
 
 ###############################################################################
@@ -116,87 +120,63 @@ def snapshot_generation(twin_model, on_disk, output_file):
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
-twin_model.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
+###############################################################################
+# Evaluate the twin with different input values and collect corresponding outputs
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Because the twin is based on a static model, two options can be considered:
+#
+# - Set the initial input value to evaluate and run the initialization function (current approach).
+# - Create an input dataframe considering all input values to evaluate and run the batch function
+#   to evaluate. In this case, to execute the transient simulation, a time dimension must be
+#   arbitrarily defined.
 
-rom_name = twin_model.tbrom_names[0]
+results = []
+input_name_all = list(twin_model.inputs.keys())
+output_name_all = list(twin_model.outputs.keys())
 
-rom_path = twin_model._tbrom_resource_directory(rom_name)
+# remove the TBROM related pins from the Twin's list of inputs and outputs
+input_name_without_mcs = []
+for i in input_name_all:
+    if "mode" not in i:
+        input_name_without_mcs.append(i)
+print(f"Twin physical inputs : {input_name_without_mcs}")
+output_name_without_mcs = []
+for i in output_name_all:
+    if "mode" not in i:
+        output_name_without_mcs.append(i)
+print(f"Twin physical outputs : {output_name_without_mcs}")
 
-files = os.listdir(rom_path)
+# collect the TBROM and input field related information, the Twin must be initialized first
+twin_model.initialize_evaluation()
+print(f"TBROMs part of the Twin : {twin_model.tbrom_names}")
+romname = twin_model.tbrom_names[0]
+print(f"Input fields associated to the TBROM {romname} : {twin_model.get_rom_inputfieldsnames(romname)}")
+fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
+print(f"Named selections associated to the TBROM {romname} : {twin_model.get_rom_nslist(romname)}")
+ns = twin_model.get_rom_nslist(romname)[1]
 
-for file in files:
-   if 'binaryInputField' in file:
-       folder = file.split('_')
-       inputFieldName = folder[1]
+input_name = input_name_without_mcs[0]
+for i in range(0, len(rom_inputs)):
+    # Initialize twin with input values and collect output value
+    dp = rom_inputs[i]
+    dp_input = {input_name: dp}
+    dp_field_input = {romname: {fieldname: inputfieldsnapshots[i]}}
+    twin_model.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
+    outputs = [dp]
+    for item in output_name_without_mcs:
+        outputs.append(twin_model.outputs[item])
+    outfield = twin_model.snapshot_generation(romname, False)  # generating the field output on the entire domain
+    outfieldns = twin_model.snapshot_generation(romname, False, ns)  # generating the field output on "Group_2"
+    twin_model.snapshot_generation(romname, True)
+    outputs.append(max(norm_vector_field(outfield)))
+    outputs.append(max(norm_vector_field(outfieldns)))
+    results.append(outputs)
+sim_results = pd.DataFrame(results, columns=[input_name] + output_name_without_mcs + ['MaxDefSnapshot',
+                                                                                      'MaxDefSnapshotNs'], dtype=float)
 
-inputSVDpath = os.path.join(twin_model._tbrom_resource_directory(rom_name), "binaryInputField_inputTemperature", "basis.svd")
-inputSVD = read_basis(inputSVDpath)
+###############################################################################
+# Plot results
+# ~~~~~~~~~~~~
+# Plot the results and save the image on disk.
 
-twin_model.inputSVD = inputSVD
-
-outputSVDpath = os.path.join(twin_model._tbrom_resource_directory(rom_name), "binaryOutputField", "basis.svd")
-outputSVD = read_basis(outputSVDpath)
-
-twin_model.outputSVD = outputSVD
-
-inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
-
-snapshot_projection(twin_model, inputSnapshot) # project input field snapshot to get associated mode coefficients
-
-for i in range(0, len(inputSVD)):
-    input = {list(twin_model.inputs.keys())[i]:twin_model.inputModeCoef[i]}
-    rom_inputs.update(input)
-twin_model.initialize_evaluation(inputs=rom_inputs)
-
-outputModeCoef = []
-for key, item in twin_model.outputs.items():
-    if "outField" in key:
-        outputModeCoef.append(item)
-
-twin_model.outputModeCoef = outputModeCoef
-
-snapshotfile = os.path.join(twin_model.tbrom_directory_path, rom_name, 'snapshot_test.bin')
-print(snapshotfile)
-
-snapshot_generation(twin_model, True, snapshotfile) # generation snapshot on the disk
-
-res = snapshot_generation(twin_model, False, snapshotfile) # generation snasphot in memory
-
-print(res)
-
-
-inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
-twin_model2 = TwinModel(twin_file)
-twin_model2.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
-
-rom_name = twin_model2.tbrom_names[0]
-snapshotfile2 = os.path.join(twin_model2.tbrom_directory_path, rom_name, 'snapshot_test_tbrom.bin')
-twin_model2.initialize_evaluation(inputs=rom_inputs, inputfields={rom_name: {"inputTemperature":inputSnapshot}})
-#twin_model2.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
-twin_model2.snapshot_generation(rom_name, True)
-res2 = twin_model2.snapshot_generation(rom_name, False)
-print(res2)
-
-
-inputSnapshot = 'C:/Users/cpetre/TestTwin/inputTemperature/Snapshots/TEMP_6.bin'
-twin_model3 = TwinModel(twin_file2)
-twin_model3.initialize_evaluation(inputs=rom_inputs) # twin_model needs to be initialized first before rom_name is available...
-
-rom_name = twin_model3.tbrom_names[0]
-snapshotfile3a = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2a.bin')
-snapshotfile3b = os.path.join(twin_model3.tbrom_directory_path, rom_name, 'snapshot_test_tbrom2b.bin')
-NS = twin_model3.get_rom_nslist(rom_name)
-print(NS)
-twin_model3.initialize_evaluation(inputs=rom_inputs, inputfields={rom_name: {"inputTemperature":inputSnapshot}})
-#twin_model3.initialize_evaluation(inputs=rom_inputs, input_field={rom_name: {None:inputSnapshot}})
-twin_model3.snapshot_generation(rom_name, True, NS[0])
-res3a = twin_model3.snapshot_generation(rom_name, False, NS[0])
-print(res3a)
-twin_model3.snapshot_generation(rom_name, True, NS[1])
-res3b = twin_model3.snapshot_generation(rom_name, False, NS[1])
-print(res3b)
-print(len(res2))
-print(len(res3a))
-print(len(res3b))
-twin_model3._tbrom[rom_name]._points_generation(True, 'points1.bin', NS[0])
-twin_model3._tbrom[rom_name]._points_generation(True, 'points2.bin', NS[1])
+plot_result_comparison(sim_results)

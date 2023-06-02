@@ -1068,7 +1068,7 @@ class TwinModel(Model):
         >>> model.initialize_evaluation()
         >>> model.get_rom_nslist(model.tbrom_names[0])
         """
-        self._log_key = "GetRomDirectory"
+        self._log_key = "GetRomNamedSelectionList"
 
         if not self.evaluation_is_initialized:
             msg = "Twin model has not been initialized. "
@@ -1132,7 +1132,7 @@ class TwinModel(Model):
 
         return tbrom.nameinputfields
 
-    def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
+    def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0): # TODO refactor this method ?
         """
         Get the snapshot file that was created by the given ROM at the given time instant.
 
@@ -1301,7 +1301,8 @@ class TwinModel(Model):
     def snapshot_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
         """
         Generate a field snapshot based on current states of the Twin, either in memory or on disk, for the full field
-        or a specific part
+        or a specific part. It returns the field data as an array if in memroy, or the path of the snapshot written on
+        disk.
 
         Parameters
         ----------
@@ -1335,11 +1336,13 @@ class TwinModel(Model):
                 if self._check_tbrom_snapshot_generation_args(rom_name, named_selection):
                     output_file = self._tbrom[rom_name].outputfieldname + "_" + named_selection + "_" + \
                                   str(self.evaluation_time) + ".bin"
-                    return self._tbrom[rom_name].snapshot_generation(on_disk, output_file, named_selection)
+                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
+                    return self._tbrom[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
             else:
                 if self._check_tbrom_snapshot_generation_args(rom_name):
                     output_file = self._tbrom[rom_name].outputfieldname + "_" + str(self.evaluation_time) + ".bin"
-                    return self._tbrom[rom_name].snapshot_generation(on_disk, output_file, named_selection)
+                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
+                    return self._tbrom[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the snapshot:"

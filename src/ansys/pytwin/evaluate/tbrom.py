@@ -57,7 +57,7 @@ class TbRom:
         self._outunit = unit
         self._outputfilespath = None
 
-    def snapshot_generation(self, on_disk: bool, output_file_name: str, namedselection: str = None):
+    def snapshot_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
         """
         Generate a field snapshot based on current states of the TBROM, either in memory or on disk, for the full field
         or a specific part. If on disk, the snapshot is written in the output_file_name path
@@ -86,7 +86,8 @@ class TbRom:
                     listids.append(i * self.outputfielddimensionality + k)
             vec = vec[listids]
         if on_disk:
-            TbRom._write_binary(os.path.join(self._outputfilespath, output_file_name), vec)
+            TbRom._write_binary(output_file_path, vec)
+            return output_file_path
         else:
             return vec
 
