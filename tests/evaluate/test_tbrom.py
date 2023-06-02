@@ -1,6 +1,6 @@
 import os
 
-from pytwin import TwinModel, TwinModelError, download_file
+from pytwin import TwinModel, TwinModelError
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
 DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), "data", "HX_scalarDRB_23R1_other.twin")

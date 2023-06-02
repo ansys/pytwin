@@ -1313,7 +1313,7 @@ class TwinModel(Model):
     def snapshot_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
         """
         Generate a field snapshot based on current states of the Twin, either in memory or on disk, for the full field
-        or a specific part. It returns the field data as an array if in memroy, or the path of the snapshot written on
+        or a specific part. It returns the field data as an array if in memory, or the path of the snapshot written on
         disk.
 
         Parameters
