@@ -18,7 +18,7 @@ of snapshots.
    more TBROM, for which its output mode coefficients are enabled when exporting the TBROM, and connected to Twin
    outputs with the following convention :
    if there are multiple TBROM in the Twin, Twin output named as : outField_mode_"i"_"tbrom name"
-   if there is a single TBROM in the Twin, Twin output named as : outField_mode_mode_"i"
+   if there is a single TBROM in the Twin, Twin output named as : outField_mode_"i"
 """
 
 ###############################################################################
