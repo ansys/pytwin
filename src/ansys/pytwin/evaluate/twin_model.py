@@ -194,6 +194,29 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
+    def _check_tbrom_points_generation_args(self, rom_name: str, namedselection: str = None):
+        """
+        Check if the arguments of points generation method are valid. Raise a ``TwinModelError`` message if not.
+        """
+        if self._check_rom_name_is_valid(rom_name):
+            tbrom = self._tbrom[rom_name]
+
+        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
+        if not os.path.exists(filepath):
+            msg = f"Could not find the geometry file for the given ROM name: {rom_name}. "
+            msg += f"The geometry filepath that you are looking for is: {filepath}."
+            raise self._raise_error(msg)
+
+        if namedselection is not None:
+            if namedselection not in tbrom.nsnames:
+                msg = (
+                    f"The provided named selection {namedselection} is not part of TbRom's list of named selection"
+                    f"{tbrom.nsnames}."
+                )
+                msg += "\nProvide a valid named selection to use this method."
+                raise self._raise_error(msg)
+        return True
+
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """
         Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
@@ -1364,6 +1387,60 @@ class TwinModel(Model):
 
         except Exception as e:
             msg = f"Something went wrong while generating the snapshot:"
+            msg += f"\n{str(e)}."
+            self._raise_error(msg)
+
+    def points_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
+        """
+        Generate a points file either in memory or on disk, for the full field or a specific part. It returns the field
+        data as an array if in memory, or the path of the snapshot written on disk.
+
+        Parameters
+        ----------
+        rom_name: str
+            TBROM name part of the Twin for which a point file has to be generated
+        on_disk: bool
+            Whether the point file is saved on disk (True) or returned in memory (False)
+        named_selection: str (optional)
+            Named selection on which the point file has to be generated
+
+        Raises
+        ------
+        TwinModelError:
+            If rom_name is not included in the Twin's list of TBROM
+            If name_selection is not included in the TBROM's list of Named Selections
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
+        >>> model1 = TwinModel('model.twin')
+        >>> model1.initialize_evaluation()
+        >>> romname = model1.tbrom_names[0]
+        >>> nslist = model1.get_rom_nslist(romname)
+        >>> points = model1.points_generation(romname, False, nslist[0])
+        """
+        self._log_key = "PointsGeneration"
+
+        try:
+            if named_selection is not None:
+                if self._check_tbrom_points_generation_args(rom_name, named_selection):
+                    output_file = (
+                        self._tbrom[rom_name].outputfieldname
+                        + "_"
+                        + named_selection
+                        + "_points.bin"
+                    )
+                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
+                    return self._tbrom[rom_name].points_generation(on_disk, output_file_path, named_selection)
+            else:
+                if self._check_tbrom_points_generation_args(rom_name):
+                    output_file = self._tbrom[rom_name].outputfieldname + "_points.bin"
+                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
+                    return self._tbrom[rom_name].points_generation(on_disk, output_file_path, named_selection)
+
+        except Exception as e:
+            msg = f"Something went wrong while generating the points file:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 

@@ -19,6 +19,9 @@ of snapshots.
    outputs with the following convention :
    if there are multiple TBROM in the Twin, Twin output named as : outField_mode_"i"_"tbrom name"
    if there is a single TBROM in the Twin, Twin output named as : outField_mode_"i"
+
+   To be able to use the functionalities to generate points file on demand, you need to have a Twin with 1 or
+   more TBROM, for which its geometry is embedded when exporting the ROM to Twin Builder
 """
 
 ###############################################################################
@@ -175,7 +178,8 @@ for i in range(0, len(rom_inputs)):
         outputs.append(twin_model.outputs[item])
     outfield = twin_model.snapshot_generation(romname, False)  # generating the field output on the entire domain
     outfieldns = twin_model.snapshot_generation(romname, False, ns)  # generating the field output on "Group_2"
-    twin_model.snapshot_generation(romname, True)
+    twin_model.points_generation(romname, True, ns) # generating the points file on "Group_2"
+    twin_model.snapshot_generation(romname, True, ns) # generating the field snapshot on "Group_2"
     outputs.append(max(norm_vector_field(outfield)))
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)

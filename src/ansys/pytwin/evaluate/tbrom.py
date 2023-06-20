@@ -25,6 +25,7 @@ class TbRom:
     OUT_F_KEY = "binaryOutputField"
     TBROM_BASIS = "basis.svd"
     TBROM_SET = "settings.json"
+    TBROM_POINTS = "points.bin"
 
     def __init__(self, tbrom_name: str, tbrom_path: str):
         self._tbrom_path = tbrom_path
@@ -56,6 +57,35 @@ class TbRom:
         self._outname = outputname
         self._outunit = unit
         self._outputfilespath = None
+
+    def points_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
+        """
+        Generate a point file either in memory or on disk, for the full field or a specific part. If on disk, the point
+        file is written in the output_file_name path (currently no associated settings file is generated)
+
+        Parameters
+        ----------
+        on_disk: bool
+            Whether the point file is saved on disk (True) or returned in memory (False)
+        output_file_name: str
+            Path where the point file is written if on_disk is True
+        named_selection: str (optional)
+            Named selection on which the point file has to be generated
+        """
+        pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+        vec = np.array(TbRom._read_binary(pointpath))
+        if namedselection is not None:
+            pointsids = self.namedselectionids(namedselection)
+            listids = []
+            for i in pointsids:
+                for k in range(0, 3):
+                    listids.append(i * 3 + k)
+            vec = vec[listids]
+        if on_disk:
+            TbRom._write_binary(output_file_path, vec)
+            return output_file_path
+        else:
+            return vec
 
     def snapshot_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
         """
@@ -137,20 +167,6 @@ class TbRom:
 
     def input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
-
-    def _points_generation(self, on_disk, output_file_name, namedselection):
-        pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, "points.bin")
-        points = np.array(TbRom._read_binary(pointpath))
-        pointsids = self.namedselectionids(namedselection)
-        listids = []
-        for i in pointsids:
-            for k in range(0, 3):
-                listids.append(i * 3 + k)
-        vec = points[listids]
-        if on_disk:
-            TbRom._write_binary(os.path.join(self._outputfilespath, output_file_name), vec)
-        else:
-            return vec
 
     @staticmethod
     def _read_basis(fn):
