@@ -178,8 +178,8 @@ for i in range(0, len(rom_inputs)):
         outputs.append(twin_model.outputs[item])
     outfield = twin_model.snapshot_generation(romname, False)  # generating the field output on the entire domain
     outfieldns = twin_model.snapshot_generation(romname, False, ns)  # generating the field output on "Group_2"
-    twin_model.points_generation(romname, True, ns) # generating the points file on "Group_2"
-    twin_model.snapshot_generation(romname, True, ns) # generating the field snapshot on "Group_2"
+    twin_model.points_generation(romname, True, ns)  # generating the points file on "Group_2"
+    twin_model.snapshot_generation(romname, True, ns)  # generating the field snapshot on "Group_2"
     outputs.append(max(norm_vector_field(outfield)))
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
