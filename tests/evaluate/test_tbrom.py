@@ -51,7 +51,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
-        tbrom1 = twinmodel._tbrom[tbromname2field]
+        tbrom1 = twinmodel._tbroms[tbromname2field]
         assert tbrom1.numberinputfields is 2
         assert tbrom1.hasoutmcs is False
         assert tbrom1.hasinfmcs(field1) is False
@@ -63,7 +63,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
-        tbrom1 = twinmodel._tbrom[tbromname2field]
+        tbrom1 = twinmodel._tbroms[tbromname2field]
         assert tbrom1.numberinputfields is 2
         assert tbrom1.hasoutmcs is True
         assert tbrom1.hasinfmcs(field1) is True
@@ -75,7 +75,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
-        tbrom1 = twinmodel._tbrom[tbromname2field]
+        tbrom1 = twinmodel._tbroms[tbromname2field]
         assert tbrom1.numberinputfields is 2
         assert tbrom1.hasoutmcs is True
         assert tbrom1.hasinfmcs(field1) is True  # pressure
@@ -87,7 +87,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 1
-        tbrom1 = twinmodel._tbrom[tbromname1field]
+        tbrom1 = twinmodel._tbroms[tbromname1field]
         assert tbrom1.numberinputfields is 1
         field = tbrom1.nameinputfields[0]
         assert tbrom1.hasoutmcs is True
@@ -99,8 +99,8 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 2
-        tbrom1 = twinmodel._tbrom[tbromname2field]  # tbrom with 2 field
-        tbrom2 = twinmodel._tbrom[tbromname1field]  # tbrom with 1 field
+        tbrom1 = twinmodel._tbroms[tbromname2field]  # tbrom with 2 field
+        tbrom2 = twinmodel._tbroms[tbromname1field]  # tbrom with 1 field
         assert tbrom1.numberinputfields is 2
         assert tbrom2.numberinputfields is 1
         tb1field1 = field1
@@ -118,8 +118,8 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 2
-        tbrom1 = twinmodel._tbrom[tbromname2field]  # tbrom with 2 field
-        tbrom2 = twinmodel._tbrom[tbromname1field]  # tbrom with 1 field
+        tbrom1 = twinmodel._tbroms[tbromname2field]  # tbrom with 2 field
+        tbrom2 = twinmodel._tbroms[tbromname1field]  # tbrom with 1 field
         assert tbrom1.numberinputfields is 2
         assert tbrom2.numberinputfields is 1
         tb1field1 = field1
@@ -137,8 +137,8 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 2
-        tbrom1 = twinmodel._tbrom[tbromname2field]  # tbrom with 2 field
-        tbrom2 = twinmodel._tbrom[tbromname1field]  # tbrom with 1 field
+        tbrom1 = twinmodel._tbroms[tbromname2field]  # tbrom with 2 field
+        tbrom2 = twinmodel._tbroms[tbromname1field]  # tbrom with 1 field
         assert tbrom1.numberinputfields is 2
         assert tbrom2.numberinputfields is 1
         tb1field1 = field1
@@ -156,8 +156,8 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         assert twinmodel.nb_tbrom is 2
-        tbrom1 = twinmodel._tbrom[tbromname2field]  # tbrom with 2 field
-        tbrom2 = twinmodel._tbrom[tbromname1field]  # tbrom with 1 field
+        tbrom1 = twinmodel._tbroms[tbromname2field]  # tbrom with 2 field
+        tbrom2 = twinmodel._tbroms[tbromname1field]  # tbrom with 1 field
         assert tbrom1.numberinputfields is 2
         assert tbrom2.numberinputfields is 1
         tb1field1 = field1

@@ -69,7 +69,7 @@ class TwinModel(Model):
         self._ss_registry = None
         self._twin_runtime = None
         self._tbrom_info = None
-        self._tbrom = None
+        self._tbroms = None
 
         if self._check_model_filepath_is_valid(model_filepath):
             self._model_filepath = model_filepath
@@ -133,7 +133,7 @@ class TwinModel(Model):
         Raise a ``TwinModelError`` message if not.
         """
         if self._check_rom_name_is_valid(tbrom_name):
-            tbrom = self._tbrom[tbrom_name]
+            tbrom = self._tbroms[tbrom_name]
         for fieldname, snapshot in inputfieldsdic.items():
             if fieldname not in tbrom.nameinputfields:
                 msg = (
@@ -179,7 +179,7 @@ class TwinModel(Model):
         Check if the arguments of snapshot generation method are valid. Raise a ``TwinModelError`` message if not.
         """
         if self._check_rom_name_is_valid(rom_name):
-            tbrom = self._tbrom[rom_name]
+            tbrom = self._tbroms[rom_name]
         if not tbrom.hasoutmcs:
             msg = f"The tbrom {rom_name} has no common outputs with the Twin {self._model_name}."
             msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the Twin inputs."
@@ -199,7 +199,7 @@ class TwinModel(Model):
         Check if the arguments of points generation method are valid. Raise a ``TwinModelError`` message if not.
         """
         if self._check_rom_name_is_valid(rom_name):
-            tbrom = self._tbrom[rom_name]
+            tbrom = self._tbroms[rom_name]
 
         filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
         if not os.path.exists(filepath):
@@ -306,11 +306,11 @@ class TwinModel(Model):
                             tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
                             self._tbrom_init(tbrom)
                             tbrom_dict.update({model_name: tbrom})
-                    self._tbrom = tbrom_dict
+                    self._tbroms = tbrom_dict
                 if inputfields is not None:
                     for key, item in inputfields.items():
                         if self._check_tbrom_input_field_dic_is_valid(key, item):
-                            tbrom = self._tbrom[key]
+                            tbrom = self._tbroms[key]
                             for field_name, snapshot in item.items():
                                 tbrom.snapshot_projection(snapshot, field_name)
                                 self._update_tbrom_inmcs(tbrom, field_name)
@@ -420,7 +420,7 @@ class TwinModel(Model):
         """Update output values with twin model results at the current evaluation time."""
         self._outputs = dict(zip(self._twin_runtime.twin_get_output_names(), self._twin_runtime.twin_get_outputs()))
         if self.nb_tbrom > 0:
-            for key, item in self._tbrom.items():
+            for key, item in self._tbroms.items():
                 if item.hasoutmcs:
                     self._update_tbrom_outmcs(item)
 
@@ -772,7 +772,7 @@ class TwinModel(Model):
             if inputfields is not None:
                 for key, item in inputfields.items():
                     if self._check_tbrom_input_field_dic_is_valid(key, item):
-                        tbrom = self._tbrom[key]
+                        tbrom = self._tbroms[key]
                         for field_name, snapshot in item.items():
                             tbrom.snapshot_projection(snapshot, field_name)
                             self._update_tbrom_inmcs(tbrom, field_name)
@@ -1119,7 +1119,7 @@ class TwinModel(Model):
             msg += f"\n Available TBROM names are: {self.tbrom_names}."
             self._raise_error(msg)
 
-        tbrom = self._tbrom[rom_name]
+        tbrom = self._tbroms[rom_name]
 
         return tbrom.nsnames
 
@@ -1163,7 +1163,7 @@ class TwinModel(Model):
             msg += f"\n Available TBROM names are: {self.tbrom_names}."
             self._raise_error(msg)
 
-        tbrom = self._tbrom[rom_name]
+        tbrom = self._tbroms[rom_name]
 
         return tbrom.nameinputfields
 
@@ -1370,20 +1370,20 @@ class TwinModel(Model):
             if named_selection is not None:
                 if self._check_tbrom_snapshot_generation_args(rom_name, named_selection):
                     output_file = (
-                        self._tbrom[rom_name].outputfieldname
+                        self._tbroms[rom_name].outputfieldname
                         + "_"
                         + named_selection
                         + "_"
                         + str(self.evaluation_time)
                         + ".bin"
                     )
-                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
-                    return self._tbrom[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
+                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
+                    return self._tbroms[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
             else:
                 if self._check_tbrom_snapshot_generation_args(rom_name):
-                    output_file = self._tbrom[rom_name].outputfieldname + "_" + str(self.evaluation_time) + ".bin"
-                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
-                    return self._tbrom[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
+                    output_file = self._tbroms[rom_name].outputfieldname + "_" + str(self.evaluation_time) + ".bin"
+                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
+                    return self._tbroms[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the snapshot:"
@@ -1425,14 +1425,14 @@ class TwinModel(Model):
         try:
             if named_selection is not None:
                 if self._check_tbrom_points_generation_args(rom_name, named_selection):
-                    output_file = self._tbrom[rom_name].outputfieldname + "_" + named_selection + "_points.bin"
-                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
-                    return self._tbrom[rom_name].points_generation(on_disk, output_file_path, named_selection)
+                    output_file = self._tbroms[rom_name].outputfieldname + "_" + named_selection + "_points.bin"
+                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
+                    return self._tbroms[rom_name].points_generation(on_disk, output_file_path, named_selection)
             else:
                 if self._check_tbrom_points_generation_args(rom_name):
-                    output_file = self._tbrom[rom_name].outputfieldname + "_points.bin"
-                    output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
-                    return self._tbrom[rom_name].points_generation(on_disk, output_file_path, named_selection)
+                    output_file = self._tbroms[rom_name].outputfieldname + "_points.bin"
+                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
+                    return self._tbroms[rom_name].points_generation(on_disk, output_file_path, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the points file:"
