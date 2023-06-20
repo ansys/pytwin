@@ -410,7 +410,6 @@ class TestTbRom:
             assert "provided named selection" in str(e)
 
     def test_points_generation_Twin_with_TbRom_noPointFile(self):
-
         model_filepath = TEST_TB_ROM10  # Twin with 1 TBROM but with 3D disabled at export time -> points file not
         # available
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -421,4 +420,3 @@ class TestTbRom:
             # -> point file available
         except TwinModelError as e:
             assert "not find the geometry file" in str(e)
-

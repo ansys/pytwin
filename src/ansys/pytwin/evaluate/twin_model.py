@@ -1425,12 +1425,7 @@ class TwinModel(Model):
         try:
             if named_selection is not None:
                 if self._check_tbrom_points_generation_args(rom_name, named_selection):
-                    output_file = (
-                        self._tbrom[rom_name].outputfieldname
-                        + "_"
-                        + named_selection
-                        + "_points.bin"
-                    )
+                    output_file = self._tbrom[rom_name].outputfieldname + "_" + named_selection + "_points.bin"
                     output_file_path = os.path.join(self._tbrom[rom_name]._outputfilespath, output_file)
                     return self._tbrom[rom_name].points_generation(on_disk, output_file_path, named_selection)
             else:
