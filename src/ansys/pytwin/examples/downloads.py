@@ -32,7 +32,8 @@ def get_ext(filename: str) -> str:
 
 def delete_downloads() -> bool:
     """Delete all downloaded examples to free space or update the files."""
-    shutil.rmtree(EXAMPLES_PATH)
+    if os.path.exists(EXAMPLES_PATH):
+        shutil.rmtree(EXAMPLES_PATH)
     os.makedirs(EXAMPLES_PATH)
     return True
 
