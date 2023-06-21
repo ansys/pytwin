@@ -5,7 +5,7 @@ import struct
 import numpy as np
 
 
-class TbRom:
+class TwinBuilderRom:
     """
     Instantiates a TBROM model part of a TWIN file created by Ansys Twin Builder.
 
@@ -40,18 +40,18 @@ class TbRom:
         files = os.listdir(tbrom_path)
         infdata = dict()
         for file in files:
-            if TbRom.IN_F_KEY in file:
+            if TwinBuilderRom.IN_F_KEY in file:
                 folder = file.split("_")
                 fname = folder[1]
-                inpath = os.path.join(tbrom_path, file, TbRom.TBROM_BASIS)
-                inbasis = TbRom._read_basis(inpath)
+                inpath = os.path.join(tbrom_path, file, TwinBuilderRom.TBROM_BASIS)
+                inbasis = TwinBuilderRom._read_basis(inpath)
                 infdata.update({fname: inbasis})
         self._infbasis = infdata
 
-        outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
-        self._outbasis = TbRom._read_basis(outpath)
-        settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
-        [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingspath)
+        outpath = os.path.join(tbrom_path, TwinBuilderRom.OUT_F_KEY, TwinBuilderRom.TBROM_BASIS)
+        self._outbasis = TwinBuilderRom._read_basis(outpath)
+        settingspath = os.path.join(tbrom_path, TwinBuilderRom.OUT_F_KEY, TwinBuilderRom.TBROM_SET)
+        [nsidslist, dimensionality, outputname, unit] = TwinBuilderRom._read_settings(settingspath)
         self._nsidslist = nsidslist
         self._outdim = int(dimensionality[0])
         self._outname = outputname
@@ -72,8 +72,8 @@ class TbRom:
         named_selection: str (optional)
             Named selection on which the point file has to be generated
         """
-        pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-        vec = np.array(TbRom._read_binary(pointpath))
+        pointpath = os.path.join(self._tbrom_path, TwinBuilderRom.OUT_F_KEY, TwinBuilderRom.TBROM_POINTS)
+        vec = np.array(TwinBuilderRom._read_binary(pointpath))
         if namedselection is not None:
             pointsids = self.namedselectionids(namedselection)
             listids = []
@@ -82,7 +82,7 @@ class TbRom:
                     listids.append(i * 3 + k)
             vec = vec[listids]
         if on_disk:
-            TbRom._write_binary(output_file_path, vec)
+            TwinBuilderRom._write_binary(output_file_path, vec)
             return output_file_path
         else:
             return vec
@@ -116,7 +116,7 @@ class TbRom:
                     listids.append(i * self.outputfielddimensionality + k)
             vec = vec[listids]
         if on_disk:
-            TbRom._write_binary(output_file_path, vec)
+            TwinBuilderRom._write_binary(output_file_path, vec)
             return output_file_path
         else:
             return vec
@@ -134,7 +134,7 @@ class TbRom:
             the TBROM is parameterized with multiple input fields)
         """
         mc = []
-        vec = TbRom._read_binary(snapshot)
+        vec = TwinBuilderRom._read_binary(snapshot)
         vecnp = np.array(vec)
         if fieldname is None or self.numberinputfields == 1:
             basis = list(self._infbasis.values())[0]

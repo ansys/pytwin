@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import SavedState, SavedStateRegistry
-from pytwin.evaluate.tbrom import TbRom
+from pytwin.evaluate.tbrom import TwinBuilderRom
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
@@ -163,7 +163,7 @@ class TwinModel(Model):
                 msg = f"The snapshot path does not exist: {snapshot}."
                 msg += "\nProvide the correct input field snapshot path to use this method."
                 raise self._raise_error(msg)
-            snapshotsize = TbRom.read_snapshot_size(snapshot)
+            snapshotsize = TwinBuilderRom.read_snapshot_size(snapshot)
             inputfieldsize = tbrom.input_field_size(fieldname)
             if snapshotsize != inputfieldsize:
                 msg = (
@@ -303,7 +303,7 @@ class TwinModel(Model):
                     for model_name in self.tbrom_names:
                         tbrom_resdir = self._tbrom_resource_directory(model_name)
                         if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
-                            tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
+                            tbrom = TwinBuilderRom(model_name, self._tbrom_resource_directory(model_name))
                             self._tbrom_init(tbrom)
                             tbrom_dict.update({model_name: tbrom})
                     self._tbroms = tbrom_dict
@@ -464,7 +464,7 @@ class TwinModel(Model):
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
-    def _tbrom_init(self, tbrom: TbRom):
+    def _tbrom_init(self, tbrom: TwinBuilderRom):
         """
         Initialize the tbrom attributes and connect with the Twin inputs/outputs.
         """
@@ -524,14 +524,14 @@ class TwinModel(Model):
 
         tbrom._outputfilespath = os.path.join(self.tbrom_directory_path, tbrom.tbromname)
 
-    def _update_tbrom_outmcs(self, tbrom: TbRom):
+    def _update_tbrom_outmcs(self, tbrom: TwinBuilderRom):
         """
         Update tbrom attributes based on Twin's current outputs states
         """
         for key, item in tbrom.outmcs.items():
             tbrom.outmcs[key] = self.outputs[key]
 
-    def _update_tbrom_inmcs(self, tbrom: TbRom, inputfield: str = None):
+    def _update_tbrom_inmcs(self, tbrom: TwinBuilderRom, inputfield: str = None):
         """
         Update Twin's current inputs states based on tbrom attributes
         """
