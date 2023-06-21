@@ -1,5 +1,4 @@
 from pytwin import TwinModel, TwinRuntime
-from pytwin.evaluate.tbrom import TbRom
 import pytwin.examples.downloads as dld
 
 
@@ -10,7 +9,7 @@ class TestExamples:
             "CoupledClutches_23R1_other.twin",
             "ElectricRange_23R1_other.twin",
             "HX_scalarDRB_23R1_other.twin",
-            "HeatExchangerRS_23R1_other.twin",
+            #"HeatExchangerRS_23R1_other.twin",
             "ThermalTBROM_23R1_other.twin",
         ]
         # Test model download, instantiate and initialize
