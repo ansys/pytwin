@@ -1374,14 +1374,16 @@ class TwinModel(Model):
                         + "_"
                         + named_selection
                         + "_"
-                        + '{:.6f}'.format(self.evaluation_time)
+                        + "{:.6f}".format(self.evaluation_time)
                         + ".bin"
                     )
                     output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
                     return self._tbroms[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
             else:
                 if self._check_tbrom_snapshot_generation_args(rom_name):
-                    output_file = self._tbroms[rom_name].outputfieldname + "_" + '{:.6f}'.format(self.evaluation_time) + ".bin"
+                    output_file = (
+                        self._tbroms[rom_name].outputfieldname + "_" + "{:.6f}".format(self.evaluation_time) + ".bin"
+                    )
                     output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
                     return self._tbroms[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
 
