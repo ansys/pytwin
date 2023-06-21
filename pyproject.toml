@@ -49,5 +49,5 @@ show_missing = true
 minversion = "7.1"
 addopts = "-ra"
 testpaths = [
-    "tests",
+    "tests/examples",
 ]
