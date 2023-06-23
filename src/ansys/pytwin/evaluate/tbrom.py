@@ -93,7 +93,7 @@ class TbRom:
         """
         Generate a field snapshot based on current states of the TBROM for the
         full field or a specific part.
-        
+
         The field snapshot can be saved in memory or written to disk. When it is
         written to disk, the path specified for the ``output_file_name`` parameter
         is used.
