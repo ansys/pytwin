@@ -168,7 +168,7 @@ print(f"Twin physical outputs : {output_name_without_mcs}")
 twin_model.initialize_evaluation()
 print(f"TBROMs part of the twin : {twin_model.tbrom_names}")
 romname = twin_model.tbrom_names[0]
-print(f"Input fields associated to the TBROM {romname} : {twin_model.get_rom_inputfieldsnames(romname)}")
+print(f"Input fields associated with the TBROM {romname} : {twin_model.get_rom_inputfieldsnames(romname)}")
 fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
 print(f"Named selections associated to the TBROM {romname} : {twin_model.get_rom_nslist(romname)}")
 ns = twin_model.get_rom_nslist(romname)[1]
