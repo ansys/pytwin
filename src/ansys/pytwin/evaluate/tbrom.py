@@ -16,7 +16,7 @@ class TbRom:
     Parameters
     ----------
     tbrom_name : str
-        Name of the TBROM included in the Twin.
+        Name of the TBROM included in the twin file.
     tbrom_path : str
         File path to the TBROM files folder.
     """
