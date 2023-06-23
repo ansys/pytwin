@@ -164,7 +164,7 @@ for i in output_name_all:
         output_name_without_mcs.append(i)
 print(f"Twin physical outputs : {output_name_without_mcs}")
 
-# collect the TBROM and input field related information, the Twin must be initialized first
+# initialize the twin and collect information related to the TBROM and input field
 twin_model.initialize_evaluation()
 print(f"TBROMs part of the Twin : {twin_model.tbrom_names}")
 romname = twin_model.tbrom_names[0]
