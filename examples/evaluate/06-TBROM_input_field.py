@@ -70,7 +70,7 @@ rom_inputs = [4000000, 5000000, 6000000]
 # Define auxiliary functions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define auxiliary functions for comparing and plotting the results from
-# different input values evaluated on the twin model, as well as to compute
+# different input values evaluated on the twin model and for computing
 # the norm of output field
 
 
