@@ -143,9 +143,9 @@ class TwinModel(Model):
                 msg += "\nProvide a valid field name to use this method."
                 raise self._raise_error(msg)
             if not tbrom.hasinfmcs(fieldname):
-                msg = f"The tbrom {tbrom_name} has no common inputs with the Twin {self._model_name}."
+                msg = f"The TBROM {tbrom_name} has no common inputs with the Twin {self._model_name}."
                 msg += (
-                    "\nMake sure the TBROM has its mode coefficients inputs properly connected to the Twin " "inputs."
+                    "\nMake sure the TBROM has its mode coefficients inputs properly connected to the twin's inputs."
                 )
                 raise self._raise_error(msg)
             if fieldname not in tbrom.nameinputfields:
@@ -167,7 +167,7 @@ class TwinModel(Model):
             inputfieldsize = tbrom.input_field_size(fieldname)
             if snapshotsize != inputfieldsize:
                 msg = (
-                    f"The provided snapshot size {snapshotsize} is not consistent with TbRom input field basis"
+                    f"The provided snapshot size {snapshotsize} is not consistent with the input field"
                     f" size {inputfieldsize}."
                 )
                 msg += "\nProvide a valid input field snapshot to use this method."
@@ -176,18 +176,20 @@ class TwinModel(Model):
 
     def _check_tbrom_snapshot_generation_args(self, rom_name: str, namedselection: str = None):
         """
-        Check if the arguments of snapshot generation method are valid. Raise a ``TwinModelError`` message if not.
+        Check if the arguments of the snapshot generation method are valid.
+
+        If the arguments are not valid, a ``TwinModelError`` error message is raised.
         """
         if self._check_rom_name_is_valid(rom_name):
             tbrom = self._tbroms[rom_name]
         if not tbrom.hasoutmcs:
-            msg = f"The tbrom {rom_name} has no common outputs with the Twin {self._model_name}."
-            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the Twin inputs."
+            msg = f"The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
+            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's inputs."
             raise self._raise_error(msg)
         if namedselection is not None:
             if namedselection not in tbrom.nsnames:
                 msg = (
-                    f"The provided named selection {namedselection} is not part of TbRom's list of named selection"
+                    f"The provided named selection {namedselection} is not part of TBROM's list of named selection"
                     f"{tbrom.nsnames}."
                 )
                 msg += "\nProvide a valid named selection to use this method."
@@ -210,7 +212,7 @@ class TwinModel(Model):
         if namedselection is not None:
             if namedselection not in tbrom.nsnames:
                 msg = (
-                    f"The provided named selection {namedselection} is not part of TbRom's list of named selection"
+                    f"The provided named selection {namedselection} is not part of TBROM's list of named selection"
                     f"{tbrom.nsnames}."
                 )
                 msg += "\nProvide a valid named selection to use this method."
@@ -738,13 +740,13 @@ class TwinModel(Model):
 
         Examples
         --------
-        1st example
+        Example 1: Evaluate step by step
         >>> from pytwin import TwinModel
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
-        2nd example with input field data
+        Example 2: Evaluate step by step with input field data
         >>> from pytwin import TwinModel
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
@@ -1086,7 +1088,7 @@ class TwinModel(Model):
         Parameters
         ----------
         rom_name : str
-            Name of the ROM. To get a list of available ROMs, see the
+            Name of the TBROM. To get a list of available TBROMs, see the
             :attr:`pytwin.TwinModel.tbrom_names` attribute.
 
         Raises
@@ -1236,11 +1238,11 @@ class TwinModel(Model):
 
         Parameters
         ----------
-        model_id: str
+        model_id : str
             ID of the model that saved the state.
-        evaluation_time: float
+        evaluation_time : float
             Evaluation time at which the state was saved.
-        epsilon: float, optional
+        epsilon : float, optional
             Absolute period that is added before and after the evaluation time to account for
             round-off error while searching the saved state. The default value is ``1e-8``.
             The search is performed in the interval [t-epsilon, t+epsilon] with `t` being
@@ -1341,12 +1343,12 @@ class TwinModel(Model):
 
         Parameters
         ----------
-        rom_name: str
-            TBROM name part of the Twin for which a snapshot has to be generated
-        on_disk: bool
-            Whether the snapshot file is saved on disk (True) or returned in memory (False)
-        named_selection: str (optional)
-            Named selection on which the snasphot has to be generated
+        rom_name : str
+            Name of the TBROM considered to generate the snapshot.
+        on_disk : bool
+            Whether the snapshot file is saved on disk (True) or returned in memory (False).
+        named_selection : str (optional)
+            Named selection on which the snasphot has to be generated.
 
         Raises
         ------
@@ -1400,11 +1402,11 @@ class TwinModel(Model):
         Parameters
         ----------
         rom_name: str
-            TBROM name part of the Twin for which a point file has to be generated
+            Name of the TBROM considered to generate the point file.
         on_disk: bool
-            Whether the point file is saved on disk (True) or returned in memory (False)
+            Whether the point file is saved on disk (True) or returned in memory (False).
         named_selection: str (optional)
-            Named selection on which the point file has to be generated
+            Named selection on which the point file has to be generated.
 
         Raises
         ------
