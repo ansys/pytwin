@@ -222,7 +222,7 @@ class TestTbRom:
             twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})  # -> wrong
             # snapshot size
         except TwinModelError as e:
-            assert "TbRom input field basis size" in str(e)
+            assert "is not consistent with the input field size" in str(e)
 
         try:
             twinmodel.initialize_evaluation(
@@ -287,7 +287,7 @@ class TestTbRom:
             twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})
             # -> wrong snapshot size
         except TwinModelError as e:
-            assert "TbRom input field basis size" in str(e)
+            assert "is not consistent with the input field size" in str(e)
 
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
