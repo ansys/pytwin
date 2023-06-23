@@ -70,7 +70,7 @@ class TbRom:
         on_disk : bool
             Whether the point file is saved on disk (True) or returned in memory (False).
         output_file_name: str
-            Path where the point file is written if on_disk is True
+            Path for where the point file is written when saved to disk.
         named_selection: str (optional)
             Named selection on which the point file has to be generated
         """
