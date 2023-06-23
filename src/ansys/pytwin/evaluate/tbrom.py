@@ -18,7 +18,7 @@ class TbRom:
     tbrom_name : str
         Name of the TBROM included in the twin file.
     tbrom_path : str
-        File path to the TBROM files folder.
+        File path to the folder with TBROM files.
     """
 
     IN_F_KEY = "binaryInputField"
