@@ -9,9 +9,9 @@ class TbRom:
     """
     Instantiates a TBROM that is part of a Twin file created by Ansys Twin Builder.
 
-    After a twin model is initialized and its tbrom are instantiated, additional functionalities are available to
-    generate snapshots (in memory or on disk), as well as to project input field data (in case the tbrom is
-    parameterized with an input field).
+    After a twin model is initialized and its TBROM is instantiated, additional functionalities
+    are available to generate snapshots (in memory or on disk) and project input field data
+    (if the TBROM is parameterized with an input field).
 
     Parameters
     ----------
