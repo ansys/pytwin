@@ -60,8 +60,10 @@ class TbRom:
 
     def points_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
         """
-        Generate a point file either in memory or on disk, for the full field or a specific part. If on disk, the point
-        file is written in the output_file_name path (currently no associated settings file is generated)
+        Generate a point file for the full field or a specific part.
+        
+        The point file can be saved in memory or written to disk. When it is written to disk,
+        the path specified for the ``output_file_name`` parameter is used.
 
         Parameters
         ----------
