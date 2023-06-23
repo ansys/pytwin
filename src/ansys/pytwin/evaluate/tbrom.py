@@ -7,7 +7,7 @@ import numpy as np
 
 class TbRom:
     """
-    Instantiates a TBROM model part of a TWIN file created by Ansys Twin Builder.
+    Instantiates a TBROM that is part of a Twin file created by Ansys Twin Builder.
 
     After a twin model is initialized and its tbrom are instantiated, additional functionalities are available to
     generate snapshots (in memory or on disk), as well as to project input field data (in case the tbrom is
