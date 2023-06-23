@@ -67,7 +67,7 @@ class TbRom:
 
         Parameters
         ----------
-        on_disk: bool
+        on_disk : bool
             Whether the point file is saved on disk (True) or returned in memory (False)
         output_file_name: str
             Path where the point file is written if on_disk is True
