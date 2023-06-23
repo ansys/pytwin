@@ -170,7 +170,7 @@ print(f"TBROMs part of the twin : {twin_model.tbrom_names}")
 romname = twin_model.tbrom_names[0]
 print(f"Input fields associated with the TBROM {romname} : {twin_model.get_rom_inputfieldsnames(romname)}")
 fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
-print(f"Named selections associated to the TBROM {romname} : {twin_model.get_rom_nslist(romname)}")
+print(f"Named selections associated with the TBROM {romname} : {twin_model.get_rom_nslist(romname)}")
 ns = twin_model.get_rom_nslist(romname)[1]
 
 input_name = input_name_without_mcs[0]
