@@ -175,7 +175,7 @@ ns = twin_model.get_rom_nslist(romname)[1]
 
 input_name = input_name_without_mcs[0]
 for i in range(0, len(rom_inputs)):
-    # Initialize twin with input values and collect output value
+    #initialize twin with input values and collect output value
     dp = rom_inputs[i]
     dp_input = {input_name: dp}
     dp_field_input = {romname: {fieldname: inputfieldsnapshots[i]}}
