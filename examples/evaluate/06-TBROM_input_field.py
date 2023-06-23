@@ -77,7 +77,7 @@ rom_inputs = [4000000, 5000000, 6000000]
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on
     the twin model. The results datasets are provided as Pandas dataframes. The
-    function plots the results for few variables of particular interest."""
+    function plots the results for a few variables of particular interest."""
 
     pd.set_option("display.precision", 12)
     pd.set_option("display.max_columns", 20)
