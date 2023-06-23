@@ -91,8 +91,12 @@ class TbRom:
 
     def snapshot_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
         """
-        Generate a field snapshot based on current states of the TBROM, either in memory or on disk, for the full field
-        or a specific part. If on disk, the snapshot is written in the output_file_name path
+        Generate a field snapshot based on current states of the TBROM for the
+        full field or a specific part.
+        
+        The field snapshot can be saved in memory or written to disk. When it is
+        written to disk, the path specified for the ``output_file_name`` parameter
+        is used.
 
         Parameters
         ----------
