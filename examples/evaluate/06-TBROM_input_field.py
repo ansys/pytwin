@@ -17,11 +17,15 @@ also how to evaluate the output field data in the form of snapshots.
    - If there is a single TBROM in the twin, the format for the name of the twin
       input is ``"input field name"_mode_"i"``.
 
-   To be able to use the functionalities to generate output field snapshot on demand, you need to have a Twin with 1 or
-   more TBROM, for which its output mode coefficients are enabled when exporting the TBROM, and connected to Twin
-   outputs with the following convention :
-   if there are multiple TBROM in the Twin, Twin output named as : outField_mode_"i"_"tbrom name"
-   if there is a single TBROM in the Twin, Twin output named as : outField_mode_"i"
+   To be able to use the functionalities to generate an output field snapshot on demand, you
+   must have a twin with one or more TBROMs. The output mode coefficients for the TBROMs
+   must be enabled when exporting the TBROMs and connected to twin outputs with following
+   these conventions:
+   
+   - If there are multiple TBROMs in the twin, the format for the name of the twin
+     output is ``"outField_mode_"i"_"tbrom name"``.
+   - If there is a single TBROM in the twin, the format for the name of the twin
+     output is ``"outField_mode_"i"``.
 
    To be able to use the functionalities to generate points file on demand, you need to have a Twin with 1 or
    more TBROM, for which its geometry is embedded when exporting the ROM to Twin Builder
