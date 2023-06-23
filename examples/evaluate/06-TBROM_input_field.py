@@ -8,11 +8,14 @@ field ROM with inputs parameterized by both scalar and field data. The example s
 also how to evaluate the output field data in the form of snapshots.
 
 .. note::
-   To be able to use the functionalities to project an input field snapshot, you need to have a Twin with 1 or more
-   TBROM parameterized by input field data, for which its input mode coefficients are connected to Twin inputs with the
-   following convention :
-   if there are multiple TBROM in the Twin, Twin input named as : "input field name"_mode_"i"_"tbrom name"
-   if there is a single TBROM in the Twin, Twin input named as : "input field name"_mode_"i"
+   To be able to use the functionalities to project an input field snapshot, you must have a
+   twin with one or more TBROMs parameterized by input field data. Input mode coefficients
+   for TBROMs are connected to the twin's inputs following these conventions:
+   
+   - If there are multiple TBROMs in the twin, the format for the name of the
+      twin input is ``"input field name"_mode_"i"_"tbrom name"``.
+   - If there is a single TBROM in the twin, the format for the name of the twin
+      input is ``"input field name"_mode_"i"``.
 
    To be able to use the functionalities to generate output field snapshot on demand, you need to have a Twin with 1 or
    more TBROM, for which its output mode coefficients are enabled when exporting the TBROM, and connected to Twin
