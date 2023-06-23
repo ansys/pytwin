@@ -28,7 +28,7 @@ also how to evaluate the output field data in the form of snapshots.
      output is ``"outField_mode_"i"``.
 
    To be able to use the functionalities to generate points file on demand, you need to have a Twin with 1 or
-   more TBROM, for which its geometry is embedded when exporting the ROM to Twin Builder
+   more TBROM, for which its geometry is embedded when exporting the TBROMs to Twin Builder
 """
 
 ###############################################################################

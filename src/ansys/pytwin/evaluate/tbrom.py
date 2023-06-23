@@ -58,7 +58,7 @@ class TbRom:
         self._outunit = unit
         self._outputfilespath = None
 
-    def points_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
+    def points_generation(self, on_disk: bool, output_file_path: str, named_selection: str = None):
         """
         Generate a point file for the full field or a specific part.
 
@@ -69,15 +69,16 @@ class TbRom:
         ----------
         on_disk : bool
             Whether the point file is saved on disk (True) or returned in memory (False).
-        output_file_name: str
+        output_file_path: str
             Path for where the point file is written when saved to disk.
         named_selection: str (optional)
-            Named selection on which the point file has to be generated
+            Named selection on which the point file has to be generated. The default is ``None``, in which case the
+            entire domain is considered.
         """
         pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         vec = np.array(TbRom._read_binary(pointpath))
-        if namedselection is not None:
-            pointsids = self.namedselectionids(namedselection)
+        if named_selection is not None:
+            pointsids = self.namedselectionids(named_selection)
             listids = []
             for i in pointsids:
                 for k in range(0, 3):
@@ -89,7 +90,7 @@ class TbRom:
         else:
             return vec
 
-    def snapshot_generation(self, on_disk: bool, output_file_path: str, namedselection: str = None):
+    def snapshot_generation(self, on_disk: bool, output_file_path: str, named_selection: str = None):
         """
         Generate a field snapshot based on current states of the TBROM for the
         full field or a specific part.
@@ -102,10 +103,11 @@ class TbRom:
         ----------
         on_disk: bool
             Whether the snapshot file is saved on disk (True) or returned in memory (False)
-        output_file_name: str
+        output_file_path: str
             Path where the snapshot file is written if on_disk is True
         named_selection: str (optional)
-            Named selection on which the snasphot has to be generated
+            Named selection on which the snasphot has to be generated. The default is ``None``, in which case the
+            entire domain is considered.
         """
         basis = self._outbasis
         vec = np.zeros(len(basis[0]))
@@ -114,8 +116,8 @@ class TbRom:
         for i in range(nb_mc):
             mnp = np.array(basis[i])
             vec = vec + mc[i] * mnp
-        if namedselection is not None:
-            pointsids = self.namedselectionids(namedselection)
+        if named_selection is not None:
+            pointsids = self.namedselectionids(named_selection)
             listids = []
             for i in pointsids:
                 for k in range(0, self.outputfielddimensionality):
@@ -129,15 +131,15 @@ class TbRom:
 
     def snapshot_projection(self, snapshot: str, fieldname: str = None):
         """
-        Project a given snapshot file on the basis associated to the input field name 'fieldname'
+        Project a snapshot file associated to the input field name ``fieldname``
 
         Parameters
         ----------
         snapshot: str
             Path of the input field snapshot file
         fieldname: str (optional)
-            Name of the input field for which the snapshot projection will be performed (it needs to be defined in case
-            the TBROM is parameterized with multiple input fields)
+            Name of the input field to project the snapshot. The name of the field must be specified in case the TBROM
+            is parameterized with multiple input fields.
         """
         mc = []
         vec = TbRom._read_binary(snapshot)
