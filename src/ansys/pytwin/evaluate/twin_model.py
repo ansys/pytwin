@@ -145,9 +145,7 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
             if not tbrom.hasinfmcs(fieldname):
                 msg = f"The TBROM {tbrom_name} has no common inputs with the Twin {self._model_name}."
-                msg += (
-                    "\nMake sure the TBROM has its mode coefficients inputs properly connected to the twin's inputs."
-                )
+                msg += "\nMake sure the TBROM has its mode coefficients inputs properly connected to the twin's inputs."
                 raise self._raise_error(msg)
             if fieldname not in tbrom.nameinputfields:
                 msg = (
