@@ -98,8 +98,9 @@ class TwinModel(Model):
 
     def _check_tbrom_model_filepath_is_valid(self, model_filepath):
         """
-        Check if the resource directory path provided for the TbRom model instantiation is valid. Raise a
-        ``TwinModelError`` message if not.
+        Check if the resource directory path provided for the TBROM instantiation is valid.
+
+        If the path is invalid, a ``TwinModelError`` error message is raised.
         """
         if model_filepath is None:
             msg = f"TbRom model cannot be instantiated with {model_filepath} as the resource directory path."
