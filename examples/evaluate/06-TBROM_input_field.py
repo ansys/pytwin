@@ -1,7 +1,7 @@
 """.. _ref_example_TBROM_images:
 
-3D field ROM example for input field snapshot projection as well as snapshot generation on demand
--------------------------------------------------------------------------------------------------
+3D field ROM example for input field snapshot projection and snapshot generation on demand
+------------------------------------------------------------------------------------------
 
 This example shows how PyTwin can be used to load and evaluate a twin model which has a field ROM with inputs
 parameterized by both scalar and field data. The example shows also how to evaluate the output field data in the form
