@@ -298,23 +298,27 @@ class TwinModel(Model):
                     self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
 
             if runtime_init:
-                self._twin_runtime.twin_initialize()
-                if self.nb_tbrom > 0:
-                    tbrom_dict = dict()
-                    for model_name in self.tbrom_names:
-                        tbrom_resdir = self._tbrom_resource_directory(model_name)
-                        if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
-                            tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
-                            self._tbrom_init(tbrom)
-                            tbrom_dict.update({model_name: tbrom})
-                    self._tbroms = tbrom_dict
-                if inputfields is not None:
-                    for key, item in inputfields.items():
-                        if self._check_tbrom_input_field_dic_is_valid(key, item):
-                            tbrom = self._tbroms[key]
-                            for field_name, snapshot in item.items():
-                                tbrom.snapshot_projection(snapshot, field_name)
-                                self._update_tbrom_inmcs(tbrom, field_name)
+                if self._tbroms is None: # first initialization or subsequent initialization and no TBROM in the Twin
+                    self._twin_runtime.twin_initialize()
+                    if self.nb_tbrom > 0:
+                        tbrom_dict = dict()
+                        for model_name in self.tbrom_names:
+                            tbrom_resdir = self._tbrom_resource_directory(model_name)
+                            if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
+                                tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
+                                self._tbrom_init(tbrom)
+                                tbrom_dict.update({model_name: tbrom})
+                        self._tbroms = tbrom_dict
+                else: # not first initialization and there is TBROM in the twin
+                    if inputfields is not None:
+                        # extract input data related to input fields
+                        for key, item in inputfields.items():
+                            if self._check_tbrom_input_field_dic_is_valid(key, item):
+                                tbrom = self._tbroms[key]
+                                for field_name, snapshot in item.items():
+                                    tbrom.snapshot_projection(snapshot, field_name)
+                                    self._update_tbrom_inmcs(tbrom, field_name)
+                    self._twin_runtime.twin_initialize()
                 self._update_outputs()
 
         except Exception as e:
@@ -540,9 +544,11 @@ class TwinModel(Model):
             dic = list(tbrom.infmcs.values())[0]
             for key, item in dic.items():
                 self.inputs[key] = dic[key]
+                self._twin_runtime.twin_set_input_by_name(input_name=key, value=dic[key])
         else:
             for key, item in tbrom.infmcs[inputfield].items():
                 self.inputs[key] = tbrom.infmcs[inputfield][key]
+                self._twin_runtime.twin_set_input_by_name(input_name=key, value=tbrom.infmcs[inputfield][key])
 
     @property
     def evaluation_is_initialized(self):
@@ -789,10 +795,7 @@ class TwinModel(Model):
             msg += f"\nFor more information, see the model log file: {self.model_log}."
             self._raise_error(msg)
 
-    # TODO should we have twin_inputs update with latest row of batch and twin outputs update with latest results ?
-    # TODO so that we can then update any tbrom mode coef and have access to their functionalities
-    # TODO and handling inputs_snapshots files as optional ?
-    def evaluate_batch(self, inputs_df: pd.DataFrame):
+    def evaluate_batch(self, inputs_df: pd.DataFrame, input_fields: bool = False):
         """
         Evaluate the twin model with historical input values given in a data frame.
 
@@ -802,8 +805,14 @@ class TwinModel(Model):
             Historical input values stored in a Pandas dataframe. It must have a 'Time' column and all history
             for the twin model inputs that you want to simulate. The dataframe must have one input per column,
             starting at time instant `t=0.(s)`. If a twin model input is not found in a dataframe column,
-            this input is kept constant to its initialization value. The column header must match with a
+            this input is kept constant to its initialization value. The column header must match with
             a twin model input name.
+
+        input_fields: bool (optional)
+            Indicates whether input fields snapshots are considered as part of the inputs_df (True) or not (False). If
+            it is set to True, inputs_df is expected to have extra columns corresponding to TBROMs name with dictionary
+            of input fields snapshots ({"inputfieldname": snapshotpath}) for each time step of inputs_df.
+            Its default value is set to False
 
         Returns
         -------
@@ -846,6 +855,36 @@ class TwinModel(Model):
             msg += f" The first provided time instant is: {t0})."
             msg += "\nProvide inputs at time instant 't=0.s'."
             self._raise_error(msg)
+
+        if input_fields:
+            tbrom_names = self.tbrom_names
+            columns = list(inputs_df.columns[1::])
+            # identify columns associated to TBROM and create inputs_fields_df with corresponding inputs
+            input_fields_header = []
+            columns_tbrom = []
+            for item in columns:
+                if item in tbrom_names:
+                    columns_tbrom.append(item)
+                    tbrom = self._tbroms[item]
+                    inmcs = list(tbrom.infmcs.values())
+                    for ind in range(0, len(inmcs)):
+                        for key, item in inmcs[ind].items():
+                            input_fields_header.append(key)
+            data = []
+            # loop over the time points, and for each dictionary, check if value is valid, if so project and update corresponding inputs
+            for i, row in inputs_df.iterrows():
+                time = row['Time']
+                for tbrom in columns_tbrom:
+                    inputfields = row[tbrom]
+                    tbrom = self._tbroms[tbrom]
+                    for field_name, snapshot in inputfields.items():
+                        tbrom.snapshot_projection(snapshot, field_name)
+                        self._update_tbrom_inmcs(tbrom, field_name)
+                        data.append(list(tbrom.fieldinputmodecoefficients(field_name).values()))
+
+            df = pd.DataFrame(data, columns=input_fields_header)
+            for (columnName, columnData) in df.items():
+                inputs_df[columnName] = columnData.values
 
         # Ensure SDK conventions are fulfilled
         _inputs_df = self._create_dataframe_inputs(inputs_df)
@@ -1352,6 +1391,7 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
+            If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
             If rom_name is not included in the Twin's list of TBROM
             If name_selection is not included in the TBROM's list of Named Selections
 
@@ -1359,13 +1399,16 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
-        >>> model1 = TwinModel('model.twin')
-        >>> model1.initialize_evaluation()
-        >>> romname = model1.tbrom_names[0]
-        >>> nslist = model1.get_rom_nslist(romname)
-        >>> fieldresults = model1.snapshot_generation(romname, False, nslist[0])
+        >>> model = TwinModel('model.twin')
+        >>> model.initialize_evaluation()
+        >>> romname = model.tbrom_names[0]
+        >>> nslist = model.get_rom_nslist(romname)
+        >>> fieldresults = model.snapshot_generation(romname, False, nslist[0])
         """
         self._log_key = "SnapshotGeneration"
+
+        if not self.evaluation_is_initialized:
+            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
 
         try:
             if named_selection is not None:
@@ -1393,6 +1436,77 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
+    def snapshot_generation_batch(self, batch_results: pd.DataFrame, rom_name: str, named_selection: str = None):
+        """
+        Generate several field snapshots based on historical batch results of the Twin, for the full field or a specific
+        part. It returns a list of the paths of the different snapshots written on disk.
+
+        Parameters
+        ----------
+        batch_results : pandas.DataFrame
+            Historical output values stored in a Pandas dataframe. It must have a 'Time' column and all the time
+            instants for the twin model outputs that you want to post process, with one output per column.
+        rom_name : str
+            Name of the TBROM considered to generate the snapshot.
+        named_selection : str (optional)
+            Named selection on which the snasphot has to be generated.
+
+        Raises
+        ------
+        TwinModelError:
+            If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
+            If rom_name is not included in the Twin's list of TBROM
+            If name_selection is not included in the TBROM's list of Named Selections
+
+        Examples
+        --------
+        >>> import pandas as pd
+        >>> from pytwin import TwinModel
+        >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
+        >>> model = TwinModel('model.twin')
+        >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.], 'input1': [1., 2., 3.], 'input2': [1., 2., 3.]})
+        >>> model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
+        >>> romname = model.tbrom_names[0]
+        >>> nslist = model.get_rom_nslist(romname)
+        >>> outputs_df = model.evaluate_batch(inputs_df=inputs_df)
+        >>> fieldresults = model.snapshot_generation_batch(outputs_df, romname, nslist[0])
+        """
+        self._log_key = "SnapshotGenerationBatch"
+
+        if not self.evaluation_is_initialized:
+            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
+
+        if named_selection is not None:
+            if self._check_tbrom_snapshot_generation_args(rom_name, named_selection):
+                output_file = (self._tbroms[rom_name].outputfieldname + "_" + named_selection + "_")
+
+        else:
+            if self._check_tbrom_snapshot_generation_args(rom_name):
+                output_file = (self._tbroms[rom_name].outputfieldname + "_")
+
+        columns = batch_results.columns[1::]
+        outpath = []
+        for i, row in batch_results.iterrows():
+            time = row['Time']
+            self._evaluation_time = time
+            outputs = dict(zip(list(columns), row[list(columns)]))
+            """Update output values with twin model results at the current evaluation time."""
+            self._outputs = outputs
+            if self.nb_tbrom > 0:
+                for key, item in self._tbroms.items():
+                    if item.hasoutmcs:
+                        self._update_tbrom_outmcs(item)
+            """Generate the snapshot at the current evaluation time."""
+            try:
+                cur_output_file = output_file + ("{:.6f}".format(self.evaluation_time) + ".bin")
+                output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, cur_output_file)
+                outpath.append(self._tbroms[rom_name].snapshot_generation(True, output_file_path, named_selection))
+            except Exception as e:
+                msg = f"Something went wrong while generating the snapshot:"
+                msg += f"\n{str(e)}."
+                self._raise_error(msg)
+        return outpath
+
     def points_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
         """
         Generate a points file either in memory or on disk, for the full field or a specific part. It returns the field
@@ -1410,6 +1524,7 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
+            If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
             If rom_name is not included in the Twin's list of TBROM
             If name_selection is not included in the TBROM's list of Named Selections
 
@@ -1417,13 +1532,16 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
-        >>> model1 = TwinModel('model.twin')
-        >>> model1.initialize_evaluation()
-        >>> romname = model1.tbrom_names[0]
-        >>> nslist = model1.get_rom_nslist(romname)
-        >>> points = model1.points_generation(romname, False, nslist[0])
+        >>> model = TwinModel('model.twin')
+        >>> model.initialize_evaluation()
+        >>> romname = model.tbrom_names[0]
+        >>> nslist = model.get_rom_nslist(romname)
+        >>> points = model.points_generation(romname, False, nslist[0])
         """
         self._log_key = "PointsGeneration"
+
+        if not self.evaluation_is_initialized:
+            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
 
         try:
             if named_selection is not None:
@@ -1441,7 +1559,6 @@ class TwinModel(Model):
             msg = f"Something went wrong while generating the points file:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
-
 
 class TwinModelError(Exception):
     def __str__(self):

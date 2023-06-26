@@ -191,6 +191,7 @@ for i in range(0, len(rom_inputs)):
 sim_results = pd.DataFrame(
     results, columns=[input_name] + output_name_without_mcs + ["MaxDefSnapshot", "MaxDefSnapshotNs"], dtype=float
 )
+print(sim_results)
 
 ###############################################################################
 # Plot results
@@ -198,3 +199,21 @@ sim_results = pd.DataFrame(
 # Plot the results and save the image on disk.
 
 plot_result_comparison(sim_results)
+
+###############################################################################
+# Simulate the twin in batch mode
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reset/re-initialize the twin and run the simulation in batch mode, which
+# passes all the input data, simulates all the data points, and collects all
+# the outputs at once. The snapshots are then generated in a post-processing
+# step.
+
+dp_input = {input_name: rom_inputs[0]}
+dp_field_input = {romname: {fieldname: inputfieldsnapshots[0]}}
+twin_model.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
+# creation of the input DataFrame including input field snapshots
+input_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom_inputs,
+                         romname: [{fieldname: inputfieldsnapshot} for inputfieldsnapshot in inputfieldsnapshots]})
+results_batch_pd = twin_model.evaluate_batch(inputs_df=input_df, input_fields=True)
+print(results_batch_pd)
+output_snapshots = twin_model.snapshot_generation_batch(results_batch_pd, romname)
