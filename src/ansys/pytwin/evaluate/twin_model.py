@@ -298,7 +298,7 @@ class TwinModel(Model):
                     self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
 
             if runtime_init:
-                if self._tbroms is None: # first initialization or subsequent initialization and no TBROM in the Twin
+                if self._tbroms is None:  # first initialization or subsequent initialization and no TBROM in the Twin
                     self._twin_runtime.twin_initialize()
                     if self.nb_tbrom > 0:
                         tbrom_dict = dict()
@@ -309,7 +309,7 @@ class TwinModel(Model):
                                 self._tbrom_init(tbrom)
                                 tbrom_dict.update({model_name: tbrom})
                         self._tbroms = tbrom_dict
-                else: # not first initialization and there is TBROM in the twin
+                else:  # not first initialization and there is TBROM in the twin
                     if inputfields is not None:
                         # extract input data related to input fields
                         for key, item in inputfields.items():
@@ -886,7 +886,7 @@ class TwinModel(Model):
             data = []
             # loop over the time points, and for each dictionary, check if value is valid, if so project and update corresponding inputs
             for i, row in inputs_df.iterrows():
-                time = row['Time']
+                time = row["Time"]
                 for tbrom in columns_tbrom:
                     inputfields = row[tbrom]
                     tbrom = self._tbroms[tbrom]
@@ -896,7 +896,7 @@ class TwinModel(Model):
                         data.append(list(tbrom.fieldinputmodecoefficients(field_name).values()))
 
             df = pd.DataFrame(data, columns=input_fields_header)
-            for (columnName, columnData) in df.items():
+            for columnName, columnData in df.items():
                 inputs_df[columnName] = columnData.values
 
         # Ensure SDK conventions are fulfilled
@@ -1491,16 +1491,16 @@ class TwinModel(Model):
 
         if named_selection is not None:
             if self._check_tbrom_snapshot_generation_args(rom_name, named_selection):
-                output_file = (self._tbroms[rom_name].outputfieldname + "_" + named_selection + "_")
+                output_file = self._tbroms[rom_name].outputfieldname + "_" + named_selection + "_"
 
         else:
             if self._check_tbrom_snapshot_generation_args(rom_name):
-                output_file = (self._tbroms[rom_name].outputfieldname + "_")
+                output_file = self._tbroms[rom_name].outputfieldname + "_"
 
         columns = batch_results.columns[1::]
         outpath = []
         for i, row in batch_results.iterrows():
-            time = row['Time']
+            time = row["Time"]
             self._evaluation_time = time
             outputs = dict(zip(list(columns), row[list(columns)]))
             """Update output values with twin model results at the current evaluation time."""
@@ -1572,6 +1572,7 @@ class TwinModel(Model):
             msg = f"Something went wrong while generating the points file:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
+
 
 class TwinModelError(Exception):
     def __str__(self):

@@ -211,8 +211,13 @@ dp_input = {input_name: rom_inputs[0]}
 dp_field_input = {romname: {fieldname: inputfieldsnapshots[0]}}
 twin_model.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
 # creation of the input DataFrame including input field snapshots
-input_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom_inputs,
-                         romname: [{fieldname: inputfieldsnapshot} for inputfieldsnapshot in inputfieldsnapshots]})
+input_df = pd.DataFrame(
+    {
+        "Time": [0.0, 1.0, 2.0],
+        input_name_without_mcs[0]: rom_inputs,
+        romname: [{fieldname: inputfieldsnapshot} for inputfieldsnapshot in inputfieldsnapshots],
+    }
+)
 results_batch_pd = twin_model.evaluate_batch(inputs_df=input_df, input_fields=True)
 print(results_batch_pd)
 output_snapshots = twin_model.snapshot_generation_batch(results_batch_pd, romname)
