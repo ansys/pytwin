@@ -191,7 +191,6 @@ for i in range(0, len(rom_inputs)):
 sim_results = pd.DataFrame(
     results, columns=[input_name] + output_name_without_mcs + ["MaxDefSnapshot", "MaxDefSnapshotNs"], dtype=float
 )
-print(sim_results)
 
 ###############################################################################
 # Plot results

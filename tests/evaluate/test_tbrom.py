@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 from pytwin import TwinModel, TwinModelError
 
@@ -22,6 +23,11 @@ TEST_TB_ROM10 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_10.t
 INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
 INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
 
+TEST_TB_ROM_Batch = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_FieldInput_23R1.twin")
+INPUT_SNAPSHOTS = [os.path.join(os.path.dirname(__file__), "data", "TEMP_1.bin"),
+                   os.path.join(os.path.dirname(__file__), "data", "TEMP_2.bin"),
+                   os.path.join(os.path.dirname(__file__), "data", "TEMP_3.bin")]
+rom_inputs = [4000000, 5000000, 6000000]
 
 def reinit_settings():
     import shutil
@@ -420,3 +426,59 @@ class TestTbRom:
             # -> point file available
         except TwinModelError as e:
             assert "not find the geometry file" in str(e)
+
+    def test_batch_evaluation_Twin_with_TbRom_inputField(self):
+        # objective : confirm that batch evaluation with field inputs give same results as batch evaluation with
+        # scalar inputs
+        model_filepath = TEST_TB_ROM_Batch
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+
+        input_name_without_mcs = []
+        input_name_all = list(twinmodel.inputs.keys())
+        for i in input_name_all:
+            if "mode" not in i:
+                input_name_without_mcs.append(i)
+        input_name = input_name_without_mcs[0]
+
+        output_name_all = list(twinmodel.outputs.keys())
+        output_name_without_mcs = []
+        for i in output_name_all:
+            if "mode" not in i:
+                output_name_without_mcs.append(i)
+
+        scalar_inputs = []
+        names = ['Time']
+        for el in list(twinmodel.inputs.keys()):
+            names.append(el)
+        time = [0.0, 1.0, 2.0]
+        # first we loop over each DP/time point to get the corresponding scalar inputs after having used
+        # initialization method
+        for i in range(0, len(rom_inputs)):
+            inputs = []
+            # initialize twin with input values and collect output value
+            dp = rom_inputs[i]
+            dp_input = {input_name: dp}
+            dp_field_input = {romname: {fieldname: INPUT_SNAPSHOTS[i]}}
+            twinmodel.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
+            inputs.append(time[i])
+            for el in list(twinmodel.inputs.values()):
+                inputs.append(el)
+            scalar_inputs.append(inputs)
+
+        batch_scalar_df = pd.DataFrame(scalar_inputs, columns=names)
+        batch_field_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom_inputs,
+                                 romname: [{fieldname: inputfieldsnapshot} for inputfieldsnapshot in
+                                           INPUT_SNAPSHOTS]})
+        dp_input = {input_name: rom_inputs[0]}
+        dp_field_input = {romname: {fieldname: INPUT_SNAPSHOTS[0]}}
+        twinmodel.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
+
+        res_scalar = twinmodel.evaluate_batch(batch_scalar_df)
+
+        twinmodel.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
+        res_field = twinmodel.evaluate_batch(batch_field_df, input_fields=True)
+
+        assert res_scalar.equals(res_field) is True

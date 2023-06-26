@@ -828,11 +828,24 @@ class TwinModel(Model):
 
         Examples
         --------
+        Example 1: Batch evaluation
         >>> import pandas as pd
         >>> from pytwin import TwinModel
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.], 'input1': [1., 2., 3.], 'input2': [1., 2., 3.]})
         >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
+        >>> outputs_df = twin_model.evaluate_batch(inputs_df=inputs_df)
+        Example 2: Batch evaluation with input fields
+        >>> import pandas as pd
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> romname = model.tbrom_names[0]
+        >>> fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
+        >>> dp_inputfield = {romname: {fieldname: 'path_to_snasphot_t0.twin'}}
+        >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.}, inputfields=dp_inputfield)
+        >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.], 'input1': [1., 2., 3.], 'input2': [1., 2., 3.]},
+        >>>        romname: [{fieldname: 'path_to_snasphot_t0.twin'}, {fieldname: 'path_to_snasphot_t1.twin'},
+        >>>                  {fieldname: 'path_to_snasphot_t2.twin'}]})
         >>> outputs_df = twin_model.evaluate_batch(inputs_df=inputs_df)
         """
         self._log_key = "EvaluateBatch"
