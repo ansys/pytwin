@@ -79,7 +79,7 @@ class TwinModel(Model):
         """
         Close twin runtime when object is garbage collected.
         """
-        if self._twin_runtime is not None:
+        if self._twin_runtime is not None and self._twin_runtime.is_model_initialized is False:
             self._twin_runtime.twin_close()
 
     def _check_model_filepath_is_valid(self, model_filepath):
