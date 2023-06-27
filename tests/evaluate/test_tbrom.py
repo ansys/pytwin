@@ -1,6 +1,6 @@
 import os
-import pandas as pd
 
+import pandas as pd
 from pytwin import TwinModel, TwinModelError
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
@@ -24,10 +24,13 @@ INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot
 INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
 
 TEST_TB_ROM_Batch = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_FieldInput_23R1.twin")
-INPUT_SNAPSHOTS = [os.path.join(os.path.dirname(__file__), "data", "TEMP_1.bin"),
-                   os.path.join(os.path.dirname(__file__), "data", "TEMP_2.bin"),
-                   os.path.join(os.path.dirname(__file__), "data", "TEMP_3.bin")]
+INPUT_SNAPSHOTS = [
+    os.path.join(os.path.dirname(__file__), "data", "TEMP_1.bin"),
+    os.path.join(os.path.dirname(__file__), "data", "TEMP_2.bin"),
+    os.path.join(os.path.dirname(__file__), "data", "TEMP_3.bin"),
+]
 rom_inputs = [4000000, 5000000, 6000000]
+
 
 def reinit_settings():
     import shutil
@@ -450,7 +453,7 @@ class TestTbRom:
                 output_name_without_mcs.append(i)
 
         scalar_inputs = []
-        names = ['Time']
+        names = ["Time"]
         for el in list(twinmodel.inputs.keys()):
             names.append(el)
         time = [0.0, 1.0, 2.0]
@@ -469,9 +472,13 @@ class TestTbRom:
             scalar_inputs.append(inputs)
 
         batch_scalar_df = pd.DataFrame(scalar_inputs, columns=names)
-        batch_field_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom_inputs,
-                                 romname: [{fieldname: inputfieldsnapshot} for inputfieldsnapshot in
-                                           INPUT_SNAPSHOTS]})
+        batch_field_df = pd.DataFrame(
+            {
+                "Time": [0.0, 1.0, 2.0],
+                input_name_without_mcs[0]: rom_inputs,
+                romname: [{fieldname: inputfieldsnapshot} for inputfieldsnapshot in INPUT_SNAPSHOTS],
+            }
+        )
         dp_input = {input_name: rom_inputs[0]}
         dp_field_input = {romname: {fieldname: INPUT_SNAPSHOTS[0]}}
         twinmodel.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
