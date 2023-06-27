@@ -7,7 +7,7 @@ import numpy as np
 
 class TbRom:
     """
-    Instantiates a TBROM that is part of a Twin file created by Ansys Twin Builder.
+    Instantiates a TBROM that is part of a TWIN file created by Ansys Twin Builder.
 
     After a twin model is initialized and its TBROM is instantiated, additional functionalities
     are available to generate snapshots (in memory or on disk) and project input field data
@@ -16,9 +16,11 @@ class TbRom:
     Parameters
     ----------
     tbrom_name : str
-        Name of the TBROM included in the twin file.
+        Name of the TBROM included in the TWIN file (it is the name of the TBROM component inserted in the Twin Builder
+        subsheet used to assemble the TWIN model).
     tbrom_path : str
-        File path to the folder with TBROM files.
+        File path to the folder with TBROM files (it is the temporary directory used by the Twin Runtime SDK for the
+        evaluation of this TBROM).
     """
 
     IN_F_KEY = "binaryInputField"
@@ -29,7 +31,7 @@ class TbRom:
 
     def __init__(self, tbrom_name: str, tbrom_path: str):
         self._tbrom_path = tbrom_path
-        self._tbrom_name = tbrom_name
+        self._name = tbrom_name
         self._infmcs = None
         self._outmcs = None
         self._infbasis = None
@@ -58,7 +60,7 @@ class TbRom:
         self._outunit = unit
         self._outputfilespath = None
 
-    def points_generation(self, on_disk: bool, output_file_path: str, named_selection: str = None):
+    def generate_points(self, named_selection: str, on_disk: bool, output_file_path: str):
         """
         Generate a point file for the full field or a specific part.
 
@@ -78,7 +80,7 @@ class TbRom:
         pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         vec = np.array(TbRom._read_binary(pointpath))
         if named_selection is not None:
-            pointsids = self.namedselectionids(named_selection)
+            pointsids = self.named_selection_indexes(named_selection)
             listids = []
             for i in pointsids:
                 for k in range(0, 3):
@@ -90,7 +92,7 @@ class TbRom:
         else:
             return vec
 
-    def snapshot_generation(self, on_disk: bool, output_file_path: str, named_selection: str = None):
+    def generate_snapshot(self, on_disk: bool, output_file_path: str, named_selection: str = None):
         """
         Generate a field snapshot based on current states of the TBROM for the
         full field or a specific part.
@@ -117,11 +119,11 @@ class TbRom:
             mnp = np.array(basis[i])
             vec = vec + mc[i] * mnp
         if named_selection is not None:
-            pointsids = self.namedselectionids(named_selection)
+            pointsids = self.named_selection_indexes(named_selection)
             listids = []
             for i in pointsids:
-                for k in range(0, self.outputfielddimensionality):
-                    listids.append(i * self.outputfielddimensionality + k)
+                for k in range(0, self.field_output_dim):
+                    listids.append(i * self.field_output_dim + k)
             vec = vec[listids]
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
@@ -129,7 +131,7 @@ class TbRom:
         else:
             return vec
 
-    def snapshot_projection(self, snapshot: str, fieldname: str = None):
+    def project_input_field(self, snapshot: str, input_field_name: str = None):
         """
         Project a snapshot file associated to the input field name ``fieldname``
 
@@ -137,41 +139,35 @@ class TbRom:
         ----------
         snapshot: str
             Path of the input field snapshot file
-        fieldname: str (optional)
+        input_field_name: str (optional)
             Name of the input field to project the snapshot. The name of the field must be specified in case the TBROM
             is parameterized with multiple input fields.
         """
         mc = []
         vec = TbRom._read_binary(snapshot)
         vecnp = np.array(vec)
-        if fieldname is None or self.numberinputfields == 1:
+        if input_field_name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
         else:
-            basis = self._infbasis[fieldname]
+            basis = self._infbasis[input_field_name]
         nb_mc = len(basis)
         for i in range(nb_mc):
             mnp = np.array(basis[i])
             mci = mnp.dot(vecnp)
             mc.append(mci)
-        if fieldname is None or self.numberinputfields == 1:
+        if input_field_name is None or self.field_input_count == 1:
             index = 0
-            for item, key in self._infmcs[self.nameinputfields[0]].items():
-                self._infmcs[self.nameinputfields[0]][item] = mc[index]
+            for item, key in self._infmcs[self.field_input_names[0]].items():
+                self._infmcs[self.field_input_names[0]][item] = mc[index]
                 index = index + 1
         else:
             index = 0
-            for item, key in self._infmcs[fieldname].items():
-                self._infmcs[fieldname][item] = mc[index]
+            for item, key in self._infmcs[input_field_name].items():
+                self._infmcs[input_field_name][item] = mc[index]
                 index = index + 1
 
-    def namedselectionids(self, nsname: str):
+    def named_selection_indexes(self, nsname: str):
         return self._nsidslist[nsname]
-
-    def fieldinputmodecoefficients(self, fieldname: str):
-        return self._infmcs[fieldname]
-
-    def hasinfmcs(self, fieldname: str):
-        return self._hasinfmcs[fieldname]
 
     def input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
@@ -238,41 +234,35 @@ class TbRom:
         return nbdof
 
     @property
-    def outmcs(self):
-        return self._outmcs
-
-    @property
-    def hasoutmcs(self):
-        return self._hasoutmcs
-
-    @property
-    def tbromname(self):
-        return self._tbrom_name
-
-    @property
-    def numberinputfields(self):
+    def field_input_count(self):
+        """Return the number of field input(s) that can be used for this TBROM."""
         return len(self._infbasis)
 
     @property
-    def nameinputfields(self):
+    def field_input_names(self):
+        """Return a list of the input field names that can be used for this TBROM."""
         return list(self._infbasis.keys())
 
     @property
-    def infmcs(self):
-        return self._infmcs
+    def field_output_dim(self):
+        """Return the dimension of the field output."""
+        return self._outdim
 
     @property
-    def nsnames(self):
-        return list(self._nsidslist.keys())
-
-    @property
-    def outputfieldname(self):
+    def field_output_name(self):
+        """Return the field output name."""
         return self._outname
 
     @property
-    def outputfieldunit(self):
+    def field_output_unit(self):
+        """Return the field output unit."""
         return self._outunit
 
     @property
-    def outputfielddimensionality(self):
-        return self._outdim
+    def named_selections(self):
+        """Return the list of named selections available for this TBROM."""
+        return list(self._nsidslist.keys())
+
+    @property
+    def name(self):
+        return self._name
