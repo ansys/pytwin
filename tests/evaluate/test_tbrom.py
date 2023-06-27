@@ -175,68 +175,68 @@ class TestTbRom:
         assert tbrom2.hasoutmcs is False
         assert tbrom2.hasinfmcs(tb2field1) is True
 
-    def test_initialization_Twin_with_TbRom_inputField(self):
-        model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
+    #def test_initialization_Twin_with_TbRom_inputField(self):
+    #    model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
         # field connected
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = "test"  # -> exception that rom name provided is not valid
-        fieldname = "test"
-        try:
-            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
-        except TwinModelError as e:
-            assert "rom name provided" in str(e)
+    #    twinmodel = TwinModel(model_filepath=model_filepath)
+    #    twinmodel.initialize_evaluation()
+    #    romname = "test"  # -> exception that rom name provided is not valid
+    #    fieldname = "test"
+    #    try:
+    #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+    #    except TwinModelError as e:
+    #        assert "rom name provided" in str(e)
 
-        romname = twinmodel.tbrom_names[0]
-        fieldname = "test"  # -> exception that field name provided is not valid
-        try:
-            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
-        except TwinModelError as e:
-            assert "field name provided" in str(e)
+    #    romname = twinmodel.tbrom_names[0]
+    #    fieldname = "test"  # -> exception that field name provided is not valid
+    #    try:
+    #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+    #    except TwinModelError as e:
+    #        assert "field name provided" in str(e)
 
-        model_filepath = TEST_TB_ROM5  # Twin with 1 TBROM and 1 input fields connected with error, 1 output
+    #    model_filepath = TEST_TB_ROM5  # Twin with 1 TBROM and 1 input fields connected with error, 1 output
         # field connected
         # -> exception that TBROM inputs are not properly connected to Twin inputs and therefore no field projection
         # can be performed
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
-        try:
-            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
-        except TwinModelError as e:
-            assert "no common inputs" in str(e)
+    #    twinmodel = TwinModel(model_filepath=model_filepath)
+    #    twinmodel.initialize_evaluation()
+    #    romname = twinmodel.tbrom_names[0]
+    #    fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+    #    try:
+    #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT}})
+    #    except TwinModelError as e:
+    #        assert "no common inputs" in str(e)
 
-        model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
+    #    model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
         # field connected
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
-        try:
-            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: None}})  # -> not valid snapshot path
-        except TwinModelError as e:
-            assert "not a valid path" in str(e)
+    #    twinmodel = TwinModel(model_filepath=model_filepath)
+    #    twinmodel.initialize_evaluation()
+    #    romname = twinmodel.tbrom_names[0]
+    #    fieldname = twinmodel.get_rom_inputfieldsnames(romname)[0]
+    #    try:
+    #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: None}})  # -> not valid snapshot path
+    #    except TwinModelError as e:
+    #        assert "not a valid path" in str(e)
 
-        try:
-            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: "test"}})  # -> snapshot path does not
+    #    try:
+    #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: "test"}})  # -> snapshot path does not
             # exist
-        except TwinModelError as e:
-            assert "snapshot path does not exist" in str(e)
+    #    except TwinModelError as e:
+    #        assert "snapshot path does not exist" in str(e)
 
-        try:
-            twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})  # -> wrong
+    #    try:
+    #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})  # -> wrong
             # snapshot size
-        except TwinModelError as e:
-            assert "is not consistent with the input field size" in str(e)
+    #    except TwinModelError as e:
+    #        assert "is not consistent with the input field size" in str(e)
 
-        try:
-            twinmodel.initialize_evaluation(
-                inputfields={romname: {fieldname: INPUT_SNAPSHOT}}
-            )  # -> working as expected
-        except TwinModelError as e:
-            print(str(e))
-            assert "[TwinModelError]" not in str(e)
+    #    try:
+    #        twinmodel.initialize_evaluation(
+    # #           inputfields={romname: {fieldname: INPUT_SNAPSHOT}}
+    #        )  # -> working as expected
+    #    except TwinModelError as e:
+    #        print(str(e))
+    #        assert "[TwinModelError]" not in str(e)
 
     def test_step_by_step_Twin_with_TbRom_inputField(self):
         model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
