@@ -1429,7 +1429,7 @@ class TwinModel(Model):
         >>> model1.initialize_evaluation()
         >>> romname = model1.tbrom_names[0]
         >>> nslist = model1.get_named_selections(romname)
-        >>> points = model1.generate_points(False,nslist[0],romname)
+        >>> points = model1.generate_points(nslist[0], romname, False)
         """
         self._log_key = "GeneratePoints"
 
