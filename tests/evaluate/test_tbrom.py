@@ -178,9 +178,9 @@ class TestTbRom:
         assert tbrom2.hasoutmcs is False
         assert tbrom2.hasinfmcs(tb2field1) is True
 
-    #def test_initialization_Twin_with_TbRom_inputField(self):
+    # def test_initialization_Twin_with_TbRom_inputField(self):
     #    model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
-        # field connected
+    # field connected
     #    twinmodel = TwinModel(model_filepath=model_filepath)
     #    twinmodel.initialize_evaluation()
     #    romname = "test"  # -> exception that rom name provided is not valid
@@ -198,9 +198,9 @@ class TestTbRom:
     #        assert "field name provided" in str(e)
 
     #    model_filepath = TEST_TB_ROM5  # Twin with 1 TBROM and 1 input fields connected with error, 1 output
-        # field connected
-        # -> exception that TBROM inputs are not properly connected to Twin inputs and therefore no field projection
-        # can be performed
+    # field connected
+    # -> exception that TBROM inputs are not properly connected to Twin inputs and therefore no field projection
+    # can be performed
     #    twinmodel = TwinModel(model_filepath=model_filepath)
     #    twinmodel.initialize_evaluation()
     #    romname = twinmodel.tbrom_names[0]
@@ -211,7 +211,7 @@ class TestTbRom:
     #        assert "no common inputs" in str(e)
 
     #    model_filepath = TEST_TB_ROM3  # Twin with 1 TBROM and 2 input fields both connected, 1 output
-        # field connected
+    # field connected
     #    twinmodel = TwinModel(model_filepath=model_filepath)
     #    twinmodel.initialize_evaluation()
     #    romname = twinmodel.tbrom_names[0]
@@ -223,13 +223,13 @@ class TestTbRom:
 
     #    try:
     #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: "test"}})  # -> snapshot path does not
-            # exist
+    # exist
     #    except TwinModelError as e:
     #        assert "snapshot path does not exist" in str(e)
 
     #    try:
     #        twinmodel.initialize_evaluation(inputfields={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})  # -> wrong
-            # snapshot size
+    # snapshot size
     #    except TwinModelError as e:
     #        assert "is not consistent with the input field size" in str(e)
 
