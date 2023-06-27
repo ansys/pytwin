@@ -131,7 +131,7 @@ class TbRom:
         else:
             return vec
 
-    def project_input_field(self, snapshot: str, input_field_name: str = None):
+    def project_input_field(self, snapshot: str, field_input_name: str = None):
         """
         Project a snapshot file associated to the input field name ``fieldname``
 
@@ -139,31 +139,31 @@ class TbRom:
         ----------
         snapshot: str
             Path of the input field snapshot file
-        input_field_name: str (optional)
+        field_input_name: str (optional)
             Name of the input field to project the snapshot. The name of the field must be specified in case the TBROM
             is parameterized with multiple input fields.
         """
         mc = []
         vec = TbRom._read_binary(snapshot)
         vecnp = np.array(vec)
-        if input_field_name is None or self.field_input_count == 1:
+        if field_input_name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
         else:
-            basis = self._infbasis[input_field_name]
+            basis = self._infbasis[field_input_name]
         nb_mc = len(basis)
         for i in range(nb_mc):
             mnp = np.array(basis[i])
             mci = mnp.dot(vecnp)
             mc.append(mci)
-        if input_field_name is None or self.field_input_count == 1:
+        if field_input_name is None or self.field_input_count == 1:
             index = 0
             for item, key in self._infmcs[self.field_input_names[0]].items():
                 self._infmcs[self.field_input_names[0]][item] = mc[index]
                 index = index + 1
         else:
             index = 0
-            for item, key in self._infmcs[input_field_name].items():
-                self._infmcs[input_field_name][item] = mc[index]
+            for item, key in self._infmcs[field_input_name].items():
+                self._infmcs[field_input_name][item] = mc[index]
                 index = index + 1
 
     def named_selection_indexes(self, nsname: str):
