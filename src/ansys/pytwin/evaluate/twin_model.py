@@ -313,7 +313,7 @@ class TwinModel(Model):
                         if self._check_tbrom_input_field_dic_is_valid(key, item):
                             tbrom = self._tbroms[key]
                             for field_name, snapshot in item.items():
-                                tbrom.project_input_field(snapshot, field_name)
+                                tbrom.project_field_input(snapshot, field_name)
                                 self._update_tbrom_inmcs(tbrom, field_name)
                 self._update_outputs()
 
@@ -783,7 +783,7 @@ class TwinModel(Model):
                     if self._check_tbrom_input_field_dic_is_valid(key, item):
                         tbrom = self._tbroms[key]
                         for field_name, snapshot in item.items():
-                            tbrom.project_input_field(snapshot, field_name)
+                            tbrom.project_field_input(snapshot, field_name)
                             self._update_tbrom_inmcs(tbrom, field_name)
 
         try:

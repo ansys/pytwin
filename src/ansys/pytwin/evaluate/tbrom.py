@@ -131,7 +131,7 @@ class TbRom:
         else:
             return vec
 
-    def project_input_field(self, snapshot: str, field_input_name: str = None):
+    def project_field_input(self, snapshot: str, field_input_name: str = None):
         """
         Project a snapshot file associated to the input field name ``fieldname``
 
