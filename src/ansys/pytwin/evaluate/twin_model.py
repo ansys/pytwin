@@ -884,7 +884,8 @@ class TwinModel(Model):
                         for key, item in inmcs[ind].items():
                             input_fields_header.append(key)
             data = []
-            # loop over the time points, and for each dictionary, check if value is valid, if so project and update corresponding inputs
+            # loop over the time points, and for each dictionary, check if value is valid, if so project and update
+            # corresponding inputs
             for i, row in inputs_df.iterrows():
                 time = row["Time"]
                 for tbrom in columns_tbrom:
