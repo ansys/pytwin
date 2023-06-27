@@ -643,11 +643,9 @@ class TwinModel(Model):
         """
         return len(self.tbrom_names)
 
-    def initialize_evaluation(self,
-                              parameters: dict = None,
-                              inputs: dict = None,
-                              field_inputs: dict = None,
-                              json_config_filepath: str = None):
+    def initialize_evaluation(
+        self, parameters: dict = None, inputs: dict = None, field_inputs: dict = None, json_config_filepath: str = None
+    ):
         """
         Initialize evaluation of a twin model.
 
@@ -1393,7 +1391,7 @@ class TwinModel(Model):
             else:
                 if self._check_tbrom_snapshot_generation_args(rom_name):
                     output_file = (
-                            self._tbroms[rom_name].field_output_name + "_" + "{:.6f}".format(self.evaluation_time) + ".bin"
+                        self._tbroms[rom_name].field_output_name + "_" + "{:.6f}".format(self.evaluation_time) + ".bin"
                     )
                     output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
                     return self._tbroms[rom_name].generate_snapshot(on_disk, output_file_path, named_selection)

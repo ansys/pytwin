@@ -1,7 +1,6 @@
 import os
 
 import numpy as np
-
 from pytwin import TwinModel, TwinModelError
 from pytwin.evaluate.tbrom import TbRom
 
@@ -256,9 +255,7 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         fieldname = twinmodel.get_field_input_names(romname)[0]
-        twinmodel.initialize_evaluation(
-            field_inputs={romname: {fieldname: INPUT_SNAPSHOT}}
-        )
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
         assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
         assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
@@ -284,7 +281,8 @@ class TestTbRom:
         # Raise an exception if provided field input name is not valid
         try:
             twinmodel.initialize_evaluation(
-                field_inputs={twinmodel.tbrom_names[0]: {"unknown_infield": INPUT_SNAPSHOT}})
+                field_inputs={twinmodel.tbrom_names[0]: {"unknown_infield": INPUT_SNAPSHOT}}
+            )
         except TwinModelError as e:
             assert "field name provided" in str(e)
 
