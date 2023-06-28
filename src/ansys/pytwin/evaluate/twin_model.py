@@ -465,63 +465,47 @@ class TwinModel(Model):
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
+    def _field_input_port_name(self, field: str, mode_idx: int, rom_name: str = None):
+        if self.tbrom_count > 1:
+            return field + "_mode_" + str(mode_idx) + "_" + rom_name
+        return field + "_mode_" + str(mode_idx)
+
+    def _field_output_port_name(self, mode_idx: int, rom_name: str = None):
+        if self.tbrom_count > 1:
+            return "outField" + "_mode_" + str(mode_idx) + "_" + rom_name
+        return "outField" + "_mode_" + str(mode_idx)
+
     def _tbrom_init(self, tbrom: TbRom):
         """
         Initialize the tbrom attributes and connect with the Twin inputs/outputs.
         """
-        if self.tbrom_count > 1:
-            if tbrom.field_input_count > 0:
-                infmcs = dict()
-                hasinfmcs = dict()
-                for field in tbrom.field_input_names:
-                    inmcs = dict()
-                    for i in range(0, len(tbrom._infbasis[field])):
-                        for key, item in self.inputs.items():
-                            if field + "_mode_" + str(i) + "_" + tbrom.name in key:
-                                inmcs.update({key: item})
-                    if len(inmcs) == len(tbrom._infbasis[field]):
-                        infmcs.update({field: inmcs})
-                        hasinfmcs.update({field: True})
-                    else:
-                        hasinfmcs.update({field: False})
-                tbrom._infmcs = infmcs
-                tbrom._hasinfmcs = hasinfmcs
+        if tbrom.field_input_count > 0:
+            infmcs = dict()
+            hasinfmcs = dict()
+            for field in tbrom.field_input_names:
+                inmcs = dict()
+                for i in range(0, len(tbrom._infbasis[field])):
+                    for key, item in self.inputs.items():
+                        input_port_name = self._field_input_port_name(field, i, tbrom.name)
+                        if input_port_name in key:
+                            inmcs.update({key: item})
+                if len(inmcs) == len(tbrom._infbasis[field]):
+                    infmcs.update({field: inmcs})
+                    hasinfmcs.update({field: True})
+                else:
+                    hasinfmcs.update({field: False})
+            tbrom._infmcs = infmcs
+            tbrom._hasinfmcs = hasinfmcs
 
-            outmcs = dict()
-            for i in range(1, len(tbrom._outbasis) + 1):
-                for key, item in self.outputs.items():
-                    if "outField" + "_mode_" + str(i) + "_" + tbrom.name in key:
-                        outmcs.update({key: item})
-            if len(outmcs) == len(tbrom._outbasis):
-                tbrom._outmcs = outmcs
-                tbrom._hasoutmcs = True
-
-        else:
-            if tbrom.field_input_count > 0:
-                infmcs = dict()
-                hasinfmcs = dict()
-                for field in tbrom.field_input_names:
-                    inmcs = dict()
-                    for i in range(0, len(tbrom._infbasis[field])):
-                        for key, item in self.inputs.items():
-                            if field + "_mode_" + str(i) in key:
-                                inmcs.update({key: item})
-                    if len(inmcs) == len(tbrom._infbasis[field]):
-                        infmcs.update({field: inmcs})
-                        hasinfmcs.update({field: True})
-                    else:
-                        hasinfmcs.update({field: False})
-                tbrom._infmcs = infmcs
-                tbrom._hasinfmcs = hasinfmcs
-
-            outmcs = dict()
-            for i in range(1, len(tbrom._outbasis) + 1):
-                for key, item in self.outputs.items():
-                    if "outField" + "_mode_" + str(i) in key:
-                        outmcs.update({key: item})
-            if len(outmcs) == len(tbrom._outbasis):
-                tbrom._outmcs = outmcs
-                tbrom._hasoutmcs = True
+        outmcs = dict()
+        for i in range(1, len(tbrom._outbasis) + 1):
+            for key, item in self.outputs.items():
+                output_port_name = self._field_output_port_name(i, tbrom.name)
+                if output_port_name in key:
+                    outmcs.update({key: item})
+        if len(outmcs) == len(tbrom._outbasis):
+            tbrom._outmcs = outmcs
+            tbrom._hasoutmcs = True
 
         tbrom._outputfilespath = os.path.join(self.tbrom_directory_path, tbrom.name)
 
