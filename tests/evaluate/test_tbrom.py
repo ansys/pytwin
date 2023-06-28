@@ -107,7 +107,7 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
-        tbrom1 = twinmodel.tbroms[name]
+        tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is False
         assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is False
@@ -124,7 +124,7 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
-        tbrom1 = twinmodel.tbroms[name]
+        tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True
@@ -141,7 +141,7 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
-        tbrom1 = twinmodel.tbroms[name]
+        tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True  # pressure
@@ -158,7 +158,7 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
-        tbrom1 = twinmodel.tbroms[name]
+        tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 1
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is False

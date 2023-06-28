@@ -361,7 +361,7 @@ class TestTwinModel:
         m_count = 10
         for m in range(m_count):
             model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
-            time.sleep(2)
+            time.sleep(1)
         wd = get_pytwin_working_dir()
         temp = os.listdir(wd)
         assert len(os.listdir(wd)) == m_count + 2

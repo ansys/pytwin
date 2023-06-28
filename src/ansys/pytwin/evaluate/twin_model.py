@@ -602,13 +602,6 @@ class TwinModel(Model):
         return self._model_filepath
 
     @property
-    def tbroms(self):
-        """
-        Return a dictionary of the available tbrom objects.
-        """
-        return self._tbroms
-
-    @property
     def tbrom_info(self):
         """
         Dictionary with TBROM model names included in the twin model and their corresponding 3D visualization
