@@ -110,8 +110,8 @@ class TestTbRom:
         tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is False
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is False
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[1]] is False
+        assert tbrom1._hasinfmcs["inputPressure"] is False
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
 
     def test_initialize_evaluation_tbrom3(self):
         """
@@ -127,8 +127,8 @@ class TestTbRom:
         tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[1]] is True
+        assert tbrom1._hasinfmcs["inputPressure"] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is True
 
     def test_initialize_evaluation_tbrom4(self):
         """
@@ -142,19 +142,10 @@ class TestTbRom:
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
         tbrom1 = twinmodel._tbroms[name]
-        print("\n")
-        print("inputs", twinmodel.inputs)
-        print("infmcs", tbrom1._infmcs)
-        print(tbrom1.field_input_names[0],
-              f"m:{len(tbrom1._infbasis[tbrom1.field_input_names[0]])}",
-              f"n:{len(tbrom1._infbasis[tbrom1.field_input_names[0]][0])}")
-        print(tbrom1.field_input_names[1],
-              f"m:{len(tbrom1._infbasis[tbrom1.field_input_names[1]])}",
-              f"n:{len(tbrom1._infbasis[tbrom1.field_input_names[1]][0])}")
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True  # pressure
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[1]] is False  # temperature
+        assert tbrom1._hasinfmcs["inputPressure"] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
 
     def test_initialize_evaluation_tbrom5(self):
         """
@@ -170,7 +161,7 @@ class TestTbRom:
         tbrom1 = twinmodel._tbroms[name]
         assert tbrom1.field_input_count is 1
         assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is False
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
 
     def test_initialize_evaluation_tbrom6(self):
         """
@@ -186,14 +177,11 @@ class TestTbRom:
         tbrom2 = twinmodel._tbroms[twinmodel.tbrom_names[1]]  # tbrom with 2 field
         assert tbrom1.field_input_count is 1
         assert tbrom2.field_input_count is 2
-        tb1field1 = tbrom1.field_input_names[0]
         assert tbrom1._hasoutmcs is False
-        assert tbrom1._hasinfmcs[tb1field1] is False
-        tb2field1 = tbrom2.field_input_names[0]
-        tb2field2 = tbrom2.field_input_names[1]
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
         assert tbrom2._hasoutmcs is True
-        assert tbrom2._hasinfmcs[tb2field1] is True  # pressure
-        assert tbrom2._hasinfmcs[tb2field2] is True  # temperature
+        assert tbrom2._hasinfmcs["inputPressure"] is True
+        assert tbrom2._hasinfmcs["inputTemperature"] is True
 
     def test_initialize_evaluation_tbrom7(self):
         """
@@ -211,10 +199,10 @@ class TestTbRom:
         assert tbrom1.field_input_count is 1
         assert tbrom2.field_input_count is 2
         assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is True
         assert tbrom2._hasoutmcs is True
-        assert tbrom2._hasinfmcs[tbrom2.field_input_names[0]] is True  # pressure
-        assert tbrom2._hasinfmcs[tbrom2.field_input_names[1]] is False  # temperature
+        assert tbrom2._hasinfmcs["inputPressure"] is True
+        assert tbrom2._hasinfmcs["inputTemperature"] is False
 
     def test_initialize_evaluation_tbrom8(self):
         """
@@ -232,10 +220,10 @@ class TestTbRom:
         assert tbrom1.field_input_count is 1
         assert tbrom2.field_input_count is 2
         assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is True
         assert tbrom2._hasoutmcs is True
-        assert tbrom2._hasinfmcs[tbrom2.field_input_names[0]] is True  # pressure
-        assert tbrom2._hasinfmcs[tbrom2.field_input_names[1]] is True  # temperature
+        assert tbrom2._hasinfmcs["inputPressure"] is True  # pressure
+        assert tbrom2._hasinfmcs["inputTemperature"] is True  # temperature
 
     def test_initialize_evaluation_tbrom9(self):
         """
@@ -253,10 +241,10 @@ class TestTbRom:
         assert tbrom1.field_input_count is 1
         assert tbrom2.field_input_count is 2
         assert tbrom1._hasoutmcs is False
-        assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is True
         assert tbrom2._hasoutmcs is True
-        assert tbrom2._hasinfmcs[tbrom2.field_input_names[0]] is True  # pressure
-        assert tbrom2._hasinfmcs[tbrom2.field_input_names[1]] is False  # temperature
+        assert tbrom2._hasinfmcs["inputPressure"] is True  # pressure
+        assert tbrom2._hasinfmcs["inputTemperature"] is False  # temperature
 
     def test_initialize_evaluation_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
