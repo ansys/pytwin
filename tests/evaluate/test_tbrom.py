@@ -145,12 +145,16 @@ class TestTbRom:
         print("\n")
         print("inputs", twinmodel.inputs)
         print("infmcs", tbrom1._infmcs)
-        print(tbrom1.field_input_names[0],
-              f"m:{len(tbrom1._infbasis[tbrom1.field_input_names[0]])}",
-              f"n:{len(tbrom1._infbasis[tbrom1.field_input_names[0]][0])}")
-        print(tbrom1.field_input_names[1],
-              f"m:{len(tbrom1._infbasis[tbrom1.field_input_names[1]])}",
-              f"n:{len(tbrom1._infbasis[tbrom1.field_input_names[1]][0])}")
+        print(
+            tbrom1.field_input_names[0],
+            f"m:{len(tbrom1._infbasis[tbrom1.field_input_names[0]])}",
+            f"n:{len(tbrom1._infbasis[tbrom1.field_input_names[0]][0])}",
+        )
+        print(
+            tbrom1.field_input_names[1],
+            f"m:{len(tbrom1._infbasis[tbrom1.field_input_names[1]])}",
+            f"n:{len(tbrom1._infbasis[tbrom1.field_input_names[1]][0])}",
+        )
         assert tbrom1.field_input_count is 2
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs[tbrom1.field_input_names[0]] is True  # pressure
