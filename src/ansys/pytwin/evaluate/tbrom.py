@@ -131,39 +131,39 @@ class TbRom:
         else:
             return vec
 
-    def project_field_input(self, snapshot: str, field_input_name: str = None):
+    def _reduce_field_input(self, name: str, snapshot_filepath: str):
         """
         Project a snapshot file associated to the input field name ``fieldname``
 
         Parameters
         ----------
-        snapshot: str
+        snapshot_filepath: str
             Path of the input field snapshot file
-        field_input_name: str (optional)
+        name: str (optional)
             Name of the input field to project the snapshot. The name of the field must be specified in case the TBROM
             is parameterized with multiple input fields.
         """
         mc = []
-        vec = TbRom._read_binary(snapshot)
+        vec = TbRom._read_binary(snapshot_filepath)
         vecnp = np.array(vec)
-        if field_input_name is None or self.field_input_count == 1:
+        if name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
         else:
-            basis = self._infbasis[field_input_name]
+            basis = self._infbasis[name]
         nb_mc = len(basis)
         for i in range(nb_mc):
             mnp = np.array(basis[i])
             mci = mnp.dot(vecnp)
             mc.append(mci)
-        if field_input_name is None or self.field_input_count == 1:
+        if name is None or self.field_input_count == 1:
             index = 0
             for item, key in self._infmcs[self.field_input_names[0]].items():
                 self._infmcs[self.field_input_names[0]][item] = mc[index]
                 index = index + 1
         else:
             index = 0
-            for item, key in self._infmcs[field_input_name].items():
-                self._infmcs[field_input_name][item] = mc[index]
+            for item, key in self._infmcs[name].items():
+                self._infmcs[name][item] = mc[index]
                 index = index + 1
 
     def named_selection_indexes(self, nsname: str):

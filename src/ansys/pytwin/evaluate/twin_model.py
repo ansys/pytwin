@@ -282,6 +282,9 @@ class TwinModel(Model):
         if inputs is not None:
             self._update_inputs(inputs)
 
+        if field_inputs is not None:
+            self._update_field_inputs(field_inputs)
+
         self._warns_if_parameter_key_not_found(parameters)
         self._warns_if_input_key_not_found(inputs)
 
@@ -289,32 +292,45 @@ class TwinModel(Model):
         self._initialization_time = time.time()
 
         try:
+            """
             tbrom_info = self._twin_runtime.twin_get_visualization_resources()
             if tbrom_info:
                 self._log_key += "WithTBROM : {}".format(tbrom_info)
                 self._tbrom_info = tbrom_info
                 directory_path = os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
-                for model_name, data in tbrom_info.items():
-                    self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
-
+                for tbrom_name, data in tbrom_info.items():
+                    self._twin_runtime.twin_set_rom_image_directory(tbrom_name, directory_path)
+            """
             if runtime_init:
-                self._twin_runtime.twin_initialize()
+
+                # self._twin_runtime.twin_initialize() # ICI LUCAS
+                # Peut-on instantier les TbRom sans avoir initialiser le twin_runtime ?
+                # -> non car _tbrom_resource_directory nécessite que TwinModel soit initialisé...
+                # -> mais si car self._twin_runtime.twin_get_rom_resource_directory(tbrom_name)
+                # -> peut être appelé avant twin_runtime.initialize()
+                """
                 if self.tbrom_count > 0:
+                    for tbrom in self._tbroms.values():
+                        self._tbrom_init(tbrom)
+                
                     tbrom_dict = dict()
-                    for model_name in self.tbrom_names:
-                        tbrom_resdir = self._tbrom_resource_directory(model_name)
+                    for tbrom_name in self.tbrom_names:
+                        #tbrom_resdir = self._tbrom_resource_directory(tbrom_name)
+                        tbrom_resdir = self._twin_runtime.twin_get_rom_resource_directory(tbrom_name)
                         if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
-                            tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
+                            tbrom = TbRom(tbrom_name, tbrom_resdir)
                             self._tbrom_init(tbrom)
-                            tbrom_dict.update({model_name: tbrom})
+                            tbrom_dict.update({tbrom_name: tbrom})
                     self._tbroms = tbrom_dict
+                
                 if field_inputs is not None:
-                    for key, item in field_inputs.items():
-                        if self._check_tbrom_input_field_dic_is_valid(key, item):
-                            tbrom = self._tbroms[key]
-                            for field_name, snapshot in item.items():
-                                tbrom.project_field_input(snapshot, field_name)
-                                self._update_tbrom_inmcs(tbrom, field_name)
+                    for tbrom_name, field_inputs in field_inputs.items():
+                        if self._check_tbrom_input_field_dic_is_valid(tbrom_name, field_inputs):
+                            tbrom = self._tbroms[tbrom_name]
+                            for name, snp_path in field_inputs.items():
+                                self._update_field_input(tbrom, name, snp_path)
+                """
+                self._twin_runtime.twin_initialize()  # ICI LUCAS
                 self._update_outputs()
 
         except Exception as e:
@@ -352,6 +368,7 @@ class TwinModel(Model):
         """
         Connect TwinModel with TwinRuntime and load twin model.
         """
+        self._log_key = "InstantiateTwinModel"
         try:
             # Create temp dir if needed
             if not os.path.exists(self.model_temp):
@@ -370,9 +387,41 @@ class TwinModel(Model):
             self._model_name = self._twin_runtime.twin_get_model_name()
             if not os.path.exists(self.model_dir):
                 os.mkdir(self.model_dir)
+
             # Create link to log file if any
             if os.path.exists(self.model_log):
                 os.link(self.model_log, self.model_log_link)
+
+            # Retrieve inputs, outputs and parameters meta-data
+            self._inputs = dict()
+            for name in self._twin_runtime.twin_get_input_names():
+                self._inputs[name] = None
+            self._parameters = dict()
+            for name in self._twin_runtime.twin_get_param_names():
+                if "solver." not in name:
+                    self._parameters[name] = None
+            self._outputs = dict()
+            for name in self._twin_runtime.twin_get_output_names():
+                self._outputs[name] = None
+
+            # Retrieve tbrom_info
+            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+            if tbrom_info:
+                self._log_key += "WithTBROM : {}".format(tbrom_info)
+                self._tbrom_info = tbrom_info
+                directory_path = os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
+                for tbrom_name, data in tbrom_info.items():
+                    self._twin_runtime.twin_set_rom_image_directory(tbrom_name, directory_path)
+
+            # Instantiate tbroms
+            if self.tbrom_count > 0:
+                self._tbroms = dict()
+                for tbrom_name in self.tbrom_names:
+                    tbrom_resdir = self._twin_runtime.twin_get_rom_resource_directory(tbrom_name)
+                    if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
+                        tbrom = TbRom(tbrom_name, tbrom_resdir)
+                        self._tbrom_init(tbrom)
+                        self._tbroms[tbrom_name] = tbrom
 
             # Update TwinModel variables
             self._instantiation_time = time.time()
@@ -516,17 +565,28 @@ class TwinModel(Model):
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
 
-    def _update_tbrom_inmcs(self, tbrom: TbRom, inputfield: str = None):
+    def _update_field_inputs(self, field_inputs: dict):
+        for tbrom_name, field_inputs in field_inputs.items():
+            if self._check_tbrom_input_field_dic_is_valid(tbrom_name, field_inputs):
+                tbrom = self._tbroms[tbrom_name]
+                for name, snp_path in field_inputs.items():
+                    self._update_field_input(tbrom, name, snp_path)
+
+    def _update_field_input(self, tbrom: TbRom, field_input_name: str, snapshot_filepath: str):
         """
         Update Twin's current inputs states based on tbrom attributes
         """
-        if inputfield is None:
+        """
+        if field_input_name is None:
             dic = list(tbrom._infmcs.values())[0]
             for key, item in dic.items():
                 self.inputs[key] = dic[key]
         else:
-            for key, item in tbrom._infmcs[inputfield].items():
-                self.inputs[key] = tbrom._infmcs[inputfield][key]
+        """
+        tbrom._reduce_field_input(field_input_name, snapshot_filepath)
+        for mc_name, mc_value in tbrom._infmcs[field_input_name].items():
+            self.inputs[mc_name] = mc_value
+            self._twin_runtime.twin_set_input_by_name(input_name=mc_name, value=self.inputs[mc_name])
 
     @property
     def evaluation_is_initialized(self):
@@ -760,8 +820,8 @@ class TwinModel(Model):
                     if self._check_tbrom_input_field_dic_is_valid(key, item):
                         tbrom = self._tbroms[key]
                         for field_name, snapshot in item.items():
-                            tbrom.project_field_input(snapshot, field_name)
-                            self._update_tbrom_inmcs(tbrom, field_name)
+                            tbrom._reduce_field_input(field_name, snapshot)
+                            self._update_field_input(tbrom, field_name)
 
         try:
             self._twin_runtime.twin_simulate(self._evaluation_time + step_size)
@@ -1135,11 +1195,12 @@ class TwinModel(Model):
         """
         self._log_key = "GetFieldInputNames"
 
+        """
         if not self.evaluation_is_initialized:
             msg = "Twin model has not been initialized. "
             msg += "Initialize evaluation before calling this method."
             self._raise_error(msg)
-
+        """
         if self.tbrom_info is None:
             self._raise_error("Twin model does not include any TBROMs.")
 
