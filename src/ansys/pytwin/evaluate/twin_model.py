@@ -1133,7 +1133,7 @@ class TwinModel(Model):
         >>> model.initialize_evaluation()
         >>> model.get_field_input_names(model.tbrom_names[0])
         """
-        self._log_key = "GetRomDirectory"
+        self._log_key = "GetFieldInputNames"
 
         if not self.evaluation_is_initialized:
             msg = "Twin model has not been initialized. "

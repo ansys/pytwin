@@ -251,8 +251,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
-        fieldname = twinmodel.get_field_input_names(romname)[0]
-        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": INPUT_SNAPSHOT}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
         assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
         assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
