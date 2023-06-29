@@ -249,7 +249,7 @@ class TestTbRom:
     def test_initialize_evaluation_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
-        #twinmodel.initialize_evaluation()
+        # twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": INPUT_SNAPSHOT}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
@@ -266,7 +266,7 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
-        #twinmodel.initialize_evaluation()
+        # twinmodel.initialize_evaluation()
 
         # Raise an exception if provided rom name is not valid
         try:
@@ -310,7 +310,7 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM5
         twinmodel = TwinModel(model_filepath=model_filepath)
-        #twinmodel.initialize_evaluation()
+        # twinmodel.initialize_evaluation()
 
         # Raise an exception if field input is not connected.
         romname = twinmodel.tbrom_names[0]

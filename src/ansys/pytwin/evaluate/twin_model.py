@@ -302,7 +302,6 @@ class TwinModel(Model):
                     self._twin_runtime.twin_set_rom_image_directory(tbrom_name, directory_path)
             """
             if runtime_init:
-
                 # self._twin_runtime.twin_initialize() # ICI LUCAS
                 # Peut-on instantier les TbRom sans avoir initialiser le twin_runtime ?
                 # -> non car _tbrom_resource_directory nécessite que TwinModel soit initialisé...
@@ -312,7 +311,7 @@ class TwinModel(Model):
                 if self.tbrom_count > 0:
                     for tbrom in self._tbroms.values():
                         self._tbrom_init(tbrom)
-                
+
                     tbrom_dict = dict()
                     for tbrom_name in self.tbrom_names:
                         #tbrom_resdir = self._tbrom_resource_directory(tbrom_name)
@@ -322,7 +321,7 @@ class TwinModel(Model):
                             self._tbrom_init(tbrom)
                             tbrom_dict.update({tbrom_name: tbrom})
                     self._tbroms = tbrom_dict
-                
+
                 if field_inputs is not None:
                     for tbrom_name, field_inputs in field_inputs.items():
                         if self._check_tbrom_input_field_dic_is_valid(tbrom_name, field_inputs):
