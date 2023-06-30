@@ -199,10 +199,12 @@ class TbRom:
 
     @staticmethod
     def _write_binary(fn, vec):
-        fw = open(fn, "wb")
-        fw.write(struct.pack("Q", len(vec)))
-        for i in vec:
-            fw.write(struct.pack("d", i))
+        if os.path.exists(fn):
+            os.remove(fn)
+        with open(fn, "xb") as fw:
+            fw.write(struct.pack("Q", len(vec)))
+            for i in vec:
+                fw.write(struct.pack("d", i))
         return True
 
     @staticmethod
@@ -241,7 +243,10 @@ class TbRom:
     @property
     def field_input_names(self):
         """Return a list of the input field names that can be used for this TBROM."""
-        return list(self._infbasis.keys())
+        if self._infbasis is not None:
+            return list(self._infbasis.keys())
+        else:
+            return []
 
     @property
     def field_output_dim(self):

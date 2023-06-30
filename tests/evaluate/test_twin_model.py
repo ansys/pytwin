@@ -1,10 +1,9 @@
 import os
-import sys
 import time
 
 import pandas as pd
 import pytest
-from pytwin import TwinModel, TwinModelError, download_file
+from pytwin import TwinModel, TwinModelError
 from pytwin.settings import get_pytwin_log_file, get_pytwin_logger, get_pytwin_working_dir, modify_pytwin_working_dir
 
 from tests.utilities import compare_dictionary
@@ -358,7 +357,7 @@ class TestTwinModel:
         reinit_settings()
         logger = get_pytwin_logger()
         # Verify a subfolder is created each time a new twin model is instantiated
-        m_count = 10
+        m_count = 5
         for m in range(m_count):
             model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
             time.sleep(1)
@@ -533,161 +532,6 @@ class TestTwinModel:
         model1.evaluate_step_by_step(step_size=10)
         model2.evaluate_step_by_step(step_size=10)
         assert compare_dictionary(model1.outputs, model2.outputs)
-
-    def test_raised_errors_with_tbrom_init(self):
-        reinit_settings()
-        model_filepath = COUPLE_CLUTCHES_FILEPATH
-        twin = TwinModel(model_filepath=model_filepath)
-        # Raise an error if TWIN MODEL IS NOT INITIALIZED
-        try:
-            twin._tbrom_resource_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model has not been initialized." in str(e)
-
-        try:
-            twin.get_geometry_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model has not been initialized." in str(e)
-
-        try:
-            twin.get_snapshot_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model has not been initialized." in str(e)
-
-        try:
-            twin.get_available_view_names(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model has not been initialized." in str(e)
-
-        try:
-            twin.get_image_filepath(rom_name="test", view_name="test")
-        except TwinModelError as e:
-            assert "Twin model has not been initialized." in str(e)
-
-        try:
-            twin.get_rom_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model has not been initialized." in str(e)
-        twin.initialize_evaluation()
-
-    def test_raised_errors_with_tbrom_none(self):
-        reinit_settings()
-        model_filepath = COUPLE_CLUTCHES_FILEPATH
-        twin = TwinModel(model_filepath=model_filepath)
-        twin.initialize_evaluation()
-        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
-        try:
-            twin._tbrom_resource_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
-
-        try:
-            twin.get_geometry_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
-        try:
-            twin.get_snapshot_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
-
-        try:
-            twin.get_available_view_names(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
-
-        try:
-            twin.get_image_filepath(rom_name="test", view_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
-
-        try:
-            twin.get_rom_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include any TBROMs." in str(e)
-
-    def test_raised_errors_with_tbrom_bad_name(self):
-        reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-        twin = TwinModel(model_filepath=model_filepath)
-        twin.initialize_evaluation()
-        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM NAMED 'test'
-        try:
-            twin._tbrom_resource_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "Twin model does not include a TBROM named test." in str(e)
-
-        try:
-            twin.get_geometry_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "Call the geometry file getter with a valid TBROM" in str(e)
-
-        try:
-            twin.get_snapshot_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "Call the snapshot file getter with a valid TBROM" in str(e)
-
-        try:
-            twin.get_available_view_names(rom_name="test")
-        except TwinModelError as e:
-            assert "Call this method with a valid TBROM name" in str(e)
-
-        try:
-            twin.get_image_filepath(rom_name="test", view_name="test")
-        except TwinModelError as e:
-            assert "Call this method with a valid TBROM name" in str(e)
-
-        try:
-            twin.get_rom_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "Call this method with a valid TBROM name" in str(e)
-
-    def test_raised_errors_with_tbrom_bad_view(self):
-        reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-        twin = TwinModel(model_filepath=model_filepath)
-        twin.initialize_evaluation()
-
-        # Raise an error if IMAGE VIEW DOES NOT EXIST
-        try:
-            twin.get_image_filepath(rom_name=twin.tbrom_names[0], view_name="test")
-        except TwinModelError as e:
-            assert "Call this method with a valid view name." in str(e)
-
-        # Raise an error if GEOMETRY POINT FILE HAS BEEN DELETED
-        try:
-            filepath = twin.get_geometry_filepath(rom_name=twin.tbrom_names[0])
-            os.remove(filepath)
-            twin.get_geometry_filepath(rom_name=twin.tbrom_names[0])
-        except TwinModelError as e:
-            assert "Could not find the geometry file for the given ROM name" in str(e)
-
-        # Raise a warning if SNAPSHOT FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
-        twin.get_snapshot_filepath(rom_name=twin.tbrom_names[0], evaluation_time=1.234567)
-        log_file = get_pytwin_log_file()
-        with open(log_file, "r") as log:
-            log_str = log.readlines()
-        assert "Could not find the snapshot file for the given ROM name" in "".join(log_str)
-
-        # Verify IMAGE IS GENERATED AT INITIALIZATION
-        if sys.platform != "linux":
-            # TODO - Fix BUG755776
-            fp = twin.get_image_filepath(
-                rom_name=twin.tbrom_names[0],
-                view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
-                evaluation_time=0.0,
-            )
-            assert os.path.exists(fp)
-
-        # Raise a warning if IMAGE FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
-        twin.get_image_filepath(
-            rom_name=twin.tbrom_names[0],
-            view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
-            evaluation_time=1.234567,
-        )
-        log_file = get_pytwin_log_file()
-        with open(log_file, "r") as log:
-            log_str = log.readlines()
-        assert "Could not find the image file for the given ROM name" in "".join(log_str)
 
     def test_clean_unit_test(self):
         reinit_settings()

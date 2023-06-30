@@ -1,8 +1,22 @@
 import os
+import sys
 
 import numpy as np
-from pytwin import TwinModel, TwinModelError
+from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.evaluate.tbrom import TbRom
+from pytwin.settings import get_pytwin_log_file
+
+
+def reinit_settings():
+    import shutil
+
+    from pytwin.settings import reinit_settings_for_unit_tests
+
+    reinit_settings_for_unit_tests()
+    if os.path.exists(UNIT_TEST_WD):
+        shutil.rmtree(UNIT_TEST_WD)
+    return UNIT_TEST_WD
+
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
 DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), "data", "HX_scalarDRB_23R1_other.twin")
@@ -93,7 +107,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM1
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 0
 
     def test_initialize_evaluation_tbrom2(self):
@@ -104,7 +117,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM2
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
         tbrom1 = twinmodel._tbroms[name]
@@ -121,7 +133,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
         tbrom1 = twinmodel._tbroms[name]
@@ -138,7 +149,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM4
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
         tbrom1 = twinmodel._tbroms[name]
@@ -155,7 +165,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM5
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 1
         name = twinmodel.tbrom_names[0]
         tbrom1 = twinmodel._tbroms[name]
@@ -171,7 +180,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM6
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 2
         tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]  # tbrom with 1 field
         tbrom2 = twinmodel._tbroms[twinmodel.tbrom_names[1]]  # tbrom with 2 field
@@ -192,7 +200,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM7
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 2
         tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]  # tbrom with 1 field
         tbrom2 = twinmodel._tbroms[twinmodel.tbrom_names[1]]  # tbrom with 2 fields
@@ -213,7 +220,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM8
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 2
         tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]  # tbrom with 1 field
         tbrom2 = twinmodel._tbroms[twinmodel.tbrom_names[1]]  # tbrom with 2 fields
@@ -234,7 +240,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM9
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         assert twinmodel.tbrom_count is 2
         tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]  # tbrom with 1 field
         tbrom2 = twinmodel._tbroms[twinmodel.tbrom_names[1]]  # tbrom with 2 fields
@@ -249,7 +254,6 @@ class TestTbRom:
     def test_initialize_evaluation_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
-        #twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": INPUT_SNAPSHOT}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
@@ -266,13 +270,12 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
-        #twinmodel.initialize_evaluation()
 
         # Raise an exception if provided rom name is not valid
         try:
             twinmodel.initialize_evaluation(field_inputs={"unknown_rom": {"unknown_infield": INPUT_SNAPSHOT}})
         except TwinModelError as e:
-            assert "rom name provided" in str(e)
+            assert "[RomName]" in str(e)
 
         # Raise an exception if provided field input name is not valid
         try:
@@ -280,7 +283,7 @@ class TestTbRom:
                 field_inputs={twinmodel.tbrom_names[0]: {"unknown_infield": INPUT_SNAPSHOT}}
             )
         except TwinModelError as e:
-            assert "field name provided" in str(e)
+            assert "[FieldName]" in str(e)
 
         # Raise an exception if provided snapshot path is None
         romname = twinmodel.tbrom_names[0]
@@ -288,20 +291,20 @@ class TestTbRom:
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: None}})
         except TwinModelError as e:
-            assert "not a valid path" in str(e)
+            assert "[InputSnapshotNone]" in str(e)
 
         # Raise an exception if provided snapshot path does not exist
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: "unknown_snapshot_path"}})
             # exist
         except TwinModelError as e:
-            assert "snapshot path does not exist" in str(e)
+            assert "[InputSnapshotPath]" in str(e)
 
         # Raise en exception if provided snapshot has the wrong size
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})
         except TwinModelError as e:
-            assert "is not consistent with the input field size" in str(e)
+            assert "[InputSnapshotSize]" in str(e)
 
         """
         TEST_TB_ROM5
@@ -310,7 +313,6 @@ class TestTbRom:
         """
         model_filepath = TEST_TB_ROM5
         twinmodel = TwinModel(model_filepath=model_filepath)
-        #twinmodel.initialize_evaluation()
 
         # Raise an exception if field input is not connected.
         romname = twinmodel.tbrom_names[0]
@@ -318,7 +320,7 @@ class TestTbRom:
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         except TwinModelError as e:
-            assert "no common inputs" in str(e)
+            assert "[RomInputConnection]" in str(e)
 
     def test_evaluate_step_by_step_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
@@ -326,12 +328,24 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         fieldname = twinmodel.get_field_input_names(romname)[0]
+
+        # First step
         twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 0.0)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], 0.0)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
         assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.002555283807970279)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0013938020797122038)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
+        # Second step
+        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
 
     def test_evaluate_step_by_step_with_input_field_exceptions(self):
         model_filepath = TEST_TB_ROM3
@@ -344,7 +358,7 @@ class TestTbRom:
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         except TwinModelError as e:
-            assert "rom name provided" in str(e)
+            assert "[RomName]" in str(e)
 
         # Raise en exception if provided input field name is not valid
         romname = twinmodel.tbrom_names[0]
@@ -352,7 +366,7 @@ class TestTbRom:
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         except TwinModelError as e:
-            assert "field name provided" in str(e)
+            assert "[FieldName]" in str(e)
 
         # Raise en exception if provided snapshot path is None
         romname = twinmodel.tbrom_names[0]
@@ -360,19 +374,19 @@ class TestTbRom:
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: None}})
         except TwinModelError as e:
-            assert "not a valid path" in str(e)
+            assert "[InputSnapshotNone]" in str(e)
 
         # Raise en exception if provided snapshot path does not exist
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: "unknown_path"}})
         except TwinModelError as e:
-            assert "snapshot path does not exist" in str(e)
+            assert "[InputSnapshotPath]" in str(e)
 
         # Raise an exception if provided snapshot has wrong size
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})
         except TwinModelError as e:
-            assert "is not consistent with the input field size" in str(e)
+            assert "[InputSnapshotSize]" in str(e)
 
         # Raise an exception if provided field input is not connected
         model_filepath = TEST_TB_ROM5
@@ -383,7 +397,7 @@ class TestTbRom:
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         except TwinModelError as e:
-            assert "no common inputs" in str(e)
+            assert "[RomInputConnection]" in str(e)
 
     def test_generate_snapshot_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM9
@@ -415,27 +429,33 @@ class TestTbRom:
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-
-        # Raise an exception if rom name is unknown
         romname = "unknown"
+
+        # Raise an exception if twin model has not been initialized
         try:
             twinmodel.generate_snapshot(romname, False)
         except TwinModelError as e:
-            assert "rom name provided" in str(e)
+            assert "[Initialization]" in str(e)
+
+        # Raise an exception if rom name is unknown
+        twinmodel.initialize_evaluation()
+        try:
+            twinmodel.generate_snapshot(romname, False)
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
 
         # Raise an exception if tbrom output is not connected
         romname = twinmodel.tbrom_names[1]
         try:
             twinmodel.generate_snapshot(romname, False)
         except TwinModelError as e:
-            assert "no common outputs" in str(e)
+            assert "[RomOutputConnection]" in str(e)
 
         # Raise en exception if named selection does not exist
         try:
             twinmodel.generate_snapshot(romname, False, "unknown")
         except TwinModelError as e:
-            assert "provided named selection" in str(e)
+            assert "[NamedSelection]" in str(e)
 
     def test_generate_points_with_tbrom_is_ok(self):
         # TODO LUCAS - Use another twin model with named selection smaller than whole model
@@ -461,21 +481,28 @@ class TestTbRom:
     def test_generate_points_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-
-        # Raise an exception if unknown rom name is given
         romname = "unknown"
+
+        # Raise an exception if twin model not initialized
         try:
             twinmodel.generate_points("unknown", romname, False)
         except TwinModelError as e:
-            assert "rom name provided" in str(e)
+            assert "[Initialization]" in str(e)
+
+        twinmodel.initialize_evaluation()
+
+        # Raise an exception if unknown rom name is given
+        try:
+            twinmodel.generate_points("unknown", romname, False)
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
 
         # Raise an exception if unknown named selection is given
         romname = twinmodel.tbrom_names[0]
         try:
             twinmodel.generate_points("unknown", romname, False)
         except TwinModelError as e:
-            assert "The provided named selection" in str(e)
+            assert "[NamedSelection]" in str(e)
 
         # Raise an exception if no point file is available
         model_filepath = TEST_TB_ROM10
@@ -486,4 +513,196 @@ class TestTbRom:
         try:
             twinmodel.generate_points(nslist[0], romname, False)
         except TwinModelError as e:
-            assert "not find the geometry file" in str(e)
+            assert "[GeometryFile]" in str(e)
+
+    def test_tbrom_getters_that_do_not_need_initialization(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+
+        # Test rom name
+        rom_name = twin.tbrom_names[0]
+        assert rom_name == "ThermalROM23R1_1"
+
+        # Test available view names
+        view_names = twin.get_available_view_names(rom_name)
+        assert view_names[0] == "View1"
+
+        # Test geometry filepath
+        points_filepath = twin.get_geometry_filepath(rom_name)
+        assert "points.bin" in points_filepath
+
+        # Test rom directory
+        rom_dir = twin.get_rom_directory(rom_name)
+        assert rom_name in rom_dir
+
+        # Test sdk rom resources directory
+        sdk_dir = twin._tbrom_resource_directory(rom_name)
+        assert "resources" in sdk_dir
+
+        # Test named selections
+        ns = twin.get_named_selections(rom_name)
+        assert ns[0] == "solid-part_2"
+
+        # Test field input names
+        names = twin.get_field_input_names(rom_name)
+        assert names == []
+
+    def test_tbrom_getters_exceptions_if_no_tbrom(self):
+        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
+        reinit_settings()
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twin = TwinModel(model_filepath=model_filepath)
+
+        # Test getters that do not need initialization
+        try:
+            twin._tbrom_resource_directory(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        try:
+            twin.get_geometry_filepath(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        try:
+            twin.get_available_view_names(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        try:
+            twin.get_rom_directory(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        try:
+            twin.get_named_selections(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        try:
+            twin.get_field_input_names(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        # Test getters that need initialization
+        twin.initialize_evaluation()
+        try:
+            twin.get_snapshot_filepath(rom_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        try:
+            twin.get_image_filepath(rom_name="test", view_name="test")
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+    def test_tbrom_getters_exceptions_if_bad_rom_name(self):
+        # Raise an error if getter is called with an unknown rom name
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+        twin.initialize_evaluation()
+
+        # Test getters that do not need initialization
+        try:
+            twin._tbrom_resource_directory(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        try:
+            twin.get_geometry_filepath(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        try:
+            twin.get_available_view_names(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        try:
+            twin.get_rom_directory(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        try:
+            twin.get_named_selections(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        try:
+            twin.get_field_input_names(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Test getters that need initialization
+        twin.initialize_evaluation()
+        try:
+            twin.get_snapshot_filepath(rom_name="unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        try:
+            twin.get_image_filepath(rom_name="unknown", view_name="test")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+    def test_tbrom_getters_exceptions_other(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+        twin.initialize_evaluation()
+
+        # Raise an error if IMAGE VIEW DOES NOT EXIST
+        try:
+            twin.get_image_filepath(rom_name=twin.tbrom_names[0], view_name="test")
+        except TwinModelError as e:
+            assert "[ViewName]" in str(e)
+
+        # Raise an error if GEOMETRY POINT FILE HAS BEEN DELETED
+        try:
+            filepath = twin.get_geometry_filepath(rom_name=twin.tbrom_names[0])
+            os.remove(filepath)
+            twin.get_geometry_filepath(rom_name=twin.tbrom_names[0])
+        except TwinModelError as e:
+            assert "[GeometryFile]" in str(e)
+
+    def test_tbrom_image_generation_at_initialization(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+        twin.initialize_evaluation()
+
+        # Verify IMAGE IS GENERATED AT INITIALIZATION
+        if sys.platform != "linux":
+            # TODO - Fix BUG755776
+            fp = twin.get_image_filepath(
+                rom_name=twin.tbrom_names[0],
+                view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
+                evaluation_time=0.0,
+            )
+            assert os.path.exists(fp)
+
+    def test_tbrom_getters_warning(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twin = TwinModel(model_filepath=model_filepath)
+        twin.initialize_evaluation()
+
+        # Raise a warning if SNAPSHOT FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
+        twin.get_snapshot_filepath(rom_name=twin.tbrom_names[0], evaluation_time=1.234567)
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "[OutputSnapshotPath]" in "".join(log_str)
+
+        # Raise a warning if IMAGE FILE AT GIVEN EVALUATION TIME DOES NOT EXIST
+        twin.get_image_filepath(
+            rom_name=twin.tbrom_names[0],
+            view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
+            evaluation_time=1.234567,
+        )
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "[ViewFilePath]" in "".join(log_str)
