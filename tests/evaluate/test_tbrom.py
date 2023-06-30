@@ -100,7 +100,7 @@ INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_sn
 
 
 class TestTbRom:
-    def test_initialize_evaluation_tbrom1(self):
+    def test_instantiate_evaluation_tbrom1(self):
         """
         TEST_TB_ROM1
         Twin with no TBROM -> nbTBROM = 0
@@ -109,7 +109,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         assert twinmodel.tbrom_count is 0
 
-    def test_initialize_evaluation_tbrom2(self):
+    def test_instantiate_evaluation_tbrom2(self):
         """
         TEST_TB_ROM2
         Twin with 1 TBROM and 2 input fields but no input field connected, no output field connected
@@ -125,7 +125,7 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputPressure"] is False
         assert tbrom1._hasinfmcs["inputTemperature"] is False
 
-    def test_initialize_evaluation_tbrom3(self):
+    def test_instantiate_evaluation_tbrom3(self):
         """
         TEST_TB_ROM3
         Twin with 1 TBROM and 2 input fields both connected, 1 output field connected
@@ -141,7 +141,7 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputPressure"] is True
         assert tbrom1._hasinfmcs["inputTemperature"] is True
 
-    def test_initialize_evaluation_tbrom4(self):
+    def test_instantiate_evaluation_tbrom4(self):
         """
         TEST_TB_ROM4
         Twin with 1 TBROM and 2 input fields, 1st partially connected, second fully connected, 1 output field connected
@@ -157,7 +157,7 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputPressure"] is True
         assert tbrom1._hasinfmcs["inputTemperature"] is False
 
-    def test_initialize_evaluation_tbrom5(self):
+    def test_instantiate_evaluation_tbrom5(self):
         """
         TEST_TB_ROM5
         Twin with 1 TBROM and 1 input fields connected with error, 1 output field connected
@@ -172,7 +172,7 @@ class TestTbRom:
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs["inputTemperature"] is False
 
-    def test_initialize_evaluation_tbrom6(self):
+    def test_instantiate_evaluation_tbrom6(self):
         """
         TEST_TB_ROM6
         Twin with 2 TBROM, 1st has no connection, second has 2 input field connected, 1 output field connected,
@@ -191,7 +191,7 @@ class TestTbRom:
         assert tbrom2._hasinfmcs["inputPressure"] is True
         assert tbrom2._hasinfmcs["inputTemperature"] is True
 
-    def test_initialize_evaluation_tbrom7(self):
+    def test_instantiate_evaluation_tbrom7(self):
         """
         TEST_TB_ROM7
         Twin with 2 TBROM, 1st has 1 input field connected and 1 output field connected,
@@ -211,7 +211,7 @@ class TestTbRom:
         assert tbrom2._hasinfmcs["inputPressure"] is True
         assert tbrom2._hasinfmcs["inputTemperature"] is False
 
-    def test_initialize_evaluation_tbrom8(self):
+    def test_instantiate_evaluation_tbrom8(self):
         """
         TEST_TB_ROM8
         Twin with 2 TBROM, 1st has 1 input field connected and 1 output field connected,
@@ -231,7 +231,7 @@ class TestTbRom:
         assert tbrom2._hasinfmcs["inputPressure"] is True  # pressure
         assert tbrom2._hasinfmcs["inputTemperature"] is True  # temperature
 
-    def test_initialize_evaluation_tbrom9(self):
+    def test_instantiate_evaluation_tbrom9(self):
         """
         TEST_TB_ROM9
         Twin with 2 TBROM, 1st has 1 input field connected and 1 output field connected with error,

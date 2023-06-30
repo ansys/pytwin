@@ -620,13 +620,6 @@ class TwinModel(Model):
         """
         Update Twin's current inputs states based on tbrom attributes
         """
-        """
-        if field_input_name is None:
-            dic = list(tbrom._infmcs.values())[0]
-            for key, item in dic.items():
-                self.inputs[key] = dic[key]
-        else:
-        """
         tbrom._reduce_field_input(field_input_name, snapshot_filepath)
         for mc_name, mc_value in tbrom._infmcs[field_input_name].items():
             self.inputs[mc_name] = mc_value
