@@ -327,7 +327,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
-        fieldname = twinmodel.get_field_input_names(romname)[0]
+        fieldname = "inputPressure"
 
         # First step
         twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
