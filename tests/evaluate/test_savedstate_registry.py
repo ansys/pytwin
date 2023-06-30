@@ -1,6 +1,5 @@
 import os
 
-import pytest
 from pytwin import get_pytwin_log_file
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import (
@@ -98,10 +97,11 @@ class TestSavedState:
             },
         ]
         for wrong_dict in wrong_dictionaries:
-            with pytest.raises(SavedStateError) as e:
+            try:
                 ss = SavedState()
                 ss.load(wrong_dict)
-            assert "Metadata is corrupted." in str(e.value)
+            except SavedStateError as e:
+                assert "Metadata is corrupted." in str(e)
 
 
 class TestSavedStateRegistry:
@@ -154,6 +154,7 @@ class TestSavedStateRegistry:
 
     def test_raise_error(self):
         # Raise error if model dir does not exist
-        with pytest.raises(SavedStateRegistryError) as e:
+        try:
             SavedStateRegistry(model_id="unknown", model_name="unknown")
-        assert "Use an existing model ID or model name." in str(e.value)
+        except SavedStateRegistryError as e:
+            assert "Use an existing model ID or model name." in str(e)

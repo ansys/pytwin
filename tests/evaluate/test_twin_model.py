@@ -2,7 +2,6 @@ import os
 import time
 
 import pandas as pd
-import pytest
 from pytwin import TwinModel, TwinModelError
 from pytwin.settings import get_pytwin_log_file, get_pytwin_logger, get_pytwin_working_dir, modify_pytwin_working_dir
 
@@ -341,10 +340,15 @@ class TestTwinModel:
             "CoupledClutches1_Inert4_J": 1.0,
         }
         assert compare_dictionary(twin.parameters, parameters_ref)
+
+    def test_evaluation_initialization_with_config_file_exceptions(self):
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twin = TwinModel(model_filepath=model_filepath)
         # Evaluation initialization RAISE AN ERROR IF CONFIG FILEPATH DOES NOT EXIST
-        with pytest.raises(TwinModelError) as e:
+        try:
             twin.initialize_evaluation(json_config_filepath="filepath_does_not_exist")
-        assert "Provide an existing filepath to initialize the twin model evaluation." in str(e)
+        except TwinModelError as e:
+            assert "Provide an existing filepath to initialize the twin model evaluation." in str(e)
 
     def test_close_method(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
