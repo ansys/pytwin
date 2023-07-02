@@ -90,6 +90,7 @@ class TwinModel(Model):
             msg = f"Twin model cannot be called with {model_filepath} as the model's filepath."
             msg += "\nProvide a valid filepath to initialize the ``TwinModel`` object."
             raise self._raise_error(msg)
+
         if not os.path.exists(model_filepath):
             msg = f"The provided filepath does not exist: {model_filepath}."
             msg += "\nProvide the correct filepath to initialize the ``TwinModel`` object."
@@ -106,6 +107,7 @@ class TwinModel(Model):
             msg = f"TbRom model cannot be instantiated with {model_filepath} as the resource directory path."
             msg += "\nProvide a valid resource directory path to instantiate the ``TbRom`` object."
             raise self._raise_error(msg)
+
         if not os.path.exists(model_filepath):
             msg = f"The provided resource directory does not exist: {model_filepath}."
             msg += "\nProvide the correct filepath to instantiate the ``TbRom`` object."
@@ -118,8 +120,7 @@ class TwinModel(Model):
         message if not.
         """
         if rom_name not in self.tbrom_names:
-            msg = f"The rom name provided {rom_name} is not part of the list of TbRom models {self.tbrom_names}."
-            msg += "\nCall this method with a valid rom name."
+            msg = self._error_msg_for_rom_name(rom_name)
             raise self._raise_error(msg)
         return True
 
@@ -133,43 +134,31 @@ class TwinModel(Model):
         4th : check if the provided snapshot size is consistent with input field basis
         Raise a ``TwinModelError`` message if not.
         """
+        tbrom = None
         if self._check_rom_name_is_valid(tbrom_name):
             tbrom = self._tbroms[tbrom_name]
+
         for fieldname, snapshot in inputfieldsdic.items():
-            if fieldname not in tbrom.nameinputfields:
-                msg = (
-                    f"The field name provided {fieldname} is not part of the list of input field names "
-                    f"{tbrom.nameinputfields}."
-                )
-                msg += "\nProvide a valid field name to use this method."
+            if fieldname not in tbrom.field_input_names:
+                msg = self._error_msg_for_unknown_field_name(fieldname, tbrom)
                 raise self._raise_error(msg)
-            if not tbrom.hasinfmcs(fieldname):
-                msg = f"The TBROM {tbrom_name} has no common inputs with the Twin {self._model_name}."
-                msg += "\nMake sure the TBROM has its mode coefficients inputs properly connected to the twin's inputs."
+
+            if not tbrom._hasinfmcs[fieldname]:
+                msg = self._error_msg_for_rom_input_connection(tbrom_name)
                 raise self._raise_error(msg)
-            if fieldname not in tbrom.nameinputfields:
-                msg = (
-                    f"The field name provided {fieldname} is not part of the list of input field names "
-                    f"{tbrom.nameinputfields}."
-                )
-                msg += "\nProvide a valid field name to use this method."
-                raise self._raise_error(msg)
+
             if snapshot is None:
-                msg = f"The snapshot path {snapshot} is not a valid path."
-                msg += "\nProvide a valid input field snapshot path to use this method."
+                msg = self._error_msg_input_snapshot_path_none(snapshot)
                 raise self._raise_error(msg)
+
             if not os.path.exists(snapshot):
-                msg = f"The snapshot path does not exist: {snapshot}."
-                msg += "\nProvide the correct input field snapshot path to use this method."
+                msg = self._error_msg_input_snapshot_path_does_not_exist(snapshot)
                 raise self._raise_error(msg)
+
             snapshotsize = TbRom.read_snapshot_size(snapshot)
             inputfieldsize = tbrom.input_field_size(fieldname)
             if snapshotsize != inputfieldsize:
-                msg = (
-                    f"The provided snapshot size {snapshotsize} is not consistent with the input field"
-                    f" size {inputfieldsize}."
-                )
-                msg += "\nProvide a valid input field snapshot to use this method."
+                msg = self._error_msg_input_snapshot_size(snapshotsize, inputfieldsize)
                 raise self._raise_error(msg)
         return True
 
@@ -179,19 +168,17 @@ class TwinModel(Model):
 
         If the arguments are not valid, a ``TwinModelError`` error message is raised.
         """
+        tbrom = None
         if self._check_rom_name_is_valid(rom_name):
             tbrom = self._tbroms[rom_name]
-        if not tbrom.hasoutmcs:
-            msg = f"The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
-            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's inputs."
+
+        if not tbrom._hasoutmcs:
+            msg = self._error_msg_for_rom_output_connection(rom_name)
             raise self._raise_error(msg)
+
         if namedselection is not None:
-            if namedselection not in tbrom.nsnames:
-                msg = (
-                    f"The provided named selection {namedselection} is not part of TBROM's list of named selection"
-                    f"{tbrom.nsnames}."
-                )
-                msg += "\nProvide a valid named selection to use this method."
+            if namedselection not in tbrom.named_selections:
+                msg = self._error_msg_for_unknown_named_selection(namedselection, tbrom)
                 raise self._raise_error(msg)
         return True
 
@@ -199,24 +186,102 @@ class TwinModel(Model):
         """
         Check if the arguments of points generation method are valid. Raise a ``TwinModelError`` message if not.
         """
+        tbrom = None
         if self._check_rom_name_is_valid(rom_name):
             tbrom = self._tbroms[rom_name]
 
         filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
         if not os.path.exists(filepath):
-            msg = f"Could not find the geometry file for the given ROM name: {rom_name}. "
-            msg += f"The geometry filepath that you are looking for is: {filepath}."
+            msg = self._error_msg_for_geometry_file_not_fount(rom_name, filepath)
             raise self._raise_error(msg)
 
         if namedselection is not None:
-            if namedselection not in tbrom.nsnames:
-                msg = (
-                    f"The provided named selection {namedselection} is not part of TBROM's list of named selection"
-                    f"{tbrom.nsnames}."
-                )
-                msg += "\nProvide a valid named selection to use this method."
+            if namedselection not in tbrom.named_selections:
+                msg = self._error_msg_for_unknown_named_selection(namedselection, tbrom)
                 raise self._raise_error(msg)
         return True
+
+    def _error_msg_for_unknown_field_name(self, fieldname, tbrom):
+        msg = f"[FieldName]The field name provided {fieldname} is not part of the list of input field names "
+        msg += f"{tbrom.field_input_names}."
+        msg += "\nProvide a valid field name to use this method."
+        return msg
+
+    def _error_msg_for_geometry_file_not_fount(self, rom_name, filepath):
+        msg = f"[GeometryFile]Could not find the geometry file for the given ROM name: {rom_name}. "
+        msg += f"The geometry filepath that you are looking for is: {filepath}"
+        return msg
+
+    def _error_msg_for_rom_name(self, rom_name):
+        msg = f"[RomName]The provided ROM name ({rom_name}) has not been found in the available TBROM names. "
+        msg += f"Call this method with a valid TBROM name."
+        msg += f"\n Available TBROM names are: {self.tbrom_names}."
+        return msg
+
+    def _error_msg_for_not_initialized(self):
+        msg = "[Initialization]Twin model has not been initialized. "
+        msg += "Initialize the evaluation before using this method."
+        return msg
+
+    def _error_msg_for_rom_input_connection(self, tbrom_name):
+        msg = f"[RomInputConnection]The TBROM {tbrom_name} has no common inputs with the Twin {self._model_name}."
+        msg += "\nMake sure the TBROM has its mode coefficients inputs properly connected to the twin's inputs."
+        return msg
+
+    def _error_msg_for_rom_output_connection(self, rom_name):
+        msg = f"[RomOutputConnection]The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
+        msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's outputs."
+        return msg
+
+    def _error_msg_for_unknown_named_selection(self, namedselection, tbrom):
+        msg = f"[NamedSelection]The provided named selection ({namedselection})"
+        msg += " is not part of TBROM's list of named selection:"
+        msg += f" {tbrom.named_selections}."
+        msg += "\nProvide a valid named selection to use this method."
+        return msg
+
+    def _error_msg_not_instantiated(self):
+        msg = "[Instantiation]Twin model has not been successfully instantiated."
+        return msg
+
+    def _error_msg_input_snapshot_path_none(self, snapshot):
+        msg = f"[InputSnapshotNone]The snapshot path {snapshot} is not a valid path."
+        msg += "\nProvide a valid input field snapshot path to use this method."
+        return msg
+
+    def _error_msg_input_snapshot_path_does_not_exist(self, snapshot):
+        msg = f"[InputSnapshotPath]The snapshot path does not exist: {snapshot}."
+        msg += "\nProvide an existing snapshot path as input field to use this method."
+        return msg
+
+    def _error_msg_input_snapshot_size(self, snapshotsize, inputfieldsize):
+        msg = f"[InputSnapshotSize]The provided snapshot size {snapshotsize} is not consistent with the input field"
+        msg += f" size {inputfieldsize}."
+        msg += "\nProvide a valid input field snapshot to use this method."
+        return msg
+
+    def _error_msg_no_tbrom(self):
+        msg = "[NoRom]Twin model does not include any TBROMs."
+        return msg
+
+    def _error_msg_view_names(self, view_name, rom_name, view_names):
+        msg = f"[ViewName]The provided view name {view_name} is not available for this ROM name {rom_name}."
+        msg += f"Call this method with a valid view name."
+        msg += f'\n Available view names for "{rom_name}" are: {view_names}.'
+        return msg
+
+    def _error_msg_view_filepath_does_not_exist(self, rom_name, view_name, evaluation_time, filepath):
+        msg = f"[ViewFilePath]Could not find the image file for the given ROM name: {rom_name}, "
+        msg += f"view_name: {view_name}, "
+        msg += f"and evaluation_time: {evaluation_time}."
+        msg += f"The image filepath you are looking for is: {filepath}."
+        return msg
+
+    def _error_msg_output_snapshot_filepath_does_not_exist(self, rom_name, evaluation_time, filepath):
+        msg = f"[OutputSnapshotPath]Could not find the snapshot file for the given ROM name ({rom_name}) "
+        msg += f"and evaluation time ({evaluation_time})."
+        msg += f"The snapshot filepath that you are looking for is: {filepath}."
+        return msg
 
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """
@@ -254,7 +319,7 @@ class TwinModel(Model):
             return LogLevel.TWIN_LOG_FATAL
 
     def _initialize_evaluation(
-        self, parameters: dict = None, inputs: dict = None, inputfields: dict = None, runtime_init: bool = True
+        self, parameters: dict = None, inputs: dict = None, field_inputs: dict = None, runtime_init: bool = True
     ):
         """
         Initialize the twin model evaluation with dictionaries:
@@ -270,51 +335,29 @@ class TwinModel(Model):
         """
         if self._twin_runtime is None:
             self._raise_error("Twin model has not been successfully instantiated.")
-
-        if self._twin_runtime.is_model_initialized:
-            self._twin_runtime.twin_reset()
-
-        self._initialize_parameters_with_start_values()
-        if parameters is not None:
-            self._update_parameters(parameters)
-
-        self._initialize_inputs_with_start_values()
-        if inputs is not None:
-            self._update_inputs(inputs)
-
-        self._warns_if_parameter_key_not_found(parameters)
-        self._warns_if_input_key_not_found(inputs)
-
-        self._evaluation_time = 0.0
-        self._initialization_time = time.time()
-
         try:
-            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
-            if tbrom_info:
-                self._log_key += "WithTBROM : {}".format(tbrom_info)
-                self._tbrom_info = tbrom_info
-                directory_path = os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
-                for model_name, data in tbrom_info.items():
-                    self._twin_runtime.twin_set_rom_image_directory(model_name, directory_path)
+            if self._twin_runtime.is_model_initialized:
+                self._twin_runtime.twin_reset()
+
+            self._initialize_parameters_with_start_values()
+            if parameters is not None:
+                self._update_parameters(parameters)
+
+            self._initialize_inputs_with_start_values()
+            if inputs is not None:
+                self._update_inputs(inputs)
+
+            if field_inputs is not None:
+                self._update_field_inputs(field_inputs)
+
+            self._warns_if_parameter_key_not_found(parameters)
+            self._warns_if_input_key_not_found(inputs)
+
+            self._evaluation_time = 0.0
+            self._initialization_time = time.time()
 
             if runtime_init:
                 self._twin_runtime.twin_initialize()
-                if self.nb_tbrom > 0:
-                    tbrom_dict = dict()
-                    for model_name in self.tbrom_names:
-                        tbrom_resdir = self._tbrom_resource_directory(model_name)
-                        if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
-                            tbrom = TbRom(model_name, self._tbrom_resource_directory(model_name))
-                            self._tbrom_init(tbrom)
-                            tbrom_dict.update({model_name: tbrom})
-                    self._tbroms = tbrom_dict
-                if inputfields is not None:
-                    for key, item in inputfields.items():
-                        if self._check_tbrom_input_field_dic_is_valid(key, item):
-                            tbrom = self._tbroms[key]
-                            for field_name, snapshot in item.items():
-                                tbrom.snapshot_projection(snapshot, field_name)
-                                self._update_tbrom_inmcs(tbrom, field_name)
                 self._update_outputs()
 
         except Exception as e:
@@ -352,6 +395,7 @@ class TwinModel(Model):
         """
         Connect TwinModel with TwinRuntime and load twin model.
         """
+        self._log_key = "InstantiateTwinModel"
         try:
             # Create temp dir if needed
             if not os.path.exists(self.model_temp):
@@ -370,9 +414,42 @@ class TwinModel(Model):
             self._model_name = self._twin_runtime.twin_get_model_name()
             if not os.path.exists(self.model_dir):
                 os.mkdir(self.model_dir)
+
             # Create link to log file if any
             if os.path.exists(self.model_log):
                 os.link(self.model_log, self.model_log_link)
+
+            # Retrieve inputs, outputs and parameters meta-data
+            self._inputs = dict()
+            for name in self._twin_runtime.twin_get_input_names():
+                self._inputs[name] = None
+            self._parameters = dict()
+            for name in self._twin_runtime.twin_get_param_names():
+                if "solver." not in name:
+                    self._parameters[name] = None
+            self._outputs = dict()
+            for name in self._twin_runtime.twin_get_output_names():
+                self._outputs[name] = None
+
+            # Retrieve tbrom_info
+            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+            if tbrom_info:
+                self._log_key += "WithTBROM : {}".format(tbrom_info)
+                self._tbrom_info = tbrom_info
+                # directory_path = os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
+                directory_path = self.tbrom_directory_path
+                for tbrom_name, data in tbrom_info.items():
+                    self._twin_runtime.twin_set_rom_image_directory(tbrom_name, directory_path)
+
+            # Instantiate tbroms
+            if self.tbrom_count > 0:
+                self._tbroms = dict()
+                for tbrom_name in self.tbrom_names:
+                    tbrom_resdir = self._twin_runtime.twin_get_rom_resource_directory(tbrom_name)
+                    if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
+                        tbrom = TbRom(tbrom_name, tbrom_resdir)
+                        self._tbrom_init(tbrom)
+                        self._tbroms[tbrom_name] = tbrom
 
             # Update TwinModel variables
             self._instantiation_time = time.time()
@@ -420,9 +497,9 @@ class TwinModel(Model):
     def _update_outputs(self):
         """Update output values with twin model results at the current evaluation time."""
         self._outputs = dict(zip(self._twin_runtime.twin_get_output_names(), self._twin_runtime.twin_get_outputs()))
-        if self.nb_tbrom > 0:
+        if self.tbrom_count > 0:
             for key, item in self._tbroms.items():
-                if item.hasoutmcs:
+                if item._hasoutmcs:
                     self._update_tbrom_outmcs(item)
 
     def _update_parameters(self, parameters: dict):
@@ -437,16 +514,16 @@ class TwinModel(Model):
         Get the path of the resource directory associated with the given ROM name.
         """
         if self._twin_runtime is None:
-            self._raise_error("Twin model has not been successfully instantiated.")
-
-        if not self.evaluation_is_initialized:
-            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
+            msg = self._error_msg_not_instantiated()
+            self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
 
-        if rom_name not in self.tbrom_info:
-            self._raise_error(f"Twin model does not include a TBROM named {rom_name}.")
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
 
         return self._twin_runtime.twin_get_rom_resource_directory(rom_name)
 
@@ -465,84 +542,88 @@ class TwinModel(Model):
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
+    def _field_input_port_name(self, field: str, mode_idx: int, rom_name: str = None):
+        if self.tbrom_count > 1:
+            return field + "_mode_" + str(mode_idx) + "_" + rom_name
+        return field + "_mode_" + str(mode_idx)
+
+    def _field_output_port_name(self, mode_idx: int, rom_name: str = None):
+        if self.tbrom_count > 1:
+            return "outField" + "_mode_" + str(mode_idx) + "_" + rom_name
+        return "outField" + "_mode_" + str(mode_idx)
+
+    def _snapshot_filename(self, rom_name: str, named_selection: str = None):
+        if named_selection is not None:
+            filename = self._tbroms[rom_name].field_output_name
+            filename += "_"
+            filename += named_selection
+            filename += "_"
+            filename += "{:.6f}".format(self.evaluation_time)
+            filename += ".bin"
+            return filename
+
+        filename = self._tbroms[rom_name].field_output_name
+        filename += "_"
+        filename += "{:.6f}".format(self.evaluation_time)
+        filename += ".bin"
+        return filename
+
     def _tbrom_init(self, tbrom: TbRom):
         """
         Initialize the tbrom attributes and connect with the Twin inputs/outputs.
         """
-        if self.nb_tbrom > 1:
-            if tbrom.numberinputfields > 0:
-                infmcs = dict()
-                hasinfmcs = dict()
-                for field in tbrom.nameinputfields:
-                    inmcs = dict()
-                    for i in range(0, len(tbrom._infbasis[field])):
-                        for key, item in self.inputs.items():
-                            if field + "_mode_" + str(i) + "_" + tbrom.tbromname in key:
-                                inmcs.update({key: item})
-                    if len(inmcs) == len(tbrom._infbasis[field]):
-                        infmcs.update({field: inmcs})
-                        hasinfmcs.update({field: True})
-                    else:
-                        hasinfmcs.update({field: False})
-                tbrom._infmcs = infmcs
-                tbrom._hasinfmcs = hasinfmcs
+        if tbrom.field_input_count > 0:
+            infmcs = dict()
+            hasinfmcs = dict()
+            for field in tbrom.field_input_names:
+                inmcs = dict()
+                for i in range(0, len(tbrom._infbasis[field])):
+                    for key, item in self.inputs.items():
+                        input_port_name = self._field_input_port_name(field, i, tbrom.name)
+                        if input_port_name in key:
+                            inmcs.update({key: item})
+                if len(inmcs) == len(tbrom._infbasis[field]):
+                    infmcs.update({field: inmcs})
+                    hasinfmcs.update({field: True})
+                else:
+                    hasinfmcs.update({field: False})
+            tbrom._infmcs = infmcs
+            tbrom._hasinfmcs = hasinfmcs
 
-            outmcs = dict()
-            for i in range(1, len(tbrom._outbasis) + 1):
-                for key, item in self.outputs.items():
-                    if "outField" + "_mode_" + str(i) + "_" + tbrom.tbromname in key:
-                        outmcs.update({key: item})
-            if len(outmcs) == len(tbrom._outbasis):
-                tbrom._outmcs = outmcs
-                tbrom._hasoutmcs = True
+        outmcs = dict()
+        for i in range(1, len(tbrom._outbasis) + 1):
+            for key, item in self.outputs.items():
+                output_port_name = self._field_output_port_name(i, tbrom.name)
+                if output_port_name in key:
+                    outmcs.update({key: item})
+        if len(outmcs) == len(tbrom._outbasis):
+            tbrom._outmcs = outmcs
+            tbrom._hasoutmcs = True
 
-        else:
-            if tbrom.numberinputfields > 0:
-                infmcs = dict()
-                hasinfmcs = dict()
-                for field in tbrom.nameinputfields:
-                    inmcs = dict()
-                    for i in range(0, len(tbrom._infbasis[field])):
-                        for key, item in self.inputs.items():
-                            if field + "_mode_" + str(i) in key:
-                                inmcs.update({key: item})
-                    if len(inmcs) == len(tbrom._infbasis[field]):
-                        infmcs.update({field: inmcs})
-                        hasinfmcs.update({field: True})
-                    else:
-                        hasinfmcs.update({field: False})
-                tbrom._infmcs = infmcs
-                tbrom._hasinfmcs = hasinfmcs
-
-            outmcs = dict()
-            for i in range(1, len(tbrom._outbasis) + 1):
-                for key, item in self.outputs.items():
-                    if "outField" + "_mode_" + str(i) in key:
-                        outmcs.update({key: item})
-            if len(outmcs) == len(tbrom._outbasis):
-                tbrom._outmcs = outmcs
-                tbrom._hasoutmcs = True
-
-        tbrom._outputfilespath = os.path.join(self.tbrom_directory_path, tbrom.tbromname)
+        tbrom._outputfilespath = os.path.join(self.tbrom_directory_path, tbrom.name)
 
     def _update_tbrom_outmcs(self, tbrom: TbRom):
         """
         Update tbrom attributes based on Twin's current outputs states
         """
-        for key, item in tbrom.outmcs.items():
-            tbrom.outmcs[key] = self.outputs[key]
+        for key, item in tbrom._outmcs.items():
+            tbrom._outmcs[key] = self.outputs[key]
 
-    def _update_tbrom_inmcs(self, tbrom: TbRom, inputfield: str = None):
+    def _update_field_inputs(self, field_inputs: dict):
+        for tbrom_name, field_inputs in field_inputs.items():
+            if self._check_tbrom_input_field_dic_is_valid(tbrom_name, field_inputs):
+                tbrom = self._tbroms[tbrom_name]
+                for name, snp_path in field_inputs.items():
+                    self._update_field_input(tbrom, name, snp_path)
+
+    def _update_field_input(self, tbrom: TbRom, field_input_name: str, snapshot_filepath: str):
         """
         Update Twin's current inputs states based on tbrom attributes
         """
-        if inputfield is None:
-            dic = list(tbrom.infmcs.values())[0]
-            for key, item in dic.items():
-                self.inputs[key] = dic[key]
-        else:
-            for key, item in tbrom.infmcs[inputfield].items():
-                self.inputs[key] = tbrom.infmcs[inputfield][key]
+        tbrom._reduce_field_input(field_input_name, snapshot_filepath)
+        for mc_name, mc_value in tbrom._infmcs[field_input_name].items():
+            self.inputs[mc_name] = mc_value
+            self._twin_runtime.twin_set_input_by_name(input_name=mc_name, value=self.inputs[mc_name])
 
     @property
     def evaluation_is_initialized(self):
@@ -614,8 +695,9 @@ class TwinModel(Model):
     @property
     def tbrom_names(self):
         """
-        List of available TBROM model names. If a twin model has not been initialized, or if there is no TBROM
-        in the twin model, an empty list is returned.
+        List of available TBROM names. If there is no TBROM in the twin model, an empty list is returned.
+
+        It is the name of TBROM component that was used in the subsheet to compile the TWIN file in Twin Builder.
         """
         if self._tbrom_info is not None:
             return list(self._tbrom_info)
@@ -625,11 +707,14 @@ class TwinModel(Model):
     def tbrom_directory_path(self):
         """
         TBROM directory path. This is the directory where temporary TBROM files are stored.
+
+        This folder is created at TBROM initialization by the Twin Runtime SDK.
+        It contains one folder per TBROM with folder name equals to TBROM name.
         """
         return os.path.join(self.model_dir, self.TBROM_FOLDER_NAME)
 
     @property
-    def nb_tbrom(self):
+    def tbrom_count(self):
         """
         Return number of TBROM contained in the Twin. If a twin model has not been initialized, or if there is no TBROM
         in the twin model, it returns 0.
@@ -637,7 +722,7 @@ class TwinModel(Model):
         return len(self.tbrom_names)
 
     def initialize_evaluation(
-        self, parameters: dict = None, inputs: dict = None, inputfields: dict = None, json_config_filepath: str = None
+        self, parameters: dict = None, inputs: dict = None, field_inputs: dict = None, json_config_filepath: str = None
     ):
         """
         Initialize evaluation of a twin model.
@@ -667,7 +752,7 @@ class TwinModel(Model):
             Dictionary of parameter values ({"name": value}) to use for the next evaluation.
         inputs : dict, optional
             Dictionary of input values ({"name": value}) to use for twin model initialization.
-        inputfields : dict, optional
+        field_inputs : dict, optional
             Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpath}}) to use for twin model
             initialization.
         json_config_filepath : str, optional
@@ -687,20 +772,21 @@ class TwinModel(Model):
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation(json_config_filepath='path_to_your_config.json')
         >>> outputs = twin_model.outputs
+
         2nd example with input field data
         >>> from pytwin import TwinModel
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
         >>> romname = twin_model.tbrom_names[0]
-        >>> fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
-        >>> twin_model.initialize_evaluation(inputfields={romname: {fieldname:'path_to_the_snapshot.bin'}})
+        >>> fieldname = twin_model.get_field_input_names(romname)[0]
+        >>> twin_model.initialize_evaluation(field_inputs={romname: {fieldname:'path_to_the_snapshot.bin'}})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
         self._log_key = "InitializeEvaluation"
 
         if json_config_filepath is None:
             self._log_key += "WithDictionary"
-            self._initialize_evaluation(parameters=parameters, inputs=inputs, inputfields=inputfields)
+            self._initialize_evaluation(parameters=parameters, inputs=inputs, field_inputs=field_inputs)
         else:
             self._log_key += "WithConfigFile"
             cfg = self._read_eval_init_config(json_config_filepath)
@@ -711,9 +797,9 @@ class TwinModel(Model):
                     _parameters = cfg["model"]["parameters"]
                 if "inputs" in cfg["model"]:
                     _inputs = cfg["model"]["inputs"]
-            self._initialize_evaluation(parameters=_parameters, inputs=_inputs, inputfields=inputfields)
+            self._initialize_evaluation(parameters=_parameters, inputs=_inputs, field_inputs=field_inputs)
 
-    def evaluate_step_by_step(self, step_size: float, inputs: dict = None, inputfields: dict = None):
+    def evaluate_step_by_step(self, step_size: float, inputs: dict = None, field_inputs: dict = None):
         """
         Evaluate the twin model at time instant `t` plus a step size given inputs at time instant `t`.
 
@@ -728,7 +814,7 @@ class TwinModel(Model):
             Dictionary of input values ({"name": value}) at time instant `t`. An input is not updated if
             the associated key is not found in the twin model's ``input_names`` property. If values for
             inputs are not provided in the dictionary, their current values are kept.
-        inputfields : dict (optional)
+        field_inputs : dict (optional)
             Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpath}}) to use for twin model
             initialization.
 
@@ -750,18 +836,20 @@ class TwinModel(Model):
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
         >>> romname = twin_model.tbrom_names[0]
-        >>> fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
+        >>> fieldname = twin_model.get_field_input_names(romname)[0]
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.},
-        >>>                                  inputfields={romname: {fieldname:'path_to_the_snapshot.bin'}})
+        >>>                                  field_inputs={romname: {fieldname:'path_to_the_snapshot.bin'}})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
         self._log_key = "EvaluateStepByStep"
 
         if self._twin_runtime is None:
-            self._raise_error("Twin model has not been successfully instantiated.")
+            msg = self._error_msg_not_instantiated()
+            self._raise_error(msg)
 
         if not self.evaluation_is_initialized:
-            self._raise_error("Twin model has not been initialized. Initialize the evaluation.")
+            msg = self._error_msg_for_not_initialized()
+            self._raise_error(msg)
 
         if step_size <= 0.0:
             msg = f"Step size must be greater than zero. The value provided was {step_size}.)"
@@ -770,13 +858,9 @@ class TwinModel(Model):
         self._warns_if_input_key_not_found(inputs)
         if inputs is not None:
             self._update_inputs(inputs)
-            if inputfields is not None:
-                for key, item in inputfields.items():
-                    if self._check_tbrom_input_field_dic_is_valid(key, item):
-                        tbrom = self._tbroms[key]
-                        for field_name, snapshot in item.items():
-                            tbrom.snapshot_projection(snapshot, field_name)
-                            self._update_tbrom_inmcs(tbrom, field_name)
+
+        if field_inputs is not None:
+            self._update_field_inputs(field_inputs)
 
         try:
             self._twin_runtime.twin_simulate(self._evaluation_time + step_size)
@@ -875,7 +959,6 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` object has not been initialized.
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
 
@@ -883,23 +966,16 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.initialize_evaluation()
         >>> model.get_available_view_names(rom_name=model.tbrom_names[0])
         """
         self._log_key = "GetImageViewNames"
 
-        if not self.evaluation_is_initialized:
-            msg = "Twin model has not been initialized. "
-            msg += "Initialize the evaluation before calling this method."
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
             self._raise_error(msg)
 
-        if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
-
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call this method with a valid TBROM name."
-            msg += f"\nAvailable TBROM names are: {self.tbrom_names}"
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         view_names = list(self._tbrom_info[rom_name][self.TBROM_VIEWS_KEY])
@@ -955,19 +1031,16 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
 
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call this method with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}."
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         view_names = self.get_available_view_names(rom_name)
         if view_name not in view_names:
-            msg = f"The provided view name {view_name} is not available for this ROM name {rom_name}."
-            msg += f"Call this method with a valid view name."
-            msg += f'\n Available view names for "{rom_name}" are: {view_names}.'
+            msg = self._error_msg_view_names(view_name, rom_name, view_names)
             self._raise_error(msg)
 
         filename = f"{view_name}_"
@@ -976,10 +1049,7 @@ class TwinModel(Model):
         filepath = os.path.join(self.tbrom_directory_path, rom_name, filename)
 
         if not os.path.exists(filepath):
-            msg = f"Could not find the image file for the given ROM name: {rom_name}, "
-            msg += f"view_name: {view_name}, "
-            msg += f"and evaluation_time: {evaluation_time}."
-            msg += f"The image filepath you are looking for is: {filepath}."
+            msg = self._error_msg_view_filepath_does_not_exist(rom_name, view_name, evaluation_time, filepath)
             self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return filepath
@@ -1000,7 +1070,6 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` obbject has not been initialized.
             If ``TwinModel`` obbject does not include any TBROMs.
             If the given ROM name is not available.
             If the given geometry file cannot be found for the ROM.
@@ -1009,31 +1078,23 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.initialize_evaluation()
         >>> available_rom_names = model.tbrom_names
         >>> geometry_filepath = TwinModel.get_geometry_filepath(rom_name=available_rom_names[0])
         """
         self._log_key = "GetGeometryFilePath"
 
-        if not self.evaluation_is_initialized:
-            msg = "Twin model has not been initialized. "
-            msg += "Initialize evaluation before calling the geometry file getter."
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
             self._raise_error(msg)
 
-        if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
-
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call the geometry file getter with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}."
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
 
         if not os.path.exists(filepath):
-            msg = f"Could not find the geometry file for the given ROM name: {rom_name}. "
-            msg += f"The geometry filepath that you are looking for is: {filepath}."
+            msg = self._error_msg_for_geometry_file_not_fount(rom_name, filepath)
             self._raise_error(msg)
 
         return filepath
@@ -1051,7 +1112,6 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` object has not been initialized.
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
 
@@ -1059,28 +1119,21 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.initialize_evaluation()
         >>> model.get_rom_directory(model.tbrom_names[0])
         """
         self._log_key = "GetRomDirectory"
 
-        if not self.evaluation_is_initialized:
-            msg = "Twin model has not been initialized. "
-            msg += "Initialize evaluation before calling this method."
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
             self._raise_error(msg)
 
-        if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
-
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call this method with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}."
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         return os.path.join(self.tbrom_directory_path, rom_name)
 
-    def get_rom_nslist(self, rom_name):
+    def get_named_selections(self, rom_name):
         """
         Get the list of named selections associated to the TBROM named rom_name
 
@@ -1093,7 +1146,6 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` object has not been initialized.
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
 
@@ -1101,30 +1153,23 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.initialize_evaluation()
-        >>> model.get_rom_nslist(model.tbrom_names[0])
+        >>> model.get_named_selections(model.tbrom_names[0])
         """
-        self._log_key = "GetRomNamedSelectionList"
-
-        if not self.evaluation_is_initialized:
-            msg = "Twin model has not been initialized. "
-            msg += "Initialize evaluation before calling this method."
-            self._raise_error(msg)
+        self._log_key = "GetNamedSelections"
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
 
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call this method with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}."
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         tbrom = self._tbroms[rom_name]
 
-        return tbrom.nsnames
+        return tbrom.named_selections
 
-    def get_rom_inputfieldsnames(self, rom_name):
+    def get_field_input_names(self, rom_name):
         """
         Get the list of input fields names associated to the TBROM named rom_name
 
@@ -1137,7 +1182,6 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` object has not been initialized.
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
 
@@ -1145,28 +1189,21 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.initialize_evaluation()
-        >>> model.get_rom_nslist(model.tbrom_names[0])
+        >>> model.get_field_input_names(model.tbrom_names[0])
         """
-        self._log_key = "GetRomDirectory"
-
-        if not self.evaluation_is_initialized:
-            msg = "Twin model has not been initialized. "
-            msg += "Initialize evaluation before calling this method."
-            self._raise_error(msg)
+        self._log_key = "GetFieldInputNames"
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
 
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call this method with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}."
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         tbrom = self._tbroms[rom_name]
 
-        return tbrom.nameinputfields
+        return tbrom.field_input_names
 
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
@@ -1207,12 +1244,11 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         if self.tbrom_info is None:
-            self._raise_error("Twin model does not include any TBROMs.")
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
 
         if rom_name not in self.tbrom_names:
-            msg = f"The provided ROM name {rom_name} has not been found in the available TBROM names. "
-            msg += f"Call the snapshot file getter with a valid TBROM name."
-            msg += f"\n Available TBROM names are: {self.tbrom_names}."
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
         filename = f"{self.TBROM_SNAPSHOT_FILE_PREFIX}"
@@ -1221,9 +1257,7 @@ class TwinModel(Model):
         filepath = os.path.join(self.tbrom_directory_path, rom_name, filename)
 
         if not os.path.exists(filepath):
-            msg = f"Could not find the snapshot file for the given ROM name ({rom_name}) "
-            msg += f"and evaluation time ({evaluation_time})."
-            msg += f"The snapshot filepath that you are looking for is: {filepath}."
+            msg = self._error_msg_output_snapshot_filepath_does_not_exist(rom_name, evaluation_time, filepath)
             self._log_message(msg, level=PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return filepath
@@ -1334,7 +1368,7 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def snapshot_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
+    def generate_snapshot(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
         """
         Generate a field snapshot based on current states of the Twin, either in memory or on disk, for the full field
         or a specific part. It returns the field data as an array if in memory, or the path of the snapshot written on
@@ -1352,6 +1386,7 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
+            If ``TwinModel`` object has not been initialized.
             If rom_name is not included in the Twin's list of TBROM
             If name_selection is not included in the TBROM's list of Named Selections
 
@@ -1362,38 +1397,28 @@ class TwinModel(Model):
         >>> model1 = TwinModel('model.twin')
         >>> model1.initialize_evaluation()
         >>> romname = model1.tbrom_names[0]
-        >>> nslist = model1.get_rom_nslist(romname)
-        >>> fieldresults = model1.snapshot_generation(romname, False, nslist[0])
+        >>> nslist = model1.get_named_selections(romname)
+        >>> fieldresults = model1.generate_snapshot(romname, False, nslist[0])
         """
-        self._log_key = "SnapshotGeneration"
+        self._log_key = "GenerateSnapshot"
+
+        if not self.evaluation_is_initialized:
+            msg = self._error_msg_for_not_initialized()
+            self._raise_error(msg)
+
+        self._check_tbrom_snapshot_generation_args(rom_name, named_selection)
 
         try:
-            if named_selection is not None:
-                if self._check_tbrom_snapshot_generation_args(rom_name, named_selection):
-                    output_file = (
-                        self._tbroms[rom_name].outputfieldname
-                        + "_"
-                        + named_selection
-                        + "_"
-                        + "{:.6f}".format(self.evaluation_time)
-                        + ".bin"
-                    )
-                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
-                    return self._tbroms[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
-            else:
-                if self._check_tbrom_snapshot_generation_args(rom_name):
-                    output_file = (
-                        self._tbroms[rom_name].outputfieldname + "_" + "{:.6f}".format(self.evaluation_time) + ".bin"
-                    )
-                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
-                    return self._tbroms[rom_name].snapshot_generation(on_disk, output_file_path, named_selection)
+            output_filename = self._snapshot_filename(rom_name, named_selection)
+            output_filepath = os.path.join(self._tbroms[rom_name]._outputfilespath, output_filename)
+            return self._tbroms[rom_name].generate_snapshot(on_disk, output_filepath, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the snapshot:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def points_generation(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
+    def generate_points(self, named_selection: str, rom_name: str, on_disk: bool = True):
         """
         Generate a points file either in memory or on disk, for the full field or a specific part. It returns the field
         data as an array if in memory, or the path of the snapshot written on disk.
@@ -1410,6 +1435,7 @@ class TwinModel(Model):
         Raises
         ------
         TwinModelError:
+            If ``TwinModel`` object has not been initialized.
             If rom_name is not included in the Twin's list of TBROM
             If name_selection is not included in the TBROM's list of Named Selections
 
@@ -1420,22 +1446,20 @@ class TwinModel(Model):
         >>> model1 = TwinModel('model.twin')
         >>> model1.initialize_evaluation()
         >>> romname = model1.tbrom_names[0]
-        >>> nslist = model1.get_rom_nslist(romname)
-        >>> points = model1.points_generation(romname, False, nslist[0])
+        >>> nslist = model1.get_named_selections(romname)
+        >>> points = model1.generate_points(nslist[0], romname, False)
         """
-        self._log_key = "PointsGeneration"
+        self._log_key = "GeneratePoints"
+
+        if not self.evaluation_is_initialized:
+            msg = self._error_msg_for_not_initialized()
+            self._raise_error(msg)
 
         try:
-            if named_selection is not None:
-                if self._check_tbrom_points_generation_args(rom_name, named_selection):
-                    output_file = self._tbroms[rom_name].outputfieldname + "_" + named_selection + "_points.bin"
-                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
-                    return self._tbroms[rom_name].points_generation(on_disk, output_file_path, named_selection)
-            else:
-                if self._check_tbrom_points_generation_args(rom_name):
-                    output_file = self._tbroms[rom_name].outputfieldname + "_points.bin"
-                    output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
-                    return self._tbroms[rom_name].points_generation(on_disk, output_file_path, named_selection)
+            if self._check_tbrom_points_generation_args(rom_name, named_selection):
+                output_file = self._tbroms[rom_name].field_output_name + "_" + named_selection + "_points.bin"
+                output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
+                return self._tbroms[rom_name].generate_points(named_selection, on_disk, output_file_path)
 
         except Exception as e:
             msg = f"Something went wrong while generating the points file:"

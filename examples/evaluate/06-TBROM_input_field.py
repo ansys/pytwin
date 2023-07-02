@@ -166,10 +166,10 @@ print(f"Twin physical outputs : {output_name_without_mcs}")
 twin_model.initialize_evaluation()
 print(f"TBROMs part of the twin : {twin_model.tbrom_names}")
 romname = twin_model.tbrom_names[0]
-print(f"Input fields associated with the TBROM {romname} : {twin_model.get_rom_inputfieldsnames(romname)}")
-fieldname = twin_model.get_rom_inputfieldsnames(romname)[0]
-print(f"Named selections associated with the TBROM {romname} : {twin_model.get_rom_nslist(romname)}")
-ns = twin_model.get_rom_nslist(romname)[1]
+print(f"Input fields associated with the TBROM {romname} : {twin_model.get_field_input_names(romname)}")
+fieldname = twin_model.get_field_input_names(romname)[0]
+print(f"Named selections associated with the TBROM {romname} : {twin_model.get_named_selections(romname)}")
+ns = twin_model.get_named_selections(romname)[1]
 
 input_name = input_name_without_mcs[0]
 for i in range(0, len(rom_inputs)):
@@ -177,14 +177,14 @@ for i in range(0, len(rom_inputs)):
     dp = rom_inputs[i]
     dp_input = {input_name: dp}
     dp_field_input = {romname: {fieldname: inputfieldsnapshots[i]}}
-    twin_model.initialize_evaluation(inputs=dp_input, inputfields=dp_field_input)
+    twin_model.initialize_evaluation(inputs=dp_input, field_inputs=dp_field_input)
     outputs = [dp]
     for item in output_name_without_mcs:
         outputs.append(twin_model.outputs[item])
-    outfield = twin_model.snapshot_generation(romname, False)  # generating the field output on the entire domain
-    outfieldns = twin_model.snapshot_generation(romname, False, ns)  # generating the field output on "Group_2"
-    twin_model.points_generation(romname, True, ns)  # generating the points file on "Group_2"
-    twin_model.snapshot_generation(romname, True, ns)  # generating the field snapshot on "Group_2"
+    outfield = twin_model.generate_snapshot(romname, False)  # generating the field output on the entire domain
+    outfieldns = twin_model.generate_snapshot(romname, False, ns)  # generating the field output on "Group_2"
+    twin_model.generate_points(ns, romname, True)  # generating the points file on "Group_2"
+    twin_model.generate_snapshot(romname, True, ns)  # generating the field snapshot on "Group_2"
     outputs.append(max(norm_vector_field(outfield)))
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
