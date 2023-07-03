@@ -221,3 +221,4 @@ batch_results = twin_model.evaluate_batch(inputs_df=input_df,
                                           field_inputs={romname: {fieldname: inputfieldsnapshots}})
 print(batch_results)
 output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
+print(output_snapshots)

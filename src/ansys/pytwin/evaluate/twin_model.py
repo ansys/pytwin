@@ -1502,10 +1502,68 @@ class TwinModel(Model):
             self._raise_error(msg)
 
     def generate_snapshot_batch(self, batch_results: pd.DataFrame, rom_name: str, named_selection: str = None):
-        # ICI LUCAS ICI LUCAS ICI LUCAS
-        # ICI LUCAS ICI LUCAS ICI LUCAS
-        # ICI LUCAS ICI LUCAS ICI LUCAS
-        return None
+        """
+        Generate several field snapshots based on historical batch results of the Twin, for the full field or a specific
+        part. It returns a list of the paths of the different snapshots written on disk.
+        Parameters
+        ----------
+        batch_results : pandas.DataFrame
+            Historical output values stored in a Pandas dataframe. It must have a 'Time' column and all the time
+            instants for the twin model outputs that you want to post process, with one output per column.
+        rom_name : str
+            Name of the TBROM considered to generate the snapshot.
+        named_selection : str (optional)
+            Named selection on which the snasphot has to be generated.
+        Raises
+        ------
+        TwinModelError:
+            If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
+            If rom_name is not included in the Twin's list of TBROM
+            If name_selection is not included in the TBROM's list of Named Selections
+        Examples
+        --------
+        >>> import pandas as pd
+        >>> from pytwin import TwinModel
+        >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
+        >>> model = TwinModel('model.twin')
+        >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.], 'input1': [1., 2., 3.], 'input2': [1., 2., 3.]})
+        >>> model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
+        >>> romname = model.tbrom_names[0]
+        >>> nslist = model.get_named_selections(romname)
+        >>> outputs_df = model.evaluate_batch(inputs_df=inputs_df)
+        >>> fieldresults = model.generate_snapshot_batch(outputs_df, romname, nslist[0])
+        """
+        self._log_key = "GenerateSnapshotBatch"
+
+        if not self.evaluation_is_initialized:
+            msg = self._error_msg_for_not_initialized()
+            self._raise_error(msg)
+
+        try:
+            columns = batch_results.columns[1::]
+            outpath = []
+
+            for i, row in batch_results.iterrows():
+                time = row["Time"]
+                self._evaluation_time = time
+                outputs = dict(zip(list(columns), row[list(columns)]))
+
+                # Update output values with twin model results at the current evaluation time.
+                self._outputs = outputs
+                if self.tbrom_count > 0:
+                    for key, tbrom in self._tbroms.items():
+                        if tbrom._hasoutmcs:
+                            self._update_tbrom_outmcs(tbrom)
+
+                # Generate the snapshot at the current evaluation time.
+                outpath.append(self.generate_snapshot(rom_name, True, named_selection))
+
+            return outpath
+
+        except Exception as e:
+                msg = f"Something went wrong while generating the snapshot:"
+                msg += f"\n{str(e)}."
+                self._raise_error(msg)
 
     def generate_points(self, named_selection: str, rom_name: str, on_disk: bool = True):
         """
