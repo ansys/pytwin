@@ -169,8 +169,9 @@ class TwinModel(Model):
             if t_count is not None:
                 if type(snapshot_filepath) is list:
                     if len(snapshot_filepath) != t_count:
-                        msg = self._error_msg_input_snapshot_count(found_count=len(snapshot_filepath),
-                                                                   expected_count=t_count)
+                        msg = self._error_msg_input_snapshot_count(
+                            found_count=len(snapshot_filepath), expected_count=t_count
+                        )
                         raise self._raise_error(msg)
 
                     for i in snapshot_filepath:
@@ -285,7 +286,9 @@ class TwinModel(Model):
         return msg
 
     def _error_msg_input_snapshot_count(self, found_count: int, expected_count: int):
-        msg = f"[InputSnapshotCount]The provided number of snapshot file path ({found_count}) to be used as input field "
+        msg = (
+            f"[InputSnapshotCount]The provided number of snapshot file path ({found_count}) to be used as input field "
+        )
         msg += f"must equal the number of time instants given in the batch data frame ({expected_count})."
         return msg
 
@@ -657,11 +660,9 @@ class TwinModel(Model):
                 for name, snp_path in field_inputs.items():
                     self._update_field_input(tbrom, name, snp_path)
 
-    def _update_field_input(self,
-                            tbrom: TbRom,
-                            field_input_name: str,
-                            snapshot_filepath: str,
-                            update_twin_runtime: bool = True):
+    def _update_field_input(
+        self, tbrom: TbRom, field_input_name: str, snapshot_filepath: str, update_twin_runtime: bool = True
+    ):
         """
         Update Twin's current inputs states based on tbrom attributes
         """
@@ -1003,14 +1004,16 @@ class TwinModel(Model):
                 if self._check_tbrom_input_field_dict_is_valid(tbrom_name, field_inputs_dict, t_count):
                     for field_name, snapshot_filepaths in field_inputs_dict.items():
                         for i, snapshot_filepath in enumerate(snapshot_filepaths):
-                            infmcs = self._update_field_input(tbrom=self._tbroms[tbrom_name],
-                                                              field_input_name=field_name,
-                                                              snapshot_filepath=snapshot_filepath)
+                            infmcs = self._update_field_input(
+                                tbrom=self._tbroms[tbrom_name],
+                                field_input_name=field_name,
+                                snapshot_filepath=snapshot_filepath,
+                            )
                             mc_idx = 0
                             for mc_name, mc_value in infmcs.items():
                                 header_name = self._field_input_port_name(field_name, mc_idx, tbrom_name)
                                 if i == 0:
-                                    _inputs_df[header_name] = [0]*t_count
+                                    _inputs_df[header_name] = [0] * t_count
                                 _inputs_df.at[i, header_name] = mc_value
                                 mc_idx += 1
 
@@ -1564,9 +1567,9 @@ class TwinModel(Model):
             return outpath
 
         except Exception as e:
-                msg = f"Something went wrong while generating the snapshot:"
-                msg += f"\n{str(e)}."
-                self._raise_error(msg)
+            msg = f"Something went wrong while generating the snapshot:"
+            msg += f"\n{str(e)}."
+            self._raise_error(msg)
 
     def generate_points(self, named_selection: str, rom_name: str, on_disk: bool = True):
         """
