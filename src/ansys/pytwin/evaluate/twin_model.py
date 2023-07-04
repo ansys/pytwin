@@ -1013,7 +1013,7 @@ class TwinModel(Model):
                             for mc_name, mc_value in infmcs.items():
                                 header_name = self._field_input_port_name(field_name, mc_idx, tbrom_name)
                                 if i == 0:
-                                    _inputs_df[header_name] = [0] * t_count
+                                    _inputs_df[header_name] = [0.] * t_count
                                 _inputs_df.at[i, header_name] = mc_value
                                 mc_idx += 1
 

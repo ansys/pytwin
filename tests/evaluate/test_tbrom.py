@@ -1,7 +1,10 @@
 import os
 import sys
+import math
 
 import numpy as np
+import pandas as pd
+
 from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import get_pytwin_log_file
@@ -97,6 +100,18 @@ TEST_TB_ROM10 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_10.t
 
 INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
 INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
+
+
+def norm_vector_field(field: list):
+    """Compute the norm of a vector field."""
+
+    norm = []
+    for i in range(0, int(len(field) / 3)):
+        x = field[i * 3]
+        y = field[i * 3 + 1]
+        z = field[i * 3 + 2]
+        norm.append(math.sqrt(x * x + y * y + z * z))
+    return norm
 
 
 class TestTbRom:
@@ -316,7 +331,7 @@ class TestTbRom:
 
         # Raise an exception if field input is not connected.
         romname = twinmodel.tbrom_names[0]
-        fieldname = twinmodel.get_field_input_names(romname)[0]
+        fieldname = "inputTemperature"
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         except TwinModelError as e:
@@ -325,11 +340,19 @@ class TestTbRom:
     def test_evaluate_step_by_step_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         fieldname = "inputPressure"
 
-        # First step
+        # Step t=0.0s
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
+        # Step t=0.1s
         twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
         assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
@@ -338,7 +361,7 @@ class TestTbRom:
         assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
         assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
 
-        # Second step
+        # Step t=0.2s
         twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
         assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
@@ -393,9 +416,124 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
-        fieldname = twinmodel.get_field_input_names(romname)[0]
+        fieldname = "inputTemperature"
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+            assert "[RomInputConnection]" in str(e)
+
+    def test_evaluate_batch_with_input_field_is_ok(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "inputPressure"
+
+        # Step t=0.0s
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
+        batch_results = twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
+                                                 field_inputs={romname: {fieldname: [INPUT_SNAPSHOT,
+                                                                                     INPUT_SNAPSHOT,
+                                                                                     INPUT_SNAPSHOT]}})
+
+        assert np.isclose(batch_results["outField_mode_1"][0], -0.007815295084108557)
+        assert np.isclose(batch_results["outField_mode_1"][1], -0.007815295084108557)
+        assert np.isclose(batch_results["outField_mode_1"][2], -0.007815295084108557)
+
+        assert np.isclose(batch_results["outField_mode_2"][0], -0.0019136501347937662)
+        assert np.isclose(batch_results["outField_mode_2"][1], -0.0019136563369488168)
+        assert np.isclose(batch_results["outField_mode_2"][2], -0.0019136563369488168)
+
+        assert np.isclose(batch_results["outField_mode_3"][0], 0.0007345769427744131)
+        assert np.isclose(batch_results["outField_mode_3"][1], 0.0007345833149719503)
+        assert np.isclose(batch_results["outField_mode_3"][2], 0.0007345833149719503)
+
+        assert np.isclose(batch_results["MaxDef"][0], 5.0352056308720146e-05)
+        assert np.isclose(batch_results["MaxDef"][1], 5.035206128408094e-05)
+        assert np.isclose(batch_results["MaxDef"][2], 5.035206128408094e-05)
+
+    def test_evaluate_batch_with_input_field_exceptions(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+
+        # Raise an exception if provided rom name is not valid
+        romname = "unknown"
+        fieldname = "unknown"
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: None}})
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise en exception if provided input field name is not valid
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "unknown"
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: []}})
+        except TwinModelError as e:
+            assert "[FieldName]" in str(e)
+
+        # Raise en exception if provided snapshot path is None
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_field_input_names(romname)[0]
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: None}})
+        except TwinModelError as e:
+            assert "[InputSnapshotNone]" in str(e)
+
+        # Raise en exception if provided not as many snapshot paths as time instants
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: ["", "", ""]}})
+        except TwinModelError as e:
+            assert "[InputSnapshotCount]" in str(e)
+
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: [""]}})
+        except TwinModelError as e:
+            assert "[InputSnapshotCount]" in str(e)
+
+        # Raise an exception if provided snapshot path does not exist
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: ["unknown", "unknown"]}})
+        except TwinModelError as e:
+            assert "[InputSnapshotPath]" in str(e)
+
+        # Raise an exception if provided snapshot has wrong size
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: [INPUT_SNAPSHOT_WRONG, INPUT_SNAPSHOT_WRONG]}})
+        except TwinModelError as e:
+            assert "[InputSnapshotSize]" in str(e)
+
+        # Raise en exception if provided snapshot path is not a list
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        except TwinModelError as e:
+            assert "[InputSnapshotList]" in str(e)
+
+        # Raise an exception if provided field input is not connected
+        model_filepath = TEST_TB_ROM5
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "inputTemperature"
+        try:
+            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
+                                     field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT]}})
         except TwinModelError as e:
             assert "[RomInputConnection]" in str(e)
 
@@ -417,6 +555,10 @@ class TestTbRom:
         assert len(snp_vec_in_memory) == len(snp_vec_on_disk)
         assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0])
         assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1])
+
+        # Generate snapshot gives same results as twin_model probe
+        max_snp = max(norm_vector_field(snp_vec_in_memory))
+        assert np.isclose(max_snp, twinmodel.outputs["MaxDef"])
 
         # Generate snapshot on named selection
         # TODO LUCAS - Use another twin model with named selection smaller than whole model
@@ -456,6 +598,40 @@ class TestTbRom:
             twinmodel.generate_snapshot(romname, False, "unknown")
         except TwinModelError as e:
             assert "[NamedSelection]" in str(e)
+
+    def test_generate_snapshot_batch_with_tbrom_is_ok(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "inputPressure"
+
+        # Batch Evaluation
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        batch_results = twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
+                                                 field_inputs={romname: {fieldname: [INPUT_SNAPSHOT,
+                                                                                     INPUT_SNAPSHOT,
+                                                                                     INPUT_SNAPSHOT]}})
+
+        # Generate snapshot from batch results
+        snapshot_paths = twinmodel.generate_snapshot_batch(batch_results, romname)
+        assert len(snapshot_paths) == 3
+
+        snp0 = twinmodel._tbroms[romname]._read_binary(snapshot_paths[0])
+        snp1 = twinmodel._tbroms[romname]._read_binary(snapshot_paths[1])
+        snp2 = twinmodel._tbroms[romname]._read_binary(snapshot_paths[2])
+
+        assert np.isclose(max(snp0), 4.4525419095601117e-05)
+        assert np.isclose(max(snp1), 4.452541222688557e-05)
+        assert np.isclose(max(snp2), 4.452541222688557e-05)
+
+        max_snp0 = max(norm_vector_field(snp0))
+        max_snp1 = max(norm_vector_field(snp1))
+        max_snp2 = max(norm_vector_field(snp2))
+
+        assert np.isclose(max_snp0, batch_results["MaxDef"][0])
+        assert np.isclose(max_snp1, batch_results["MaxDef"][1])
+        assert np.isclose(max_snp2, batch_results["MaxDef"][2])
 
     def test_generate_points_with_tbrom_is_ok(self):
         # TODO LUCAS - Use another twin model with named selection smaller than whole model

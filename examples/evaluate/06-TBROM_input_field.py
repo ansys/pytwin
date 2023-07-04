@@ -213,4 +213,3 @@ input_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom
 batch_results = twin_model.evaluate_batch(inputs_df=input_df, field_inputs={romname: {fieldname: inputfieldsnapshots}})
 print(batch_results)
 output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
-print(output_snapshots)
