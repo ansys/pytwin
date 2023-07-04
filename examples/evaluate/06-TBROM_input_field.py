@@ -47,9 +47,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pytwin import TwinModel, download_file
 
-twin_file = download_file(
-    "ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True
-)  # , force_download=True)
+twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True)
 inputfieldsnapshots = [
     download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
     download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
@@ -163,7 +161,6 @@ for i in output_name_all:
 print(f"Twin physical outputs : {output_name_without_mcs}")
 
 # initialize the twin and collect information related to the TBROM and input field
-twin_model.initialize_evaluation()
 print(f"TBROMs part of the twin : {twin_model.tbrom_names}")
 romname = twin_model.tbrom_names[0]
 print(f"Input fields associated with the TBROM {romname} : {twin_model.get_field_input_names(romname)}")
@@ -188,6 +185,7 @@ for i in range(0, len(rom_inputs)):
     outputs.append(max(norm_vector_field(outfield)))
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
+
 sim_results = pd.DataFrame(
     results, columns=[input_name] + output_name_without_mcs + ["MaxDefSnapshot", "MaxDefSnapshotNs"], dtype=float
 )
@@ -198,3 +196,20 @@ sim_results = pd.DataFrame(
 # Plot the results and save the image on disk.
 
 plot_result_comparison(sim_results)
+
+###############################################################################
+# Simulate the twin in batch mode
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reset/re-initialize the twin and run the simulation in batch mode, which
+# passes all the input data, simulates all the data points, and collects all
+# the outputs at once. The snapshots are then generated in a post-processing
+# step.
+
+dp_input = {input_name: rom_inputs[0]}
+dp_field_input = {romname: {fieldname: inputfieldsnapshots[0]}}
+twin_model.initialize_evaluation(inputs=dp_input, field_inputs=dp_field_input)
+# creation of the input DataFrame including input field snapshots
+input_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom_inputs})
+batch_results = twin_model.evaluate_batch(inputs_df=input_df, field_inputs={romname: {fieldname: inputfieldsnapshots}})
+print(batch_results)
+output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
