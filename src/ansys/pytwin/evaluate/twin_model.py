@@ -1504,7 +1504,8 @@ class TwinModel(Model):
     def generate_snapshot_batch(self, batch_results: pd.DataFrame, rom_name: str, named_selection: str = None):
         """
         Generate several field snapshots based on historical batch results of the Twin, for the full field or a specific
-        part. It returns a list of the paths of the different snapshots written on disk.
+        named selection. It returns a list of the paths of the different snapshots written on disk.
+
         Parameters
         ----------
         batch_results : pandas.DataFrame
@@ -1514,12 +1515,14 @@ class TwinModel(Model):
             Name of the TBROM considered to generate the snapshot.
         named_selection : str (optional)
             Named selection on which the snasphot has to be generated.
+
         Raises
         ------
         TwinModelError:
             If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
             If rom_name is not included in the Twin's list of TBROM
             If name_selection is not included in the TBROM's list of Named Selections
+
         Examples
         --------
         >>> import pandas as pd

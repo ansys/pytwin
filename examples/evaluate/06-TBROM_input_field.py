@@ -47,9 +47,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pytwin import TwinModel, download_file
 
-twin_file = download_file(
-    "ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True
-)  # , force_download=True)
+twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True)
 inputfieldsnapshots = [
     download_file("TEMP_1.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
     download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
