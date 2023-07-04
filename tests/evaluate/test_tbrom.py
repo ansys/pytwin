@@ -1,10 +1,9 @@
+import math
 import os
 import sys
-import math
 
 import numpy as np
 import pandas as pd
-
 from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import get_pytwin_log_file
@@ -438,10 +437,10 @@ class TestTbRom:
         assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
         assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
 
-        batch_results = twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
-                                                 field_inputs={romname: {fieldname: [INPUT_SNAPSHOT,
-                                                                                     INPUT_SNAPSHOT,
-                                                                                     INPUT_SNAPSHOT]}})
+        batch_results = twinmodel.evaluate_batch(
+            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
+            field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT, INPUT_SNAPSHOT]}},
+        )
 
         assert np.isclose(batch_results["outField_mode_1"][0], -0.007815295084108557)
         assert np.isclose(batch_results["outField_mode_1"][1], -0.007815295084108557)
@@ -468,8 +467,9 @@ class TestTbRom:
         romname = "unknown"
         fieldname = "unknown"
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: None}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: None}}
+            )
         except TwinModelError as e:
             assert "[RomName]" in str(e)
 
@@ -477,8 +477,9 @@ class TestTbRom:
         romname = twinmodel.tbrom_names[0]
         fieldname = "unknown"
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: []}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: []}}
+            )
         except TwinModelError as e:
             assert "[FieldName]" in str(e)
 
@@ -486,42 +487,50 @@ class TestTbRom:
         romname = twinmodel.tbrom_names[0]
         fieldname = twinmodel.get_field_input_names(romname)[0]
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: None}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: None}}
+            )
         except TwinModelError as e:
             assert "[InputSnapshotNone]" in str(e)
 
         # Raise en exception if provided not as many snapshot paths as time instants
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: ["", "", ""]}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: ["", "", ""]}}
+            )
         except TwinModelError as e:
             assert "[InputSnapshotCount]" in str(e)
 
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: [""]}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: [""]}}
+            )
         except TwinModelError as e:
             assert "[InputSnapshotCount]" in str(e)
 
         # Raise an exception if provided snapshot path does not exist
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: ["unknown", "unknown"]}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: ["unknown", "unknown"]}},
+            )
         except TwinModelError as e:
             assert "[InputSnapshotPath]" in str(e)
 
         # Raise an exception if provided snapshot has wrong size
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: [INPUT_SNAPSHOT_WRONG, INPUT_SNAPSHOT_WRONG]}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: [INPUT_SNAPSHOT_WRONG, INPUT_SNAPSHOT_WRONG]}},
+            )
         except TwinModelError as e:
             assert "[InputSnapshotSize]" in str(e)
 
         # Raise en exception if provided snapshot path is not a list
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: INPUT_SNAPSHOT}}
+            )
         except TwinModelError as e:
             assert "[InputSnapshotList]" in str(e)
 
@@ -532,8 +541,10 @@ class TestTbRom:
         romname = twinmodel.tbrom_names[0]
         fieldname = "inputTemperature"
         try:
-            twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0., 1.]}),
-                                     field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT]}})
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT]}},
+            )
         except TwinModelError as e:
             assert "[RomInputConnection]" in str(e)
 
@@ -608,10 +619,10 @@ class TestTbRom:
 
         # Batch Evaluation
         twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        batch_results = twinmodel.evaluate_batch(inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
-                                                 field_inputs={romname: {fieldname: [INPUT_SNAPSHOT,
-                                                                                     INPUT_SNAPSHOT,
-                                                                                     INPUT_SNAPSHOT]}})
+        batch_results = twinmodel.evaluate_batch(
+            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
+            field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT, INPUT_SNAPSHOT]}},
+        )
 
         # Generate snapshot from batch results
         snapshot_paths = twinmodel.generate_snapshot_batch(batch_results, romname)
