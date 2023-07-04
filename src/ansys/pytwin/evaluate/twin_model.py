@@ -163,7 +163,7 @@ class TwinModel(Model):
                 msg = self._error_msg_for_rom_input_connection(tbrom_name)
                 raise self._raise_error(msg)
 
-            if type(snapshot_filepath) is str:
+            if (type(snapshot_filepath) is str) or (snapshot_filepath is None):
                 self._check_snapshot_filepath(snapshot_filepath, tbrom, fieldname)
 
             if t_count is not None:
