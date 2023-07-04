@@ -936,7 +936,7 @@ class TwinModel(Model):
             this input is kept constant to its initialization value. The column header must match with a
             twin model input name.
         field_inputs : dict (optional)
-            Dictionary of snapshot file pathes that must be used as field input at all time instants
+            Dictionary of snapshot file paths that must be used as field input at all time instants
             given by the 'inputs_df' argument. One file path must be given per time instant, for a field input
              of a TBROM included in the twin model, using following dictionary format:
             {"tbrom_name": {"field_input_name": [snapshotpath_t0, snapshotpath_t1, ... ]}}
@@ -973,9 +973,9 @@ class TwinModel(Model):
         >>> snapshot_filepath_t0 = 'path_to_snasphot_t0.twin'
         >>> twin_model.initialize_evaluation(field_inputs={romname: {fieldname: snapshot_filepath_t0})
         >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.]})
-        >>> snapshot_filepathes = ['path_to_snasphot_t0.twin', 'path_to_snasphot_t1.twin', 'path_to_snasphot_t2.twin']
+        >>> snapshot_filepaths = ['path_to_snasphot_t0.twin', 'path_to_snasphot_t1.twin', 'path_to_snasphot_t2.twin']
         >>> batch_results = twin_model.evaluate_batch(inputs_df=inputs_df,\
-        field_inputs={romname: {fieldname: snapshot_filepathes})
+        field_inputs={romname: {fieldname: snapshot_filepaths})
         >>> output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
         """
         self._log_key = "EvaluateBatch"
