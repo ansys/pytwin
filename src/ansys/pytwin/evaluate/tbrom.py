@@ -211,12 +211,25 @@ class TbRom:
     def _read_settings(settingspath):
         f = open(settingspath)
         data = json.load(f)
-        namedselection = data["namedSelections"]
-        dimensionality = data["dimensionality"]
-        name = data["name"]
-        unit = data["unit"]
+
+        namedselection = {}
+        dimensionality = None
+        name = None
+        unit = None
+
+        if "namedSelections" in data:
+            namedselection = data["namedSelections"]
+        if "dimensionality" in data:
+            dimensionality = data["dimensionality"]
+        if "name" in data:
+            name = data["name"]
+        if "unit" in data:
+            unit = data["unit"]
+
         tbromns = dict()
         outputname = name.replace(" ", "_")
+
+        # Create list of name selections indexes
         for name, idsList in namedselection.items():
             finallist = []
             for i in range(0, len(idsList) - 1):
@@ -227,6 +240,7 @@ class TbRom:
                     finallist.append(int(idsList[i]))
             finallist.append(int(idsList[len(idsList) - 1]))
             tbromns.update({name: finallist})
+
         return [tbromns, dimensionality, outputname, unit]
 
     @staticmethod
