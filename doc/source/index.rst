@@ -70,8 +70,8 @@ PyTwin makes no commercial claim over Ansys whatsoever. This library
 extends the functionality of Ansys Twin Builder and Twin Deployer by adding
 a Pythonic interface to twin runtimes without changing the
 core behavior or license of the original software. The interactive
-control of twin runtimes through PyTwin requires a license of
-Twin Deployer.
+control of twin runtimes through PyTwin may require a license of
+Twin Deployer depending on the case, see :ref:`getting_started` section for more information.
 
 For more information on both Ansys Twin Builder and Twin Deployer, see
 `Ansys Twin Builder <https://www.ansys.com/products/digital-twin/ansys-twin-builder>`_

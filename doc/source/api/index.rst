@@ -21,7 +21,7 @@ Evaluate
 
 The :class:`TwinModel <ansys.pytwin.TwinModel` class implements a higher-level
 abstraction to facilitate the manipulation and execution of a twin model. For more
-information, see :ref:`ref_index_api_sdk`.
+information, see :ref:`ref_index_api_evaluate`.
 
 Global settings
 ---------------
