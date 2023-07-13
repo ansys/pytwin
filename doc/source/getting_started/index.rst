@@ -7,14 +7,23 @@ Getting started
 PyTwin provides Pythonic access to twin runtimes that were generated using
 `Ansys Twin Builder and Ansys Twin Deployer <https://www.ansys.com/products/digital-twin/ansys-twin-builder>`_.
 
-To use PyTwin, you must have a license of Twin Deployer installed locally.
 PyTwin supports twin runtimes generated using 2023 R1 and later.
 
-Define the Ansys license server
--------------------------------
+Licensing requirements
+----------------------
 
-Ansys License Manager must have a license file with the ``twin_builder_deployer`` feature available.
-Here is how you define the environment variable for specifying the location of Ansys License Manager:
+For twin runtimes generated with 2023 R1, the Ansys License Manager must have a license file with the
+``twin_builder_deployer`` feature available to use PyTwin.
+
+For twin runtimes generated with 2023 R1 SP1 and later versions:
+
+- if the TWIN file is exported as 'licensed', the Ansys License Manager must have a license file with the
+  ``twin_runtime`` feature available to use PyTwin.
+- if the TWIN file is exported as 'unlicensed', no license is needed to use PyTwin
+
+Both the features ``twin_builder_deployer`` and ``twin_runtime`` are included in the
+Twin Deployer license file. Here is how you define the environment variable for specifying the location of
+Ansys License Manager:
 
 .. code::
 
