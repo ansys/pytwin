@@ -1,6 +1,5 @@
 matplotlib==3.7.1
-fluent==0.10.0
-ansys-fluent-core==0.12.5
+ansys-fluent-core==0.16.0
 pyvista==0.38.5
 ansys-mapdl-core==0.64.0
 Sphinx==5.3.0
