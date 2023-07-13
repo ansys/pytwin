@@ -1,40 +1,42 @@
-""".. _ref_example_TBROM_images:
+""".. _ref_example_TBROM_inputField:
 
 3D field ROM example for input field snapshot projection and snapshot generation on demand
 ------------------------------------------------------------------------------------------
 
 This example shows how to use PyTwin to load and evaluate a twin model that has a
-field ROM with inputs parameterized by both scalar and field data. The example shows
-also how to evaluate the output field data in the form of snapshots.
+field ROM with inputs parameterized by both scalar and field data. The example also
+shows how to evaluate the output field data in the form of snapshots.
 
 .. note::
    To be able to use the functionalities to project an input field snapshot, you must have a
    twin with one or more TBROMs parameterized by input field data. Input mode coefficients
    for TBROMs are connected to the twin's inputs following these conventions:
-   - If there are multiple TBROMs in the twin, the format for the name of the
-      twin input is ``"input field name"_mode_"i"_"tbrom name"``.
-   - If there is a single TBROM in the twin, the format for the name of the twin
-      input is ``"input field name"_mode_"i"``.
+
+   - If there are multiple TBROMs in the twin, the format for the name of the twin input must be
+     ``"input field name"_mode_"i"_"tbrom name"``.
+   - If there is a single TBROM in the twin, the format for the name of the twin input must be
+     ``"input field name"_mode_"i"``.
 
    To be able to use the functionalities to generate an output field snapshot on demand, you
    must have a twin with one or more TBROMs. The output mode coefficients for the TBROMs
    must be enabled when exporting the TBROMs and connected to twin outputs with following
    these conventions:
+
    - If there are multiple TBROMs in the twin, the format for the name of the twin
-     output is ``"outField_mode_"i"_"tbrom name"``.
+     output must be ``"outField_mode_"i"_"tbrom name"``.
    - If there is a single TBROM in the twin, the format for the name of the twin
-     output is ``"outField_mode_"i"``.
+     output must be ``"outField_mode_"i"``.
 
    To be able to use the functionalities to generate points file on demand, you need to have a Twin with 1 or
    more TBROM, for which its geometry is embedded when exporting the TBROMs to Twin Builder
 """
 
 ###############################################################################
-# .. image:: /_static/TBROM_images_generation.png
+# .. image:: /_static/TBROM_input_field.png
 #   :width: 400pt
 #   :align: center
 
-# sphinx_gallery_thumbnail_path = '_static/TBROM_images_generation.png'
+# sphinx_gallery_thumbnail_path = '_static/TBROM_input_field.png'
 
 ###############################################################################
 # Perform required imports
