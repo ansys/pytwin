@@ -11,4 +11,4 @@ jupyter_sphinx==0.4.0
 sphinx-notfound-page==0.8.3
 sphinx_autodoc_typehints==1.23.4
 sphinxemoji==0.2.0
-ansys-fluent-visualization==0.6.0
+ansys-fluent-visualization==0.7.1
