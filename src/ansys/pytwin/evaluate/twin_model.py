@@ -1553,6 +1553,9 @@ class TwinModel(Model):
             columns = batch_results.columns[1::]
             outpath = []
 
+            current_time = self._evaluation_time
+            current_outputs = self._outputs
+
             for i, row in batch_results.iterrows():
                 time = row["Time"]
                 self._evaluation_time = time
@@ -1567,6 +1570,13 @@ class TwinModel(Model):
 
                 # Generate the snapshot at the current evaluation time.
                 outpath.append(self.generate_snapshot(rom_name, on_disk, named_selection))
+
+            self._evaluation_time = current_time
+            self._outputs = current_outputs
+            if self.tbrom_count > 0:
+                for key, tbrom in self._tbroms.items():
+                    if tbrom._hasoutmcs:
+                        self._update_tbrom_outmcs(tbrom)
 
             return outpath
 
