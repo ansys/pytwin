@@ -1509,8 +1509,9 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def generate_snapshot_batch(self, batch_results: pd.DataFrame, rom_name: str, on_disk: bool = True,
-                                named_selection: str = None):
+    def generate_snapshot_batch(
+        self, batch_results: pd.DataFrame, rom_name: str, on_disk: bool = True, named_selection: str = None
+    ):
         """
         Generate several field snapshots based on historical batch results of the Twin, either in memory or on disk, for
         the full field or a specific named selection. It returns a list of the field data as an array if in memory, or a
