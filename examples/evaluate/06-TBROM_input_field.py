@@ -153,12 +153,12 @@ output_name_all = list(twin_model.outputs.keys())
 # remove the TBROM related pins from the twin's list of inputs and outputs
 input_name_without_mcs = []
 for i in input_name_all:
-    if "mode" not in i:
+    if "_mode_" not in i:
         input_name_without_mcs.append(i)
 print(f"Twin physical inputs : {input_name_without_mcs}")
 output_name_without_mcs = []
 for i in output_name_all:
-    if "mode" not in i:
+    if "_mode_" not in i:
         output_name_without_mcs.append(i)
 print(f"Twin physical outputs : {output_name_without_mcs}")
 
