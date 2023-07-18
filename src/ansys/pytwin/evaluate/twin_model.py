@@ -1465,7 +1465,7 @@ class TwinModel(Model):
         rom_name : str
             Name of the TBROM considered to generate the snapshot.
         on_disk : bool
-            Whether the snapshot file is saved on disk (True) or returned in memory (False).
+            Whether the snapshot file is saved on disk (True which is the default) or returned in memory (False).
         named_selection : str (optional)
             Named selection on which the snasphot has to be generated.
 
@@ -1504,10 +1504,12 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def generate_snapshot_batch(self, batch_results: pd.DataFrame, rom_name: str, named_selection: str = None):
+    def generate_snapshot_batch(self, batch_results: pd.DataFrame, rom_name: str, on_disk: bool = True,
+                                named_selection: str = None):
         """
-        Generate several field snapshots based on historical batch results of the Twin, for the full field or a specific
-        named selection. It returns a list of the paths of the different snapshots written on disk.
+        Generate several field snapshots based on historical batch results of the Twin, either in memory or on disk, for
+        the full field or a specific named selection. It returns a list of the field data as an array if in memory, or a
+        list of the paths of the different snapshots written on disk.
 
         Parameters
         ----------
@@ -1516,6 +1518,8 @@ class TwinModel(Model):
             instants for the twin model outputs that you want to post process, with one output per column.
         rom_name : str
             Name of the TBROM considered to generate the snapshot.
+        on_disk : bool
+            Whether the snapshot file is saved on disk (True which is the default) or returned in memory (False).
         named_selection : str (optional)
             Named selection on which the snasphot has to be generated.
 
@@ -1562,7 +1566,7 @@ class TwinModel(Model):
                             self._update_tbrom_outmcs(tbrom)
 
                 # Generate the snapshot at the current evaluation time.
-                outpath.append(self.generate_snapshot(rom_name, True, named_selection))
+                outpath.append(self.generate_snapshot(rom_name, on_disk, named_selection))
 
             return outpath
 
