@@ -1465,9 +1465,14 @@ class TwinModel(Model):
         rom_name : str
             Name of the TBROM considered to generate the snapshot.
         on_disk : bool
-            Whether the snapshot file is saved on disk (True) or returned in memory (False).
+            Whether the snapshot file is saved on disk (True which is the default) or returned in memory (False).
         named_selection : str (optional)
             Named selection on which the snasphot has to be generated.
+
+        Returns
+        -------
+        str | np.ndarray
+            Path to snapshot written to disk if on_disk == True, else array of snapshot field data
 
         Raises
         ------
@@ -1504,10 +1509,13 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def generate_snapshot_batch(self, batch_results: pd.DataFrame, rom_name: str, named_selection: str = None):
+    def generate_snapshot_batch(
+        self, batch_results: pd.DataFrame, rom_name: str, on_disk: bool = True, named_selection: str = None
+    ):
         """
-        Generate several field snapshots based on historical batch results of the Twin, for the full field or a specific
-        named selection. It returns a list of the paths of the different snapshots written on disk.
+        Generate several field snapshots based on historical batch results of the Twin, either in memory or on disk, for
+        the full field or a specific named selection. It returns a list of the field data as an array if in memory, or a
+        list of the paths of the different snapshots written on disk.
 
         Parameters
         ----------
@@ -1516,8 +1524,15 @@ class TwinModel(Model):
             instants for the twin model outputs that you want to post process, with one output per column.
         rom_name : str
             Name of the TBROM considered to generate the snapshot.
+        on_disk : bool
+            Whether the snapshot file is saved on disk (True which is the default) or returned in memory (False).
         named_selection : str (optional)
             Named selection on which the snasphot has to be generated.
+
+        Returns
+        -------
+        list[str] | list[np.ndarray]
+            List of paths to snapshots written to disk if on_disk == True, else list of arrays of snapshot field data
 
         Raises
         ------
@@ -1547,7 +1562,10 @@ class TwinModel(Model):
 
         try:
             columns = batch_results.columns[1::]
-            outpath = []
+            outputsnapshots = []
+
+            current_time = self._evaluation_time
+            current_outputs = self._outputs
 
             for i, row in batch_results.iterrows():
                 time = row["Time"]
@@ -1562,9 +1580,16 @@ class TwinModel(Model):
                             self._update_tbrom_outmcs(tbrom)
 
                 # Generate the snapshot at the current evaluation time.
-                outpath.append(self.generate_snapshot(rom_name, True, named_selection))
+                outputsnapshots.append(self.generate_snapshot(rom_name, on_disk, named_selection))
 
-            return outpath
+            self._evaluation_time = current_time
+            self._outputs = current_outputs
+            if self.tbrom_count > 0:
+                for key, tbrom in self._tbroms.items():
+                    if tbrom._hasoutmcs:
+                        self._update_tbrom_outmcs(tbrom)
+
+            return outputsnapshots
 
         except Exception as e:
             msg = f"Something went wrong while generating the snapshot:"
@@ -1573,8 +1598,8 @@ class TwinModel(Model):
 
     def generate_points(self, named_selection: str, rom_name: str, on_disk: bool = True):
         """
-        Generate a points file either in memory or on disk, for the full field or a specific part. It returns the field
-        data as an array if in memory, or the path of the snapshot written on disk.
+        Generate a points file either in memory or on disk, for the full domain or a specific part. It returns the
+        points data as an array if in memory, or the path of the points file written on disk.
 
         Parameters
         ----------
@@ -1584,6 +1609,11 @@ class TwinModel(Model):
             Whether the point file is saved on disk (True) or returned in memory (False).
         named_selection: str (optional)
             Named selection on which the point file has to be generated.
+
+        Returns
+        -------
+        str | np.ndarray
+            Path to points file written to disk if on_disk == True, else array of points data
 
         Raises
         ------
