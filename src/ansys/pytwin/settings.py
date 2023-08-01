@@ -235,8 +235,8 @@ def reinit_settings_for_unit_tests():
     # Mutable attributes init
     _PyTwinSettings.LOGGING_OPTION = None
     _PyTwinSettings.LOGGING_LEVEL = None
-    _PyTwinSettings.MULTI_PROCESS_IS_ENABLED = True
     _PyTwinSettings.WORKING_DIRECTORY_PATH = None
+    _PyTwinSettings.SESSION_ID = None
     logging.getLogger(_PyTwinSettings.LOGGER_NAME).handlers.clear()
     _PyTwinSettings().__init__()
 
@@ -251,9 +251,8 @@ class _PyTwinSettings(object):
     # Mutable constants
     LOGGING_OPTION = None
     LOGGING_LEVEL = None
-    MULTI_PROCESS_IS_ENABLED = True
-    WORKING_DIRECTORY_PATH = None
     SESSION_ID = None
+    WORKING_DIRECTORY_PATH = None
 
     # Immutable constants
     LOGGER_NAME = "pytwin_logger"
@@ -346,27 +345,13 @@ class _PyTwinSettings(object):
         """
         Provides default settings for the PyTwin working directory.
         """
-        # Clean the PyTwin temporary directory each time the pytwin package is imported.
-        if _PyTwinSettings.MULTI_PROCESS_IS_ENABLED:
-            _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
-            pytwin_temp_dir = os.path.join(
-                tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
-            )
-        else:
-            pytwin_temp_dir = os.path.join(tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME)
-        for i in range(5):
-            # Loop to wait until logging file is freed
-            try:
-                if os.path.exists(pytwin_temp_dir):
-                    shutil.rmtree(pytwin_temp_dir)
-            except PermissionError as e:
-                import time
-
-                logging.warning(f"_PyTwinSettings failed to clear the working directory (attempt #{i})! \n {str(e)}.")
-                time.sleep(1)
-
-        os.makedirs(pytwin_temp_dir)
-        _PyTwinSettings.WORKING_DIRECTORY_PATH = pytwin_temp_dir
+        # Create a unique working directory for each python process that imports pytwin
+        _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
+        pytwin_wd_dir = os.path.join(
+            tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
+        )
+        os.makedirs(pytwin_wd_dir)
+        _PyTwinSettings.WORKING_DIRECTORY_PATH = pytwin_wd_dir
 
     @staticmethod
     def _migration_due_to_new_wd(old_path: str, new_path: str):
