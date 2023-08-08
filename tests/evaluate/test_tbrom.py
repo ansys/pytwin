@@ -298,7 +298,8 @@ class TestTbRom:
         """
         TEST_TB_ROM12
         Twin with 1 TBROM with two named selections in settings
-        -> nbTBROM = 1, NbInputField = 1, hasInputField = True, hasOutputField = True, named_selections = ['Group_1', 'Group_2']
+        -> nbTBROM = 1, NbInputField = 1, hasInputField = True, hasOutputField = True,
+        named_selections = ['Group_1', 'Group_2']
         """
         model_filepath = TEST_TB_ROM12
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -706,7 +707,6 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
-        nslist = twinmodel.get_named_selections(romname)
 
         # Generate points on disk
         points_filepath = twinmodel.generate_points(romname, True)
