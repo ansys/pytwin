@@ -612,6 +612,18 @@ class TwinModel(Model):
         filename += ".bin"
         return filename
 
+    def _points_filename(self, rom_name: str, named_selection: str = None):
+        if named_selection is not None:
+            filename = self._tbroms[rom_name].field_output_name
+            filename += "_"
+            filename += named_selection
+            filename += "_points.bin"
+            return filename
+
+        filename = self._tbroms[rom_name].field_output_name
+        filename += "_points.bin"
+        return filename
+
     def _tbrom_init(self, tbrom: TbRom):
         """
         Initialize the tbrom attributes and connect with the Twin inputs/outputs.
@@ -1596,7 +1608,7 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def generate_points(self, named_selection: str, rom_name: str, on_disk: bool = True):
+    def generate_points(self, rom_name: str, on_disk: bool = True, named_selection: str = None):
         """
         Generate a points file either in memory or on disk, for the full domain or a specific part. It returns the
         points data as an array if in memory, or the path of the points file written on disk.
@@ -1630,7 +1642,7 @@ class TwinModel(Model):
         >>> model1.initialize_evaluation()
         >>> romname = model1.tbrom_names[0]
         >>> nslist = model1.get_named_selections(romname)
-        >>> points = model1.generate_points(nslist[0], romname, False)
+        >>> points = model1.generate_points(romname, False, nslist[0])
         """
         self._log_key = "GeneratePoints"
 
@@ -1640,9 +1652,9 @@ class TwinModel(Model):
 
         try:
             if self._check_tbrom_points_generation_args(rom_name, named_selection):
-                output_file = self._tbroms[rom_name].field_output_name + "_" + named_selection + "_points.bin"
+                output_file = self._points_filename(rom_name, named_selection)
                 output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
-                return self._tbroms[rom_name].generate_points(named_selection, on_disk, output_file_path)
+                return self._tbroms[rom_name].generate_points(on_disk, output_file_path, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the points file:"
