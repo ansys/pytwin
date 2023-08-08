@@ -194,12 +194,14 @@ for i in range(0, len(rom_inputs)):
     for item in output_name_without_mcs:
         outputs.append(twin_model.outputs[item])
     outfield = twin_model.generate_snapshot(romname, False)  # generating the field output on the entire domain
-    outfieldns = twin_model.generate_snapshot(romname, False, ns)  # generating the field output on "Group_2" outputs.append(max(norm_vector_field(outfield)))
+    outfieldns = twin_model.generate_snapshot(
+        romname, False, ns
+    )  # generating the field output on "Group_2" outputs.append(max(norm_vector_field(outfield)))
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
 points_path = twin_model.generate_points(romname, True)  # generating the points file on whole domain
 pointsns_path = twin_model.generate_points(romname, True, ns)  # generating the points file on "Group_2""
-   
+
 
 sim_results = pd.DataFrame(
     results, columns=[input_name] + output_name_without_mcs + ["MaxDefSnapshot", "MaxDefSnapshotNs"], dtype=float

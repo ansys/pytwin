@@ -307,7 +307,7 @@ class TestTbRom:
         assert tbrom1.field_input_count is 1
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs["inputTemperature"] is True
-        assert twinmodel.get_named_selections(twinmodel.tbrom_names[0]) == ['Group_1', 'Group_2']
+        assert twinmodel.get_named_selections(twinmodel.tbrom_names[0]) == ["Group_1", "Group_2"]
 
     def test_initialize_evaluation_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
@@ -622,7 +622,7 @@ class TestTbRom:
         assert len(snp_vec_ns) == 313266
         assert np.isclose(snp_vec_ns[0], 1.7188266861184398e-05)
         assert np.isclose(snp_vec_ns[-1], -1.3100502753567515e-05)
-        
+
     def test_generate_snapshot_on_named_selection_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM12
         twinmodel = TwinModel(model_filepath=model_filepath)
