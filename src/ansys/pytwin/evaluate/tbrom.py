@@ -60,7 +60,7 @@ class TbRom:
         self._outunit = unit
         self._outputfilespath = None
 
-    def generate_points(self, named_selection: str, on_disk: bool, output_file_path: str):
+    def generate_points(self, on_disk: bool, output_file_path: str, named_selection: str = None):
         """
         Generate a point file for the full field or a specific part.
 

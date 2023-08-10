@@ -104,6 +104,14 @@ Twin with 1 TBROM without named selection in settings
 """
 TEST_TB_ROM11 = os.path.join(os.path.dirname(__file__), "data", "twin_no_ns.twin")
 
+"""
+TEST_TB_ROM12
+Twin with 1 TBROM with two named selections in settings
+-> nbTBROM = 1, NbInputField = 1, hasInputField = True, hasOutputField = True,
+   named_selections = ['Group_1', 'Group_2']
+"""
+TEST_TB_ROM12 = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_FieldInput_23R1.twin")
+
 INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
 INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
 
@@ -285,6 +293,22 @@ class TestTbRom:
         assert tbrom1.field_input_count is 0
         assert tbrom1._hasoutmcs is True
         assert twinmodel.get_named_selections(twinmodel.tbrom_names[0]) == []
+
+    def test_instantiate_evaluation_tbrom12(self):
+        """
+        TEST_TB_ROM12
+        Twin with 1 TBROM with two named selections in settings
+        -> nbTBROM = 1, NbInputField = 1, hasInputField = True, hasOutputField = True,
+        named_selections = ['Group_1', 'Group_2']
+        """
+        model_filepath = TEST_TB_ROM12
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 1
+        tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]
+        assert tbrom1.field_input_count is 1
+        assert tbrom1._hasoutmcs is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is True
+        assert twinmodel.get_named_selections(twinmodel.tbrom_names[0]) == ["Group_1", "Group_2"]
 
     def test_initialize_evaluation_with_input_field_is_ok(self):
         model_filepath = TEST_TB_ROM3
@@ -600,6 +624,21 @@ class TestTbRom:
         assert np.isclose(snp_vec_ns[0], 1.7188266861184398e-05)
         assert np.isclose(snp_vec_ns[-1], -1.3100502753567515e-05)
 
+    def test_generate_snapshot_on_named_selection_with_tbrom_is_ok(self):
+        model_filepath = TEST_TB_ROM12
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+
+        # Generate snapshot on named selection
+        ns = twinmodel.get_named_selections(romname)
+        snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
+        assert len(snp_vec_ns) == 78594
+        if sys.platform != "linux":
+            # TODO - Fix BUG881733
+            assert np.isclose(snp_vec_ns[0], 1.7188266859172047e-05)
+            assert np.isclose(snp_vec_ns[-1], -1.5316792773713332e-05)
+
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -666,25 +705,37 @@ class TestTbRom:
         assert np.isclose(max_snp2, batch_results["MaxDef"][2])
 
     def test_generate_points_with_tbrom_is_ok(self):
-        # TODO LUCAS - Use another twin model with named selection smaller than whole model
-        model_filepath = TEST_TB_ROM9
+        model_filepath = TEST_TB_ROM12
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[1]
-        nslist = twinmodel.get_named_selections(romname)
+        romname = twinmodel.tbrom_names[0]
 
         # Generate points on disk
-        points_filepath = twinmodel.generate_points(nslist[0], romname, True)
+        points_filepath = twinmodel.generate_points(romname, True)
         points_vec = TbRom._read_binary(points_filepath)
         assert len(points_vec) == 313266
         assert np.isclose(points_vec[0], 0.0)
         assert np.isclose(points_vec[-1], 38.919245779058635)
 
         # Generate points in memory
-        points_vec2 = twinmodel.generate_points(nslist[0], romname, False)
+        points_vec2 = twinmodel.generate_points(romname, False)
         assert len(points_vec) == len(points_vec2)
         assert np.isclose(points_vec[0], points_vec2[0])
         assert np.isclose(points_vec[-1], points_vec2[-1])
+
+        # Generate points on named selection on disk
+        ns = twinmodel.get_named_selections(romname)
+        points_filepath_ns = twinmodel.generate_points(romname, True, named_selection=ns[0])
+        points_vec_ns = TbRom._read_binary(points_filepath_ns)
+        assert len(points_vec_ns) == 78594
+        assert np.isclose(points_vec_ns[0], 0.0)
+        assert np.isclose(points_vec_ns[-1], 68.18921187292435)
+
+        # Generate points on named selection in memory
+        points_vec_ns2 = twinmodel.generate_points(romname, False, named_selection=ns[0])
+        assert len(points_vec_ns) == len(points_vec_ns2)
+        assert np.isclose(points_vec_ns[0], points_vec_ns2[0])
+        assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1])
 
     def test_generate_points_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
@@ -693,7 +744,7 @@ class TestTbRom:
 
         # Raise an exception if twin model not initialized
         try:
-            twinmodel.generate_points("unknown", romname, False)
+            twinmodel.generate_points(romname, False, "unknown")
         except TwinModelError as e:
             assert "[Initialization]" in str(e)
 
@@ -701,14 +752,14 @@ class TestTbRom:
 
         # Raise an exception if unknown rom name is given
         try:
-            twinmodel.generate_points("unknown", romname, False)
+            twinmodel.generate_points(romname, False, "unknown")
         except TwinModelError as e:
             assert "[RomName]" in str(e)
 
         # Raise an exception if unknown named selection is given
         romname = twinmodel.tbrom_names[0]
         try:
-            twinmodel.generate_points("unknown", romname, False)
+            twinmodel.generate_points(romname, False, "unknown")
         except TwinModelError as e:
             assert "[NamedSelection]" in str(e)
 
@@ -719,7 +770,7 @@ class TestTbRom:
         romname = twinmodel.tbrom_names[0]
         nslist = twinmodel.get_named_selections(romname)
         try:
-            twinmodel.generate_points(nslist[0], romname, False)
+            twinmodel.generate_points(romname, False, nslist[0])
         except TwinModelError as e:
             assert "[GeometryFile]" in str(e)
 
