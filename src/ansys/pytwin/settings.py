@@ -237,7 +237,6 @@ def reinit_settings_for_unit_tests():
     _PyTwinSettings.LOGGING_OPTION = None
     _PyTwinSettings.LOGGING_LEVEL = None
     _PyTwinSettings.WORKING_DIRECTORY_PATH = None
-    # _PyTwinSettings.SESSION_ID = None
     logging.getLogger(_PyTwinSettings.LOGGER_NAME).handlers.clear()
     PYTWIN_SETTINGS._initialize(keep_session_id_if_exists=True)
 
