@@ -1,3 +1,4 @@
+import atexit
 from enum import Enum
 import logging
 import os
@@ -236,9 +237,9 @@ def reinit_settings_for_unit_tests():
     _PyTwinSettings.LOGGING_OPTION = None
     _PyTwinSettings.LOGGING_LEVEL = None
     _PyTwinSettings.WORKING_DIRECTORY_PATH = None
-    _PyTwinSettings.SESSION_ID = None
+    # _PyTwinSettings.SESSION_ID = None
     logging.getLogger(_PyTwinSettings.LOGGER_NAME).handlers.clear()
-    _PyTwinSettings().__init__()
+    PYTWIN_SETTINGS._initialize(keep_session_id_if_exists=True)
 
 
 class _PyTwinSettings(object):
@@ -253,12 +254,15 @@ class _PyTwinSettings(object):
     LOGGING_LEVEL = None
     SESSION_ID = None
     WORKING_DIRECTORY_PATH = None
+    TEMP_WORKING_DIRECTORY_PATH = None
 
     # Immutable constants
     LOGGER_NAME = "pytwin_logger"
     LOGGING_FILE_NAME = "pytwin.log"
     WORKING_DIRECTORY_NAME = "pytwin"
     TEMP_WD_NAME = ".temp"
+    PYTWIN_START_MSG = "pytwin starts!"
+    PYTWIN_END_MSG = "pytwin ends!"
 
     @property
     def logfile(self):
@@ -289,8 +293,9 @@ class _PyTwinSettings(object):
             raise PyTwinSettingsError(msg)
         return _PyTwinSettings.WORKING_DIRECTORY_PATH
 
-    def __init__(self):
-        self._initialize()
+    def __init__(self, keep_session_id_if_exists: bool = False):
+        print(_PyTwinSettings.PYTWIN_START_MSG)
+        self._initialize(keep_session_id_if_exists)
 
     @staticmethod
     def _add_default_file_handler_to_pytwin_logger(filepath: str, level: PyTwinLogLevel, mode: str = "w"):
@@ -321,9 +326,13 @@ class _PyTwinSettings(object):
         logger.addHandler(log_handler)
 
     @staticmethod
-    def _initialize():
+    def _initialize(keep_session_id_if_exists: bool):
         pytwin_logger = logging.getLogger(_PyTwinSettings.LOGGER_NAME)
         pytwin_logger.handlers.clear()
+
+        if not keep_session_id_if_exists:
+            _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
+
         _PyTwinSettings._initialize_wd()
         _PyTwinSettings._initialize_logging()
 
@@ -346,12 +355,11 @@ class _PyTwinSettings(object):
         Provides default settings for the PyTwin working directory.
         """
         # Create a unique working directory for each python process that imports pytwin
-        _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
-        pytwin_wd_dir = os.path.join(
+        _PyTwinSettings.TEMP_WORKING_DIRECTORY_PATH = os.path.join(
             tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
         )
-        os.makedirs(pytwin_wd_dir)
-        _PyTwinSettings.WORKING_DIRECTORY_PATH = pytwin_wd_dir
+        os.makedirs(_PyTwinSettings.TEMP_WORKING_DIRECTORY_PATH, exist_ok=True)
+        _PyTwinSettings.WORKING_DIRECTORY_PATH = _PyTwinSettings.TEMP_WORKING_DIRECTORY_PATH
 
     @staticmethod
     def _migration_due_to_new_wd(old_path: str, new_path: str):
@@ -447,3 +455,11 @@ class _PyTwinSettings(object):
 
 
 PYTWIN_SETTINGS = _PyTwinSettings()  # This instance is here to launch default settings initialization.
+
+
+@atexit.register
+def cleanup_temp_pytwin_working_directory():
+    pytwin_logger = PYTWIN_SETTINGS.logger
+    pytwin_logger.handlers.clear()
+    shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
+    print(PYTWIN_SETTINGS.PYTWIN_END_MSG)

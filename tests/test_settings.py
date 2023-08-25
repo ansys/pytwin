@@ -325,5 +325,23 @@ class TestDefaultSettings:
         assert len(logger.handlers) == 1
         assert log_file is None
 
+    def test_multiprocess_execution_pytwin_cleanup_is_safe(self):
+        import subprocess
+        import sys
+
+        from pytwin.settings import PYTWIN_SETTINGS
+
+        # Init unit test
+        reinit_settings()
+
+        # Verify that each new python process delete its own temp working dir without deleting others
+        current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+        result = subprocess.run([sys.executable, "-c", "import pytwin"], capture_output=True)
+        new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        assert PYTWIN_SETTINGS.PYTWIN_START_MSG in str(result.stdout)
+        assert PYTWIN_SETTINGS.PYTWIN_END_MSG in str(result.stdout)
+        assert new_wd_dir_count == current_wd_dir_count
+
     def test_clean_unit_test(self):
         reinit_settings()
