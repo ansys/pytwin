@@ -232,13 +232,24 @@ def get_pytwin_working_dir():
     return PYTWIN_SETTINGS.working_dir
 
 
-def reinit_settings_for_unit_tests():
+def reinit_settings_for_unit_tests(create_new_temp_dir: bool = False):
     # Mutable attributes init
     _PyTwinSettings.LOGGING_OPTION = None
     _PyTwinSettings.LOGGING_LEVEL = None
     _PyTwinSettings.WORKING_DIRECTORY_PATH = None
     logging.getLogger(_PyTwinSettings.LOGGER_NAME).handlers.clear()
-    PYTWIN_SETTINGS._initialize(keep_session_id_if_exists=True)
+    if create_new_temp_dir:
+        PYTWIN_SETTINGS._initialize(keep_session_id=False)
+    else:
+        PYTWIN_SETTINGS._initialize(keep_session_id=True)
+    return PYTWIN_SETTINGS.SESSION_ID
+
+
+def reinit_settings_session_id_for_unit_tests(session_id: int):
+    PYTWIN_SETTINGS.SESSION_ID = session_id
+    PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH = os.path.join(
+        tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
+    )
 
 
 class _PyTwinSettings(object):
@@ -292,9 +303,9 @@ class _PyTwinSettings(object):
             raise PyTwinSettingsError(msg)
         return _PyTwinSettings.WORKING_DIRECTORY_PATH
 
-    def __init__(self, keep_session_id_if_exists: bool = False):
+    def __init__(self, keep_session_id: bool = False):
         print(_PyTwinSettings.PYTWIN_START_MSG)
-        self._initialize(keep_session_id_if_exists)
+        self._initialize(keep_session_id)
 
     @staticmethod
     def _add_default_file_handler_to_pytwin_logger(filepath: str, level: PyTwinLogLevel, mode: str = "w"):
@@ -325,11 +336,11 @@ class _PyTwinSettings(object):
         logger.addHandler(log_handler)
 
     @staticmethod
-    def _initialize(keep_session_id_if_exists: bool):
+    def _initialize(keep_session_id: bool):
         pytwin_logger = logging.getLogger(_PyTwinSettings.LOGGER_NAME)
         pytwin_logger.handlers.clear()
 
-        if not keep_session_id_if_exists:
+        if not keep_session_id:
             _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
 
         _PyTwinSettings._initialize_wd()
