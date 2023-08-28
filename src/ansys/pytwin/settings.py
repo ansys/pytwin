@@ -147,7 +147,7 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True, cleanup_temp_di
     ----------
     new_path: str
         Absolute path to the working directory to use for PyTwin. The directory is created if it does not exist.
-        This directory won't be cleanup at python process exit.
+        This directory is kept alive at python process exit.
     erase: bool, optional
         Whether to erase a non-empty existing working directory. The default is ``True``,
         in which case the existing working directory is erased and a new one is created.
