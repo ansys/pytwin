@@ -43,7 +43,7 @@ class TestDefaultSettings:
         with open(log_file, "r") as f:
             lines = f.readlines()
         assert "Hello 10" not in lines
-        assert len(lines) == 4
+        assert len(lines) == 5
         assert os.path.exists(log_file)
         assert len(logger.handlers) == 1
         assert pytwin_logging_is_enabled()
@@ -329,8 +329,6 @@ class TestDefaultSettings:
         import subprocess
         import sys
 
-        from pytwin.settings import PYTWIN_SETTINGS
-
         # Init unit test
         reinit_settings()
 
@@ -339,8 +337,8 @@ class TestDefaultSettings:
         result = subprocess.run([sys.executable, "-c", "import pytwin"], capture_output=True)
         new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
-        assert PYTWIN_SETTINGS.PYTWIN_START_MSG in str(result.stdout)
-        assert PYTWIN_SETTINGS.PYTWIN_END_MSG in str(result.stdout)
+        assert len(result.stdout) == 0
+        assert len(result.stderr) == 0
         assert new_wd_dir_count == current_wd_dir_count
 
     def test_clean_unit_test(self):

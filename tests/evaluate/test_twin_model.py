@@ -378,6 +378,7 @@ class TestTwinModel:
         assert not os.path.exists(wd)
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model.model_dir)[0] == get_pytwin_working_dir()
+
         # Run test
         modify_pytwin_working_dir(new_path=wd)
         assert os.path.split(model.model_dir)[0] == wd
@@ -385,7 +386,43 @@ class TestTwinModel:
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model2.model_dir)[0] == wd
         assert len(os.listdir(wd)) == 2 + 1 + 1  # 2 models + pytwin log + .temp
+
+        # Finalize unit test
         reinit_settings_session_id_for_unit_tests(session_id)
+
+    def test_multiprocess_execution_modify_wd_dir(self):
+        import subprocess
+        import sys
+
+        # Init unit test
+        wd, session_id = reinit_settings()
+        assert not os.path.exists(wd)
+        current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        # In another process, modify working dir before having instantiating a twin model
+        subprocess_code = "import pytwin, os\n"
+        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")\n'
+        subprocess_code += f'model = pytwin.TwinModel(model_filepath=r"{COUPLE_CLUTCHES_FILEPATH}")\n'
+        subprocess_code += f'assert os.path.split(model.model_dir)[0] == r"{wd}"\n'
+        result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
+        new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        assert new_wd_dir_count == current_wd_dir_count
+        assert len(result.stderr) == 0
+        assert os.path.exists(wd)
+
+        # In another process, modify working dir after having instantiating a twin model
+        subprocess_code = "import pytwin, os\n"
+        subprocess_code += f'model = pytwin.TwinModel(model_filepath=r"{COUPLE_CLUTCHES_FILEPATH}")\n'
+        subprocess_code += "assert os.path.split(model.model_dir)[0] == pytwin.get_pytwin_working_dir()\n"
+        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")\n'
+        subprocess_code += f'assert os.path.split(model.model_dir)[0] == r"{wd}"\n'
+        result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
+        new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        assert new_wd_dir_count == current_wd_dir_count + 1
+        assert len(result.stderr) == 0
+        assert os.path.exists(wd)
 
     def test_model_warns_at_initialization(self):
         # Init unit test

@@ -304,8 +304,8 @@ class _PyTwinSettings(object):
         return _PyTwinSettings.WORKING_DIRECTORY_PATH
 
     def __init__(self, keep_session_id: bool = False):
-        print(_PyTwinSettings.PYTWIN_START_MSG)
         self._initialize(keep_session_id)
+        self.logger.info(_PyTwinSettings.PYTWIN_START_MSG)
 
     @staticmethod
     def _add_default_file_handler_to_pytwin_logger(filepath: str, level: PyTwinLogLevel, mode: str = "w"):
@@ -470,6 +470,11 @@ PYTWIN_SETTINGS = _PyTwinSettings()  # This instance is here to launch default s
 @atexit.register
 def cleanup_temp_pytwin_working_directory():
     pytwin_logger = PYTWIN_SETTINGS.logger
+    pytwin_logger.info(PYTWIN_SETTINGS.PYTWIN_END_MSG)
     pytwin_logger.handlers.clear()
-    shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
-    print(PYTWIN_SETTINGS.PYTWIN_END_MSG)
+    try:
+        shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
+    except BaseException as e:
+        msg = "Something went wrong while trying to cleanup pytwin temporary directory!"
+        msg += f"error message:\n{str(e)}"
+        print(msg)

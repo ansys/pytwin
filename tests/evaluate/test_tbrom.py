@@ -776,7 +776,7 @@ class TestTbRom:
 
     def test_tbrom_getters_that_do_not_need_initialization(self):
         reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
         twin = TwinModel(model_filepath=model_filepath)
 
         # Test rom name
