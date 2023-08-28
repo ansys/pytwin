@@ -42,7 +42,10 @@ class TestTwinModelLogging:
     def test_clean_unit_test(self):
         reinit_settings()
         temp_wd = get_pytwin_working_dir()
+        parent_dir = os.path.dirname(temp_wd)
         try:
-            shutil.rmtree(os.path.dirname(temp_wd))
+            for dir_name in os.listdir(parent_dir):
+                if dir_name not in temp_wd:
+                    shutil.rmtree(os.path.join(parent_dir, dir_name))
         except Exception as e:
             pass
