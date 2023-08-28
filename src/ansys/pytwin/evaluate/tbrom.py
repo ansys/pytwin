@@ -173,44 +173,42 @@ class TbRom:
         return len(self._infbasis[fieldname][0])
 
     @staticmethod
-    def _read_basis(fn):
-        fr = open(fn, "rb")
-        var = struct.unpack("cccccccccccccccc", fr.read(16))[0]
-        nb_val = struct.unpack("Q", fr.read(8))[0]
-        nb_mc = struct.unpack("Q", fr.read(8))[0]
-        basis = []
-        for i in range(nb_mc):
-            vec = []
-            for j in range(nb_val):
-                vec.append(struct.unpack("d", fr.read(8))[0])
-            basis.append(vec)
-        fr.close()
+    def _read_basis(filepath):
+        with open(filepath, "rb") as f:
+            var = struct.unpack("cccccccccccccccc", f.read(16))[0]
+            nb_val = struct.unpack("Q", f.read(8))[0]
+            nb_mc = struct.unpack("Q", f.read(8))[0]
+            basis = []
+            for i in range(nb_mc):
+                vec = []
+                for j in range(nb_val):
+                    vec.append(struct.unpack("d", f.read(8))[0])
+                basis.append(vec)
         return basis
 
     @staticmethod
-    def _read_binary(file):
-        fr = open(file, "rb")
-        nbdof = struct.unpack("Q", fr.read(8))[0]
-        vec = []
-        for i in range(nbdof):
-            vec.append(struct.unpack("d", fr.read(8))[0])
-        fr.close()
+    def _read_binary(filepath):
+        with open(filepath, "rb") as f:
+            nbdof = struct.unpack("Q", f.read(8))[0]
+            vec = []
+            for i in range(nbdof):
+                vec.append(struct.unpack("d", f.read(8))[0])
         return vec
 
     @staticmethod
-    def _write_binary(fn, vec):
-        if os.path.exists(fn):
-            os.remove(fn)
-        with open(fn, "xb") as fw:
-            fw.write(struct.pack("Q", len(vec)))
+    def _write_binary(filepath, vec):
+        if os.path.exists(filepath):
+            os.remove(filepath)
+        with open(filepath, "xb") as f:
+            f.write(struct.pack("Q", len(vec)))
             for i in vec:
-                fw.write(struct.pack("d", i))
+                f.write(struct.pack("d", i))
         return True
 
     @staticmethod
-    def _read_settings(settingspath):
-        f = open(settingspath)
-        data = json.load(f)
+    def _read_settings(filepath):
+        with open(filepath) as f:
+            data = json.load(f)
 
         namedselection = {}
         dimensionality = None
@@ -244,9 +242,9 @@ class TbRom:
         return [tbromns, dimensionality, outputname, unit]
 
     @staticmethod
-    def read_snapshot_size(file):
-        fr = open(file, "rb")
-        nbdof = struct.unpack("Q", fr.read(8))[0]
+    def read_snapshot_size(filepath):
+        with open(filepath, "rb") as f:
+            nbdof = struct.unpack("Q", f.read(8))[0]
         return nbdof
 
     @property
