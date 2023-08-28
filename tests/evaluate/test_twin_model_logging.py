@@ -9,8 +9,6 @@ UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
 
 def reinit_settings(create_new_temp_dir: bool = False):
-    import shutil
-
     from pytwin.settings import reinit_settings_for_unit_tests
 
     session_id = reinit_settings_for_unit_tests(create_new_temp_dir)
