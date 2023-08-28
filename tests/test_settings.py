@@ -341,5 +341,31 @@ class TestDefaultSettings:
         assert len(result.stderr) == 0
         assert new_wd_dir_count == current_wd_dir_count
 
+    def test_multiprocess_execution_keep_temp_directory(self):
+        import subprocess
+        import sys
+
+        # Init unit test
+        wd = reinit_settings()
+
+        # Verify that each new python process delete its own temp working dir without deleting others
+        current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+        code = "import pytwin\n"
+        code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}", cleanup_temp_dir=False)'
+        result = subprocess.run([sys.executable, "-c", code], capture_output=True)
+        new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        assert len(result.stdout) == 0
+        assert len(result.stderr) == 0
+        assert new_wd_dir_count == current_wd_dir_count + 1
+
     def test_clean_unit_test(self):
         reinit_settings()
+        temp_wd = get_pytwin_working_dir()
+        parent_dir = os.path.dirname(temp_wd)
+        try:
+            for dir_name in os.listdir(parent_dir):
+                if dir_name not in temp_wd:
+                    shutil.rmtree(os.path.join(parent_dir, dir_name))
+        except Exception as e:
+            pass
