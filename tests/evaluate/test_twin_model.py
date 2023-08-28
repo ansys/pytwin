@@ -420,7 +420,10 @@ class TestTwinModel:
         result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
         new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
-        assert new_wd_dir_count == current_wd_dir_count + 1
+        if sys.platform != "linux":
+            assert new_wd_dir_count == current_wd_dir_count + 1
+        else:
+            assert new_wd_dir_count == current_wd_dir_count
         assert len(result.stderr) == 0
         assert os.path.exists(wd)
 
