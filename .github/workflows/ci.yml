@@ -92,7 +92,7 @@ jobs:
         if: ${{ matrix.os }} == "ubuntu-20.04"
         run: |
           sudo apt-get update
-          sudo apt-get install libosmesa6
+          sudo apt-get install libegl1
 
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v4
