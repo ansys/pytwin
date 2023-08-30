@@ -351,13 +351,13 @@ class TestDefaultSettings:
         # Verify that each new python process delete its own temp working dir without deleting others
         current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
         code = "import pytwin\n"
-        code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}", cleanup_temp_dir=False)'
+        code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")'
         result = subprocess.run([sys.executable, "-c", code], capture_output=True)
         new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
         assert len(result.stdout) == 0
         assert len(result.stderr) == 0
-        assert new_wd_dir_count == current_wd_dir_count + 1
+        assert new_wd_dir_count == current_wd_dir_count
 
     def test_clean_unit_test(self):
         reinit_settings()

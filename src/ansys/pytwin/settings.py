@@ -139,7 +139,7 @@ def modify_pytwin_logging(
     PYTWIN_SETTINGS.modify_logging(new_option=new_option, new_level=new_level)
 
 
-def modify_pytwin_working_dir(new_path: str, erase: bool = True, cleanup_temp_dir: bool = True):
+def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     """
     Modify the global PyTwin working directory.
 
@@ -203,7 +203,7 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True, cleanup_temp_di
 
     _check_wd_path_is_valid(new_path)
     _check_wd_erase_is_valid(erase)
-    PYTWIN_SETTINGS.modify_wd_dir(new_path=new_path, erase=erase, cleanup_temp_dir=cleanup_temp_dir)
+    PYTWIN_SETTINGS.modify_wd_dir(new_path=new_path, erase=erase)
 
 
 def pytwin_logging_is_enabled():
@@ -271,7 +271,6 @@ class _PyTwinSettings(object):
     SESSION_ID = None
     WORKING_DIRECTORY_PATH = None
     TEMP_WORKING_DIRECTORY_PATH = None
-    CLEANUP_TEMP_WD_AT_EXIT = True
 
     # Immutable constants
     LOGGER_NAME = "pytwin_logger"
@@ -422,7 +421,7 @@ class _PyTwinSettings(object):
                         shutil.copyfile(os.path.join(root, file), os.path.join(dest_path, file))
 
     @staticmethod
-    def modify_wd_dir(new_path: str, erase: bool, cleanup_temp_dir: bool):
+    def modify_wd_dir(new_path: str, erase: bool):
         old_path = _PyTwinSettings.WORKING_DIRECTORY_PATH
 
         # Check new directory
@@ -439,7 +438,6 @@ class _PyTwinSettings(object):
         _PyTwinSettings.WORKING_DIRECTORY_PATH = new_path
         if old_path is not None:
             _PyTwinSettings._migration_due_to_new_wd(old_path, new_path)
-        _PyTwinSettings.CLEANUP_TEMP_WD_AT_EXIT = cleanup_temp_dir
 
     @staticmethod
     def modify_logging(new_option: PyTwinLogOption, new_level: PyTwinLogLevel):
@@ -481,8 +479,7 @@ def cleanup_temp_pytwin_working_directory():
     pytwin_logger.info(PYTWIN_SETTINGS.PYTWIN_END_MSG)
     pytwin_logger.handlers.clear()
     try:
-        if PYTWIN_SETTINGS.CLEANUP_TEMP_WD_AT_EXIT:
-            shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
+        shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
     except BaseException as e:
         msg = "Something went wrong while trying to cleanup pytwin temporary directory!"
         msg += f"error message:\n{str(e)}"
