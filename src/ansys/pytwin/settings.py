@@ -476,7 +476,9 @@ PYTWIN_SETTINGS = _PyTwinSettings()  # This instance is here to launch default s
 def cleanup_temp_pytwin_working_directory():
     pytwin_logger = PYTWIN_SETTINGS.logger
     pytwin_logger.info(PYTWIN_SETTINGS.PYTWIN_END_MSG)
-    pytwin_logger.handlers.clear()
+    for handler in pytwin_logger.handlers:
+        handler.close()
+        pytwin_logger.removeHandler(handler)
     try:
         shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
     except BaseException as e:

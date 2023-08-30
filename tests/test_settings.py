@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import tempfile
@@ -341,7 +342,7 @@ class TestDefaultSettings:
         assert len(result.stderr) == 0
         assert new_wd_dir_count == current_wd_dir_count
 
-    def test_multiprocess_execution_keep_temp_directory(self):
+    def test_multiprocess_execution_keep_new_directory(self):
         import subprocess
         import sys
 
@@ -350,6 +351,8 @@ class TestDefaultSettings:
 
         # Verify that each new python process delete its own temp working dir without deleting others
         current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+        main_logger_handler_count = len(logging.getLogger().handlers)
+        pytwin_logger_handler_count = len(get_pytwin_logger().handlers)
         code = "import pytwin\n"
         code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")'
         result = subprocess.run([sys.executable, "-c", code], capture_output=True)
@@ -358,6 +361,9 @@ class TestDefaultSettings:
         assert len(result.stdout) == 0
         assert len(result.stderr) == 0
         assert new_wd_dir_count == current_wd_dir_count
+        assert os.path.exists(wd)
+        assert main_logger_handler_count == len(logging.getLogger().handlers)
+        assert pytwin_logger_handler_count == len(get_pytwin_logger().handlers)
 
     def test_clean_unit_test(self):
         reinit_settings()
