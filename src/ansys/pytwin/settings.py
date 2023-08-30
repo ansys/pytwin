@@ -143,6 +143,10 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     """
     Modify the global PyTwin working directory.
 
+    By default, a temporary directory is used by PyTwin as working directory. This temporary directory is automatically
+    cleaned up at exit of the python process that imported pytwin. When this method is used, the new PyTwin working
+    directory won't be deleted at python process exit. Note that this may lead to an overflow of the working directory.
+
     Parameters
     ----------
     new_path: str
@@ -153,11 +157,6 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
         in which case the existing working directory is erased and a new one is created.
         If ``False``, the existing working directory is used as it is. This parameter has no
         effect if the directory does not exist.
-    cleanup_temp_dir: bool, optional
-        By default, PyTwin temporary directory is automatically cleaned up at exit of the python process
-        that imported pytwin.
-        When this option is set to False, then PyTwin temporary directory won't be deleted at python process exit.
-        Note that modifying the default behavior may lead to an overflow of the temporary directory.
 
     Raises
     ------
