@@ -950,7 +950,7 @@ class TwinModel(Model):
         field_inputs : dict (optional)
             Dictionary of snapshot file paths that must be used as field input at all time instants
             given by the 'inputs_df' argument. One file path must be given per time instant, for a field input
-             of a TBROM included in the twin model, using following dictionary format:
+            of a TBROM included in the twin model, using following dictionary format:
             {"tbrom_name": {"field_input_name": [snapshotpath_t0, snapshotpath_t1, ... ]}}
 
         Returns
