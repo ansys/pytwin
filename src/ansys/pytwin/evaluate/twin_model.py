@@ -1,3 +1,4 @@
+import atexit
 import json
 import os
 import time
@@ -75,12 +76,21 @@ class TwinModel(Model):
             self._model_filepath = model_filepath
         self._instantiate_twin_model()
 
+        # We are registering the __del__ method to atexit module at the end of the TwinModel instantiation
+        # in order to avoid it to be called after the settings.cleanup_temp_pytwin_working_directory method
+        # that is deleting PyTwin temporary working directories.
+        # Otherwise, an error could be raised at python process exit because the TwinModel log file won't be freed
+        # and the settings.cleanup_temp_pytwin_working_directory will try to delete it.
+        # This happens when a TwinModel is instantiated into a script file, like in the examples.
+        atexit.register(self.__del__)
+
     def __del__(self):
         """
         Close twin runtime when object is garbage collected.
         """
         if self._twin_runtime is not None:
-            self._twin_runtime.twin_close()
+            if self._twin_runtime.is_model_opened:
+                self._twin_runtime.twin_close()
 
     def _check_model_filepath_is_valid(self, model_filepath):
         """
