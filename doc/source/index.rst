@@ -58,7 +58,7 @@ In addition to :ref:`getting_started` and :ref:`ref_user_guide` sections, the Py
 documentation provides :ref:`ref_index_api`, :ref:`ref_example_gallery`,
 and :ref:`ref_contributing` sections.
 
-On the `PyTwin Issues <https://github.com/pyansys/pytwin/issues>`_ page, you can create
+On the `PyTwin Issues <https://github.com/ansys/pytwin/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
 the PyAnsys support team, email `pyansys.support@ansys.com <pyansys.support@ansys.com>`_.
 

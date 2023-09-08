@@ -10,7 +10,7 @@ license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
 maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]
 readme = "README.rst"
-repository = "https://github.com/pyansys/pytwin"
+repository = "https://github.com/ansys/pytwin"
 documentation = "https://twin.docs.pyansys.com/"
 classifiers = [
     "Development Status :: 4 - Beta",
