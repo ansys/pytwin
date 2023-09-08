@@ -14,12 +14,12 @@ PyTwin
    :target: https://pypi.org/project/pytwin/
    :alt: PyPI
 
-.. |codecov| image:: https://codecov.io/gh/pyansys/pytwin/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/pyansys/pytwin/
+.. |codecov| image:: https://codecov.io/gh/ansys/pytwin/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/ansys/pytwin/
    :alt: Codecov
 
-.. |GH-CI| image:: https://github.com/pyansys/pytwin/actions/workflows/ci.yml/badge.svg
-   :target: https://github.com/pyansys/pytwin/actions/workflows/ci.yml
+.. |GH-CI| image:: https://github.com/ansys/pytwin/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/ansys/pytwin/actions/workflows/ci.yml
    :alt: GH-CI
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
@@ -30,8 +30,8 @@ PyTwin
    :target: https://github.com/psf/black
    :alt: Black
 
-.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/pyansys/pytwin/main.svg
-   :target: https://results.pre-commit.ci/latest/github/pyansys/pytwin/main
+.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/ansys/pytwin/main.svg
+   :target: https://results.pre-commit.ci/latest/github/ansys/pytwin/main
    :alt: pre-commit.ci status
 
 Overview
@@ -78,7 +78,7 @@ the latest release with this code:
 
 .. code:: console
 
-    git clone https://github.com/pyansys/pytwin.git
+    git clone https://github.com/ansys/pytwin.git
     cd pytwin
     pip install pip -U
     pip install -e .
