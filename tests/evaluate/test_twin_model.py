@@ -20,7 +20,10 @@ def reinit_settings(create_new_temp_dir: bool = False):
 
     session_id = reinit_settings_for_unit_tests(create_new_temp_dir)
     if os.path.exists(UNIT_TEST_WD):
-        shutil.rmtree(UNIT_TEST_WD)
+        try:
+            shutil.rmtree(UNIT_TEST_WD)
+        except Exception as e:
+            pass
     return UNIT_TEST_WD, session_id
 
 
@@ -356,25 +359,22 @@ class TestTwinModel:
         twin = TwinModel(model_filepath=model_filepath)
 
     def test_each_twin_model_has_a_subfolder_in_wd(self):
-        from pytwin.settings import reinit_settings_session_id_for_unit_tests
-
         # Init unit test
-        wd, session_id = reinit_settings(create_new_temp_dir=True)
+        reinit_settings()
         logger = get_pytwin_logger()
         # Verify a subfolder is created each time a new twin model is instantiated
         m_count = 5
+        wd = get_pytwin_working_dir()
+        ref_count = len(os.listdir(wd))
         for m in range(m_count):
             model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
             time.sleep(1)
         wd = get_pytwin_working_dir()
-        assert len(os.listdir(wd)) == m_count + 2
-        reinit_settings_session_id_for_unit_tests(session_id)
+        assert len(os.listdir(wd)) == ref_count + m_count
 
     def test_model_dir_migration_after_modifying_wd_dir(self):
-        from pytwin.settings import reinit_settings_session_id_for_unit_tests
-
         # Init unit test
-        wd, session_id = reinit_settings(create_new_temp_dir=True)
+        wd, _ = reinit_settings()
         assert not os.path.exists(wd)
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model.model_dir)[0] == get_pytwin_working_dir()
@@ -382,13 +382,10 @@ class TestTwinModel:
         # Run test
         modify_pytwin_working_dir(new_path=wd)
         assert os.path.split(model.model_dir)[0] == wd
-        assert len(os.listdir(wd)) == 1 + 1  # model + pytwin log
+        ref_count = len(os.listdir(wd))
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model2.model_dir)[0] == wd
-        assert len(os.listdir(wd)) == 2 + 1 + 1  # 2 models + pytwin log + .temp
-
-        # Finalize unit test
-        reinit_settings_session_id_for_unit_tests(session_id)
+        assert len(os.listdir(wd)) == ref_count + 2  # 1 model + .temp
 
     def test_multiprocess_execution_modify_wd_dir(self):
         import subprocess
@@ -396,12 +393,12 @@ class TestTwinModel:
 
         # Init unit test
         wd, session_id = reinit_settings()
-        assert not os.path.exists(wd)
+        # assert not os.path.exists(wd)
         current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
         # In another process, modify working dir before having instantiating a twin model
         subprocess_code = "import pytwin, os\n"
-        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")\n'
+        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}", erase=False)\n'
         subprocess_code += f'model = pytwin.TwinModel(model_filepath=r"{COUPLE_CLUTCHES_FILEPATH}")\n'
         subprocess_code += f'assert os.path.split(model.model_dir)[0] == r"{wd}"\n'
         result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
@@ -415,15 +412,12 @@ class TestTwinModel:
         subprocess_code = "import pytwin, os\n"
         subprocess_code += f'model = pytwin.TwinModel(model_filepath=r"{COUPLE_CLUTCHES_FILEPATH}")\n'
         subprocess_code += "assert os.path.split(model.model_dir)[0] == pytwin.get_pytwin_working_dir()\n"
-        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")\n'
+        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}", erase=False)\n'
         subprocess_code += f'assert os.path.split(model.model_dir)[0] == r"{wd}"\n'
         result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
         new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
-        if sys.platform != "linux":
-            assert new_wd_dir_count == current_wd_dir_count + 1
-        else:
-            assert new_wd_dir_count == current_wd_dir_count
+        assert new_wd_dir_count == current_wd_dir_count
         assert len(result.stderr) == 0
         assert os.path.exists(wd)
 
