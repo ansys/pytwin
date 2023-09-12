@@ -164,4 +164,7 @@ cython_debug/
 # Examples temporary files
 examples/evaluate/*.trn
 
+# Unit tests
+tests/*/unit_test_wd
+
 # End of https://www.toptal.com/developers/gitignore/api/python

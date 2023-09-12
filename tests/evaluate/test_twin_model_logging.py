@@ -8,16 +8,16 @@ COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "Coup
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
 
-def reinit_settings(create_new_temp_dir: bool = False):
+def reinit_settings():
     from pytwin.settings import reinit_settings_for_unit_tests
 
-    session_id = reinit_settings_for_unit_tests(create_new_temp_dir)
+    reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):
         try:
             shutil.rmtree(UNIT_TEST_WD)
         except Exception as e:
             pass
-    return UNIT_TEST_WD, session_id
+    return UNIT_TEST_WD
 
 
 class TestTwinModelLogging:

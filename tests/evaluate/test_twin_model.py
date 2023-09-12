@@ -15,16 +15,16 @@ RC_HEAT_CIRCUIT_23R1 = os.path.join(os.path.dirname(__file__), "data", "RC_heat_
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
 
-def reinit_settings(create_new_temp_dir: bool = False):
+def reinit_settings():
     from pytwin.settings import reinit_settings_for_unit_tests
 
-    session_id = reinit_settings_for_unit_tests(create_new_temp_dir)
+    reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):
         try:
             shutil.rmtree(UNIT_TEST_WD)
         except Exception as e:
             pass
-    return UNIT_TEST_WD, session_id
+    return UNIT_TEST_WD
 
 
 class TestTwinModel:
@@ -374,7 +374,7 @@ class TestTwinModel:
 
     def test_model_dir_migration_after_modifying_wd_dir(self):
         # Init unit test
-        wd, _ = reinit_settings()
+        wd = reinit_settings()
         assert not os.path.exists(wd)
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model.model_dir)[0] == get_pytwin_working_dir()
@@ -392,7 +392,7 @@ class TestTwinModel:
         import sys
 
         # Init unit test
-        wd, session_id = reinit_settings()
+        wd = reinit_settings()
         # assert not os.path.exists(wd)
         current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
@@ -423,7 +423,7 @@ class TestTwinModel:
 
     def test_model_warns_at_initialization(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         log_file = get_pytwin_log_file()
         # Warns if given parameters have wrong names
@@ -447,7 +447,7 @@ class TestTwinModel:
 
     def test_model_warns_at_evaluation_step_by_step(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         log_file = get_pytwin_log_file()
         model.initialize_evaluation()
@@ -463,7 +463,7 @@ class TestTwinModel:
 
     def test_model_warns_at_evaluation_batch(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         log_file = get_pytwin_log_file()
         model.initialize_evaluation()
@@ -477,7 +477,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_multiple_times(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
@@ -506,7 +506,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_with_coupled_clutches(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         model1.initialize_evaluation()
@@ -531,7 +531,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_with_dynarom(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=DYNAROM_HX_23R1)
         model1.initialize_evaluation()
@@ -555,7 +555,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_with_rc_heat_circuit(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=RC_HEAT_CIRCUIT_23R1)
         model1.initialize_evaluation(parameters={"SimModel2_C": 10.0})
