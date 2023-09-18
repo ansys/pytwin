@@ -13,7 +13,7 @@ The following contribution information is specific to PyTwin.
 
 Post issues
 -----------
-Use the `PyTwin Issues <https://github.com/pyansys/pytwin/issues>`_ page to
+Use the `PyTwin Issues <https://github.com/ansys/pytwin/issues>`_ page to
 submit questions, report bugs, and request new features.
 
 Clone the repository
@@ -23,7 +23,7 @@ mode, run this code:
 
 .. code::
 
-    git clone https://github.com/pyansys/pytwin.git
+    git clone https://github.com/ansys/pytwin.git
     cd pytwin
     pip install pip -U
     pip install -e .

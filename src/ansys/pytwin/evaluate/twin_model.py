@@ -634,10 +634,12 @@ class TwinModel(Model):
             for field in tbrom.field_input_names:
                 inmcs = dict()
                 for i in range(0, len(tbrom._infbasis[field])):
+                    input_port_name = self._field_input_port_name(field, i, tbrom.name)
                     for key, item in self.inputs.items():
-                        input_port_name = self._field_input_port_name(field, i, tbrom.name)
                         if input_port_name in key:
                             inmcs.update({key: item})
+                            break
+                            # e.g. inputfield_mode_1 has been found but we don't want to pick inputfield_mode_10 yet
                 if len(inmcs) == len(tbrom._infbasis[field]):
                     infmcs.update({field: inmcs})
                     hasinfmcs.update({field: True})
@@ -648,10 +650,12 @@ class TwinModel(Model):
 
         outmcs = dict()
         for i in range(1, len(tbrom._outbasis) + 1):
+            output_port_name = self._field_output_port_name(i, tbrom.name)
             for key, item in self.outputs.items():
-                output_port_name = self._field_output_port_name(i, tbrom.name)
                 if output_port_name in key:
                     outmcs.update({key: item})
+                    break
+                    # e.g. outField_mode_1 has been found but we don't want to pick outField_mode_10 yet
         if len(outmcs) == len(tbrom._outbasis):
             tbrom._outmcs = outmcs
             tbrom._hasoutmcs = True
@@ -950,7 +954,7 @@ class TwinModel(Model):
         field_inputs : dict (optional)
             Dictionary of snapshot file paths that must be used as field input at all time instants
             given by the 'inputs_df' argument. One file path must be given per time instant, for a field input
-             of a TBROM included in the twin model, using following dictionary format:
+            of a TBROM included in the twin model, using following dictionary format:
             {"tbrom_name": {"field_input_name": [snapshotpath_t0, snapshotpath_t1, ... ]}}
 
         Returns

@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import tempfile
@@ -43,7 +44,7 @@ class TestDefaultSettings:
         with open(log_file, "r") as f:
             lines = f.readlines()
         assert "Hello 10" not in lines
-        assert len(lines) == 4
+        assert len(lines) == 5
         assert os.path.exists(log_file)
         assert len(logger.handlers) == 1
         assert pytwin_logging_is_enabled()
@@ -325,5 +326,52 @@ class TestDefaultSettings:
         assert len(logger.handlers) == 1
         assert log_file is None
 
+    def test_multiprocess_execution_pytwin_cleanup_is_safe(self):
+        import subprocess
+        import sys
+
+        # Init unit test
+        reinit_settings()
+
+        # Verify that each new python process delete its own temp working dir without deleting others
+        current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+        result = subprocess.run([sys.executable, "-c", "import pytwin"], capture_output=True)
+        new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        assert len(result.stdout) == 0
+        assert len(result.stderr) == 0
+        assert new_wd_dir_count == current_wd_dir_count
+
+    def test_multiprocess_execution_keep_new_directory(self):
+        import subprocess
+        import sys
+
+        # Init unit test
+        wd = reinit_settings()
+
+        # Verify that each new python process delete its own temp working dir without deleting others
+        current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+        main_logger_handler_count = len(logging.getLogger().handlers)
+        pytwin_logger_handler_count = len(get_pytwin_logger().handlers)
+        code = "import pytwin\n"
+        code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")'
+        result = subprocess.run([sys.executable, "-c", code], capture_output=True)
+        new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
+
+        assert len(result.stdout) == 0
+        assert len(result.stderr) == 0
+        assert new_wd_dir_count == current_wd_dir_count
+        assert os.path.exists(wd)
+        assert main_logger_handler_count == len(logging.getLogger().handlers)
+        assert pytwin_logger_handler_count == len(get_pytwin_logger().handlers)
+
     def test_clean_unit_test(self):
         reinit_settings()
+        temp_wd = get_pytwin_working_dir()
+        parent_dir = os.path.dirname(temp_wd)
+        try:
+            for dir_name in os.listdir(parent_dir):
+                if dir_name not in temp_wd:
+                    shutil.rmtree(os.path.join(parent_dir, dir_name))
+        except Exception as e:
+            pass

@@ -135,7 +135,7 @@ html_short_title = html_title = "PyTwin"
 html_theme = "ansys_sphinx_theme"
 html_logo = pyansys_logo_black
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pytwin",
+    "github_url": "https://github.com/ansys/pytwin",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "additional_breadcrumbs": [

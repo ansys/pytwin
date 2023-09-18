@@ -62,7 +62,7 @@ the latest release with this code:
 
 .. code::
 
-   git clone https://github.com/pyansys/pytwin.git
+   git clone https://github.com/ansys/pytwin.git
    cd pytwin
    pip install pip -U
    pip install -e .

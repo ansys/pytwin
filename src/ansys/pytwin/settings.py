@@ -1,3 +1,4 @@
+import atexit
 from enum import Enum
 import logging
 import os
@@ -142,10 +143,15 @@ def modify_pytwin_working_dir(new_path: str, erase: bool = True):
     """
     Modify the global PyTwin working directory.
 
+    By default, a temporary directory is used by PyTwin as working directory. This temporary directory is automatically
+    cleaned up at exit of the python process that imported pytwin. When this method is used, the new PyTwin working
+    directory won't be deleted at python process exit. Note that this may lead to an overflow of the working directory.
+
     Parameters
     ----------
     new_path: str
         Absolute path to the working directory to use for PyTwin. The directory is created if it does not exist.
+        This directory is kept alive at python process exit.
     erase: bool, optional
         Whether to erase a non-empty existing working directory. The default is ``True``,
         in which case the existing working directory is erased and a new one is created.
@@ -231,14 +237,24 @@ def get_pytwin_working_dir():
     return PYTWIN_SETTINGS.working_dir
 
 
-def reinit_settings_for_unit_tests():
+def reinit_settings_for_unit_tests(create_new_temp_dir: bool = False):
     # Mutable attributes init
     _PyTwinSettings.LOGGING_OPTION = None
     _PyTwinSettings.LOGGING_LEVEL = None
     _PyTwinSettings.WORKING_DIRECTORY_PATH = None
-    _PyTwinSettings.SESSION_ID = None
     logging.getLogger(_PyTwinSettings.LOGGER_NAME).handlers.clear()
-    _PyTwinSettings().__init__()
+    if create_new_temp_dir:
+        PYTWIN_SETTINGS._initialize(keep_session_id=False)
+    else:
+        PYTWIN_SETTINGS._initialize(keep_session_id=True)
+    return PYTWIN_SETTINGS.SESSION_ID
+
+
+def reinit_settings_session_id_for_unit_tests(session_id: int):
+    PYTWIN_SETTINGS.SESSION_ID = session_id
+    PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH = os.path.join(
+        tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
+    )
 
 
 class _PyTwinSettings(object):
@@ -253,12 +269,15 @@ class _PyTwinSettings(object):
     LOGGING_LEVEL = None
     SESSION_ID = None
     WORKING_DIRECTORY_PATH = None
+    TEMP_WORKING_DIRECTORY_PATH = None
 
     # Immutable constants
     LOGGER_NAME = "pytwin_logger"
     LOGGING_FILE_NAME = "pytwin.log"
     WORKING_DIRECTORY_NAME = "pytwin"
     TEMP_WD_NAME = ".temp"
+    PYTWIN_START_MSG = "pytwin starts!"
+    PYTWIN_END_MSG = "pytwin ends!"
 
     @property
     def logfile(self):
@@ -289,8 +308,9 @@ class _PyTwinSettings(object):
             raise PyTwinSettingsError(msg)
         return _PyTwinSettings.WORKING_DIRECTORY_PATH
 
-    def __init__(self):
-        self._initialize()
+    def __init__(self, keep_session_id: bool = False):
+        self._initialize(keep_session_id)
+        self.logger.info(_PyTwinSettings.PYTWIN_START_MSG)
 
     @staticmethod
     def _add_default_file_handler_to_pytwin_logger(filepath: str, level: PyTwinLogLevel, mode: str = "w"):
@@ -321,9 +341,13 @@ class _PyTwinSettings(object):
         logger.addHandler(log_handler)
 
     @staticmethod
-    def _initialize():
+    def _initialize(keep_session_id: bool):
         pytwin_logger = logging.getLogger(_PyTwinSettings.LOGGER_NAME)
         pytwin_logger.handlers.clear()
+
+        if not keep_session_id:
+            _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
+
         _PyTwinSettings._initialize_wd()
         _PyTwinSettings._initialize_logging()
 
@@ -346,12 +370,11 @@ class _PyTwinSettings(object):
         Provides default settings for the PyTwin working directory.
         """
         # Create a unique working directory for each python process that imports pytwin
-        _PyTwinSettings.SESSION_ID = f"{uuid.uuid4()}"[0:24].replace("-", "")
-        pytwin_wd_dir = os.path.join(
+        _PyTwinSettings.TEMP_WORKING_DIRECTORY_PATH = os.path.join(
             tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
         )
-        os.makedirs(pytwin_wd_dir)
-        _PyTwinSettings.WORKING_DIRECTORY_PATH = pytwin_wd_dir
+        os.makedirs(_PyTwinSettings.TEMP_WORKING_DIRECTORY_PATH, exist_ok=True)
+        _PyTwinSettings.WORKING_DIRECTORY_PATH = _PyTwinSettings.TEMP_WORKING_DIRECTORY_PATH
 
     @staticmethod
     def _migration_due_to_new_wd(old_path: str, new_path: str):
@@ -447,3 +470,18 @@ class _PyTwinSettings(object):
 
 
 PYTWIN_SETTINGS = _PyTwinSettings()  # This instance is here to launch default settings initialization.
+
+
+@atexit.register
+def cleanup_temp_pytwin_working_directory():
+    pytwin_logger = PYTWIN_SETTINGS.logger
+    pytwin_logger.info(PYTWIN_SETTINGS.PYTWIN_END_MSG)
+    for handler in pytwin_logger.handlers:
+        handler.close()
+        pytwin_logger.removeHandler(handler)
+    try:
+        shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
+    except BaseException as e:
+        msg = "Something went wrong while trying to cleanup pytwin temporary directory!"
+        msg += f"error message:\n{str(e)}"
+        print(msg)

@@ -4,13 +4,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pytwin"
-version = "0.4.dev0"
+version = "0.5.dev0"
 description = "A python wrapper for Ansys Digital Twin components"
 license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
 maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]
 readme = "README.rst"
-repository = "https://github.com/pyansys/pytwin"
+repository = "https://github.com/ansys/pytwin"
 documentation = "https://twin.docs.pyansys.com/"
 classifiers = [
     "Development Status :: 4 - Beta",
