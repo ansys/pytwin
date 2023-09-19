@@ -928,7 +928,7 @@ class TestTbRom:
 
     def test_tbrom_image_generation_at_initialization(self):
         reinit_settings()
-        model_filepath = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_23R2.twin")
+        model_filepath = download_file("ThermalTBROM_23R2.twin", "twin_files")
         twin = TwinModel(model_filepath=model_filepath)
         twin.initialize_evaluation()
 
