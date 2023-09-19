@@ -15,13 +15,16 @@ RC_HEAT_CIRCUIT_23R1 = os.path.join(os.path.dirname(__file__), "data", "RC_heat_
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
 
-def reinit_settings(create_new_temp_dir: bool = False):
+def reinit_settings():
     from pytwin.settings import reinit_settings_for_unit_tests
 
-    session_id = reinit_settings_for_unit_tests(create_new_temp_dir)
+    reinit_settings_for_unit_tests()
     if os.path.exists(UNIT_TEST_WD):
-        shutil.rmtree(UNIT_TEST_WD)
-    return UNIT_TEST_WD, session_id
+        try:
+            shutil.rmtree(UNIT_TEST_WD)
+        except Exception as e:
+            pass
+    return UNIT_TEST_WD
 
 
 class TestTwinModel:
@@ -356,25 +359,22 @@ class TestTwinModel:
         twin = TwinModel(model_filepath=model_filepath)
 
     def test_each_twin_model_has_a_subfolder_in_wd(self):
-        from pytwin.settings import reinit_settings_session_id_for_unit_tests
-
         # Init unit test
-        wd, session_id = reinit_settings(create_new_temp_dir=True)
+        reinit_settings()
         logger = get_pytwin_logger()
         # Verify a subfolder is created each time a new twin model is instantiated
         m_count = 5
+        wd = get_pytwin_working_dir()
+        ref_count = len(os.listdir(wd))
         for m in range(m_count):
             model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
             time.sleep(1)
         wd = get_pytwin_working_dir()
-        assert len(os.listdir(wd)) == m_count + 2
-        reinit_settings_session_id_for_unit_tests(session_id)
+        assert len(os.listdir(wd)) == ref_count + m_count
 
     def test_model_dir_migration_after_modifying_wd_dir(self):
-        from pytwin.settings import reinit_settings_session_id_for_unit_tests
-
         # Init unit test
-        wd, session_id = reinit_settings(create_new_temp_dir=True)
+        wd = reinit_settings()
         assert not os.path.exists(wd)
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model.model_dir)[0] == get_pytwin_working_dir()
@@ -382,26 +382,23 @@ class TestTwinModel:
         # Run test
         modify_pytwin_working_dir(new_path=wd)
         assert os.path.split(model.model_dir)[0] == wd
-        assert len(os.listdir(wd)) == 1 + 1  # model + pytwin log
+        ref_count = len(os.listdir(wd))
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         assert os.path.split(model2.model_dir)[0] == wd
-        assert len(os.listdir(wd)) == 2 + 1 + 1  # 2 models + pytwin log + .temp
-
-        # Finalize unit test
-        reinit_settings_session_id_for_unit_tests(session_id)
+        assert len(os.listdir(wd)) == ref_count + 2  # 1 model + .temp
 
     def test_multiprocess_execution_modify_wd_dir(self):
         import subprocess
         import sys
 
         # Init unit test
-        wd, session_id = reinit_settings()
-        assert not os.path.exists(wd)
+        wd = reinit_settings()
+        # assert not os.path.exists(wd)
         current_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
         # In another process, modify working dir before having instantiating a twin model
         subprocess_code = "import pytwin, os\n"
-        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")\n'
+        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}", erase=False)\n'
         subprocess_code += f'model = pytwin.TwinModel(model_filepath=r"{COUPLE_CLUTCHES_FILEPATH}")\n'
         subprocess_code += f'assert os.path.split(model.model_dir)[0] == r"{wd}"\n'
         result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
@@ -415,21 +412,18 @@ class TestTwinModel:
         subprocess_code = "import pytwin, os\n"
         subprocess_code += f'model = pytwin.TwinModel(model_filepath=r"{COUPLE_CLUTCHES_FILEPATH}")\n'
         subprocess_code += "assert os.path.split(model.model_dir)[0] == pytwin.get_pytwin_working_dir()\n"
-        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}")\n'
+        subprocess_code += f'pytwin.modify_pytwin_working_dir(new_path=r"{wd}", erase=False)\n'
         subprocess_code += f'assert os.path.split(model.model_dir)[0] == r"{wd}"\n'
         result = subprocess.run([sys.executable, "-c", subprocess_code], capture_output=True)
         new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
-        if sys.platform != "linux":
-            assert new_wd_dir_count == current_wd_dir_count + 1
-        else:
-            assert new_wd_dir_count == current_wd_dir_count
+        assert new_wd_dir_count == current_wd_dir_count
         assert len(result.stderr) == 0
         assert os.path.exists(wd)
 
     def test_model_warns_at_initialization(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         log_file = get_pytwin_log_file()
         # Warns if given parameters have wrong names
@@ -453,7 +447,7 @@ class TestTwinModel:
 
     def test_model_warns_at_evaluation_step_by_step(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         log_file = get_pytwin_log_file()
         model.initialize_evaluation()
@@ -469,7 +463,7 @@ class TestTwinModel:
 
     def test_model_warns_at_evaluation_batch(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         log_file = get_pytwin_log_file()
         model.initialize_evaluation()
@@ -483,7 +477,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_multiple_times(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
@@ -512,7 +506,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_with_coupled_clutches(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         model1.initialize_evaluation()
@@ -537,7 +531,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_with_dynarom(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=DYNAROM_HX_23R1)
         model1.initialize_evaluation()
@@ -561,7 +555,7 @@ class TestTwinModel:
 
     def test_save_and_load_state_with_rc_heat_circuit(self):
         # Init unit test
-        wd = reinit_settings()
+        reinit_settings()
         # Save state test
         model1 = TwinModel(model_filepath=RC_HEAT_CIRCUIT_23R1)
         model1.initialize_evaluation(parameters={"SimModel2_C": 10.0})

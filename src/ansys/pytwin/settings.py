@@ -237,24 +237,14 @@ def get_pytwin_working_dir():
     return PYTWIN_SETTINGS.working_dir
 
 
-def reinit_settings_for_unit_tests(create_new_temp_dir: bool = False):
+def reinit_settings_for_unit_tests():
     # Mutable attributes init
     _PyTwinSettings.LOGGING_OPTION = None
     _PyTwinSettings.LOGGING_LEVEL = None
     _PyTwinSettings.WORKING_DIRECTORY_PATH = None
     logging.getLogger(_PyTwinSettings.LOGGER_NAME).handlers.clear()
-    if create_new_temp_dir:
-        PYTWIN_SETTINGS._initialize(keep_session_id=False)
-    else:
-        PYTWIN_SETTINGS._initialize(keep_session_id=True)
+    PYTWIN_SETTINGS._initialize(keep_session_id=True)
     return PYTWIN_SETTINGS.SESSION_ID
-
-
-def reinit_settings_session_id_for_unit_tests(session_id: int):
-    PYTWIN_SETTINGS.SESSION_ID = session_id
-    PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH = os.path.join(
-        tempfile.gettempdir(), _PyTwinSettings.WORKING_DIRECTORY_NAME, _PyTwinSettings.SESSION_ID
-    )
 
 
 class _PyTwinSettings(object):
@@ -308,8 +298,8 @@ class _PyTwinSettings(object):
             raise PyTwinSettingsError(msg)
         return _PyTwinSettings.WORKING_DIRECTORY_PATH
 
-    def __init__(self, keep_session_id: bool = False):
-        self._initialize(keep_session_id)
+    def __init__(self):
+        self._initialize(keep_session_id=False)
         self.logger.info(_PyTwinSettings.PYTWIN_START_MSG)
 
     @staticmethod
