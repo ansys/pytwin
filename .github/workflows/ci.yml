@@ -88,6 +88,12 @@ jobs:
            os: [pytwin-win10, ubuntu-20.04]
            python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
+      - name: Install Ubuntu dependencies for RomViewerSharedLib.so
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install libosmesa6
+
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v4
         with:
