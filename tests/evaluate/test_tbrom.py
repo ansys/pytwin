@@ -928,14 +928,10 @@ class TestTbRom:
 
     def test_tbrom_image_generation_at_initialization(self):
         reinit_settings()
-        # model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
         model_filepath = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_23R2.twin")
         twin = TwinModel(model_filepath=model_filepath)
         twin.initialize_evaluation()
 
-        # Verify IMAGE IS GENERATED AT INITIALIZATION
-        #        if sys.platform != "linux":
-        # TODO - Fix BUG755776
         fp = twin.get_image_filepath(
             rom_name=twin.tbrom_names[0],
             view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
