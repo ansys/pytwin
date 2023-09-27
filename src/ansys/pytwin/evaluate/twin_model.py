@@ -2,6 +2,7 @@ import atexit
 import json
 import os
 import time
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -134,16 +135,24 @@ class TwinModel(Model):
             raise self._raise_error(msg)
         return True
 
-    def _check_snapshot_filepath(self, snapshot_filepath: str, tbrom: TbRom, fieldname: str):
-        if snapshot_filepath is None:
-            msg = self._error_msg_input_snapshot_path_none(snapshot_filepath)
+    def _check_snapshot_detail(self, snapshot_detail: Union[str, np.ndarray], tbrom: TbRom, fieldname: str):
+        if isinstance(snapshot_detail, np.ndarray):
+            if len(snapshot_detail.shape)>1:
+                msg = self._error_msg_input_snapshot_array_wrong_shape(snapshot_detail)
+                raise self._raise_error(msg)
+            snapshotsize = len(snapshot_detail)
+        elif isinstance(snapshot_detail, str):
+            # this explicit string check will raise an error if Pathlib Path is used instead of string
+            # consider including Path in accepted types
+            if not os.path.exists(snapshot_detail):
+                msg = self._error_msg_input_snapshot_path_does_not_exist(snapshot_detail)
+                raise self._raise_error(msg)
+            snapshotsize = TbRom.read_snapshot_size(snapshot_detail)
+        else:
+            # Removed check for NoneType on snapshot_detail, since will be caught here
+            msg = self._error_msg_input_snapshot_detail_wrong_type(snapshot_detail)
             raise self._raise_error(msg)
 
-        if not os.path.exists(snapshot_filepath):
-            msg = self._error_msg_input_snapshot_path_does_not_exist(snapshot_filepath)
-            raise self._raise_error(msg)
-
-        snapshotsize = TbRom.read_snapshot_size(snapshot_filepath)
         inputfieldsize = tbrom.input_field_size(fieldname)
         if snapshotsize != inputfieldsize:
             msg = self._error_msg_input_snapshot_size(snapshotsize, inputfieldsize)
@@ -151,20 +160,22 @@ class TwinModel(Model):
 
     def _check_tbrom_input_field_dict_is_valid(self, tbrom_name: str, field_inputs: dict, t_count: int = None):
         """
-        Check if the dictionary describing the input field snapshots files is valid and consistent with the Twin's
+        Check if the dictionary describing the input field snapshots is valid and consistent with the Twin's
         TBROM.
         1st : check if input field name provided is valid
         2nd : check if tbrom/twin have common inputs
-        3th : check if the provided snapshot path is valid
-        4th : check if the provided snapshot size is consistent with input field basis
-        5th : check the number of provided snapshot paths equals t_count (used in batch mode only)
+        3rd : check if the provided snapshot array is 1D (for array snapshot)
+        4th : check if the provided snapshot path exists (for string snapshot path)
+        5th : check if the provided snapshot is a string or array
+        6th : check if the provided snapshot size is consistent with input field basis
+        7th : check the number of provided snapshots equal t_count (used in batch mode only)
         Raise a ``TwinModelError`` message if not.
         """
         tbrom = None
         if self._check_rom_name_is_valid(tbrom_name):
             tbrom = self._tbroms[tbrom_name]
 
-        for fieldname, snapshot_filepath in field_inputs.items():
+        for fieldname, snapshot_details in field_inputs.items():
             if fieldname not in tbrom.field_input_names:
                 msg = self._error_msg_for_unknown_field_name(fieldname, tbrom)
                 raise self._raise_error(msg)
@@ -173,21 +184,23 @@ class TwinModel(Model):
                 msg = self._error_msg_for_rom_input_connection(tbrom_name)
                 raise self._raise_error(msg)
 
-            if (type(snapshot_filepath) is str) or (snapshot_filepath is None):
-                self._check_snapshot_filepath(snapshot_filepath, tbrom, fieldname)
-
-            if t_count is not None:
-                if type(snapshot_filepath) is list:
-                    if len(snapshot_filepath) != t_count:
+            # Add additional condition to this check, since accidentally passing a single snapshot 
+            # as a list, rather than array should be checked first
+            if t_count is None:
+                self._check_snapshot_detail(snapshot_details, tbrom, fieldname)
+            else:
+                # Snapshot details should be list of paths or list of numpy arrays
+                if type(snapshot_details) is list:
+                    if len(snapshot_details) != t_count:
                         msg = self._error_msg_input_snapshot_count(
-                            found_count=len(snapshot_filepath), expected_count=t_count
+                            found_count=len(snapshot_details), expected_count=t_count
                         )
                         raise self._raise_error(msg)
 
-                    for i in snapshot_filepath:
-                        self._check_snapshot_filepath(i, tbrom, fieldname)
+                    for i in snapshot_details:
+                        self._check_snapshot_detail(i, tbrom, fieldname)
                 else:
-                    msg = self._error_msg_input_snaphshot_filepath_list(snapshot_filepath)
+                    msg = self._error_msg_input_snaphshot_detail_list(snapshot_details)
                     raise self._raise_error(msg)
 
         return True
@@ -274,14 +287,26 @@ class TwinModel(Model):
         msg = "[Instantiation]Twin model has not been successfully instantiated."
         return msg
 
-    def _error_msg_input_snapshot_path_none(self, snapshot):
-        msg = f"[InputSnapshotNone]The snapshot path {snapshot} is not a valid path."
-        msg += "\nProvide a valid input field snapshot path to use this method."
+    def _error_msg_input_snapshot_detail_none(self):
+        # Could remove this, since it's covered by _error_msg_input_snapshot_detail_wrong_type
+        msg = f"[InputSnapshotNone]The snapshot path or array is missing."
+        msg += "\nProvide a valid input field snapshot path or array to use this method."
         return msg
 
-    def _error_msg_input_snapshot_path_does_not_exist(self, snapshot):
+    def _error_msg_input_snapshot_detail_wrong_type(self, snapshot):
+        # Remove snapshot from message, since don't want to dump a list or other long value
+        msg = f"[InputSnapshotType]The snapshot is a {type(snapshot)}, not a string or Numpy array."
+        msg += "\nProvide a input field snapshot path string or Numpy array to use this method."
+        return msg
+
+    def _error_msg_input_snapshot_array_wrong_shape(self, snapshot: np.ndarray):
+        msg = f"[InputSnapshotShape]The snapshot array is not a 1D array, but rather {snapshot.shape}."
+        msg += "\nProvide a 1D input field snapshot array to use this method with array input."
+        return msg
+
+    def _error_msg_input_snapshot_path_does_not_exist(self, snapshot: str):
         msg = f"[InputSnapshotPath]The snapshot path does not exist: {snapshot}."
-        msg += "\nProvide an existing snapshot path as input field to use this method."
+        msg += "\nProvide an existing snapshot path as input field to use this method with file input."
         return msg
 
     def _error_msg_input_snapshot_size(self, snapshotsize, inputfieldsize):
@@ -290,14 +315,14 @@ class TwinModel(Model):
         msg += "\nProvide a valid input field snapshot to use this method."
         return msg
 
-    def _error_msg_input_snaphshot_filepath_list(self, snapshot_filepath):
-        msg = "[InputSnapshotList]When used in batch mode, the snapshot file paths must given in a list!"
-        msg += f"Provided snapshot file paths is: {snapshot_filepath}"
+    def _error_msg_input_snaphshot_detail_list(self, snapshot_details):
+        msg = "[InputSnapshotList]When used in batch mode, the snapshot file paths or arrays must given in a list!"
+        msg += f"\nProvided snapshot file details are: {snapshot_details}"
         return msg
 
     def _error_msg_input_snapshot_count(self, found_count: int, expected_count: int):
         msg = (
-            f"[InputSnapshotCount]The provided number of snapshot file path ({found_count}) to be used as input field "
+            f"[InputSnapshotCount]The provided number of snapshots ({found_count}) to be used as input field "
         )
         msg += f"must equal the number of time instants given in the batch data frame ({expected_count})."
         return msg
@@ -683,16 +708,17 @@ class TwinModel(Model):
         for tbrom_name, field_inputs in field_inputs.items():
             if self._check_tbrom_input_field_dict_is_valid(tbrom_name, field_inputs):
                 tbrom = self._tbroms[tbrom_name]
-                for name, snp_path in field_inputs.items():
-                    self._update_field_input(tbrom, name, snp_path)
+                for name, snp in field_inputs.items():
+                    self._update_field_input(tbrom, name, snp)
 
     def _update_field_input(
-        self, tbrom: TbRom, field_input_name: str, snapshot_filepath: str, update_twin_runtime: bool = True
+        self, tbrom: TbRom, field_input_name: str, 
+        snapshot: Union[str, np.ndarray], update_twin_runtime: bool = True
     ):
         """
         Update Twin's current inputs states based on tbrom attributes
         """
-        tbrom._reduce_field_input(field_input_name, snapshot_filepath)
+        tbrom._reduce_field_input(field_input_name, snapshot)
         infmcs = {}
         for mc_name, mc_value in tbrom._infmcs[field_input_name].items():
             self.inputs[mc_name] = mc_value
@@ -831,6 +857,8 @@ class TwinModel(Model):
         field_inputs : dict, optional
             Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpath}}) to use for twin model
             initialization.
+            NOTE: if field inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs``.
         json_config_filepath : str, optional
             Filepath to a JSON configuration file to use to initialize the evaluation.
 
@@ -848,12 +876,21 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation(json_config_filepath='path_to_your_config.json')
         >>> outputs = twin_model.outputs
         >>>
-        >>> # Example 2 - Using a dictionary and field inputs
+        >>> # Example 2 - Using a dictionary and field inputs from disk
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
         >>> romname = twin_model.tbrom_names[0]
         >>> fieldname = twin_model.get_field_input_names(romname)[0]
         >>> twin_model.initialize_evaluation(field_inputs={romname: {fieldname:'path_to_the_snapshot.bin'}})
+        >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
+        >>>
+        >>> # Example 3 - Using a dictionary and field inputs from memory
+        >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> twin_model.initialize_evaluation()
+        >>> romname = twin_model.tbrom_names[0]
+        >>> fieldname = twin_model.get_field_input_names(romname)[0]
+        >>> snapshot = np.array([3.14, 2.71, 9.81, 6.02])
+        >>> twin_model.initialize_evaluation(field_inputs={romname: {fieldname:snapshot}})
         >>> results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         """
         self._log_key = "InitializeEvaluation"
@@ -885,17 +922,14 @@ class TwinModel(Model):
         step_size : float
             Step size in seconds to reach the next time step. The value must be positive.
         inputs : dict (optional)
-            Dictionary of input values ({"name": value}) at time instant `t`. An input is not updated if
+            Dictionary of scalar input values ({"name": value}) at time instant `t`. An input is not updated if
             the associated key is not found in the twin model's ``input_names`` property. If values for
             inputs are not provided in the dictionary, their current values are kept.
         field_inputs : dict (optional)
-            Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpath}}) to use for twin model
-            evaluation.
-
-        Returns
-        -------
-        list
-            List of outputs values at time instant `t` plus the step size, ordered by output names.
+            Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshot}}) to use for twin model
+            evaluation. ``snapshot`` may be a Numpy array, or string for path of snapshot file.
+            NOTE: if field_inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs``.
 
         Examples
         --------
@@ -907,13 +941,24 @@ class TwinModel(Model):
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.})
         >>> scalar_results = {'Time': twin_model.evaluation_time, 'Outputs': twin_model.outputs}
         >>>
-        >>> # Example 2 - Evaluate step by step with field input and field output
+        >>> # Example 2 - Evaluate step by step with field input from disk and field output to disk
         >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> twin_model.initialize_evaluation()
         >>> romname = twin_model.tbrom_names[0]
         >>> fieldname = twin_model.get_field_input_names(romname)[0]
         >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.},
         >>>                                  field_inputs={romname: {fieldname:'path_to_the_snapshot.bin'}})
+        >>> field_output = twin_model.generate_snapshot(rom_name=romname, on_disk=True)
+        >>> field_results = {'Time': twin_model.evaluation_time, 'Field': field_output}
+        >>>
+        >>> # Example 3 - Evaluate step by step with field input from memory and field output in memory
+        >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> twin_model.initialize_evaluation()
+        >>> romname = twin_model.tbrom_names[0]
+        >>> fieldname = twin_model.get_field_input_names(romname)[0]
+        >>> snapshot = np.array([3.14, 2.71, 9.81, 6.02])
+        >>> twin_model.evaluate_step_by_step(step_size=0.1, inputs={'input1': 1., 'input2': 2.},
+        >>>                                  field_inputs={romname: {fieldname:snapshot}})
         >>> field_output = twin_model.generate_snapshot(rom_name=romname, on_disk=False)
         >>> field_results = {'Time': twin_model.evaluation_time, 'Field': field_output}
         """
@@ -962,10 +1007,12 @@ class TwinModel(Model):
             this input is kept constant to its initialization value. The column header must match with a
             twin model input name.
         field_inputs : dict (optional)
-            Dictionary of snapshot file paths that must be used as field input at all time instants
-            given by the 'inputs_df' argument. One file path must be given per time instant, for a field input
-            of a TBROM included in the twin model, using following dictionary format:
-            {"tbrom_name": {"field_input_name": [snapshotpath_t0, snapshotpath_t1, ... ]}}
+            Dictionary of snapshot file paths or snapshot Numpy arrays that must be used as field input at all 
+            time instants given by the 'inputs_df' argument. One file path or array must be given per time 
+            instant, for a field input of a TBROM included in the twin model, using following dictionary format:
+            {"tbrom_name": {"field_input_name": [snapshot_t0, snapshot_t1, ... ]}}
+            NOTE: if field_inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs_df``.
 
         Returns
         -------
@@ -978,7 +1025,8 @@ class TwinModel(Model):
             If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
             If there is no 'Time' column in the input values stored in the Pandas dataframe.
             If there is no time instant `t=0.s` in the input values stored in the Pandas dataframe.
-            If the list of snapshot files given as field inputs has not one file per time instant.
+            If the list of snapshots given as field inputs has not one snapshot per time instant.
+            If the snapshots given as field inputs are not Numpy arrays or paths to snapshot files.
             If the field inputs dictionary has bad TBROM or field input names.
 
         Examples
@@ -992,16 +1040,28 @@ class TwinModel(Model):
         >>> twin_model.initialize_evaluation(inputs={'input1': 1., 'input2': 1.})
         >>> scalar_outputs_df = twin_model.evaluate_batch(inputs_df=inputs_df)
         >>>
-        >>> # Example 2 - Batch evaluation with field inputs and field output
+        >>> # Example 2 - Batch evaluation with field inputs from disk and field output
         >>> model = TwinModel(model_filepath='path_to_your_twin_model.twin')
         >>> romname = model.tbrom_names[0]
         >>> fieldname = twin_model.get_field_input_names(romname)[0]
-        >>> snapshot_filepath_t0 = 'path_to_snasphot_t0.twin'
+        >>> snapshot_filepath_t0 = 'path_to_snapshot_t0.twin'
         >>> twin_model.initialize_evaluation(field_inputs={romname: {fieldname: snapshot_filepath_t0})
         >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.]})
-        >>> snapshot_filepaths = ['path_to_snasphot_t0.twin', 'path_to_snasphot_t1.twin', 'path_to_snasphot_t2.twin']
+        >>> snapshot_filepaths = ['path_to_snapshot_t0.bin', 'path_to_snapshot_t1.bin', 'path_to_snapshot_t2.bin']
         >>> batch_results = twin_model.evaluate_batch(inputs_df=inputs_df,\
         field_inputs={romname: {fieldname: snapshot_filepaths})
+        >>> output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
+        >>>
+        >>> # Example 3 - Batch evaluation with field inputs from memory and field output
+        >>> model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> romname = model.tbrom_names[0]
+        >>> fieldname = twin_model.get_field_input_names(romname)[0]
+        >>> snapshot_t0 = np.array([3.14, 2.71, 9.81, 6.02])
+        >>> twin_model.initialize_evaluation(field_inputs={romname: {fieldname: snapshot_t0})
+        >>> inputs_df = pd.DataFrame({'Time': [0., 1., 2.]})
+        >>> snapshots = [snapshot_t0, snapshot_t1, snapshot_t2]
+        >>> batch_results = twin_model.evaluate_batch(inputs_df=inputs_df,\
+        field_inputs={romname: {fieldname: snapshots})
         >>> output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
         """
         self._log_key = "EvaluateBatch"
@@ -1028,12 +1088,12 @@ class TwinModel(Model):
             t_count = _inputs_df.shape[0]
             for tbrom_name, field_inputs_dict in field_inputs.items():
                 if self._check_tbrom_input_field_dict_is_valid(tbrom_name, field_inputs_dict, t_count):
-                    for field_name, snapshot_filepaths in field_inputs_dict.items():
-                        for i, snapshot_filepath in enumerate(snapshot_filepaths):
+                    for field_name, snapshots in field_inputs_dict.items():
+                        for i, snapshot in enumerate(snapshots):
                             infmcs = self._update_field_input(
                                 tbrom=self._tbroms[tbrom_name],
                                 field_input_name=field_name,
-                                snapshot_filepath=snapshot_filepath,
+                                snapshot=snapshot,
                             )
                             mc_idx = 0
                             for mc_name, mc_value in infmcs.items():
