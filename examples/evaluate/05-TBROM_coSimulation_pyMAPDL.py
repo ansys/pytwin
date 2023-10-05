@@ -38,8 +38,6 @@ the thermal structural analysis.
 # Perform required imports, which include downloading and importing the input
 # files, and launch an instance of MAPDL.
 
-import struct
-
 from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd

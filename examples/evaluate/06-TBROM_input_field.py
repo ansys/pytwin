@@ -56,7 +56,6 @@ shows how to evaluate the output field data in the form of snapshots.
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which include downloading and importing the input
 # files.
-import math
 
 import matplotlib.pyplot as plt
 import numpy as np

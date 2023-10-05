@@ -41,7 +41,6 @@ in the 3D viewer enabled by PyFluent. For more information, see the
 # files.
 
 import os
-import struct
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.visualization import set_config
