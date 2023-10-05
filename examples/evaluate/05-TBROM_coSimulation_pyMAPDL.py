@@ -72,17 +72,9 @@ def snapshot_to_fea(snapshot_file, geometry_file):
     """Create a Pandas dataframe containing the x, y, z coordinates for the ROM
     and snapshot file results."""
 
-    with open(geometry_file, "rb") as geo, open(snapshot_file, "rb") as snp:
-        nb = struct.unpack("Q", snp.read(8))[0]
-        struct.unpack("Q", geo.read(8))
-        res_list = []
-        for i in range(nb):
-            res_line = []
-            res_line.append(struct.unpack("d", geo.read(8))[0])
-            res_line.append(struct.unpack("d", geo.read(8))[0])
-            res_line.append(struct.unpack("d", geo.read(8))[0])
-            res_line.append(struct.unpack("d", snp.read(8))[0])
-            res_list.append(res_line)
+    geometry_data = np.fromfile(geometry_file, dtype=np.double, offset=8).reshape(-1, 3)
+    snapshot_data = np.fromfile(snapshot_file, dtype=np.double, offset=8).reshape(-1, 1)
+    res_list = np.hstack((geometry_data, snapshot_data))
 
     return pd.DataFrame(res_list)
 
