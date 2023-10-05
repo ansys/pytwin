@@ -118,6 +118,7 @@ class TbRom:
             vec = vec + mc[i] * mnp
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
+            listids = pointsids
             if self.field_output_dim > 1:
                 listids = np.concatenate((self.field_output_dim * pointsids, self.field_output_dim * pointsids + 1))
                 for k in range(2, self.field_output_dim):
@@ -176,7 +177,7 @@ class TbRom:
             var = struct.unpack("cccccccccccccccc", f.read(16))[0]
             nb_val = struct.unpack("Q", f.read(8))[0]
             nb_mc = struct.unpack("Q", f.read(8))[0]
-        return np.fromfile(filepath, dtype=np.double, offset=32).reshape(-1, nb_val)
+            return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
 
     @staticmethod
     def _read_binary(filepath):
@@ -217,13 +218,12 @@ class TbRom:
         for name, idsList in namedselection.items():
             idsListNp = np.array(idsList)
             ind = np.where(idsListNp == -1)
-            finallist = []
             i = 0
             for elem in np.nditer(ind):
                 subarray = np.arange(idsListNp[elem - 1 - i] + 1, idsListNp[elem + 1 - i])
                 idsListNp = np.delete(idsListNp, elem - i)
-                i = i + 1
                 idsListNp = np.concatenate((idsListNp, subarray))
+                i = i + 1
             tbromns.update({name: idsListNp})
 
         return [tbromns, dimensionality, outputname, unit]
