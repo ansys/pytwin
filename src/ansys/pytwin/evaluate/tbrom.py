@@ -81,7 +81,7 @@ class TbRom:
         vec = TbRom._read_binary(pointpath)
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
-            listids = np.concatenate((3*pointsids, 3*pointsids+1, 3*pointsids+2))
+            listids = np.concatenate((3 * pointsids, 3 * pointsids + 1, 3 * pointsids + 2))
             listids = np.sort(listids)
             vec = vec[listids]
         if on_disk:
@@ -118,10 +118,10 @@ class TbRom:
             vec = vec + mc[i] * mnp
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
-            if self.field_output_dim>1:
-                listids = np.concatenate((self.field_output_dim*pointsids, self.field_output_dim*pointsids+1))
+            if self.field_output_dim > 1:
+                listids = np.concatenate((self.field_output_dim * pointsids, self.field_output_dim * pointsids + 1))
                 for k in range(2, self.field_output_dim):
-                    listids = np.concatenate((listids, self.field_output_dim*pointsids+k))
+                    listids = np.concatenate((listids, self.field_output_dim * pointsids + k))
             listids = np.sort(listids)
             vec = vec[listids]
         if on_disk:

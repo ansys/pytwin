@@ -133,7 +133,7 @@ def plot_result_comparison(results: pd.DataFrame):
 def norm_vector_field(field: np.ndarray):
     """Compute the norm of a vector field."""
     vec = field.reshape((-1, 3))
-    return np.sqrt((vec*vec).sum(axis=1))
+    return np.sqrt((vec * vec).sum(axis=1))
 
 
 ###############################################################################
@@ -190,9 +190,7 @@ for i in range(0, len(rom_inputs)):
         outputs.append(twin_model.outputs[item])
     outfield = twin_model.generate_snapshot(romname, False)  # generating the field output on the entire domain
     outputs.append(max(norm_vector_field(outfield)))
-    outfieldns = twin_model.generate_snapshot(
-        romname, False, ns
-    )  # generating the field output on "Group_2"
+    outfieldns = twin_model.generate_snapshot(romname, False, ns)  # generating the field output on "Group_2"
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
 points_path = twin_model.generate_points(romname, True)  # generating the points file on whole domain

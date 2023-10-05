@@ -42,13 +42,13 @@ in the 3D viewer enabled by PyFluent. For more information, see the
 
 import os
 import struct
-import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.visualization import set_config
 from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
+import numpy as np
 from pytwin import TwinModel, download_file
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
@@ -82,7 +82,7 @@ def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
     """
 
     geometry_data = np.fromfile(geometry_file, dtype=np.double, offset=8).reshape(-1, 3)
-    snapshot_data = np.fromfile(snapshot_file, dtype=np.double, offset=8).reshape(-1,1)
+    snapshot_data = np.fromfile(snapshot_file, dtype=np.double, offset=8).reshape(-1, 1)
     res_list = np.hstack((geometry_data, snapshot_data))
 
     with open(outputFilePath, "w") as ipfile:
