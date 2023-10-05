@@ -120,8 +120,8 @@ class TbRom:
             pointsids = self.named_selection_indexes(named_selection)
             if self.field_output_dim>1:
                 listids = np.concatenate((self.field_output_dim*pointsids, self.field_output_dim*pointsids+1))
-            for k in range(2, self.field_output_dim):
-                listids = np.concatenate((listids, self.field_output_dim*pointsids+k))
+                for k in range(2, self.field_output_dim):
+                    listids = np.concatenate((listids, self.field_output_dim*pointsids+k))
             listids = np.sort(listids)
             vec = vec[listids]
         if on_disk:
