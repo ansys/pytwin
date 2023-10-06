@@ -56,9 +56,9 @@ shows how to evaluate the output field data in the form of snapshots.
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which include downloading and importing the input
 # files.
-import math
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from pytwin import TwinModel, download_file
 
@@ -129,16 +129,10 @@ def plot_result_comparison(results: pd.DataFrame):
     plt.show()
 
 
-def norm_vector_field(field: list):
+def norm_vector_field(field: np.ndarray):
     """Compute the norm of a vector field."""
-
-    norm = []
-    for i in range(0, int(len(field) / 3)):
-        x = field[i * 3]
-        y = field[i * 3 + 1]
-        z = field[i * 3 + 2]
-        norm.append(math.sqrt(x * x + y * y + z * z))
-    return norm
+    vec = field.reshape((-1, 3))
+    return np.sqrt((vec * vec).sum(axis=1))
 
 
 ###############################################################################
@@ -195,9 +189,7 @@ for i in range(0, len(rom_inputs)):
         outputs.append(twin_model.outputs[item])
     outfield = twin_model.generate_snapshot(romname, False)  # generating the field output on the entire domain
     outputs.append(max(norm_vector_field(outfield)))
-    outfieldns = twin_model.generate_snapshot(
-        romname, False, ns
-    )  # generating the field output on "Group_2" outputs.append(max(norm_vector_field(outfield)))
+    outfieldns = twin_model.generate_snapshot(romname, False, ns)  # generating the field output on "Group_2"
     outputs.append(max(norm_vector_field(outfieldns)))
     results.append(outputs)
 points_path = twin_model.generate_points(romname, True)  # generating the points file on whole domain
@@ -207,13 +199,6 @@ pointsns_path = twin_model.generate_points(romname, True, ns)  # generating the 
 sim_results = pd.DataFrame(
     results, columns=[input_name] + output_name_without_mcs + ["MaxDefSnapshot", "MaxDefSnapshotNs"], dtype=float
 )
-
-###############################################################################
-# Plot results
-# ~~~~~~~~~~~~
-# Plot the results and save the image on disk.
-
-plot_result_comparison(sim_results)
 
 ###############################################################################
 # Simulate the twin in batch mode
@@ -231,3 +216,10 @@ input_df = pd.DataFrame({"Time": [0.0, 1.0, 2.0], input_name_without_mcs[0]: rom
 batch_results = twin_model.evaluate_batch(inputs_df=input_df, field_inputs={romname: {fieldname: inputfieldsnapshots}})
 print(batch_results)
 output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
+
+###############################################################################
+# Plot results
+# ~~~~~~~~~~~~
+# Plot the results.
+
+plot_result_comparison(sim_results)

@@ -78,13 +78,11 @@ class TbRom:
             entire domain is considered.
         """
         pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-        vec = np.array(TbRom._read_binary(pointpath))
+        vec = TbRom._read_binary(pointpath)
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
-            listids = []
-            for i in pointsids:
-                for k in range(0, 3):
-                    listids.append(i * 3 + k)
+            listids = np.concatenate((3 * pointsids, 3 * pointsids + 1, 3 * pointsids + 2))
+            listids = np.sort(listids)
             vec = vec[listids]
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
@@ -120,10 +118,12 @@ class TbRom:
             vec = vec + mc[i] * mnp
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
-            listids = []
-            for i in pointsids:
-                for k in range(0, self.field_output_dim):
-                    listids.append(i * self.field_output_dim + k)
+            listids = pointsids
+            if self.field_output_dim > 1:
+                listids = np.concatenate((self.field_output_dim * pointsids, self.field_output_dim * pointsids + 1))
+                for k in range(2, self.field_output_dim):
+                    listids = np.concatenate((listids, self.field_output_dim * pointsids + k))
+            listids = np.sort(listids)
             vec = vec[listids]
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
@@ -144,8 +144,7 @@ class TbRom:
             is parameterized with multiple input fields.
         """
         mc = []
-        vec = TbRom._read_binary(snapshot_filepath)
-        vecnp = np.array(vec)
+        vecnp = TbRom._read_binary(snapshot_filepath)
         if name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
         else:
@@ -178,22 +177,11 @@ class TbRom:
             var = struct.unpack("cccccccccccccccc", f.read(16))[0]
             nb_val = struct.unpack("Q", f.read(8))[0]
             nb_mc = struct.unpack("Q", f.read(8))[0]
-            basis = []
-            for i in range(nb_mc):
-                vec = []
-                for j in range(nb_val):
-                    vec.append(struct.unpack("d", f.read(8))[0])
-                basis.append(vec)
-        return basis
+            return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
 
     @staticmethod
     def _read_binary(filepath):
-        with open(filepath, "rb") as f:
-            nbdof = struct.unpack("Q", f.read(8))[0]
-            vec = []
-            for i in range(nbdof):
-                vec.append(struct.unpack("d", f.read(8))[0])
-        return vec
+        return np.fromfile(filepath, dtype=np.double, offset=8).reshape(-1, 1)
 
     @staticmethod
     def _write_binary(filepath, vec):
@@ -201,8 +189,7 @@ class TbRom:
             os.remove(filepath)
         with open(filepath, "xb") as f:
             f.write(struct.pack("Q", len(vec)))
-            for i in vec:
-                f.write(struct.pack("d", i))
+            vec.tofile(f)
         return True
 
     @staticmethod
@@ -229,15 +216,15 @@ class TbRom:
 
         # Create list of name selections indexes
         for name, idsList in namedselection.items():
-            finallist = []
-            for i in range(0, len(idsList) - 1):
-                if int(idsList[i]) == -1:
-                    for j in range(int(idsList[i - 1]) + 1, int(idsList[i + 1])):
-                        finallist.append(j)
-                else:
-                    finallist.append(int(idsList[i]))
-            finallist.append(int(idsList[len(idsList) - 1]))
-            tbromns.update({name: finallist})
+            idsListNp = np.array(idsList)
+            ind = np.where(idsListNp == -1)
+            i = 0
+            for elem in np.nditer(ind):
+                subarray = np.arange(idsListNp[elem - 1 - i] + 1, idsListNp[elem + 1 - i])
+                idsListNp = np.delete(idsListNp, elem - i)
+                idsListNp = np.concatenate((idsListNp, subarray))
+                i = i + 1
+            tbromns.update({name: idsListNp})
 
         return [tbromns, dimensionality, outputname, unit]
 
