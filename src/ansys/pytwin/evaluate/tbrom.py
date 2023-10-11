@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 import struct
 from typing import Union
 
@@ -132,7 +133,7 @@ class TbRom:
         else:
             return vec
 
-    def _reduce_field_input(self, name: str, snapshot: Union[str, np.ndarray]):
+    def _reduce_field_input(self, name: str, snapshot: Union[str, Path, np.ndarray]):
         """
         Project a snapshot associated to the input field name ``fieldname``
 
@@ -141,7 +142,7 @@ class TbRom:
         name: str
             Name of the input field to project the snapshot. The name of the field must be specified in case the TBROM
             is parameterized with multiple input fields.
-        snapshot: str | np.ndarray
+        snapshot: str | Path | np.ndarray
             Path of the input field snapshot file, or numpy array of snapshot data
 
         """

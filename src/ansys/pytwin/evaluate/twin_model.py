@@ -1,6 +1,7 @@
 import atexit
 import json
 import os
+from pathlib import Path
 import time
 from typing import Union
 
@@ -135,15 +136,13 @@ class TwinModel(Model):
             raise self._raise_error(msg)
         return True
 
-    def _check_snapshot_detail(self, snapshot_detail: Union[str, np.ndarray], tbrom: TbRom, fieldname: str):
+    def _check_snapshot_detail(self, snapshot_detail: Union[str, Path, np.ndarray], tbrom: TbRom, fieldname: str):
         if isinstance(snapshot_detail, np.ndarray):
             if len(snapshot_detail.shape)>1:
                 msg = self._error_msg_input_snapshot_array_wrong_shape(snapshot_detail)
                 raise self._raise_error(msg)
             snapshotsize = len(snapshot_detail)
-        elif isinstance(snapshot_detail, str):
-            # this explicit string check will raise an error if Pathlib Path is used instead of string
-            # consider including Path in accepted types
+        elif isinstance(snapshot_detail, (str, Path)):
             if not os.path.exists(snapshot_detail):
                 msg = self._error_msg_input_snapshot_path_does_not_exist(snapshot_detail)
                 raise self._raise_error(msg)
@@ -287,16 +286,10 @@ class TwinModel(Model):
         msg = "[Instantiation]Twin model has not been successfully instantiated."
         return msg
 
-    def _error_msg_input_snapshot_detail_none(self):
-        # Could remove this, since it's covered by _error_msg_input_snapshot_detail_wrong_type
-        msg = f"[InputSnapshotNone]The snapshot path or array is missing."
-        msg += "\nProvide a valid input field snapshot path or array to use this method."
-        return msg
-
     def _error_msg_input_snapshot_detail_wrong_type(self, snapshot):
         # Remove snapshot from message, since don't want to dump a list or other long value
-        msg = f"[InputSnapshotType]The snapshot is a {type(snapshot)}, not a string or Numpy array."
-        msg += "\nProvide a input field snapshot path string or Numpy array to use this method."
+        msg = f"[InputSnapshotType]The snapshot is a {type(snapshot)}, not a string, Path or Numpy array."
+        msg += "\nProvide a input field snapshot path or Numpy array to use this method."
         return msg
 
     def _error_msg_input_snapshot_array_wrong_shape(self, snapshot: np.ndarray):
@@ -713,7 +706,7 @@ class TwinModel(Model):
 
     def _update_field_input(
         self, tbrom: TbRom, field_input_name: str, 
-        snapshot: Union[str, np.ndarray], update_twin_runtime: bool = True
+        snapshot: Union[str, Path, np.ndarray], update_twin_runtime: bool = True
     ):
         """
         Update Twin's current inputs states based on tbrom attributes
