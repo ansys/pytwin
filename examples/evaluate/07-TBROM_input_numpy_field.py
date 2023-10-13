@@ -50,7 +50,6 @@ only of the bolts.
 # Perform required imports, which include downloading and importing the input
 # files.
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pytwin import TwinModel, download_file
