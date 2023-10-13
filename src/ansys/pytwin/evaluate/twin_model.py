@@ -137,7 +137,10 @@ class TwinModel(Model):
         return True
 
     def _check_snapshot_detail(self, snapshot_detail: Union[str, Path, np.ndarray], tbrom: TbRom, fieldname: str):
-        if isinstance(snapshot_detail, np.ndarray):
+        if snapshot_detail is None:
+            msg = self._error_msg_input_snapshot_none()
+            raise self._raise_error(msg)
+        elif isinstance(snapshot_detail, np.ndarray):
             if len(snapshot_detail.shape)>1:
                 msg = self._error_msg_input_snapshot_array_wrong_shape(snapshot_detail)
                 raise self._raise_error(msg)
@@ -148,7 +151,6 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
             snapshotsize = TbRom.read_snapshot_size(snapshot_detail)
         else:
-            # Removed check for NoneType on snapshot_detail, since will be caught here
             msg = self._error_msg_input_snapshot_detail_wrong_type(snapshot_detail)
             raise self._raise_error(msg)
 
@@ -189,7 +191,10 @@ class TwinModel(Model):
                 self._check_snapshot_detail(snapshot_details, tbrom, fieldname)
             else:
                 # Snapshot details should be list of paths or list of numpy arrays
-                if type(snapshot_details) is list:
+                if snapshot_details is None:
+                    msg = self._error_msg_input_snapshot_list_none()
+                    raise self._raise_error(msg)
+                elif type(snapshot_details) is list:
                     if len(snapshot_details) != t_count:
                         msg = self._error_msg_input_snapshot_count(
                             found_count=len(snapshot_details), expected_count=t_count
@@ -286,6 +291,11 @@ class TwinModel(Model):
         msg = "[Instantiation]Twin model has not been successfully instantiated."
         return msg
 
+    def _error_msg_input_snapshot_none(self):
+        msg = f"[InputSnapshotNone]The snapshot argument is missing."
+        msg += "\nProvide a input field snapshot path or Numpy array to use this method."
+        return msg
+    
     def _error_msg_input_snapshot_detail_wrong_type(self, snapshot):
         # Remove snapshot from message, since don't want to dump a list or other long value
         msg = f"[InputSnapshotType]The snapshot is a {type(snapshot)}, not a string, Path or Numpy array."
@@ -306,6 +316,11 @@ class TwinModel(Model):
         msg = f"[InputSnapshotSize]The provided snapshot size {snapshotsize} is not consistent with the input field"
         msg += f" size {inputfieldsize}."
         msg += "\nProvide a valid input field snapshot to use this method."
+        return msg
+
+    def _error_msg_input_snapshot_list_none(self):
+        msg = f"[InputSnapshotListNone]The snapshot list argument for batch mode is missing."
+        msg += "\nProvide a list of input field snapshot pathes or Numpy arrays to use this method."
         return msg
 
     def _error_msg_input_snaphshot_detail_list(self, snapshot_details):
