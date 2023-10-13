@@ -150,8 +150,8 @@ class TbRom:
         if isinstance(snapshot, np.ndarray):
             vecnp = snapshot
         else:
-            vecnp = TbRom._read_binary(snapshot)            
-        
+            vecnp = TbRom._read_binary(snapshot)
+
         if name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
         else:
@@ -188,7 +188,9 @@ class TbRom:
 
     @staticmethod
     def _read_binary(filepath):
-        return np.fromfile(filepath, dtype=np.double, offset=8).reshape(-1,)
+        return np.fromfile(filepath, dtype=np.double, offset=8).reshape(
+            -1,
+        )
 
     @staticmethod
     def _write_binary(filepath, vec):

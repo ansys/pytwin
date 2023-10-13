@@ -141,7 +141,7 @@ class TwinModel(Model):
             msg = self._error_msg_input_snapshot_none()
             raise self._raise_error(msg)
         elif isinstance(snapshot_detail, np.ndarray):
-            if len(snapshot_detail.shape)>1:
+            if len(snapshot_detail.shape) > 1:
                 msg = self._error_msg_input_snapshot_array_wrong_shape(snapshot_detail)
                 raise self._raise_error(msg)
             snapshotsize = len(snapshot_detail)
@@ -185,7 +185,7 @@ class TwinModel(Model):
                 msg = self._error_msg_for_rom_input_connection(tbrom_name)
                 raise self._raise_error(msg)
 
-            # Add additional condition to this check, since accidentally passing a single snapshot 
+            # Add additional condition to this check, since accidentally passing a single snapshot
             # as a list, rather than array should be checked first
             if t_count is None:
                 self._check_snapshot_detail(snapshot_details, tbrom, fieldname)
@@ -295,7 +295,7 @@ class TwinModel(Model):
         msg = f"[InputSnapshotNone]The snapshot argument is missing."
         msg += "\nProvide a input field snapshot path or Numpy array to use this method."
         return msg
-    
+
     def _error_msg_input_snapshot_detail_wrong_type(self, snapshot):
         # Remove snapshot from message, since don't want to dump a list or other long value
         msg = f"[InputSnapshotType]The snapshot is a {type(snapshot)}, not a string, Path or Numpy array."
@@ -329,9 +329,7 @@ class TwinModel(Model):
         return msg
 
     def _error_msg_input_snapshot_count(self, found_count: int, expected_count: int):
-        msg = (
-            f"[InputSnapshotCount]The provided number of snapshots ({found_count}) to be used as input field "
-        )
+        msg = f"[InputSnapshotCount]The provided number of snapshots ({found_count}) to be used as input field "
         msg += f"must equal the number of time instants given in the batch data frame ({expected_count})."
         return msg
 
@@ -720,8 +718,11 @@ class TwinModel(Model):
                     self._update_field_input(tbrom, name, snp)
 
     def _update_field_input(
-        self, tbrom: TbRom, field_input_name: str, 
-        snapshot: Union[str, Path, np.ndarray], update_twin_runtime: bool = True
+        self,
+        tbrom: TbRom,
+        field_input_name: str,
+        snapshot: Union[str, Path, np.ndarray],
+        update_twin_runtime: bool = True,
     ):
         """
         Update Twin's current inputs states based on tbrom attributes

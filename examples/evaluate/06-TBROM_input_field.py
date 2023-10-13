@@ -15,7 +15,7 @@ shows how to evaluate the output field data in the form of snapshots.
 # sphinx_gallery_thumbnail_path = '_static/TBROM_input_field.png'
 
 ###############################################################################
-# The example model is a valve that takes fluid pressure magnitude as a scalar input and wall 
+# The example model is a valve that takes fluid pressure magnitude as a scalar input and wall
 # temperature as vector input and gives deformation, in metres, as an output.
 #
 # Results are available on the full model, or can be exported on two subgroups:
@@ -71,7 +71,7 @@ shows how to evaluate the output field data in the form of snapshots.
 
 ###############################################################################
 # .. note::
-#   To be able to use the functionalities to generate points or snapshot on a named selection, you 
+#   To be able to use the functionalities to generate points or snapshot on a named selection, you
 #   need to have a Twin with 1 or more TBROM, for which Named Selections are defined.
 # .. image:: /_static/TBROM_named_selection.png
 #   :width: 207pt
@@ -100,6 +100,7 @@ inputfieldsnapshots = [
 # Define auxiliary functions for comparing and plotting the results from
 # different input values evaluated on the twin model and for computing
 # the norm of the output field.
+
 
 def plot_result_comparison(results: pd.DataFrame):
     """Compare the results obtained from the different input values evaluated on
@@ -149,6 +150,7 @@ def norm_vector_field(field: np.ndarray):
     """Compute the norm of a vector field."""
     vec = field.reshape((-1, 3))
     return np.sqrt((vec * vec).sum(axis=1))
+
 
 ###############################################################################
 # Define ROM scalar inputs
