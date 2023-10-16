@@ -16,7 +16,7 @@ shows how to evaluate the output field data in the form of snapshots.
 
 ###############################################################################
 # The example model is a valve that takes fluid pressure magnitude as a scalar input and wall
-# temperature as vector input and gives deformation, in metres, as an output.
+# temperature as vector input and gives deformation, in meters, as an output.
 #
 # Results are available on the full model, or can be exported on two subgroups:
 #

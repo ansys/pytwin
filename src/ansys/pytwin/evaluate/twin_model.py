@@ -320,7 +320,7 @@ class TwinModel(Model):
 
     def _error_msg_input_snapshot_list_none(self):
         msg = f"[InputSnapshotListNone]The snapshot list argument for batch mode is missing."
-        msg += "\nProvide a list of input field snapshot pathes or Numpy arrays to use this method."
+        msg += "\nProvide a list of input field snapshot paths or Numpy arrays to use this method."
         return msg
 
     def _error_msg_input_snaphshot_detail_list(self, snapshot_details):
@@ -857,6 +857,10 @@ class TwinModel(Model):
         - If you want to update parameters values between multiple twin evaluations. In this case,
           the twin model is reset.
 
+        .. note::
+            if field inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs``.
+
         Parameters
         ----------
         parameters : dict, optional
@@ -866,8 +870,6 @@ class TwinModel(Model):
         field_inputs : dict, optional
             Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshotpath}}) to use for twin model
             initialization.
-            NOTE: if field inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
-            that ROM that are included in ``inputs``.
         json_config_filepath : str, optional
             Filepath to a JSON configuration file to use to initialize the evaluation.
 
@@ -926,6 +928,10 @@ class TwinModel(Model):
         Twin model evaluation must have been initialized before calling this evaluation method.
         For more information, see the :func:`pytwin.TwinModel.initialize_evaluation` method.
 
+        .. note::
+            if field_inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs``.
+
         Parameters
         ----------
         step_size : float
@@ -937,8 +943,6 @@ class TwinModel(Model):
         field_inputs : dict (optional)
             Dictionary of input fields snapshots ({"tbromname": {"inputfieldname": snapshot}}) to use for twin model
             evaluation. ``snapshot`` may be a Numpy array, or string for path of snapshot file.
-            NOTE: if field_inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
-            that ROM that are included in ``inputs``.
 
         Examples
         --------
@@ -1007,6 +1011,10 @@ class TwinModel(Model):
         """
         Evaluate the twin model with historical input values given in a data frame.
 
+        .. note::
+            if field_inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs_df``.
+
         Parameters
         ----------
         inputs_df: pandas.DataFrame
@@ -1016,12 +1024,10 @@ class TwinModel(Model):
             this input is kept constant to its initialization value. The column header must match with a
             twin model input name.
         field_inputs : dict (optional)
-            Dictionary of snapshot file paths or snapshot Numpy arrays that must be used as field input at all 
-            time instants given by the 'inputs_df' argument. One file path or array must be given per time 
+            Dictionary of snapshot file paths or snapshot Numpy arrays that must be used as field input at all
+            time instants given by the 'inputs_df' argument. One file path or array must be given per time
             instant, for a field input of a TBROM included in the twin model, using following dictionary format:
             {"tbrom_name": {"field_input_name": [snapshot_t0, snapshot_t1, ... ]}}
-            NOTE: if field_inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
-            that ROM that are included in ``inputs_df``.
 
         Returns
         -------

@@ -144,7 +144,6 @@ class TbRom:
             is parameterized with multiple input fields.
         snapshot: str | Path | np.ndarray
             Path of the input field snapshot file, or numpy array of snapshot data
-
         """
         mc = []
         if isinstance(snapshot, np.ndarray):
