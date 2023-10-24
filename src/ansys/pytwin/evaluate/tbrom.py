@@ -1,6 +1,8 @@
 import json
 import os
+from pathlib import Path
 import struct
+from typing import Union
 
 import numpy as np
 
@@ -131,20 +133,24 @@ class TbRom:
         else:
             return vec
 
-    def _reduce_field_input(self, name: str, snapshot_filepath: str):
+    def _reduce_field_input(self, name: str, snapshot: Union[str, Path, np.ndarray]):
         """
-        Project a snapshot file associated to the input field name ``fieldname``
+        Project a snapshot associated to the input field name ``fieldname``
 
         Parameters
         ----------
-        snapshot_filepath: str
-            Path of the input field snapshot file
-        name: str (optional)
+        name: str
             Name of the input field to project the snapshot. The name of the field must be specified in case the TBROM
             is parameterized with multiple input fields.
+        snapshot: str | Path | np.ndarray
+            Path of the input field snapshot file, or numpy array of snapshot data
         """
         mc = []
-        vecnp = TbRom._read_binary(snapshot_filepath)
+        if isinstance(snapshot, np.ndarray):
+            vecnp = snapshot
+        else:
+            vecnp = TbRom._read_binary(snapshot)
+
         if name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
         else:
@@ -181,7 +187,9 @@ class TbRom:
 
     @staticmethod
     def _read_binary(filepath):
-        return np.fromfile(filepath, dtype=np.double, offset=8).reshape(-1, 1)
+        return np.fromfile(filepath, dtype=np.double, offset=8).reshape(
+            -1,
+        )
 
     @staticmethod
     def _write_binary(filepath, vec):
