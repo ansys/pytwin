@@ -15,6 +15,24 @@ shows how to evaluate the output field data in the form of snapshots.
 # sphinx_gallery_thumbnail_path = '_static/TBROM_input_field.png'
 
 ###############################################################################
+# The example model is a valve that takes fluid pressure magnitude as a scalar input and wall
+# temperature as vector input and gives deformation, in meters, as an output.
+#
+# Results are available on the full model, or can be exported on two subgroups:
+#
+# **Group_1**: Bolts
+#
+# .. image:: /_static/TBROM_Group1_bolts.png
+#   :width: 150pt
+#   :align: center
+#
+# **Group_2**: Body
+#
+# .. image:: /_static/TBROM_Group2_body.png
+#   :width: 150pt
+#   :align: center
+
+###############################################################################
 # .. note::
 #   To be able to use the functionalities to project an input field snapshot, you must have a
 #   twin with one or more TBROMs parameterized by input field data. Input mode coefficients
@@ -52,10 +70,17 @@ shows how to evaluate the output field data in the form of snapshots.
 #   :align: center
 
 ###############################################################################
+# .. note::
+#   To be able to use the functionalities to generate points or snapshot on a named selection, you
+#   need to have a Twin with 1 or more TBROM, for which Named Selections are defined.
+# .. image:: /_static/TBROM_named_selection.png
+#   :width: 207pt
+#   :align: center
+
+###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Perform required imports, which include downloading and importing the input
-# files.
+# Perform required imports, which include downloading and importing the input files.
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -68,14 +93,6 @@ inputfieldsnapshots = [
     download_file("TEMP_2.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
     download_file("TEMP_3.bin", "twin_input_files/inputFieldSnapshots", force_download=True),
 ]
-
-###############################################################################
-# Define ROM inputs
-# ~~~~~~~~~~~~~~~~~
-# Define the ROM inputs.
-
-rom_inputs = [4000000, 5000000, 6000000]
-
 
 ###############################################################################
 # Define auxiliary functions
@@ -136,16 +153,23 @@ def norm_vector_field(field: np.ndarray):
 
 
 ###############################################################################
-# Load the twin runtime and generate temperature results
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load the twin runtime and generate temperature results from the TBROM.
+# Define ROM scalar inputs
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the ROM scalar inputs.
+
+rom_inputs = [4000000, 5000000, 6000000]
+
+###############################################################################
+# Load the twin runtime and generate displacement results
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and generate displacement results from the TBROM.
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
 ###############################################################################
 # Evaluate the twin with different input values and collect corresponding outputs
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Because the twin is based on a static model, two options can be considered:
 #
 # - Set the initial input value to evaluate and run the initialization function (current approach).
@@ -202,7 +226,7 @@ sim_results = pd.DataFrame(
 
 ###############################################################################
 # Simulate the twin in batch mode
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Reset/re-initialize the twin and run the simulation in batch mode, which
 # passes all the input data, simulates all the data points, and collects all
 # the outputs at once. The snapshots are then generated in a post-processing

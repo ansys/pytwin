@@ -321,6 +321,18 @@ class TestTbRom:
         assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
         assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
 
+    def test_initialize_evaluation_with_numpy_input_field_is_ok(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": memory_snp}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+
     def test_initialize_evaluation_with_input_field_exceptions(self):
         """
         Test with TEST_TB_ROM3
@@ -352,6 +364,13 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[InputSnapshotNone]" in str(e)
 
+        # Raise en exception if provided snapshot is not string, Path or np.array
+        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        try:
+            twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp.tolist()}})
+        except TwinModelError as e:
+            assert "[InputSnapshotType]" in str(e)
+
         # Raise an exception if provided snapshot path does not exist
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: "unknown_snapshot_path"}})
@@ -359,9 +378,21 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[InputSnapshotPath]" in str(e)
 
+        # Raise en exception if provided snapshot is a np.array with wrong shape
+        wrong_arr = np.zeros((len(memory_snp), 3))
+        try:
+            twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: wrong_arr}})
+        except TwinModelError as e:
+            assert "[InputSnapshotShape]" in str(e)
+
         # Raise en exception if provided snapshot has the wrong size
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})
+        except TwinModelError as e:
+            assert "[InputSnapshotSize]" in str(e)
+
+        try:
+            twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp[2:]}})
         except TwinModelError as e:
             assert "[InputSnapshotSize]" in str(e)
 
@@ -414,6 +445,39 @@ class TestTbRom:
         assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
         assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
 
+    def test_evaluate_step_by_step_with_numpy_input_field_is_ok(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "inputPressure"
+        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        # Step t=0.0s
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
+        # Step t=0.1s
+        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
+        # Step t=0.2s
+        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
     def test_evaluate_step_by_step_with_input_field_exceptions(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -435,13 +499,27 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[FieldName]" in str(e)
 
-        # Raise en exception if provided snapshot path is None
+        # Raise en exception if provided snapshot is None
         romname = twinmodel.tbrom_names[0]
         fieldname = twinmodel.get_field_input_names(romname)[0]
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: None}})
         except TwinModelError as e:
             assert "[InputSnapshotNone]" in str(e)
+
+        # Raise en exception if provided snapshot is not string, Path or np.array
+        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp.tolist()}})
+        except TwinModelError as e:
+            assert "[InputSnapshotType]" in str(e)
+
+        # Raise en exception if provided snapshot is a np.array with wrong shape
+        wrong_arr = np.zeros((len(memory_snp), 3))
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: wrong_arr}})
+        except TwinModelError as e:
+            assert "[InputSnapshotShape]" in str(e)
 
         # Raise en exception if provided snapshot path does not exist
         try:
@@ -452,6 +530,11 @@ class TestTbRom:
         # Raise an exception if provided snapshot has wrong size
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT_WRONG}})
+        except TwinModelError as e:
+            assert "[InputSnapshotSize]" in str(e)
+
+        try:
+            twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp}})
         except TwinModelError as e:
             assert "[InputSnapshotSize]" in str(e)
 
@@ -503,6 +586,44 @@ class TestTbRom:
         assert np.isclose(batch_results["MaxDef"][1], 5.035206128408094e-05)
         assert np.isclose(batch_results["MaxDef"][2], 5.035206128408094e-05)
 
+    def test_evaluate_batch_with_numpy_input_field_is_ok(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "inputPressure"
+        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+
+        # Step t=0.0s
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp}})
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
+        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
+        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
+        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
+        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
+
+        batch_results = twinmodel.evaluate_batch(
+            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
+            field_inputs={romname: {fieldname: [memory_snp, memory_snp, memory_snp]}},
+        )
+
+        assert np.isclose(batch_results["outField_mode_1"][0], -0.007815295084108557)
+        assert np.isclose(batch_results["outField_mode_1"][1], -0.007815295084108557)
+        assert np.isclose(batch_results["outField_mode_1"][2], -0.007815295084108557)
+
+        assert np.isclose(batch_results["outField_mode_2"][0], -0.0019136501347937662)
+        assert np.isclose(batch_results["outField_mode_2"][1], -0.0019136563369488168)
+        assert np.isclose(batch_results["outField_mode_2"][2], -0.0019136563369488168)
+
+        assert np.isclose(batch_results["outField_mode_3"][0], 0.0007345769427744131)
+        assert np.isclose(batch_results["outField_mode_3"][1], 0.0007345833149719503)
+        assert np.isclose(batch_results["outField_mode_3"][2], 0.0007345833149719503)
+
+        assert np.isclose(batch_results["MaxDef"][0], 5.0352056308720146e-05)
+        assert np.isclose(batch_results["MaxDef"][1], 5.035206128408094e-05)
+        assert np.isclose(batch_results["MaxDef"][2], 5.035206128408094e-05)
+
     def test_evaluate_batch_with_input_field_exceptions(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -518,7 +639,7 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[RomName]" in str(e)
 
-        # Raise en exception if provided input field name is not valid
+        # Raise an exception if provided input field name is not valid
         romname = twinmodel.tbrom_names[0]
         fieldname = "unknown"
         try:
@@ -528,7 +649,7 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[FieldName]" in str(e)
 
-        # Raise en exception if provided snapshot path is None
+        # Raise an exception if provided snapshot list is None
         romname = twinmodel.tbrom_names[0]
         fieldname = twinmodel.get_field_input_names(romname)[0]
         try:
@@ -536,9 +657,29 @@ class TestTbRom:
                 inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: None}}
             )
         except TwinModelError as e:
-            assert "[InputSnapshotNone]" in str(e)
+            assert "[InputSnapshotListNone]" in str(e)
 
-        # Raise en exception if provided not as many snapshot paths as time instants
+        # Raise an exception if provided snapshots are not string, Path or np.array
+        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        try:
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: [memory_snp.tolist(), memory_snp.tolist()]}},
+            )
+        except TwinModelError as e:
+            assert "[InputSnapshotType]" in str(e)
+
+        # Raise an exception if memory snapshot as list, same length at t_count
+        short_snp = [1.0, 2]
+        try:
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: [short_snp, short_snp]}},
+            )
+        except TwinModelError as e:
+            assert "[InputSnapshotType]" in str(e)
+
+        # Raise an exception if provided not as many snapshot paths as time instants
         try:
             twinmodel.evaluate_batch(
                 inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: ["", "", ""]}}
@@ -562,6 +703,16 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[InputSnapshotPath]" in str(e)
 
+        # Raise an exception if provided snapshot is a np.array with wrong shape
+        wrong_arr = np.zeros((len(memory_snp), 3))
+        try:
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: [wrong_arr, wrong_arr]}},
+            )
+        except TwinModelError as e:
+            assert "[InputSnapshotShape]" in str(e)
+
         # Raise an exception if provided snapshot has wrong size
         try:
             twinmodel.evaluate_batch(
@@ -571,7 +722,15 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[InputSnapshotSize]" in str(e)
 
-        # Raise en exception if provided snapshot path is not a list
+        try:
+            twinmodel.evaluate_batch(
+                inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
+                field_inputs={romname: {fieldname: [memory_snp[2:], memory_snp[2:]]}},
+            )
+        except TwinModelError as e:
+            assert "[InputSnapshotSize]" in str(e)
+
+        # Raise an exception if provided snapshots are not a list
         try:
             twinmodel.evaluate_batch(
                 inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}), field_inputs={romname: {fieldname: INPUT_SNAPSHOT}}
