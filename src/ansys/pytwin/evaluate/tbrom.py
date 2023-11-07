@@ -5,6 +5,7 @@ import struct
 from typing import Union
 
 import numpy as np
+import pyvista as pv
 
 
 class TbRom:
@@ -38,6 +39,8 @@ class TbRom:
         self._outmcs = None
         self._infbasis = None
         self._outbasis = None
+        self._meshdata = None
+        self._points = None
         self._hasinfmcs = None
         self._hasoutmcs = False
 
@@ -79,13 +82,11 @@ class TbRom:
             Named selection on which the point file has to be generated. The default is ``None``, in which case the
             entire domain is considered.
         """
-        pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-        vec = TbRom._read_binary(pointpath)
-        if named_selection is not None:
-            pointsids = self.named_selection_indexes(named_selection)
-            listids = np.concatenate((3 * pointsids, 3 * pointsids + 1, 3 * pointsids + 2))
-            listids = np.sort(listids)
-            vec = vec[listids]
+        if self._points is None:
+            pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+            self._points = TbRom._read_binary(pointpath)
+        vec = self._points
+        vec = self.data_extract(named_selection, vec, 3)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
             return output_file_path
@@ -118,15 +119,7 @@ class TbRom:
         for i in range(nb_mc):
             mnp = np.array(basis[i])
             vec = vec + mc[i] * mnp
-        if named_selection is not None:
-            pointsids = self.named_selection_indexes(named_selection)
-            listids = pointsids
-            if self.field_output_dim > 1:
-                listids = np.concatenate((self.field_output_dim * pointsids, self.field_output_dim * pointsids + 1))
-                for k in range(2, self.field_output_dim):
-                    listids = np.concatenate((listids, self.field_output_dim * pointsids + k))
-            listids = np.sort(listids)
-            vec = vec[listids]
+        vec = self.data_extract(named_selection, vec, self.field_output_dim)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
             return output_file_path
@@ -171,11 +164,78 @@ class TbRom:
                 self._infmcs[name][item] = mc[index]
                 index = index + 1
 
+    def project_on_mesh(self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
+        """
+        Project the field ROM SVD basis onto a mesh.
+
+        Parameters
+        ----------
+        mesh: pv.DataSet
+            PyVista DataSet object of the targeted mesh.
+        interpolate: bool
+            Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
+        named_selection: str (optional)
+            Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
+            entire domain is considered.
+        """
+        basis = self._outbasis
+        nb_mc = len(basis)
+        if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
+            mesh_data = mesh
+            for i in range(0, nb_mc):
+                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(-1,
+                                                                                                  self.field_output_dim)
+                mesh_data['mode' + str(i + 1)] = vec
+        else:  # interpolation required, e.g. because target mesh is different
+            if self._points is None:
+                pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+                self._points = TbRom._read_binary(pointpath)
+            points = self.data_extract(named_selection, self._points, 3)
+            points_data = pv.PolyData(points.reshape(-1, 3))
+            for i in range(0, nb_mc):
+                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(-1,
+                                                                                                  self.field_output_dim)
+                points_data['mode' + str(i + 1)] = vec
+            mesh_data = mesh.interpolate(
+                points_data, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=True
+            )
+            mesh_data = mesh_data.point_data_to_cell_data()
+
+        self._meshdata = mesh_data
+
+    def update_field_on_mesh(self):
+        """
+        Compute the output field results with projected basis.
+        """
+        mesh_data = self._meshdata
+        mc = list(self._outmcs.values())
+        mesh_data[self.field_output_name] = mc[0] * mesh_data['mode' + str(1)]
+        for i in range(1, len(mc)):
+            mesh_data[self.field_output_name] = mesh_data[self.field_output_name] + \
+                                                mc[i] * mesh_data['mode' + str(i + 1)]
+
+        mesh_data.set_active_scalars(self.field_output_name)
+        self._meshdata = mesh_data
+
     def named_selection_indexes(self, nsname: str):
         return self._nsidslist[nsname]
 
     def input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
+
+    def data_extract(self, named_selection: str, data: np.ndarray, dimension: int):
+        if named_selection is not None:
+            pointsids = self.named_selection_indexes(named_selection)
+            listids = pointsids
+            if dimension > 1:
+                listids = np.concatenate(
+                    (dimension * pointsids, dimension * pointsids + 1))
+                for k in range(2, dimension):
+                    listids = np.concatenate((listids, dimension * pointsids + k))
+            listids = np.sort(listids)
+            return data[listids]
+        else:
+            return data
 
     @staticmethod
     def _read_basis(filepath):
@@ -278,3 +338,13 @@ class TbRom:
     @property
     def name(self):
         return self._name
+
+    @property
+    def field_on_mesh(self):
+        """Return the field data projected on mesh of this TBROM."""
+        return self._meshdata
+
+    @property
+    def nb_points(self):
+        """Return the number of points of this TBROM."""
+        return len(self._outbasis[0].reshape(-1, self.field_output_dim))
