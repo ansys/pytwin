@@ -168,3 +168,4 @@ examples/evaluate/*.trn
 tests/*/unit_test_wd
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+*.trn
