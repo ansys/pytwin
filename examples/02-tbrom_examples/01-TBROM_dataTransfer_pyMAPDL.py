@@ -1,7 +1,7 @@
 """.. _ref_example_TBROM_cosim_pyMAPDL:
 
-Twin evaluation of a 3D field ROM co-simulation with an FEA model
------------------------------------------------------------------
+Twin evaluation of a 3D field ROM and data transfer to FEA model inputs
+-----------------------------------------------------------------------
 
 This example shows how PyTwin can be used to load and evaluate a twin model to
 predict CFD results in the form of temperature fields. Temperature fields are
