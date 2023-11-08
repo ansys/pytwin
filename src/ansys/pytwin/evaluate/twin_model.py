@@ -1447,6 +1447,42 @@ class TwinModel(Model):
 
         return tbrom.field_input_names
 
+    def get_field_output_name(self, rom_name):
+        """
+        Get the output field name associated to the TBROM named rom_name
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.get_field_output_name(model.tbrom_names[0])
+        """
+        self._log_key = "GetFieldOutputName"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        return tbrom.field_output_name
+
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
         Get the snapshot file that was created by the given ROM at the given time instant.
@@ -1817,6 +1853,9 @@ class TwinModel(Model):
             PyVista DataSet object of the targeted mesh.
         interpolate: bool
             Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
+            Interpolation is recommended when point cloud data and mesh data are not ordered in the same way, and when
+            the target mesh is different from the one used to generate the ROM. Interpolation is automatically enforced
+            if the target mesh size (i.e. number of cells/points) is different from the point cloud size.
         named_selection: str (optional)
             Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
             entire domain is considered.
