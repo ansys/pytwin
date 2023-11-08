@@ -21,6 +21,10 @@ options. For more information, see the
 
 ###############################################################################
 # .. note::
+#   This example uses PyDPF which requires a DPF server installation (version 2024 R1-pre0 or higher)
+#   as a first step. More information on how to download and install DPF server is available here :
+#   https://dpf.docs.pyansys.com/version/stable/getting_started/index.html#install-dpf-server
+#
 #   To be able to use the functionalities to project an output field on a mesh, you
 #   must have a twin with one or more TBROMs. The output mode coefficients for the TBROMs
 #   must be enabled when exporting the TBROMs and connected to twin outputs with following
@@ -41,14 +45,6 @@ options. For more information, see the
 #   exporting the TBROMs to Twin Builder
 # .. image:: /_static/point_generation.png
 #   :width: 200pt
-#   :align: center
-
-###############################################################################
-# .. note::
-#   To be able to use the functionalities to generate points or snapshot on a named selection, you
-#   need to have a Twin with 1 or more TBROM, for which Named Selections are defined.
-# .. image:: /_static/TBROM_named_selection.png
-#   :width: 207pt
 #   :align: center
 
 ###############################################################################
