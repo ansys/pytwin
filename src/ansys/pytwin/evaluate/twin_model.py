@@ -1867,6 +1867,7 @@ class TwinModel(Model):
         Examples
         --------
         >>> from pytwin import TwinModel
+        >>> import pyvista as pv
         >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
         >>> model1 = TwinModel('model.twin')
         >>> model1.initialize_evaluation()
@@ -1926,6 +1927,7 @@ class TwinModel(Model):
         Examples
         --------
         >>> from pytwin import TwinModel
+        >>> import pyvista as pv
         >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
         >>> model1 = TwinModel('model.twin')
         >>> model1.initialize_evaluation()
