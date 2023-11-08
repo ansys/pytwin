@@ -183,9 +183,10 @@ class TbRom:
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             mesh_data = mesh
             for i in range(0, nb_mc):
-                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(-1,
-                                                                                                  self.field_output_dim)
-                mesh_data['mode' + str(i + 1)] = vec
+                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(
+                    -1, self.field_output_dim
+                )
+                mesh_data["mode" + str(i + 1)] = vec
         else:  # interpolation required, e.g. because target mesh is different
             if self._points is None:
                 pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
@@ -193,9 +194,10 @@ class TbRom:
             points = self.data_extract(named_selection, self._points, 3)
             points_data = pv.PolyData(points.reshape(-1, 3))
             for i in range(0, nb_mc):
-                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(-1,
-                                                                                                  self.field_output_dim)
-                points_data['mode' + str(i + 1)] = vec
+                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(
+                    -1, self.field_output_dim
+                )
+                points_data["mode" + str(i + 1)] = vec
             mesh_data = mesh.interpolate(
                 points_data, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=True
             )
@@ -209,10 +211,11 @@ class TbRom:
         """
         mesh_data = self._meshdata
         mc = list(self._outmcs.values())
-        mesh_data[self.field_output_name] = mc[0] * mesh_data['mode' + str(1)]
+        mesh_data[self.field_output_name] = mc[0] * mesh_data["mode" + str(1)]
         for i in range(1, len(mc)):
-            mesh_data[self.field_output_name] = mesh_data[self.field_output_name] + \
-                                                mc[i] * mesh_data['mode' + str(i + 1)]
+            mesh_data[self.field_output_name] = (
+                mesh_data[self.field_output_name] + mc[i] * mesh_data["mode" + str(i + 1)]
+            )
 
         mesh_data.set_active_scalars(self.field_output_name)
         self._meshdata = mesh_data
@@ -228,8 +231,7 @@ class TbRom:
             pointsids = self.named_selection_indexes(named_selection)
             listids = pointsids
             if dimension > 1:
-                listids = np.concatenate(
-                    (dimension * pointsids, dimension * pointsids + 1))
+                listids = np.concatenate((dimension * pointsids, dimension * pointsids + 1))
                 for k in range(2, dimension):
                     listids = np.concatenate((listids, dimension * pointsids + k))
             listids = np.sort(listids)
