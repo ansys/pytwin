@@ -106,9 +106,15 @@ mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 # Creation of the scene and results to display
 print('Post processing')
 plotter = pv.Plotter()
+plotter.set_background('white')
 plotter.add_axes()
-plotter.add_mesh(mesh_data, show_edges=True)
+plotter.add_mesh(mesh_data, show_edges=True, scalar_bar_args={'color': 'black'})
 plotter.camera_position = [(-0.03962092584614037, 0.013987037327583286, 0.10356162483172728),
  (0.015819278345, 0.0001320060299999995, 0.005),
  (0.05026854357305644, 0.9925208192698814, -0.11124521042672807)]
 plotter.show()
+
+###############################################################################
+# .. image:: /_static/TBROM_FEA_mesh_projection.png
+#   :width: 400pt
+#   :align: center
