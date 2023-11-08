@@ -123,17 +123,23 @@ mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 # Creation of the scene and results to display (e.g. velocity vectors field on cross section on top of geometry)
 print('Post processing (part 1)')
 plotter = pv.Plotter()
+plotter.set_background('white')
 plotter.add_axes()
 full_mesh = mesh_data
 plotter.add_mesh(full_mesh, color="grey", opacity=0.1)
 mesh_data = mesh_data.slice(normal=[1, 0, 0])
 mesh_data.set_active_vectors(twin_model.get_field_output_name(rom_name))
 field_vector = mesh_data.glyph(factor=0.1)
-plotter.add_mesh(field_vector, scalar_bar_args={'title': twin_model.get_field_output_name(rom_name)})
+plotter.add_mesh(field_vector, scalar_bar_args={'title': twin_model.get_field_output_name(rom_name), 'color': 'black'})
 plotter.camera_position = [(7.50710902970841, 1.958889533928373, 10.523076657664214),
                            (0.07444126006233703, -0.2615789288414023, 3.0867204291179635),
                            (-0.14373227292696578, 0.9784129497303378, -0.1484895064279887)]
 plotter.show()
+
+###############################################################################
+# .. image:: /_static/TBROM_CFD_mesh_projection.png
+#   :width: 400pt
+#   :align: center
 
 ###############################################################################
 # Post processing and field visualization using PyVista (part 2)
@@ -159,10 +165,16 @@ twin_model.initialize_evaluation(inputs=rom_inputs)
 mesh_data = twin_model.update_tbrom_on_mesh(rom_name)
 mesh_data = mesh_data.cell_data_to_point_data()  # averaging cells data to points data
 plotter = pv.Plotter()
+plotter.set_background('white')
 plotter.add_axes()
 plotter.add_mesh(full_mesh, color="grey", opacity=0.25)
-plotter.add_mesh(mesh_data)
+plotter.add_mesh(mesh_data, scalar_bar_args={'color': 'black'})
 plotter.camera_position = [(3.662661397689252, -4.19966326640998, 2.017884510665788),
                            (0.922469325699475, -1.2872255352003648, 4.932569683791402),
                            (-0.3767521888598233, -0.8079293655117974, 0.4531091794844114)]
 plotter.show()
+
+###############################################################################
+# .. image:: /_static/TBROM_CFD_mesh_projection2.png
+#   :width: 400pt
+#   :align: center
