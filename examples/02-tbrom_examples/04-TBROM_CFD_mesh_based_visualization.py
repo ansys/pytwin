@@ -62,8 +62,8 @@ options. For more information, see the
 # files.
 
 import ansys.dpf.core as dpf
-import pyvista as pv
 from pytwin import TwinModel, download_file
+import pyvista as pv
 
 twin_file = download_file("HXVelVectorTBROM_23R2.twin", "twin_files", force_download=True)
 cfd_file = download_file("HX_CFD.cas.h5", "other_files", force_download=True)
@@ -78,7 +78,7 @@ rom_inputs = {"Mass_Flow_HX": 75.0, "Tube_temperature": 1115.0, "shell_inlet_tem
 # Load the twin runtime and generate temperature results
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the twin runtime, initialize and extract ROM related information.
-print('Initializing the Twin')
+print("Initializing the Twin")
 twin_model = TwinModel(twin_file)
 twin_model.initialize_evaluation(inputs=rom_inputs)
 rom_name = twin_model.tbrom_names[0]
@@ -88,7 +88,7 @@ named_selections = twin_model.get_named_selections(rom_name)
 # Extract the CFD mesh information for projection
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the Fluent cas file through PyDPF and extract all the zones associated to the ROM's named selections
-print('Reading the CFD mesh')
+print("Reading the CFD mesh")
 ds = dpf.DataSources()
 ds.set_result_file_path(cfd_file, "cas")
 streams = dpf.operators.metadata.streams_provider(data_sources=ds)
@@ -118,26 +118,28 @@ target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) -
 # Project the TBROM field onto the targeted mesh
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The projection is performed without interpolation (i.e. direct mapping of data)
-print('Projecting the results on target mesh')
+print("Projecting the results on target mesh")
 mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 
 ###############################################################################
 # Post processing and field visualization using PyVista (part 1)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Creation of the scene and results to display (e.g. velocity vectors field on cross section on top of geometry)
-print('Post processing (part 1)')
+print("Post processing (part 1)")
 plotter = pv.Plotter()
-plotter.set_background('white')
+plotter.set_background("white")
 plotter.add_axes()
 full_mesh = mesh_data
 plotter.add_mesh(full_mesh, color="grey", opacity=0.1)
 mesh_data = mesh_data.slice(normal=[1, 0, 0])
 mesh_data.set_active_vectors(twin_model.get_field_output_name(rom_name))
 field_vector = mesh_data.glyph(factor=0.1)
-plotter.add_mesh(field_vector, scalar_bar_args={'title': twin_model.get_field_output_name(rom_name), 'color': 'black'})
-plotter.camera_position = [(7.50710902970841, 1.958889533928373, 10.523076657664214),
-                           (0.07444126006233703, -0.2615789288414023, 3.0867204291179635),
-                           (-0.14373227292696578, 0.9784129497303378, -0.1484895064279887)]
+plotter.add_mesh(field_vector, scalar_bar_args={"title": twin_model.get_field_output_name(rom_name), "color": "black"})
+plotter.camera_position = [
+    (7.50710902970841, 1.958889533928373, 10.523076657664214),
+    (0.07444126006233703, -0.2615789288414023, 3.0867204291179635),
+    (-0.14373227292696578, 0.9784129497303378, -0.1484895064279887),
+]
 plotter.show()
 
 ###############################################################################
@@ -149,8 +151,8 @@ plotter.show()
 # Post processing and field visualization using PyVista (part 2)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Creation of the scene and results to display (e.g. velocity magnitude on a given boundary on top of geometry)
-print('Post processing (part 2)')
-namedselection = 'outlet'
+print("Post processing (part 2)")
+namedselection = "outlet"
 ids = []
 ind = 0
 found = False
@@ -169,13 +171,15 @@ twin_model.initialize_evaluation(inputs=rom_inputs)
 mesh_data = twin_model.update_tbrom_on_mesh(rom_name)
 mesh_data = mesh_data.cell_data_to_point_data()  # averaging cells data to points data
 plotter = pv.Plotter()
-plotter.set_background('white')
+plotter.set_background("white")
 plotter.add_axes()
 plotter.add_mesh(full_mesh, color="grey", opacity=0.25)
-plotter.add_mesh(mesh_data, scalar_bar_args={'color': 'black'})
-plotter.camera_position = [(3.662661397689252, -4.19966326640998, 2.017884510665788),
-                           (0.922469325699475, -1.2872255352003648, 4.932569683791402),
-                           (-0.3767521888598233, -0.8079293655117974, 0.4531091794844114)]
+plotter.add_mesh(mesh_data, scalar_bar_args={"color": "black"})
+plotter.camera_position = [
+    (3.662661397689252, -4.19966326640998, 2.017884510665788),
+    (0.922469325699475, -1.2872255352003648, 4.932569683791402),
+    (-0.3767521888598233, -0.8079293655117974, 0.4531091794844114),
+]
 plotter.show()
 
 ###############################################################################

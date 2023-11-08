@@ -7,13 +7,13 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
-import pyvista as pv
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import SavedState, SavedStateRegistry
 from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
+import pyvista as pv
 
 
 class TwinModel(Model):
@@ -249,8 +249,7 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
-    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: pv.DataSet,
-                                          namedselection: str = None):
+    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: pv.DataSet, namedselection: str = None):
         """
         Check if the arguments of mesh projection method are valid. Raise a ``TwinModelError`` message if not.
         """
@@ -1888,8 +1887,10 @@ class TwinModel(Model):
                 else:
                     nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
                 if not interpolate and (mesh.n_cells != nb_points and mesh.n_points != nb_points):
-                    msg = f"Switching interpolate flag from False to True. Number of TBROM points = {nb_points}, " \
-                          f"number of mesh cells = {mesh.n_cells}, number of mesh points = {mesh.n_points}."
+                    msg = (
+                        f"Switching interpolate flag from False to True. Number of TBROM points = {nb_points}, "
+                        f"number of mesh cells = {mesh.n_cells}, number of mesh points = {mesh.n_points}."
+                    )
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
                     interpolate_flag = True
                 else:
@@ -1952,6 +1953,7 @@ class TwinModel(Model):
             msg = f"Something went wrong while updating the results on mesh:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
+
 
 class TwinModelError(Exception):
     def __str__(self):

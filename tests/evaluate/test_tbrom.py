@@ -4,10 +4,10 @@ import sys
 
 import numpy as np
 import pandas as pd
-import pyvista as pv
 from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import get_pytwin_log_file
+import pyvista as pv
 
 
 def reinit_settings():
