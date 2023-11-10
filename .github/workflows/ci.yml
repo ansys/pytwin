@@ -57,6 +57,7 @@ jobs:
       - name: "Install DPF server"
         shell: bash
         run: |
+          cp -r ~ansys/Documents/devEnv/pyansys/pytwin/ansys_dpf_server_win_v2024.1.pre0/ ./
           cd ansys_dpf_server_win_v2024.1.pre0
           pip install -e .
           cd ..
