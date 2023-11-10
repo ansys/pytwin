@@ -74,9 +74,9 @@ jobs:
         shell: bash
         run: doc/make.bat html
 
-      - name: "Kill all DPF servers"
-        uses: ansys/pydpf-actions/kill-dpf-servers@v2.3
-        if: always()
+     # - name: "Kill all DPF servers"
+     #   uses: ansys/pydpf-actions/kill-dpf-servers@v2.3
+     #   if: always()
 
       - name: "Upload HTML documentation artifact"
         uses: actions/upload-artifact@v3
