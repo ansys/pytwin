@@ -1,6 +1,6 @@
 matplotlib==3.7.1
 ansys-fluent-core>=0.16.0
-ansys-mapdl-core>=0.64.0<0.66.0
+ansys-mapdl-core>=0.64.0,<0.66.0
 Sphinx==5.3.0
 Sphinx-copybutton==0.5.1
 numpydoc==1.5.0
