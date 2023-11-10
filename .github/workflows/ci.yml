@@ -55,10 +55,15 @@ jobs:
         run: python -m pip install -r requirements/requirements_doc.txt
 
       - name: "Install DPF server"
-        uses: ansys/pydpf-actions/install-dpf-server@v2.3
-        with:
-          dpf-standalone-TOKEN: ${{secrets.DPF_PIPELINE}}
-          ANSYS_VERSION: "241"
+        shell: bash
+        run: |
+          cd ansys_dpf_server_win_v2024.1.pre0
+          pip install -e .
+          cd ..
+        #uses: ansys/pydpf-actions/install-dpf-server@v2.3
+        #with:
+        #  dpf-standalone-TOKEN: ${{secrets.DPF_PIPELINE}}
+        #  ANSYS_VERSION: "241"
 
       - name: "Clean documentation build folder"
         shell: bash
