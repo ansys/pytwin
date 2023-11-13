@@ -72,9 +72,9 @@ jobs:
 
       - name: "Build HTML documentation"
         shell: bash
-        run: | 
-          export ANSYS_DPF_ACCEPT_LA=Y        
-          doc/make.bat html
+        run: doc/make.bat html
+        env:
+          ANSYS_DPF_ACCEPT_LA: Y
 
      # - name: "Kill all DPF servers"
      #   uses: ansys/pydpf-actions/kill-dpf-servers@v2.3
