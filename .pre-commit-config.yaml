@@ -2,7 +2,7 @@ exclude: "pytwin/twin_runtime/"
 repos:
 
 - repo: https://github.com/psf/black
-  rev: 23.10.1
+  rev: 23.11.0
   hooks:
   - id: black
 
