@@ -105,6 +105,7 @@ plotter = pv.Plotter()
 plotter.set_background("white")
 plotter.add_axes()
 plotter.add_mesh(mesh_data, scalar_bar_args={"color": "black"})
+# plotter.add_mesh(mesh_data, show_edges=True, scalar_bar_args={"color": "black"})
 plotter.camera_position = [
     (-0.03962092584614037, 0.013987037327583286, 0.10356162483172728),
     (0.015819278345, 0.0001320060299999995, 0.005),
