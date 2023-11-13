@@ -61,10 +61,6 @@ jobs:
           cd ansys_dpf_server_win_v2024.1.pre0
           pip install -e .
           cd ..
-        #uses: ansys/pydpf-actions/install-dpf-server@v2.3
-        #with:
-        #  dpf-standalone-TOKEN: ${{secrets.DPF_PIPELINE}}
-        #  ANSYS_VERSION: "241"
 
       - name: "Clean documentation build folder"
         shell: bash
@@ -75,10 +71,6 @@ jobs:
         run: doc/make.bat html
         env:
           ANSYS_DPF_ACCEPT_LA: Y
-
-     # - name: "Kill all DPF servers"
-     #   uses: ansys/pydpf-actions/kill-dpf-servers@v2.3
-     #   if: always()
 
       - name: "Upload HTML documentation artifact"
         uses: actions/upload-artifact@v4
