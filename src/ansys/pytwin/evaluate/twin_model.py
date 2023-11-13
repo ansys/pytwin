@@ -1848,7 +1848,7 @@ class TwinModel(Model):
         ----------
         rom_name : str
             Name of the TBROM considered to project the results.
-        mesh: pv.DataSet
+        mesh: pyvista.DataSet
             PyVista DataSet object of the targeted mesh.
         interpolate: bool
             Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
@@ -1861,7 +1861,7 @@ class TwinModel(Model):
 
         Returns
         -------
-        pv.DataSet
+        pyvista.DataSet
             PyVista DataSet object of the targeted mesh with projected field ROM data.
 
         Raises
@@ -1923,7 +1923,7 @@ class TwinModel(Model):
 
         Returns
         -------
-        pv.DataSet
+        pyvista.DataSet
             PyVista DataSet object of the targeted mesh with projected field ROM data.
 
         Raises
