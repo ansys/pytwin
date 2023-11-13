@@ -170,7 +170,7 @@ class TbRom:
 
         Parameters
         ----------
-        mesh: pv.DataSet
+        mesh: pyvista.DataSet
             PyVista DataSet object of the targeted mesh.
         interpolate: bool
             Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
