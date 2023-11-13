@@ -52,15 +52,7 @@ jobs:
 
       - name: "Install documentation dependencies from requirements file"
         shell: bash
-        run: python -m pip install -r requirements/requirements_doc.txt --upgrade
-
-      - name: "Install DPF server"
-        shell: bash
-        run: |
-          cp -r ~ansys/Documents/devEnv/pyansys/pytwin/ansys_dpf_server_win_v2024.1.pre0/ ./
-          cd ansys_dpf_server_win_v2024.1.pre0
-          pip install -e .
-          cd ..
+        run: python -m pip install -r requirements/requirements_doc.txt
 
       - name: "Clean documentation build folder"
         shell: bash
@@ -69,8 +61,6 @@ jobs:
       - name: "Build HTML documentation"
         shell: bash
         run: doc/make.bat html
-        env:
-          ANSYS_DPF_ACCEPT_LA: Y
 
       - name: "Upload HTML documentation artifact"
         uses: actions/upload-artifact@v3
@@ -88,7 +78,7 @@ jobs:
         with:
           library-name: "pytwin"
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
-    
+
   tests:
     name: Test library
     needs: build-library
@@ -116,9 +106,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.python-version }}_${{ matrix.os }}_pytest.html
-          path: .cov/html 
+          path: .cov/html
           retention-days: 7
-  
+
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v3
 
