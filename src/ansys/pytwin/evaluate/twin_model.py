@@ -1333,7 +1333,7 @@ class TwinModel(Model):
             msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
-        filepath = self._check_tbrom_points_file()
+        filepath = self._check_tbrom_points_file(rom_name)
         return filepath
 
     def get_rom_directory(self, rom_name):
