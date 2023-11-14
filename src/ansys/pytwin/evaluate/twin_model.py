@@ -306,8 +306,10 @@ class TwinModel(Model):
 
     def _error_msg_for_geometry_file_not_found(self, rom_name, filepath):
         msg = f"[GeometryFile]Could not find the geometry file for the given ROM name: {rom_name}. "
-        msg += f"The geometry filepath that you are looking for is: {filepath}. Make sure to embed the geometry as part " \
-               f"of the TBROM."
+        msg += (
+            f"The geometry filepath that you are looking for is: {filepath}. Make sure to embed the geometry as part "
+            f"of the TBROM."
+        )
         return msg
 
     def _error_msg_for_pv_mesh_empty(self, rom_name, mesh):
