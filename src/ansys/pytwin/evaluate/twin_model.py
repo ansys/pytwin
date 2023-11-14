@@ -230,6 +230,16 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
+    def _check_tbrom_points_file(self, rom_name: str):
+        """
+        Check if the points file is available for the given ROM. Raise a ``TwinModelError`` message if not.
+        """
+        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
+        if not os.path.exists(filepath):
+            msg = self._error_msg_for_geometry_file_not_found(rom_name, filepath)
+            raise self._raise_error(msg)
+        return filepath
+
     def _check_tbrom_points_generation_args(self, rom_name: str, namedselection: str = None):
         """
         Check if the arguments of points generation method are valid. Raise a ``TwinModelError`` message if not.
@@ -238,10 +248,7 @@ class TwinModel(Model):
         if self._check_rom_name_is_valid(rom_name):
             tbrom = self._tbroms[rom_name]
 
-        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
-        if not os.path.exists(filepath):
-            msg = self._error_msg_for_geometry_file_not_found(rom_name, filepath)
-            raise self._raise_error(msg)
+        self._check_tbrom_points_file(rom_name)
 
         if namedselection is not None:
             if namedselection not in tbrom.named_selections:
@@ -290,7 +297,8 @@ class TwinModel(Model):
 
     def _error_msg_for_geometry_file_not_found(self, rom_name, filepath):
         msg = f"[GeometryFile]Could not find the geometry file for the given ROM name: {rom_name}. "
-        msg += f"The geometry filepath that you are looking for is: {filepath}"
+        msg += f"The geometry filepath that you are looking for is: {filepath}. Make sure to embed the geometry as part " \
+               f"of the TBROM."
         return msg
 
     def _error_msg_for_pv_mesh_empty(self, rom_name, mesh):
@@ -1323,12 +1331,7 @@ class TwinModel(Model):
             msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
-        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
-
-        if not os.path.exists(filepath):
-            msg = self._error_msg_for_geometry_file_not_found(rom_name, filepath)
-            self._raise_error(msg)
-
+        filepath = self._check_tbrom_points_file()
         return filepath
 
     def get_rom_directory(self, rom_name):
@@ -1862,6 +1865,7 @@ class TwinModel(Model):
             If rom_name is not included in the Twin's list of TBROM
             If mesh is not a valid grid dataset
             If name_selection is not included in the TBROM's list of Named Selections
+            If interpolate is True and no points file is available with the TBROM
 
         Examples
         --------
@@ -1895,6 +1899,8 @@ class TwinModel(Model):
                     interpolate_flag = True
                 else:
                     interpolate_flag = interpolate
+                if interpolate_flag:
+                    self._check_tbrom_points_file(rom_name)
                 self._tbroms[rom_name].project_on_mesh(mesh, interpolate_flag, named_selection)
                 return self.update_tbrom_on_mesh(rom_name)
 
