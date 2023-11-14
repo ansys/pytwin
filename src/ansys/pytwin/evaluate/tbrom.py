@@ -173,8 +173,9 @@ class TbRom:
                 self._infmcs[name][item] = mc[index]
                 index = index + 1
 
-    def project_on_mesh(self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None,
-                        progress_bar: bool = False):
+    def project_on_mesh(
+        self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None, progress_bar: bool = False
+    ):
         """
         Project the field ROM SVD basis onto a mesh.
 
