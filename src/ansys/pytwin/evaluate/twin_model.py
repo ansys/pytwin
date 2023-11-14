@@ -309,7 +309,7 @@ class TwinModel(Model):
         return msg
 
     def _error_msg_for_tbrom_mesh_empty(self, rom_name):
-        msg = f"[TBROMMesh]The TBROM {rom_name} has not its mesh_data attribute initialized yet."
+        msg = f"[TBROMMesh]The TBROM {rom_name} mesh_data attribute is not initialized yet."
         msg += "\nMake sure to perform the mesh projection operation first before calling this method."
         return msg
 
@@ -1903,7 +1903,7 @@ class TwinModel(Model):
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
                     interpolate_flag = True
                 else:
-                    interpolate_flag = False
+                    interpolate_flag = interpolate
                 self._tbroms[rom_name].project_on_mesh(mesh, interpolate_flag, named_selection)
                 return self.update_tbrom_on_mesh(rom_name)
 

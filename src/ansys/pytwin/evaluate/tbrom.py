@@ -7,6 +7,15 @@ from typing import Union
 import numpy as np
 import pyvista as pv
 
+# Checking if tqdm is installed.
+# If it is, the default value for progress_bar is true.
+try:
+    from tqdm import tqdm
+
+    _HAS_TQDM = True
+except ModuleNotFoundError:  # pragma: no cover
+    _HAS_TQDM = False
+
 
 class TbRom:
     """
@@ -164,7 +173,8 @@ class TbRom:
                 self._infmcs[name][item] = mc[index]
                 index = index + 1
 
-    def project_on_mesh(self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
+    def project_on_mesh(self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None,
+                        progress_bar: bool = False):
         """
         Project the field ROM SVD basis onto a mesh.
 
@@ -177,6 +187,9 @@ class TbRom:
         named_selection: str (optional)
             Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
             entire domain is considered.
+        progress_bar : bool (optional)
+            Display a progress bar using ``tqdm`` when ``True``. Helpful for showing interpolation progress. Default to
+            ``False``, it is automatically set to ``True`` if ``tqdm`` is available.
         """
         basis = self._outbasis
         nb_mc = len(basis)
@@ -198,8 +211,10 @@ class TbRom:
                     -1, self.field_output_dim
                 )
                 points_data["mode" + str(i + 1)] = vec
+            if not progress_bar and _HAS_TQDM:
+                progress_bar = True
             mesh_data = mesh.interpolate(
-                points_data, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=True
+                points_data, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
             )
             mesh_data = mesh_data.point_data_to_cell_data()
 
