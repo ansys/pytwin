@@ -1161,6 +1161,18 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[NamedSelection]" in str(e)
 
+        # Raise an exception if interpolate is True and no points file is available
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        filepath = twinmodel.get_geometry_filepath(rom_name=romname)
+        os.remove(filepath)
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, True, nslist[0])
+        except TwinModelError as e:
+            assert "[GeometryFile]" in str(e)
+
         # Raise an exception as the twin considered has not output MC connected
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
