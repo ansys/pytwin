@@ -1,7 +1,7 @@
-import atexit
 import json
 import os
 from pathlib import Path
+import shutil
 import time
 from typing import Union
 
@@ -84,15 +84,17 @@ class TwinModel(Model):
         # Otherwise, an error could be raised at python process exit because the TwinModel log file won't be freed
         # and the settings.cleanup_temp_pytwin_working_directory will try to delete it.
         # This happens when a TwinModel is instantiated into a script file, like in the examples.
-        atexit.register(self.__del__)
+        #
+        # Issue128 => register the __del__ method to atexit module prevent it to be garbage collected before the end
+        # of the process which we don't want.
+        # atexit.register(self.__del__)
+        #
 
     def __del__(self):
         """
-        Close twin runtime when object is garbage collected.
+        Close object when it is garbage collected.
         """
-        if self._twin_runtime is not None:
-            if self._twin_runtime.is_model_opened:
-                self._twin_runtime.twin_close()
+        self.close()
 
     def _check_model_filepath_is_valid(self, model_filepath):
         """
@@ -367,6 +369,23 @@ class TwinModel(Model):
         msg += f" The first provided time instant is: {t0})."
         msg += "\nProvide inputs at time instant 't=0.s'."
         return msg
+
+    def _cleanup(self):
+        """
+        Close twin runtime and remove model temporary folder.
+        """
+        if self._twin_runtime is not None:
+            if self._twin_runtime.is_model_opened:
+                self._twin_runtime.twin_close()
+            # Delete model directory
+            if os.path.exists(self.model_dir):
+                shutil.rmtree(self.model_dir)
+
+    def close(self):
+        """
+        Cleanup object when user asks to close it.
+        """
+        self._cleanup()
 
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """
