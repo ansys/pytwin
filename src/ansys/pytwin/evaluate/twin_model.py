@@ -594,7 +594,7 @@ class TwinModel(Model):
             if self.tbrom_count > 0:
                 self._tbroms = dict()
                 for tbrom_name in self.tbrom_names:
-                    tbrom_resdir = self._twin_runtime.twin_get_rom_resource_directory(tbrom_name)
+                    tbrom_resdir = self._tbrom_resource_directory(tbrom_name)
                     if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
                         tbrom = TbRom(tbrom_name, tbrom_resdir)
                         self._tbrom_init(tbrom)

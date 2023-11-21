@@ -67,8 +67,12 @@ class TbRom:
 
         # TODO check that output mode coef are connected before reading in
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+        if not os.path.exists(pointpath):
+            self._haspointfile = False
+        else:
+            self._haspointfile = True
+        TbRom._read_points(pointpath)
         outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
-        TbRom._read_points(pointpath) # TODO check if file not provided ?
         TbRom._read_basis(outpath)
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
         [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingspath)
@@ -95,9 +99,6 @@ class TbRom:
             Named selection on which the point file has to be generated. The default is ``None``, in which case the
             entire domain is considered.
         """
-        if self._points is None:
-            pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-            self._points = TbRom._read_binary(pointpath)
         vec = self._pointsdata.points
         vec = self.data_extract(named_selection, vec, 3)
         if on_disk:
@@ -125,14 +126,13 @@ class TbRom:
             Named selection on which the snasphot has to be generated. The default is ``None``, in which case the
             entire domain is considered.
         """
-        basis = self._outbasis
-        vec = np.zeros(len(basis[0]))
-        nb_mc = len(basis)
         mc = list(self._outmcs.values())
-        for i in range(nb_mc):
-            mnp = np.array(basis[i])
-            vec = vec + mc[i] * mnp
-        vec = self.data_extract(named_selection, vec, self.field_output_dim)
+        self._pointsdata[self.field_output_name] = mc[0] * self._pointsdata["mode" + str(1)]
+        for i in range(1, len(mc)):
+            self._pointsdata[self.field_output_name] = (
+                self._pointsdata[self.field_output_name] + mc[i] * self._pointsdata["mode" + str(i + 1)]
+            )
+        vec = self.data_extract(named_selection, self._pointsdata[self.field_output_name], self.field_output_dim)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
             return output_file_path
@@ -196,30 +196,19 @@ class TbRom:
             Display a progress bar using ``tqdm`` when ``True``. Helpful for showing interpolation progress. Default to
             ``False``, it is automatically set to ``True`` if ``tqdm`` is available.
         """
-        basis = self._outbasis
-        nb_mc = len(basis)
+        mc = list(self._outmcs.values())
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             mesh_data = mesh
-            for i in range(0, nb_mc):
-                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(
+            for i in range(0, len(mc)):
+                vec = self.data_extract(named_selection, self._pointsdata["mode" + str(i + 1)], self.field_output_dim).reshape(
                     -1, self.field_output_dim
                 )
                 mesh_data["mode" + str(i + 1)] = vec
         else:  # interpolation required, e.g. because target mesh is different
-            if self._points is None:
-                pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-                self._points = TbRom._read_binary(pointpath)
-            points = self.data_extract(named_selection, self._points, 3)
-            points_data = pv.PolyData(points.reshape(-1, 3))
-            for i in range(0, nb_mc):
-                vec = self.data_extract(named_selection, basis[i], self.field_output_dim).reshape(
-                    -1, self.field_output_dim
-                )
-                points_data["mode" + str(i + 1)] = vec
             if not progress_bar and _HAS_TQDM:
                 progress_bar = True
             mesh_data = mesh.interpolate(
-                points_data, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
+                self._pointsdata, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
             )
             mesh_data = mesh_data.point_data_to_cell_data()
 
@@ -246,6 +235,9 @@ class TbRom:
     def input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
 
+    def haspointfile(self):
+        return self._haspointfile
+
     def data_extract(self, named_selection: str, data: np.ndarray, dimension: int):
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
@@ -260,8 +252,11 @@ class TbRom:
             return data
 
     def _read_points(self, filepath):
-        points = TbRom._read_binary(filepath)
-        self._pointsdata = pv.PolyData(points.reshape(-1, 3))
+        if self._haspointfile:
+            points = TbRom._read_binary(filepath)
+            self._pointsdata = pv.PolyData(points.reshape(-1, 3))
+        else:
+            self._pointsdata = pv.PolyData()
 
     def _read_basis(self, filepath):
         with open(filepath, "rb") as f:
