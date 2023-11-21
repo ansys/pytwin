@@ -47,14 +47,15 @@ class TbRom:
         self._infmcs = None
         self._outmcs = None
         self._infbasis = None
-        self._outbasis = None
+        self._pointsdata = None
         self._meshdata = None
-        self._points = None
         self._hasinfmcs = None
         self._hasoutmcs = False
 
         files = os.listdir(tbrom_path)
         infdata = dict()
+
+        # TODO check that input mode coef are connected before reading in
         for file in files:
             if TbRom.IN_F_KEY in file:
                 folder = file.split("_")
@@ -64,8 +65,11 @@ class TbRom:
                 infdata.update({fname: inbasis})
         self._infbasis = infdata
 
+        # TODO check that output mode coef are connected before reading in
+        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
-        self._outbasis = TbRom._read_basis(outpath)
+        TbRom._read_points(pointpath) # TODO check if file not provided ?
+        TbRom._read_basis(outpath)
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
         [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingspath)
         self._nsidslist = nsidslist
@@ -94,7 +98,7 @@ class TbRom:
         if self._points is None:
             pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
             self._points = TbRom._read_binary(pointpath)
-        vec = self._points
+        vec = self._pointsdata.point_data
         vec = self.data_extract(named_selection, vec, 3)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
@@ -255,13 +259,19 @@ class TbRom:
         else:
             return data
 
-    @staticmethod
-    def _read_basis(filepath):
+    def _read_points(self, filepath):
+        points = TbRom._read_binary(filepath)
+        self._pointsdata = pv.PolyData(points.reshape(-1, 3))
+
+    def _read_basis(self, filepath):
         with open(filepath, "rb") as f:
             var = struct.unpack("cccccccccccccccc", f.read(16))[0]
             nb_val = struct.unpack("Q", f.read(8))[0]
             nb_mc = struct.unpack("Q", f.read(8))[0]
-            return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
+            basis = np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
+        for i in range(0, nb_mc):
+            self._pointsdata["mode" + str(i + 1)] = basis[i]
+
 
     @staticmethod
     def _read_binary(filepath):
