@@ -98,7 +98,7 @@ class TbRom:
         if self._points is None:
             pointpath = os.path.join(self._tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
             self._points = TbRom._read_binary(pointpath)
-        vec = self._pointsdata.point_data
+        vec = self._pointsdata.points
         vec = self.data_extract(named_selection, vec, 3)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
