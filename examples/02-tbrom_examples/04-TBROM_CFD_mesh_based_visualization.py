@@ -168,7 +168,6 @@ mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, True, nameds
 # performed with interpolation (point cloud data interpolated onto target mesh)
 rom_inputs = {"Mass_Flow_HX": 85.0, "Tube_temperature": 1200.0, "shell_inlet_temp": 320.0}
 twin_model.initialize_evaluation(inputs=rom_inputs)
-mesh_data = twin_model.update_tbrom_on_mesh(rom_name)
 mesh_data = mesh_data.cell_data_to_point_data()  # averaging cells data to points data
 plotter = pv.Plotter()
 plotter.set_background("white")

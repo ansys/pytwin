@@ -273,6 +273,10 @@ class TwinModel(Model):
         if self._check_rom_name_is_valid(rom_name):
             tbrom = self._tbroms[rom_name]
 
+        if not tbrom._hasoutmcs:
+            msg = self._error_msg_for_rom_output_connection(rom_name)
+            raise self._raise_error(msg)
+
         if mesh.n_cells == 0 and mesh.n_points == 0:
             msg = self._error_msg_for_pv_mesh_empty(rom_name, mesh)
             raise self._raise_error(msg)
@@ -754,14 +758,14 @@ class TwinModel(Model):
             tbrom._hasinfmcs = hasinfmcs
 
         outmcs = dict()
-        for i in range(1, len(tbrom._outbasis) + 1):
+        for i in range(1, tbrom.nb_modes + 1):
             output_port_name = self._field_output_port_name(i, tbrom.name)
             for key, item in self.outputs.items():
                 if output_port_name in key:
                     outmcs.update({key: item})
                     break
                     # e.g. outField_mode_1 has been found but we don't want to pick outField_mode_10 yet
-        if len(outmcs) == len(tbrom._outbasis):
+        if len(outmcs) == tbrom.nb_modes:
             tbrom._outmcs = outmcs
             tbrom._hasoutmcs = True
 
@@ -773,6 +777,7 @@ class TwinModel(Model):
         """
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
+        tbrom.update_output_field()
 
     def _update_field_inputs(self, field_inputs: dict):
         for tbrom_name, field_inputs in field_inputs.items():
@@ -1874,6 +1879,7 @@ class TwinModel(Model):
         TwinModelError:
             If ``TwinModel`` object has not been initialized.
             If rom_name is not included in the Twin's list of TBROM
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs
             If mesh is not a valid grid dataset
             If name_selection is not included in the TBROM's list of Named Selections
             If interpolate is True and no points file is available with the TBROM
@@ -1913,64 +1919,54 @@ class TwinModel(Model):
                 if interpolate_flag:
                     self._check_tbrom_points_file(rom_name)
                 self._tbroms[rom_name].project_on_mesh(mesh, interpolate_flag, named_selection)
-                return self.update_tbrom_on_mesh(rom_name)
+                self._update_tbrom_outmcs(self._tbroms[rom_name])
+                return self._tbroms[rom_name].field_on_mesh
 
         except Exception as e:
             msg = f"Something went wrong while projecting on target mesh:"
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def update_tbrom_on_mesh(self, rom_name: str):
+    def get_tbrom_output_field(self, rom_name: str):
         """
-        Update the field ROM data on the projected mesh
+        Return the TBROM output field from point cloud data.
 
         Parameters
         ----------
         rom_name : str
-            Name of the TBROM considered to update the results.
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
 
         Returns
         -------
         pyvista.DataSet
-            PyVista DataSet object of the targeted mesh with projected field ROM data.
+            PyVista DataSet object of the TBROM output field from point cloud data.
 
         Raises
         ------
         TwinModelError:
-            If ``TwinModel`` object has not been initialized.
-            If rom_name is not included in the Twin's list of TBROM
-            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs
-            If initial projection has not been performed yet
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
 
         Examples
         --------
         >>> from pytwin import TwinModel
-        >>> import pyvista as pv
-        >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
-        >>> model1 = TwinModel('model.twin')
-        >>> model1.initialize_evaluation()
-        >>> romname = model1.tbrom_names[0]
-        >>> mesh = pv.read('mesh.vtk')
-        >>> meshresults = model1.project_tbrom_on_mesh(romname, mesh)
-        >>> model1.evaluate_step_by_step(step_size=0.1)
-        >>> meshresults = model1.update_tbrom_on_mesh(romname)
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.get_tbrom_output_field(model.tbrom_names[0])
         """
-        self._log_key = "MeshUpdate"
+        self._log_key = "GetPointsData"
 
-        if not self.evaluation_is_initialized:
-            msg = self._error_msg_for_not_initialized()
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
             self._raise_error(msg)
 
-        try:
-            if self._check_tbrom_mesh_update_args(rom_name):
-                self._tbroms[rom_name].update_field_on_mesh()
-                return self._tbroms[rom_name].field_on_mesh
-
-        except Exception as e:
-            msg = f"Something went wrong while updating the results on mesh:"
-            msg += f"\n{str(e)}."
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
+        tbrom = self._tbroms[rom_name]
+
+        return tbrom.field_on_points
 
 class TwinModelError(Exception):
     def __str__(self):
