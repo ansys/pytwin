@@ -39,6 +39,7 @@ class TbRom:
     OUT_F_KEY = "binaryOutputField"
     TBROM_BASIS = "basis.svd"
     TBROM_SET = "settings.json"
+    TBROM_PROP = "properties.json"
     TBROM_POINTS = "points.bin"
 
     def __init__(self, tbrom_name: str, tbrom_path: str):
@@ -64,12 +65,6 @@ class TbRom:
                 infdata.update({fname: inbasis})
         self._infbasis = infdata
 
-        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-        if not os.path.exists(pointpath):
-            self._haspointfile = False
-        else:
-            self._haspointfile = True
-        self._read_points(pointpath)
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
         [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingspath)
         self._nsidslist = nsidslist
@@ -77,6 +72,18 @@ class TbRom:
         self._outname = outputname
         self._outunit = unit
         self._outputfilespath = None
+        propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
+        [nbpoints, nbmodes] = TbRom._read_properties(propertiespath)
+        self._nbpoints = int(nbpoints/self._outdim)
+        self._nbmodes = nbmodes
+
+        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+        if not os.path.exists(pointpath):
+            self._haspointfile = False
+        else:
+            self._haspointfile = True
+        self._read_points(pointpath)
+
         outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
         self._init_pointsdata(outpath)
 
@@ -97,8 +104,7 @@ class TbRom:
             Named selection on which the point file has to be generated. The default is ``None``, in which case the
             entire domain is considered.
         """
-        vec = self._pointsdata.points
-        vec = self.data_extract(named_selection, vec)
+        vec = self.data_extract(named_selection, self._pointsdata.points)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
             return output_file_path
@@ -188,10 +194,10 @@ class TbRom:
             Display a progress bar using ``tqdm`` when ``True``. Helpful for showing interpolation progress. Default to
             ``False``, it is automatically set to ``True`` if ``tqdm`` is available.
         """
-        mc = list(self._outmcs.values())
+        nbmc = self.nb_modes
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             mesh_data = mesh
-            for i in range(0, len(mc)):
+            for i in range(0, nbmc):
                 vec = self.data_extract(named_selection, self._pointsdata["mode" + str(i + 1)])
                 mesh_data["mode" + str(i + 1)] = vec
             nb_data = len(vec)
@@ -242,9 +248,6 @@ class TbRom:
     def input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
 
-    def haspointfile(self):
-        return self._haspointfile
-
     def data_extract(self, named_selection: str, data: np.ndarray):
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
@@ -254,11 +257,11 @@ class TbRom:
             return data
 
     def _read_points(self, filepath):
-        if self._haspointfile:
+        if self.haspointfile:
             points = TbRom._read_binary(filepath)
-            self._pointsdata = pv.PolyData(points.reshape(-1, 3))
         else:
-            self._pointsdata = pv.PolyData()
+            points = np.zeros(3*self.nb_points)
+        self._pointsdata = pv.PolyData(points.reshape(-1, 3))
 
     def _init_pointsdata(self, filepath):
         basis = TbRom._read_basis(filepath)
@@ -328,10 +331,29 @@ class TbRom:
         return [tbromns, dimensionality, outputname, unit]
 
     @staticmethod
+    def _read_properties(filepath):
+        with open(filepath) as f:
+            data = json.load(f)
+
+        fields = {}
+        if "fields" in data:
+            fields = data["fields"]
+        outField = fields["outField"]
+
+        nbPoints = outField['nbDof']
+        nbModes = outField['nbModes']
+
+        return [nbPoints, nbModes]
+
+    @staticmethod
     def read_snapshot_size(filepath):
         with open(filepath, "rb") as f:
             nbdof = struct.unpack("Q", f.read(8))[0]
         return nbdof
+
+    @property
+    def haspointfile(self):
+        return self._haspointfile
 
     @property
     def field_input_count(self):
@@ -383,9 +405,9 @@ class TbRom:
     @property
     def nb_points(self):
         """Return the number of points of this TBROM."""
-        return len(self._pointsdata["mode" + str(1)].reshape(-1, self.field_output_dim))
+        return self._nbpoints
 
     @property
     def nb_modes(self):
         """Return the number of modes of this TBROM output field."""
-        return len(self._pointsdata.array_names)-1
+        return self._nbmodes

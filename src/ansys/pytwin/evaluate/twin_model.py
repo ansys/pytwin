@@ -1884,6 +1884,10 @@ class TwinModel(Model):
             If name_selection is not included in the TBROM's list of Named Selections
             If interpolate is True and no points file is available with the TBROM
 
+        TwinModelWarning:
+            If interpolate is False and the targeted mesh has a number of cells and points different from TBROM point
+            cloud. In that case, interpolate is automatically switched to True.
+
         Examples
         --------
         >>> from pytwin import TwinModel
@@ -1909,7 +1913,7 @@ class TwinModel(Model):
                     nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
                 if not interpolate and (mesh.n_cells != nb_points and mesh.n_points != nb_points):
                     msg = (
-                        f"Switching interpolate flag from False to True. Number of TBROM points = {nb_points}, "
+                        f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = {nb_points}, "
                         f"number of mesh cells = {mesh.n_cells}, number of mesh points = {mesh.n_points}."
                     )
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
@@ -1947,6 +1951,11 @@ class TwinModel(Model):
         TwinModelError:
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
+            If the TBROM does not have any point file available.
+
+        TwinModelWarning:
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs. In that case, the returned
+            object can be used to visualize field modes only.
 
         Examples
         --------
@@ -1965,6 +1974,16 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         tbrom = self._tbroms[rom_name]
+
+        if not tbrom.haspointfile:
+            msg = self._check_tbrom_points_file(rom_name)
+            self._raise_error(msg)
+
+        if not tbrom._hasoutmcs:
+            msg = f"[RomOutputConnection]The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
+            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's outputs."
+            msg += "\nNo output field is associated to the returned object (only field modes)."
+            self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return tbrom.field_on_points
 

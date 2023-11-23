@@ -1146,7 +1146,18 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[RomName]" in str(e)
 
+        # Raise an exception as the twin considered has not output MC connected
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
+
         # Raise an exception if mesh provided is not consistent
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         try:
             twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
@@ -1173,17 +1184,12 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[GeometryFile]" in str(e)
 
-        # Raise an exception as the twin considered has not output MC connected
+        # Raise a warning if interpolation flag set to False and target mesh has not same size as point cloud
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         nslist = twinmodel.get_named_selections(romname)
-        try:
-            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
-        except TwinModelError as e:
-            assert "[RomOutputConnection]" in str(e)
-
-        # Raise a warning if interpolation flag set to False and target mesh has not same size as point cloud
+        twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
         log_file = get_pytwin_log_file()
         with open(log_file, "r") as log:
             log_str = log.readlines()
@@ -1200,54 +1206,56 @@ class TestTbRom:
         except TwinModelError as e:
             assert "MeshProjection" in str(e)
 
-    def test_tbrom_mesh_update_errors(self):
+    def test_tbrom_get_output_field_errors(self):
         reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-        twinmodel = TwinModel(model_filepath=model_filepath)
         mesh = pv.read(MESH_FILE)
         romname = "unknown"
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twinmodel = TwinModel(model_filepath=model_filepath)
 
-        # Raise an exception if twin model not initialized
+        # Raise an exception if no tbrom available in the twin
         try:
-            twinmodel.update_tbrom_on_mesh(romname)
+            twinmodel.get_tbrom_output_field(romname)
         except TwinModelError as e:
-            assert "[Initialization]" in str(e)
+            assert "[NoRom]" in str(e)
 
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
 
         # Raise an exception if unknown rom name is given
         try:
-            twinmodel.update_tbrom_on_mesh(romname)
+            twinmodel.get_tbrom_output_field(romname)
         except TwinModelError as e:
             assert "[RomName]" in str(e)
 
-        # Raise an exception as the twin considered has not output MC connected
+        # Raise a warning as the twin considered has not output MC connected
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
-        try:
-            twinmodel.update_tbrom_on_mesh(romname)
-        except TwinModelError as e:
-            assert "[RomOutputConnection]" in str(e)
+        twinmodel.get_tbrom_output_field(romname)
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "No output field is associated" in "".join(log_str)
 
-        # Raise an exception if mesh projection is not performed yet
-        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        try:
-            twinmodel.update_tbrom_on_mesh(romname)
-        except TwinModelError as e:
-            assert "[TBROMMesh]" in str(e)
-
-        # Raise an exception if any issue occurs during update
+        # Raise an exception if any issue occurs during the API execution
         model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         nslist = twinmodel.get_named_selections(romname)
         try:
-            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
-            twinmodel.update_tbrom_on_mesh(romname)
+            twinmodel.get_tbrom_output_field(romname)
         except TwinModelError as e:
-            assert "MeshUpdate" in str(e)
+            assert "GetPointsData" in str(e)
+
+    def test_tbrom_new_instantiation_without_points(self):
+        model_filepath = TEST_TB_ROM2
+        try:
+            twinmodel = TwinModel(model_filepath=model_filepath) # instantiation should be fine without points
+            romname = twinmodel.tbrom_names[0]
+            twinmodel.get_tbrom_output_field(romname) # retrieving the output field pyvista object should
+                                                      # raise an error since there is no point file
+        except TwinModelError as e:
+            assert "GeometryFile" in str(e)
