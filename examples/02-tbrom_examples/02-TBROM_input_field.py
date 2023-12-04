@@ -85,6 +85,7 @@ shows how to evaluate the output field data in the form of snapshots.
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pyvista as pv
 from pytwin import TwinModel, download_file
 
 twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True)
@@ -247,3 +248,17 @@ output_snapshots = twin_model.generate_snapshot_batch(batch_results, romname)
 # Plot the results.
 
 plot_result_comparison(sim_results)
+
+# Plot the 3D field results on point cloud. To be able to retrieve the PyVista object associated to the field results
+# and post process them, you need to have the geometry embedded with the TBROM when exporting it to Twin Builder.
+field_data = twin_model.get_tbrom_output_field(romname)
+plotter = pv.Plotter()
+plotter.set_background("white")
+plotter.add_axes()
+plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
+plotter.show()
+
+###############################################################################
+# .. image:: /_static/TBROM_pointcloud_3d_viz.png
+#   :width: 400pt
+#   :align: center
