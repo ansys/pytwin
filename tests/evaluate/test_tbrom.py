@@ -121,14 +121,8 @@ INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_sn
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
-
-    norm = []
-    for i in range(0, int(len(field) / 3)):
-        x = field[i * 3]
-        y = field[i * 3 + 1]
-        z = field[i * 3 + 2]
-        norm.append(math.sqrt(x * x + y * y + z * z))
-    return norm
+    vec = field.reshape((-1, 3))
+    return np.sqrt((vec * vec).sum(axis=1))
 
 
 class TestTbRom:
@@ -770,9 +764,10 @@ class TestTbRom:
 
         # Generate snapshot in memory
         snp_vec_in_memory = twinmodel.generate_snapshot(romname, False)
-        assert len(snp_vec_in_memory) == len(snp_vec_on_disk)
-        assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0])
-        assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1])
+        # snapshot in memory is ndarray with (number of points, field dimensionality)
+        assert len(snp_vec_in_memory.reshape(-1,)) == len(snp_vec_on_disk)
+        assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0, 0])
+        assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1, -1])
 
         # Generate snapshot gives same results as twin_model probe
         max_snp = max(norm_vector_field(snp_vec_in_memory))
@@ -782,9 +777,9 @@ class TestTbRom:
         # TODO LUCAS - Use another twin model with named selection smaller than whole model
         ns = twinmodel.get_named_selections(romname)
         snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert len(snp_vec_ns) == 313266
-        assert np.isclose(snp_vec_ns[0], 1.7188266861184398e-05)
-        assert np.isclose(snp_vec_ns[-1], -1.3100502753567515e-05)
+        assert len(snp_vec_ns.reshape(-1,)) == 313266
+        assert np.isclose(snp_vec_ns[0, 0], 1.7188266861184398e-05)
+        assert np.isclose(snp_vec_ns[-1, -1], -1.3100502753567515e-05)
 
     def test_generate_snapshot_on_named_selection_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM12
@@ -795,11 +790,11 @@ class TestTbRom:
         # Generate snapshot on named selection
         ns = twinmodel.get_named_selections(romname)
         snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert len(snp_vec_ns) == 78594
+        assert len(snp_vec_ns.reshape(-1,)) == 78594
         if sys.platform != "linux":
             # TODO - Fix BUG881733
-            assert np.isclose(snp_vec_ns[0], 1.7188266859172047e-05)
-            assert np.isclose(snp_vec_ns[-1], -1.5316792773713332e-05)
+            assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
+            assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
 
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
@@ -881,9 +876,9 @@ class TestTbRom:
 
         # Generate points in memory
         points_vec2 = twinmodel.generate_points(romname, False)
-        assert len(points_vec) == len(points_vec2)
-        assert np.isclose(points_vec[0], points_vec2[0])
-        assert np.isclose(points_vec[-1], points_vec2[-1])
+        assert len(points_vec) == len(points_vec2.reshape(-1,))
+        assert np.isclose(points_vec[0], points_vec2[0, 0])
+        assert np.isclose(points_vec[-1], points_vec2[-1, -1])
 
         # Generate points on named selection on disk
         ns = twinmodel.get_named_selections(romname)
@@ -895,9 +890,9 @@ class TestTbRom:
 
         # Generate points on named selection in memory
         points_vec_ns2 = twinmodel.generate_points(romname, False, named_selection=ns[0])
-        assert len(points_vec_ns) == len(points_vec_ns2)
-        assert np.isclose(points_vec_ns[0], points_vec_ns2[0])
-        assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1])
+        assert len(points_vec_ns) == len(points_vec_ns2.reshape(-1,))
+        assert np.isclose(points_vec_ns[0], points_vec_ns2[0, 0])
+        assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1, -1])
 
     def test_generate_points_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9

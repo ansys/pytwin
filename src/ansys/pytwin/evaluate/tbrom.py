@@ -237,7 +237,6 @@ class TbRom:
                 self._meshdata[self.field_output_name] = (
                     self._meshdata[self.field_output_name] + mc[i] * self._meshdata["mode" + str(i + 1)]
                 )
-
         self._pointsdata.set_active_scalars(self.field_output_name)
         if self._meshdata is not None:
             self._meshdata.set_active_scalars(self.field_output_name)
@@ -268,7 +267,8 @@ class TbRom:
         for i in range(0, len(basis)):
             self._pointsdata["mode" + str(i + 1)] = basis[i].reshape(-1, self.field_output_dim)
         # initialize output field data
-        self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
+        if self._hasoutmcs:
+            self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
 
     @staticmethod
     def _read_basis(filepath):
