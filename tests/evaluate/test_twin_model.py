@@ -365,10 +365,19 @@ class TestTwinModel:
         # Verify a subfolder is created each time a new twin model is instantiated
         m_count = 5
         wd = get_pytwin_working_dir()
-        ref_count = len(os.listdir(wd))
-        for m in range(m_count):
-            model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
-            time.sleep(1)
+        ref_count = len(os.listdir(wd)) + 1 # +1 for the .temp folder not considered yet
+        model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        time.sleep(1)
+        model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        time.sleep(1)
+        model3 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        time.sleep(1)
+        model4 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        time.sleep(1)
+        model5 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        time.sleep(1)
+        # for m in range(m_count): # with for loop, model will be garbage collected at end of iteration and its
+        # folder deleted model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH) time.sleep(1)
         wd = get_pytwin_working_dir()
         assert len(os.listdir(wd)) == ref_count + m_count
 

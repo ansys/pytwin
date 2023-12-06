@@ -1,9 +1,10 @@
-import atexit
 import json
 import os
 from pathlib import Path
+import shutil
 import time
 from typing import Union
+import weakref
 
 import numpy as np
 import pandas as pd
@@ -73,26 +74,41 @@ class TwinModel(Model):
         self._twin_runtime = None
         self._tbrom_info = None
         self._tbroms = None
-
         if self._check_model_filepath_is_valid(model_filepath):
             self._model_filepath = model_filepath
         self._instantiate_twin_model()
+        self._finalizer = weakref.finalize(self, self._cleanup, self._twin_runtime, self.model_dir)
 
-        # We are registering the __del__ method to atexit module at the end of the TwinModel instantiation
-        # in order to avoid it to be called after the settings.cleanup_temp_pytwin_working_directory method
-        # that is deleting PyTwin temporary working directories.
-        # Otherwise, an error could be raised at python process exit because the TwinModel log file won't be freed
-        # and the settings.cleanup_temp_pytwin_working_directory will try to delete it.
-        # This happens when a TwinModel is instantiated into a script file, like in the examples.
-        atexit.register(self.__del__)
+        #def handler(signum, frame):
+        #    print('here signal')
+        #    self.close('signal')
 
-    def __del__(self):
+        #signal.signal(signal.SIGTERM, handler)
+        #signal.signal(signal.SIGINT, handler)
+
+    @staticmethod
+    def _cleanup(twin_runtime, model_dir):
         """
-        Close twin runtime when object is garbage collected.
+        Close twin runtime and remove model temporary folder.
         """
-        if self._twin_runtime is not None:
-            if self._twin_runtime.is_model_opened:
-                self._twin_runtime.twin_close()
+        if twin_runtime is not None:
+            if twin_runtime.is_model_opened:
+                twin_runtime.twin_close()
+            # Delete model directory
+            if os.path.exists(model_dir):
+                shutil.rmtree(model_dir)
+
+    def close(self):
+        """
+        Cleanup object when user asks to close it.
+        """
+        self._cleanup(self._twin_runtime, self.model_dir)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     def _check_model_filepath_is_valid(self, model_filepath):
         """
