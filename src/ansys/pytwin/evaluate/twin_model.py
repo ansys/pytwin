@@ -79,13 +79,6 @@ class TwinModel(Model):
         self._instantiate_twin_model()
         self._finalizer = weakref.finalize(self, self._cleanup, self._twin_runtime, self.model_dir)
 
-        #def handler(signum, frame):
-        #    print('here signal')
-        #    self.close('signal')
-
-        #signal.signal(signal.SIGTERM, handler)
-        #signal.signal(signal.SIGINT, handler)
-
     @staticmethod
     def _cleanup(twin_runtime, model_dir):
         """
