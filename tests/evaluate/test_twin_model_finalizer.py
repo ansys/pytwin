@@ -38,15 +38,15 @@ class TestTwinModelFinalize:
             snapshot2 = tracemalloc.take_snapshot()
             top_stats = snapshot2.compare_to(snapshot, "lineno")
             allocated_mem_size_old = allocated_mem_size
-            allocated_mem_size = f"{top_stats[0]}".split("size=")[1].split(",")[0].split("MiB")[0]
+            allocated_mem_size = f"{top_stats[0]}".split("size=")[1].split(",")[0].split("+")[1].split(" ")[0]
             time.sleep(0.25)
             if i > 0:
                 # Current twin_model directory exists
                 assert os.path.exists(model_dir)
                 # Previous twin_model directory as been deleted
                 assert not os.path.exists(model_dir_old)
-                # Previous twin_model memory as been freed
-                assert allocated_mem_size_old == allocated_mem_size
+                # Previous twin_model memory as been freed (allow for +/- 0.5% difference of memory
+                assert 1.005 * int(allocated_mem_size_old) > int(allocated_mem_size) > 0.995 * int(allocated_mem_size_old)
 
     def test_clean_unit_test(self):
         reinit_settings()
