@@ -472,7 +472,9 @@ def cleanup_temp_pytwin_working_directory():
     try:
         shutil.rmtree(PYTWIN_SETTINGS.TEMP_WORKING_DIRECTORY_PATH)
     except BaseException as e:
-        msg = "Something went wrong while trying to cleanup pytwin temporary directory! You might have to clean it up " \
-              "manually. "
+        msg = (
+            "Something went wrong while trying to cleanup pytwin temporary directory! You might have to clean it up "
+            "manually. "
+        )
         msg += f" Error message:\n{str(e)}"
         print(msg)
