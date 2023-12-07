@@ -365,12 +365,15 @@ class TestTwinModel:
         # Verify a subfolder is created each time a new twin model is instantiated
         m_count = 5
         wd = get_pytwin_working_dir()
-        ref_count = len(os.listdir(wd))
+        ref_dir = os.listdir(wd)
+        cur_dir = os.listdir(wd)
         for m in range(m_count):
             model = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
             time.sleep(1)
-        wd = get_pytwin_working_dir()
-        assert len(os.listdir(wd)) == ref_count + m_count
+            for x in os.listdir(wd):
+                if x not in cur_dir:
+                    cur_dir.append(x)
+        assert len(cur_dir) == len(ref_dir) + m_count
 
     def test_model_dir_migration_after_modifying_wd_dir(self):
         # Init unit test
