@@ -46,7 +46,9 @@ class TestTwinModelFinalize:
                 # Previous twin_model directory as been deleted
                 assert not os.path.exists(model_dir_old)
                 # Previous twin_model memory as been freed (allow for +/- 0.5% difference of memory
-                assert 1.005 * int(allocated_mem_size_old) > int(allocated_mem_size) > 0.995 * int(allocated_mem_size_old)
+                assert (
+                    1.005 * int(allocated_mem_size_old) > int(allocated_mem_size) > 0.995 * int(allocated_mem_size_old)
+                )
 
     def test_clean_unit_test(self):
         reinit_settings()
