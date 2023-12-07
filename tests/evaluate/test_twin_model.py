@@ -365,7 +365,7 @@ class TestTwinModel:
         # Verify a subfolder is created each time a new twin model is instantiated
         m_count = 5
         wd = get_pytwin_working_dir()
-        ref_count = len(os.listdir(wd)) + 1 # +1 for the .temp folder not considered yet
+        ref_count = len(os.listdir(wd)) + 1  # +1 for the .temp folder not considered yet
         model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
         time.sleep(1)
         model2 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
