@@ -1,0 +1,527 @@
+Missing: //{{NO_DEPENDENCIES}}
+Missing: // Microsoft Visual C++ generated include file.
+Missing: // Used by c:\views\core_v2\nextgen\ansoftcore\lib\messagelib\dlls\security\en_US_Security\en_US_Security.rc
+Missing: //
+Missing: 
+Missing: // Next default values for new objects
+Missing: // 
+Missing: #ifdef APSTUDIO_INVOKED
+Missing: #ifndef APSTUDIO_READONLY_SYMBOLS
+Missing: #endif
+Missing: #endif
+<message id=1 icode=IDS_INVALID_DLL>
+    <en-us>"Please contact technical support and report installation error code %1."</en-us>
+</message>
+<message id=2 icode=IDS_FHEARTBEAT_CANTCONNECT>
+    <en-us>"Cannot connect to license server"</en-us>
+</message>
+<message id=3 icode=IDS_FHEARTBEAT_EXPIRED>
+    <en-us>"FLEXlm key data has expired"</en-us>
+</message>
+<message id=4 icode=IDS_BAD_JOB>
+    <en-us>"Bad security job initialized. "</en-us>
+</message>
+<message id=5 icode=IDS_NO_PRIVILEGE>
+    <en-us>"You don't have privilege to run this program. Please login as a member of administrators then try again."</en-us>
+</message>
+<message id=6 icode=IDS_INVALID_TIMESTAMP>
+    <en-us>"Invalid time found. You need utility DATEFIX to fix it."</en-us>
+</message>
+<message id=7 icode=IDS_INVALID_SYSTIME>
+    <en-us>"It appears that your system date has been set back since the last time you used this product. Please verify that your system date and time are correct. If your system date and time are correct, contact technical support for assistance."</en-us>
+</message>
+<message id=8 icode=IDS_FCHECKOUT_ONLYONEBORROWED>
+    <en-us>"Failed to check out license '%1'.\nNumber of borrowable licenses already reached."</en-us>
+</message>
+<message id=9 icode=IDS_FAILED_GETTIMER>
+    <en-us>"Failed to set security timer."</en-us>
+</message>
+<message id=10 icode=IDS_FAILED_CHECKOUT>
+    <en-us>"Failed to check out license %1\n%2"</en-us>
+</message>
+<message id=11 icode=IDS_FCHECKOUT_UNKNOWN>
+    <en-us>"Failed to check out license %2\nUnknown error (FLEXlm Error %1)"</en-us>
+</message>
+<message id=12 icode=IDS_ENGINE_MISSED_HEARTBEAT>
+    <en-us>"The %1 engine is having trouble communicating with the license server."</en-us>
+</message>
+<message id=13 icode=IDS_ENGINE_LOST_HEARTBEAT>
+    <en-us>"The %1 engine cannot communicate with the license server."</en-us>
+</message>
+<message id=14 icode=IDS_FCHECKOUT_VENDORSTRING>
+    <en-us>"Failed to check out '%1' license. The license file is corrupt."</en-us>
+</message>
+<message id=15 icode=IDS_FCHECKOUT_UNRECOVERABLE>
+    <en-us>"Failed to check out license '%1'.\nUnrecoverable error."</en-us>
+</message>
+<message id=16 icode=IDS_FCHECKOUT_ANINTERNALBORROWERROR>
+    <en-us>"Failed to check out license '%1'.\nInternal error %2 attempting to use borrowed license."</en-us>
+</message>
+<message id=17 icode=IDS_FCHECKOUT_BORROWINGDISALLOWED>
+    <en-us>"Failed to check out license '%1'.\nBorrowing is disallowed on this operating system."</en-us>
+</message>
+<message id=112 icode=IDS_FCHECKOUT_NOCONFFILE>
+    <en-us>"Failed to check out license '%2'.\nCannot find license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=113 icode=IDS_FCHECKOUT_BADFILE>
+    <en-us>"Failed to check out license '%2'.\nInvalid license file syntax (FLEXlm Error %1)"</en-us>
+</message>
+<message id=114 icode=IDS_FCHECKOUT_NOSERVER>
+    <en-us>"Failed to check out license '%2'.\nNo server for this license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=115 icode=IDS_FCHECKOUT_MAXUSERS>
+    <en-us>"Failed to check out license '%2'.\nLicensed number of users already reached (FLEXlm Error %1)"</en-us>
+</message>
+<message id=116 icode=IDS_FCHECKOUT_NOFEATURE>
+    <en-us>"Failed to check out license '%2'.\nNo such license exists (FLEXlm Error %1)"</en-us>
+</message>
+<message id=117 icode=IDS_FCHECKOUT_NOSERVICE>
+    <en-us>"Failed to check out license '%2'.\nNo port number in license file and license service does not exist (FLEXlm Error %1)"</en-us>
+</message>
+<message id=118 icode=IDS_FCHECKOUT_NOSOCKET>
+    <en-us>"Failed to check out license '%2'.\nNo socket connection to license manager server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=119 icode=IDS_FCHECKOUT_BADCODE>
+    <en-us>"Failed to check out license '%2'.\nInvalid (inconsistent) license key (FLEXlm Error %1)"</en-us>
+</message>
+<message id=120 icode=IDS_FCHECKOUT_NOTTHISHOST>
+    <en-us>"Failed to check out license '%2'.\nThe host ID specified in the license file does not match the hostid on which the application is running. If you are using a local hardware key, it may not be properly connected. If you are using a network license, check with your system administrator. (FLEXlm Error %1)"</en-us>
+</message>
+<message id=121 icode=IDS_FCHECKOUT_LONGGONE>
+    <en-us>"Failed to check out license '%2'.\nLicense has expired (FLEXlm Error %1)"</en-us>
+</message>
+<message id=122 icode=IDS_FCHECKOUT_BADDATE>
+    <en-us>"Failed to check out license '%2'.\nInvalid date format in license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=123 icode=IDS_FCHECKOUT_BADCOMM>
+    <en-us>"Failed to check out license '%2'.\nInvalid returned data from license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=124 icode=IDS_FCHECKOUT_NO_SERVER_IN_FILE>
+    <en-us>"Failed to check out license '%2'.\nNo SERVER lines in license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=125 icode=IDS_FCHECKOUT_BADHOST>
+    <en-us>"Failed to check out license '%2'.\nCannot find SERVER hostname in network database (FLEXlm Error %1)"</en-us>
+</message>
+<message id=126 icode=IDS_FCHECKOUT_CANTCONNECT>
+    <en-us>"Failed to check out license '%2'.\nCannot connect to license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=127 icode=IDS_FCHECKOUT_CANTREAD>
+    <en-us>"Failed to check out license '%2'.\nCannot read data from license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=128 icode=IDS_FCHECKOUT_CANTWRITE>
+    <en-us>"Failed to check out license '%2'.\nCannot write data to license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=129 icode=IDS_FCHECKOUT_NOSERVSUPP>
+    <en-us>"Failed to check out license '%2'.\nLicense server does not support this license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=130 icode=IDS_FCHECKOUT_SELECTERR>
+    <en-us>"Failed to check out license '%2'.\nError in select system call (FLEXlm Error %1)"</en-us>
+</message>
+<message id=131 icode=IDS_FCHECKOUT_SERVBUSY>
+    <en-us>"Failed to check out license '%2'.\nLicense server busy (no majority) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=132 icode=IDS_FCHECKOUT_OLDVER>
+    <en-us>"Failed to check out license '%2'.\nLicense file does not support this version (FLEXlm Error %1)"</en-us>
+</message>
+<message id=133 icode=IDS_FCHECKOUT_CHECKINBAD>
+    <en-us>"Failed to check out license '%2'.\nLicense checkin failure detected on license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=134 icode=IDS_FCHECKOUT_BUSYNEWSERV>
+    <en-us>"Failed to check out license '%2'.\nLicense server temporarily busy (new server connecting) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=135 icode=IDS_FCHECKOUT_USERSQUEUED>
+    <en-us>"Failed to check out license '%2'.\nUsers are queued for this license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=136 icode=IDS_FCHECKOUT_SERVLONGGONE>
+    <en-us>"Failed to check out license '%2'.\nLicense server does not support this version of this license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=137 icode=IDS_FCHECKOUT_TOOMANY>
+    <en-us>"Failed to check out license '%2'.\nRequest for more licenses than this license supports (FLEXlm Error %1)"</en-us>
+</message>
+<message id=138 icode=IDS_FCHECKOUT_CANTREADKMEM>
+    <en-us>"Failed to check out license '%2'.\nCannot read /dev/kmem (FLEXlm Error %1)"</en-us>
+</message>
+<message id=139 icode=IDS_FCHECKOUT_CANTREADVMUNIX>
+    <en-us>"Failed to check out license '%2'.\nCannot read /vmunix (FLEXlm Error %1)"</en-us>
+</message>
+<message id=140 icode=IDS_FCHECKOUT_CANTFINDETHER>
+    <en-us>"Failed to check out license '%2'.\nCannot find ethernet device (FLEXlm Error %1)"</en-us>
+</message>
+<message id=141 icode=IDS_FCHECKOUT_NOREADLIC>
+    <en-us>"Failed to check out license '%2'.\nCannot read license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=142 icode=IDS_FCHECKOUT_TOOEARLY>
+    <en-us>"Failed to check out license '%2'.\nLicense start date is in the future (FLEXlm Error %1)"</en-us>
+</message>
+<message id=143 icode=IDS_FCHECKOUT_NOSUCHATTR>
+    <en-us>"Failed to check out license '%2'.\nNo such license attribute (FLEXlm Error %1)"</en-us>
+</message>
+<message id=144 icode=IDS_FCHECKOUT_BADHANDSHAKE>
+    <en-us>"Failed to check out license '%2'.\nBad encryption handshake with vendor daemon (FLEXlm Error %1)"</en-us>
+</message>
+<message id=145 icode=IDS_FCHECKOUT_CLOCKBAD>
+    <en-us>"Failed to check out license '%2'.\nClock difference too large between client and server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=146 icode=IDS_FCHECKOUT_FEATQUEUE>
+    <en-us>"Failed to check out license '%2'.\nIn the queue for this license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=147 icode=IDS_FCHECKOUT_FEATCORRUPT>
+    <en-us>"Failed to check out license '%2'.\nLicense database corrupted in daemon (FLEXlm Error %1)"</en-us>
+</message>
+<message id=148 icode=IDS_FCHECKOUT_BADFEATPARAM>
+    <en-us>"Failed to check out license '%2'.\nDuplicate selection mismatch for this license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=149 icode=IDS_FCHECKOUT_FEATEXCLUDE>
+    <en-us>"Failed to check out license '%2'.\nUser/host on EXCLUDE list for license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=150 icode=IDS_FCHECKOUT_FEATNOTINCLUDE>
+    <en-us>"Failed to check out license '%2'.\nUser/host not on INCLUDE list for license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=151 icode=IDS_FCHECKOUT_CANTMALLOC>
+    <en-us>"Failed to check out license '%2'.\nCannot allocate dynamic memory (FLEXlm Error %1)"</en-us>
+</message>
+<message id=152 icode=IDS_FCHECKOUT_NEVERCHECKOUT>
+    <en-us>"Failed to check out license '%2'.\nLicense was never checked out (FLEXlm Error %1)"</en-us>
+</message>
+<message id=153 icode=IDS_FCHECKOUT_BADPARAM>
+    <en-us>"Failed to check out license '%2'.\nInvalid parameter (FLEXlm Error %1)"</en-us>
+</message>
+<message id=154 icode=IDS_FCHECKOUT_NOKEYDATA>
+    <en-us>"Failed to check out license '%2'.\nNo key data supplied in call to lc_new_job() or lc_init() (FLEXlm Error %1)"</en-us>
+</message>
+<message id=155 icode=IDS_FCHECKOUT_BADKEYDATA>
+    <en-us>"Failed to check out license '%2'.\nInvalid key data supplied (FLEXlm Error %1)"</en-us>
+</message>
+<message id=156 icode=IDS_FCHECKOUT_FUNCNOTAVAIL>
+    <en-us>"Failed to check out license '%2'.\nFunction not available in this version (FLEXlm Error %1)"</en-us>
+</message>
+<message id=157 icode=IDS_FCHECKOUT_DEMOKIT>
+    <en-us>"Failed to check out license '%2'.\nLicense software is evaluation version (FLEXlm Error %1)"</en-us>
+</message>
+<message id=158 icode=IDS_FCHECKOUT_NOCLOCKCHECK>
+    <en-us>"Failed to check out license '%2'.\nClock setting check not available in daemon (FLEXlm Error %1)"</en-us>
+</message>
+<message id=159 icode=IDS_FCHECKOUT_BADPLATFORM>
+    <en-us>"Failed to check out license '%2'.\nLicense platform is not enabled (FLEXlm Error %1)"</en-us>
+</message>
+<message id=160 icode=IDS_FCHECKOUT_DATE_TOOBIG>
+    <en-us>"Failed to check out license '%2'.\nDate invalid for binary format (FLEXlm Error %1)"</en-us>
+</message>
+<message id=161 icode=IDS_FCHECKOUT_EXPIREDKEYS>
+    <en-us>"Failed to check out license '%2'.\nKey data has expired (FLEXlm Error %1)"</en-us>
+</message>
+<message id=162 icode=IDS_FCHECKOUT_NOFLEXLMINIT>
+    <en-us>"Failed to check out license '%2'.\nLicense software not initialized (FLEXlm Error %1)"</en-us>
+</message>
+<message id=163 icode=IDS_FCHECKOUT_NOSERVRESP>
+    <en-us>"Failed to check out license '%2'.\nVendor daemon did not respond within timeout interval (FLEXlm Error %1)"</en-us>
+</message>
+<message id=164 icode=IDS_FCHECKOUT_CHECKOUTFILTERED>
+    <en-us>"Failed to check out license '%2'.\nCheck out request rejected by vendor-defined check out filter (FLEXlm Error %1)"</en-us>
+</message>
+<message id=165 icode=IDS_FCHECKOUT_NOFEATSET>
+    <en-us>"Failed to check out license '%2'.\nNo FEATURESET line in license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=166 icode=IDS_FCHECKOUT_BADFEATSET>
+    <en-us>"Failed to check out license '%2'.\nIncorrect FEATURESET line in license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=167 icode=IDS_FCHECKOUT_CANTCOMPUTEFEATSET>
+    <en-us>"Failed to check out license '%2'.\nCannot compute FEATURESET data from license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=168 icode=IDS_FCHECKOUT_SOCKETFAIL>
+    <en-us>"Failed to check out license '%2'.\nsocket() call failed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=169 icode=IDS_FCHECKOUT_SETSOCKFAIL>
+    <en-us>"Failed to check out license '%2'.\nsetsockopt() call failed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=170 icode=IDS_FCHECKOUT_BADCHECKSUM>
+    <en-us>"Failed to check out license '%2'.\nMessage checksum failure (FLEXlm Error %1)"</en-us>
+</message>
+<message id=171 icode=IDS_FCHECKOUT_SERVBADCHECKSUM>
+    <en-us>"Failed to check out license '%2'.\nServer message checksum failure (FLEXlm Error %1)"</en-us>
+</message>
+<message id=172 icode=IDS_FCHECKOUT_SERVNOREADLIC>
+    <en-us>"Failed to check out license '%2'.\nCannot read license file data from server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=173 icode=IDS_FCHECKOUT_NONETWORK>
+    <en-us>"Failed to check out license '%2'.\nNetwork software (tcp/ip) not available (FLEXlm Error %1)"</en-us>
+</message>
+<message id=174 icode=IDS_FCHECKOUT_NOTLICADMIN>
+    <en-us>"Failed to check out license '%2'.\nYou are not a license administrator (FLEXlm Error %1)"</en-us>
+</message>
+<message id=175 icode=IDS_FCHECKOUT_REMOVETOOSOON>
+    <en-us>"Failed to check out license '%2'.\nlmremove request before the minimum lmremove interval (FLEXlm Error %1)"</en-us>
+</message>
+<message id=176 icode=IDS_FCHECKOUT_BADVENDORDATA>
+    <en-us>"Failed to check out license '%2'.\nUnknown VENDORCODE struct type passed to lm_init() call (FLEXlm Error %1)"</en-us>
+</message>
+<message id=177 icode=IDS_FCHECKOUT_LIBRARYMISMATCH>
+    <en-us>"Failed to check out license '%2'.\nInclude file/library version mismatch (FLEXlm Error %1)"</en-us>
+</message>
+<message id=178 icode=IDS_FCHECKOUT_NONETOBORROW>
+    <en-us>"Failed to check out license '%2'.\nNo licenses available to borrow (FLEXlm Error %1)"</en-us>
+</message>
+<message id=179 icode=IDS_FCHECKOUT_NOBORROWSUPP>
+    <en-us>"Failed to check out license '%2'.\nLicense BORROW support not enabled. (FLEXlm Error %1)"</en-us>
+</message>
+<message id=180 icode=IDS_FCHECKOUT_NOTONSERVER>
+    <en-us>"Failed to check out license '%2'.\nFLOAT_OK cannot run standalone on license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=181 icode=IDS_FCHECKOUT_BORROWLOCKED>
+    <en-us>"Failed to check out license '%2'.\nMeter already being updated, locked (FLEXlm Error %1)"</en-us>
+</message>
+<message id=182 icode=IDS_FCHECKOUT_BAD_TZ>
+    <en-us>"Failed to check out license '%2'.\nInvalid TZ environment variable (FLEXlm Error %1)"</en-us>
+</message>
+<message id=183 icode=IDS_FCHECKOUT_OLDVENDORDATA>
+    <en-us>"Failed to check out license '%2'.\nOld VENDORCODE (3-word) struct type passed to lm_init() call (FLEXlm Error %1)"</en-us>
+</message>
+<message id=184 icode=IDS_FCHECKOUT_LOCALFILTER>
+    <en-us>"Failed to check out license '%2'.\nLocal check out filter rejected request (FLEXlm Error %1)"</en-us>
+</message>
+<message id=185 icode=IDS_FCHECKOUT_ENDPATH>
+    <en-us>"Failed to check out license '%2'.\nAttempt to read beyond end of license file path (FLEXlm Error %1)"</en-us>
+</message>
+<message id=186 icode=IDS_FCHECKOUT_VMS_SETIMR_FAILED>
+    <en-us>"Failed to check out license '%2'.\nSYS$SETIMR call failed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=187 icode=IDS_FCHECKOUT_INTERNAL_ERROR>
+    <en-us>"Failed to check out license '%2'.\nInternal error (FLEXlm Error %1)"</en-us>
+</message>
+<message id=188 icode=IDS_FCHECKOUT_BAD_VERSION>
+    <en-us>"Failed to check out license '%2'.\nBad version number - must be floating point number with no letters (FLEXlm Error %1)"</en-us>
+</message>
+<message id=189 icode=IDS_FCHECKOUT_NOADMINAPI>
+    <en-us>"Failed to check out license '%2'.\nFLEXadmin API functions not available (FLEXlm Error %1)"</en-us>
+</message>
+<message id=190 icode=IDS_FCHECKOUT_NOFILEOPS>
+    <en-us>"Failed to check out license '%2'.\nInternal error NOFILEOPS (FLEXlm Error %1)"</en-us>
+</message>
+<message id=191 icode=IDS_FCHECKOUT_NODATAFILE>
+    <en-us>"Failed to check out license '%2'.\nInternal error NODATAFILE (FLEXlm Error %1)"</en-us>
+</message>
+<message id=192 icode=IDS_FCHECKOUT_NOFILEVSEND>
+    <en-us>"Failed to check out license '%2'.\nInternal error NOFILEVSEND (FLEXlm Error %1)"</en-us>
+</message>
+<message id=193 icode=IDS_FCHECKOUT_BADPKG>
+    <en-us>"Failed to check out license '%2'.\nInvalid PACKAGE line in license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=194 icode=IDS_FCHECKOUT_SERVOLDVER>
+    <en-us>"The FLEXlm version %1 of the server is not supported by this product. This product requires FLEXnet Publisher %2 or higher."</en-us>
+</message>
+<message id=195 icode=IDS_FCHECKOUT_USERBASED>
+    <en-us>"Failed to check out license '%2'.\nUSER_BASED license has no specified users -- see license server log (FLEXlm Error %1)"</en-us>
+</message>
+<message id=196 icode=IDS_FCHECKOUT_NOSERVCAP>
+    <en-us>"Failed to check out license '%2'.\nLicense server doesn't support this request (FLEXlm Error %1)"</en-us>
+</message>
+<message id=197 icode=IDS_FCHECKOUT_OBJECTUSED>
+    <en-us>"Failed to check out license '%2'.\nLicense object already in use (FLEXlm Error %1)"</en-us>
+</message>
+<message id=198 icode=IDS_FCHECKOUT_MAXLIMIT>
+    <en-us>"Failed to check out license '%2'.\nCheck out exceeds MAX specified in options file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=199 icode=IDS_FCHECKOUT_BADSYSDATE>
+    <en-us>"Failed to check out license '%2'.\nSystem clock has been set back (FLEXlm Error %1)"</en-us>
+</message>
+<message id=200 icode=IDS_FCHECKOUT_PLATNOTLIC>
+    <en-us>"Failed to check out license '%2'.\nThis platform not authorized by license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=201 icode=IDS_FCHECKOUT_FUTURE_FILE>
+    <en-us>"Failed to check out license '%2'.\nFuture license file format or misspelling in license file (FLEXlm Error %1)"</en-us>
+</message>
+<message id=202 icode=IDS_FCHECKOUT_DEFAULT_SEEDS>
+    <en-us>"Failed to check out license '%2'.\nEncryption seeds are non-unique (FLEXlm Error %1)"</en-us>
+</message>
+<message id=203 icode=IDS_FCHECKOUT_SERVER_REMOVED>
+    <en-us>"Failed to check out license '%2'.\nLicense removed during lmreread, or wrong SERVER line hostid (FLEXlm Error %1)"</en-us>
+</message>
+<message id=204 icode=IDS_FCHECKOUT_POOL>
+    <en-us>"Failed to check out license '%2'.\nThis license is available in a different license pool (FLEXlm Error %1)"</en-us>
+</message>
+<message id=205 icode=IDS_FCHECKOUT_LGEN_VER>
+    <en-us>"Failed to check out license '%2'.\nAttempt to generate license with incompatible attributes (FLEXlm Error %1)"</en-us>
+</message>
+<message id=206 icode=IDS_FCHECKOUT_NOT_THIS_HOST>
+    <en-us>"Failed to check out license '%2'.\nNetwork connect to THIS_HOST failed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=207 icode=IDS_FCHECKOUT_HOSTDOWN>
+    <en-us>"Failed to check out license '%2'.\nLicense server machine is down or not responding (FLEXlm Error %1)"</en-us>
+</message>
+<message id=208 icode=IDS_FCHECKOUT_VENDOR_DOWN>
+    <en-us>"Failed to check out license '%2'.\nThe desired vendor daemon is down (FLEXlm Error %1)"</en-us>
+</message>
+<message id=209 icode=IDS_FCHECKOUT_CANT_DECIMAL>
+    <en-us>"Failed to check out license '%2'.\nThis FEATURE line cannot be converted to decimal format (FLEXlm Error %1)"</en-us>
+</message>
+<message id=210 icode=IDS_FCHECKOUT_BADDECFILE>
+    <en-us>"Failed to check out license '%2'.\nThe decimal format license is typed incorrectly (FLEXlm Error %1)"</en-us>
+</message>
+<message id=211 icode=IDS_FCHECKOUT_REMOVE_LINGER>
+    <en-us>"Failed to check out license '%2'.\nCannot remove a linger license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=212 icode=IDS_FCHECKOUT_RESVFOROTHERS>
+    <en-us>"Failed to check out license '%2'.\nAll licenses are reserved for others (FLEXlm Error %1)"</en-us>
+</message>
+<message id=213 icode=IDS_FCHECKOUT_BORROW_ERROR>
+    <en-us>"Failed to check out license '%2'.\nA FLEXid borrow error occurred (FLEXlm Error %1)"</en-us>
+</message>
+<message id=214 icode=IDS_FCHECKOUT_TSOK_ERR>
+    <en-us>"Failed to check out license '%2'.\nTerminal server remote client not allowed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=215 icode=IDS_FCHECKOUT_BORROW_TOOLONG>
+    <en-us>"Failed to check out license '%2'.\nCannot borrow license for that long a period (FLEXlm Error %1)"</en-us>
+</message>
+<message id=216 icode=IDS_FCHECKOUT_UNBORROWED_ALREADY>
+    <en-us>"Failed to check out license '%2'.\nLicense already returned to server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=217 icode=IDS_FCHECKOUT_SERVER_MAXED_OUT>
+    <en-us>"Failed to check out license '%2'.\nLicense server out of network connections (FLEXlm Error %1)"</en-us>
+</message>
+<message id=218 icode=IDS_FCHECKOUT_NOBORROWCOMP>
+    <en-us>"Failed to check out license '%2'.\nCannot borrow a PACKAGE component (FLEXlm Error %1)"</en-us>
+</message>
+<message id=221 icode=IDS_FCHECKOUT_NODONGLE>
+    <en-us>"Failed to check out license '%2'.\nCannot read dongle\nCheck dongle or dongle driver (FLEXlm Error %1)"</en-us>
+</message>
+<message id=222 icode=IDS_FCHECKOUT_NORESLINK>
+    <en-us>"Failed to check out license '%2'.\nlmgr.res, Windows Resource file, not linked (FLEXlm Error %1)"</en-us>
+</message>
+<message id=223 icode=IDS_FCHECKOUT_NODONGLEDRIVER>
+    <en-us>"Failed to check out license '%2'.\nMissing Dongle Driver (FLEXlm Error %1)"</en-us>
+</message>
+<message id=224 icode=IDS_FCHECKOUT_FLEXLOCK2CKOUT>
+    <en-us>"Failed to check out license '%2'.\n2 FLEXlock checkouts attempted (FLEXlm Error %1)"</en-us>
+</message>
+<message id=225 icode=IDS_FCHECKOUT_SIGN_REQ>
+    <en-us>"Failed to check out license '%2'.\nSIGN= attribute required, but missing from license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=226 icode=IDS_FCHECKOUT_PUBKEY_ERR>
+    <en-us>"Failed to check out license '%2'.\nError in Public Key package (FLEXlm Error %1)"</en-us>
+</message>
+<message id=227 icode=IDS_FCHECKOUT_NOTRLSUPPORT>
+    <en-us>"Failed to check out license '%2'.\nTRL not supported for this platform (FLEXlm Error %1)"</en-us>
+</message>
+<message id=228 icode=IDS_FCHECKOUT_BORROW_LINGER_ERR>
+    <en-us>"Failed to check out license '%2'.\nBORROW failed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=229 icode=IDS_FCHECKOUT_BORROW_EXPIRED>
+    <en-us>"Failed to check out license '%2'.\nBORROW period expired (FLEXlm Error %1)"</en-us>
+</message>
+<message id=230 icode=IDS_FCHECKOUT_MUST_BE_LOCAL>
+    <en-us>"Failed to check out license '%2'.\nlmdown and lmreread must be run on the license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=231 icode=IDS_FCHECKOUT_BORROW_DOWN>
+    <en-us>"Failed to check out license '%2'.\nCannot shut down the server when licenses are borrowed (FLEXlm Error %1)"</en-us>
+</message>
+<message id=232 icode=IDS_FCHECKOUT_FLOATOK_ONEHOSTID>
+    <en-us>"Failed to check out license '%2'.\nFLOAT_OK requires exactly one dongle hostid (FLEXlm Error %1)"</en-us>
+</message>
+<message id=233 icode=IDS_FCHECKOUT_BORROW_DELETE_ERR>
+    <en-us>"Failed to check out license '%2'.\nUnable to delete local borrow info (FLEXlm Error %1)"</en-us>
+</message>
+<message id=234 icode=IDS_FCHECKOUT_BORROW_RETURN_EARLY_ERR>
+    <en-us>"Failed to check out license '%2'.\nReturning a borrowed license early is not supported (FLEXlm Error %1)"</en-us>
+</message>
+<message id=235 icode=IDS_FCHECKOUT_BORROW_RETURN_SERVER_ERR>
+    <en-us>"Failed to check out license '%2'.\nError returning borrowed license (FLEXlm Error %1)"</en-us>
+</message>
+<message id=236 icode=IDS_FCHECKOUT_CANT_CHECKOUT_JUST_PACKAGE>
+    <en-us>"Failed to check out license '%2'.\nA PACKAGE component must be specified (FLEXlm Error %1)"</en-us>
+</message>
+<message id=237 icode=IDS_FCHECKOUT_COMPOSITEID_INIT_ERR>
+    <en-us>"Failed to check out license '%2'.\nComposite hostid not initialized (FLEXlm Error %1)"</en-us>
+</message>
+<message id=238 icode=IDS_FCHECKOUT_COMPOSITEID_ITEM_ERR>
+    <en-us>"Failed to check out license '%2'.\nAn item needed for composite hostid missing or invalid (FLEXlm Error %1)"</en-us>
+</message>
+<message id=239 icode=IDS_FCHECKOUT_BORROW_MATCH_ERR>
+    <en-us>"Failed to check out license '%2'.\nBorrowed license does not match any known license server (FLEXlm Error %1)"</en-us>
+</message>
+<message id=240 icode=IDS_FCHECKOUT_NULLPOINTER>
+    <en-us>"Failed to check out license '%2'.\nInternal error (NULL pointer) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=241 icode=IDS_FCHECKOUT_BADHANDLE>
+    <en-us>"Failed to check out license '%2'.\nInternal error (bad handle) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=242 icode=IDS_FCHECKOUT_EMPTYSTRING>
+    <en-us>"Failed to check out license '%2'.\nInternal error (empty string) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=243 icode=IDS_FCHECKOUT_BADMEMORYACCESS>
+    <en-us>"Failed to check out license '%2'.\nInternal error (bad memory access) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=244 icode=IDS_FCHECKOUT_NOTSUPPORTED>
+    <en-us>"Failed to check out license '%2'.\nInternal error (operation not supported) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=245 icode=IDS_FCHECKOUT_NULL_JOB_HANDLE>
+    <en-us>"Failed to check out license '%2'.\nJob handle is null (FLEXlm Error %1)"</en-us>
+</message>
+<message id=246 icode=IDS_FCHECKOUT_EVENTLOG_INIT_ERR>
+    <en-us>"Failed to check out license '%2'.\nError enabling event log (FLEXlm Error %1)"</en-us>
+</message>
+<message id=247 icode=IDS_FCHECKOUT_EVENTLOG_DISABLED>
+    <en-us>"Failed to check out license '%2'.\nError logging is disabled (FLEXlm Error %1)"</en-us>
+</message>
+<message id=248 icode=IDS_FCHECKOUT_EVENTLOG_WRITE_ERR>
+    <en-us>"Failed to check out license '%2'.\nError writing to event log (FLEXlm Error %1)"</en-us>
+</message>
+<message id=249 icode=IDS_FCHECKOUT_BADINDEX>
+    <en-us>"Failed to check out license '%2'.\nInternal error (bad index) (FLEXlm Error %1)"</en-us>
+</message>
+<message id=250 icode=IDS_FCHECKOUT_TIMEOUT>
+    <en-us>"Failed to check out license '%2'.\nTimeout error (FLEXlm Error %1)"</en-us>
+</message>
+<message id=251 icode=IDS_FCHECKOUT_BADCOMMAND>
+    <en-us>"Failed to check out license '%2'.\nBad message command (FLEXlm Error %1)"</en-us>
+</message>
+<message id=252 icode=IDS_FCHECKOUT_SOCKET_BROKEN_PIPE>
+    <en-us>"Failed to check out license '%2'.\nError writing to socket.  Peer has closed socket. (FLEXlm Error %1)"</en-us>
+</message>
+<message id=253 icode=IDS_FCHECKOUT_INVALID_SIGNATURE>
+    <en-us>"Failed to check out license '%2'.\nCannot generate version-specific license tied to a single composite hostid (FLEXlm Error %1)"</en-us>
+</message>
+<message id=254 icode=IDS_FCHECKOUT_UNCOUNTED_NOT_SUPPORTED>
+    <en-us>"Failed to check out license '%2'.\nVersion-specific signatures are not supported for uncounted licenses (FLEXlm Error %1)"</en-us>
+</message>
+<message id=255 icode=IDS_FCHECKOUT_REDUNDANT_SIGNATURES>
+    <en-us>"Failed to check out license '%2'.\nLicense template contains redundant signature specifiers (FLEXlm Error %1)"</en-us>
+</message>
+<message id=256 icode=IDS_FCHECKOUT_BADCODE_V71_LK>
+    <en-us>"Failed to check out license '%2'.\nInvalid V71_LK signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=257 icode=IDS_FCHECKOUT_BADCODE_V71_SIGN>
+    <en-us>"Failed to check out license '%2'.\nInvalid V71_SIGN signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=258 icode=IDS_FCHECKOUT_BADCODE_V80_LK>
+    <en-us>"Failed to check out license '%2'.\nInvalid V80_LK signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=259 icode=IDS_FCHECKOUT_BADCODE_V80_SIGN>
+    <en-us>"Failed to check out license '%2'.\nInvalid V80_SIGN signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=260 icode=IDS_FCHECKOUT_BADCODE_V81_LK>
+    <en-us>"Failed to check out license '%2'.\nInvalid V81_LK signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=261 icode=IDS_FCHECKOUT_BADCODE_V81_SIGN>
+    <en-us>"Failed to check out license '%2'.\nInvalid V81_SIGN signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=262 icode=IDS_FCHECKOUT_BADCODE_V81_SIGN2>
+    <en-us>"Failed to check out license '%2'.\nInvalid V81_SIGN2 signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=263 icode=IDS_FCHECKOUT_BADCODE_V84_LK>
+    <en-us>"Failed to check out license '%2'.\nInvalid V84_LK signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=264 icode=IDS_FCHECKOUT_BADCODE_V84_SIGN>
+    <en-us>"Failed to check out license '%2'.\nInvalid V84_SIGN signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=265 icode=IDS_FCHECKOUT_BADCODE_V84_SIGN2>
+    <en-us>"Failed to check out license '%2'.\nInvalid V84_SIGN2 signature (FLEXlm Error %1)"</en-us>
+</message>
+<message id=266 icode=IDS_FCHECKOUT_LK_REQ>
+    <en-us>"Failed to check out license '%2'.\nLicense key required but missing from the license certificate (FLEXlm Error %1)"</en-us>
+</message>
+<message id=267 icode=IDS_FHEARTBEAT_WARNING_15DAYS>
+    <en-us>"License '%1 %2' checked out from server '%3' expires in %4 days."</en-us>
+</message>
+<message id=268 icode=IDS_SECURITY_CUSTOM>
+    <en-us>"%1"</en-us>
+</message>

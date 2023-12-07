@@ -8,7 +8,7 @@ class TwinRuntimeError(Exception):
         if twin_runtime is not None:
             self.dll_message = twin_runtime.twin_get_status_string()
             if twin_status is None:
-                self.twin_status = twin_runtime._twin_status
+                self.twin_status = twin_runtime.twin_status
 
     def add_message(self, new_message):
         self.message += '\n'+new_message
@@ -27,7 +27,7 @@ class PropertyNotDefinedError(Exception):
         self.property_status_flag = PropertyStatusFlag(property_status_flag)
         self.message = message
         self.dll_message = twin_runtime.twin_get_status_string()
-        self.twin_status = twin_runtime._twin_status
+        self.twin_status = twin_runtime.twin_status
 
 
 class PropertyNotApplicableError(Exception):
@@ -35,7 +35,7 @@ class PropertyNotApplicableError(Exception):
         self.property_status_flag = PropertyStatusFlag(property_status_flag)
         self.message = message
         self.dll_message = twin_runtime.twin_get_status_string()
-        self.twin_status = twin_runtime._twin_status
+        self.twin_status = twin_runtime.twin_status
 
 
 class PropertyInvalidError(Exception):
@@ -43,7 +43,7 @@ class PropertyInvalidError(Exception):
         self.property_status_flag = PropertyStatusFlag(property_status_flag)
         self.message = message
         self.dll_message = twin_runtime.twin_get_status_string()
-        self.twin_status = twin_runtime._twin_status
+        self.twin_status = twin_runtime.twin_status
 
 
 class PropertyError(Exception):
@@ -51,4 +51,7 @@ class PropertyError(Exception):
         self.property_status_flag = PropertyStatusFlag(property_status_flag)
         self.message = message
         self.dll_message = twin_runtime.twin_get_status_string()
-        self.twin_status = twin_runtime._twin_status
+        self.twin_status = twin_runtime.twin_status
+
+
+
