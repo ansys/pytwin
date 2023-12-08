@@ -85,7 +85,7 @@ class TwinModel(Model):
         Close twin runtime and remove model temporary folder.
         """
         if twin_runtime is not None:
-            if twin_runtime.is_model_opened:
+            if twin_runtime._is_model_opened:
                 twin_runtime.twin_close()
             # Delete model directory
             if os.path.exists(model_dir):
@@ -430,7 +430,7 @@ class TwinModel(Model):
         if self._twin_runtime is None:
             self._raise_error("Twin model has not been successfully instantiated.")
         try:
-            if self._twin_runtime.is_model_initialized:
+            if self._twin_runtime._is_model_initialized:
                 self._twin_runtime.twin_reset()
 
             self._initialize_parameters_with_start_values()
@@ -750,7 +750,7 @@ class TwinModel(Model):
         """Indicator for if the evaluation has been initialized."""
         if self._twin_runtime is None:
             self._raise_error("Twin model has not been successfully instantiated.")
-        return self._twin_runtime.is_model_initialized
+        return self._twin_runtime._is_model_initialized
 
     @property
     def evaluation_time(self):
