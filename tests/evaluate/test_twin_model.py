@@ -32,7 +32,7 @@ class TestTwinModel:
         model_filepath = COUPLE_CLUTCHES_FILEPATH
         try:
             TwinModel(model_filepath=model_filepath)
-        except TwinModelError as e: # licensed twin so there might be an error if no license server available
+        except TwinModelError as e:  # licensed twin so there might be an error if no license server available
             assert "Cannot connect to license server system" in str(e)
 
     def test_instantiation_with_invalid_model_filepath(self):
