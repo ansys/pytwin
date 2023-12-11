@@ -60,27 +60,3 @@ class TestTwinModelFinalize:
                     shutil.rmtree(os.path.join(parent_dir, dir_name))
         except Exception as e:
             pass
-
-
-"""
-import os
-import tracemalloc
-from pytwin import TwinModel
-tracemalloc.start()
-snapshot = tracemalloc.take_snapshot()
-twin_file = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_FieldInput_23R1.twin")
-for i in range(1, 10):
-    #with TwinModel(model_filepath=twin_file) as twin_model:
-    #    snapshot2 = tracemalloc.take_snapshot()
-    #    top_stats = snapshot2.compare_to(snapshot, 'lineno')
-    #    stat_tbrom_read_basis = top_stats[0]
-    #    print(stat_tbrom_read_basis)
-    #    print("end of the loop")
-    twin_model = TwinModel(model_filepath=twin_file)
-    snapshot2 = tracemalloc.take_snapshot()
-    top_stats = snapshot2.compare_to(snapshot, 'lineno')
-    stat_tbrom_read_basis = top_stats[0]
-    print(stat_tbrom_read_basis)
-    print("end of the loop")
-    twin_model.close()
-"""
