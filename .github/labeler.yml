@@ -8,4 +8,5 @@ dependencies:
 - changed-files:
   - any-glob-to-any-file: ['pyproject.toml', 'requirements/*']
 testing:
-- tests/*
+- changed-files:
+  - any-glob-to-any-file: ['tests/*']
