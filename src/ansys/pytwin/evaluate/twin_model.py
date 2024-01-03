@@ -14,6 +14,7 @@ from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
+import pyvista as pv
 
 
 class TwinModel(Model):
@@ -238,6 +239,16 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
+    def _check_tbrom_points_file(self, rom_name: str):
+        """
+        Check if the points file is available for the given ROM. Raise a ``TwinModelError`` message if not.
+        """
+        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
+        if not os.path.exists(filepath):
+            msg = self._error_msg_for_geometry_file_not_found(rom_name, filepath)
+            raise self._raise_error(msg)
+        return filepath
+
     def _check_tbrom_points_generation_args(self, rom_name: str, namedselection: str = None):
         """
         Check if the arguments of points generation method are valid. Raise a ``TwinModelError`` message if not.
@@ -246,10 +257,7 @@ class TwinModel(Model):
         if self._check_rom_name_is_valid(rom_name):
             tbrom = self._tbroms[rom_name]
 
-        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
-        if not os.path.exists(filepath):
-            msg = self._error_msg_for_geometry_file_not_fount(rom_name, filepath)
-            raise self._raise_error(msg)
+        self._check_tbrom_points_file(rom_name)
 
         if namedselection is not None:
             if namedselection not in tbrom.named_selections:
@@ -263,9 +271,12 @@ class TwinModel(Model):
         msg += "\nProvide a valid field name to use this method."
         return msg
 
-    def _error_msg_for_geometry_file_not_fount(self, rom_name, filepath):
+    def _error_msg_for_geometry_file_not_found(self, rom_name, filepath):
         msg = f"[GeometryFile]Could not find the geometry file for the given ROM name: {rom_name}. "
-        msg += f"The geometry filepath that you are looking for is: {filepath}"
+        msg += (
+            f"The geometry filepath that you are looking for is: {filepath}. Make sure to embed the geometry as part "
+            f"of the TBROM."
+        )
         return msg
 
     def _error_msg_for_rom_name(self, rom_name):
@@ -539,7 +550,7 @@ class TwinModel(Model):
             if self.tbrom_count > 0:
                 self._tbroms = dict()
                 for tbrom_name in self.tbrom_names:
-                    tbrom_resdir = self._twin_runtime.twin_get_rom_resource_directory(tbrom_name)
+                    tbrom_resdir = self._tbrom_resource_directory(tbrom_name)
                     if self._check_tbrom_model_filepath_is_valid(tbrom_resdir):
                         tbrom = TbRom(tbrom_name, tbrom_resdir)
                         self._tbrom_init(tbrom)
@@ -699,14 +710,14 @@ class TwinModel(Model):
             tbrom._hasinfmcs = hasinfmcs
 
         outmcs = dict()
-        for i in range(1, len(tbrom._outbasis) + 1):
+        for i in range(1, tbrom.nb_modes + 1):
             output_port_name = self._field_output_port_name(i, tbrom.name)
             for key, item in self.outputs.items():
                 if output_port_name in key:
                     outmcs.update({key: item})
                     break
                     # e.g. outField_mode_1 has been found but we don't want to pick outField_mode_10 yet
-        if len(outmcs) == len(tbrom._outbasis):
+        if len(outmcs) == tbrom.nb_modes:
             tbrom._outmcs = outmcs
             tbrom._hasoutmcs = True
 
@@ -718,6 +729,7 @@ class TwinModel(Model):
         """
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
+        tbrom.update_output_field()
 
     def _update_field_inputs(self, field_inputs: dict):
         for tbrom_name, field_inputs in field_inputs.items():
@@ -1287,12 +1299,7 @@ class TwinModel(Model):
             msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
-        filepath = os.path.join(self._tbrom_resource_directory(rom_name), "binaryOutputField", "points.bin")
-
-        if not os.path.exists(filepath):
-            msg = self._error_msg_for_geometry_file_not_fount(rom_name, filepath)
-            self._raise_error(msg)
-
+        filepath = self._check_tbrom_points_file(rom_name)
         return filepath
 
     def get_rom_directory(self, rom_name):
@@ -1400,6 +1407,42 @@ class TwinModel(Model):
         tbrom = self._tbroms[rom_name]
 
         return tbrom.field_input_names
+
+    def get_field_output_name(self, rom_name):
+        """
+        Get the output field name associated to the TBROM named rom_name
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.get_field_output_name(model.tbrom_names[0])
+        """
+        self._log_key = "GetFieldOutputName"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        return tbrom.field_output_name
 
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
@@ -1759,6 +1802,61 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
+    def get_tbrom_output_field(self, rom_name: str):
+        """
+        Return the TBROM output field from point cloud data.
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Returns
+        -------
+        pyvista.DataSet
+            PyVista DataSet object of the TBROM output field from point cloud data.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+            If the TBROM does not have any point file available.
+
+        TwinModelWarning:
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs. In that case, the returned
+            object can be used to visualize field modes only.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.get_tbrom_output_field(model.tbrom_names[0])
+        """
+        self._log_key = "GetPointsData"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        if not tbrom.haspointfile:
+            msg = self._check_tbrom_points_file(rom_name)
+            self._raise_error(msg)
+
+        if not tbrom._hasoutmcs:
+            msg = f"[RomOutputConnection]The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
+            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's outputs."
+            msg += "\nNo output field is associated to the returned object (only field modes)."
+            self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
+        return tbrom.field_on_points
 
 class TwinModelError(Exception):
     def __str__(self):
