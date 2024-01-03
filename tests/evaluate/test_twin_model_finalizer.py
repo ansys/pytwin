@@ -31,7 +31,7 @@ class TestTwinModelFinalize:
         snapshot = tracemalloc.take_snapshot()
         allocated_mem_size = ""
         model_dir = ""
-        for i in range(3):
+        for i in range(4):
             twin_model = TwinModel(model_filepath=TBROM_MODEL_FILEPATH)
             model_dir_old = model_dir
             model_dir = twin_model.model_dir
