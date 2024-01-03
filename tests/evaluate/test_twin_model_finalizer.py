@@ -47,7 +47,9 @@ class TestTwinModelFinalize:
                 assert not os.path.exists(model_dir_old)
                 # Previous twin_model memory as been freed (allow for +/- 0.5% difference of memory
                 assert (
-                    1.005 * float(allocated_mem_size_old) > float(allocated_mem_size) > 0.995 * float(allocated_mem_size_old)
+                    1.005 * float(allocated_mem_size_old)
+                    > float(allocated_mem_size)
+                    > 0.995 * float(allocated_mem_size_old)
                 )
 
     def test_clean_unit_test(self):

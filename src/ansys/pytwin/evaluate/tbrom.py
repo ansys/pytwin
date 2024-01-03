@@ -64,7 +64,7 @@ class TbRom:
         self._outputfilespath = None
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
         [nbpoints, nbmodes] = TbRom._read_properties(propertiespath)
-        self._nbpoints = int(nbpoints/self._outdim)
+        self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
 
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
@@ -173,7 +173,7 @@ class TbRom:
         self._pointsdata[self.field_output_name] = mc[0] * self._pointsdata["mode" + str(1)]
         for i in range(1, len(mc)):
             self._pointsdata[self.field_output_name] = (
-                    self._pointsdata[self.field_output_name] + mc[i] * self._pointsdata["mode" + str(i + 1)]
+                self._pointsdata[self.field_output_name] + mc[i] * self._pointsdata["mode" + str(i + 1)]
             )
         self._pointsdata.set_active_scalars(self.field_output_name)
 
@@ -195,7 +195,7 @@ class TbRom:
         if self.haspointfile:
             points = TbRom._read_binary(filepath)
         else:
-            points = np.zeros(3*self.nb_points)
+            points = np.zeros(3 * self.nb_points)
         self._pointsdata = pv.PolyData(points.reshape(-1, 3))
 
     def _init_pointsdata(self, filepath):
@@ -222,7 +222,9 @@ class TbRom:
 
     @staticmethod
     def _write_binary(filepath, vec):
-        vec = vec.reshape(-1,)
+        vec = vec.reshape(
+            -1,
+        )
         if os.path.exists(filepath):
             os.remove(filepath)
         with open(filepath, "xb") as f:
@@ -276,8 +278,8 @@ class TbRom:
             fields = data["fields"]
         outField = fields["outField"]
 
-        nbPoints = outField['nbDof']
-        nbModes = outField['nbModes']
+        nbPoints = outField["nbDof"]
+        nbModes = outField["nbModes"]
 
         return [nbPoints, nbModes]
 

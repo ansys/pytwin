@@ -85,8 +85,8 @@ shows how to evaluate the output field data in the form of snapshots.
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pyvista as pv
 from pytwin import TwinModel, download_file
+import pyvista as pv
 
 twin_file = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files", force_download=True)
 inputfieldsnapshots = [
