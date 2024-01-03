@@ -1913,8 +1913,8 @@ class TwinModel(Model):
                     nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
                 if not interpolate and (mesh.n_cells != nb_points and mesh.n_points != nb_points):
                     msg = (
-                        f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = {nb_points}, "
-                        f"number of mesh cells = {mesh.n_cells}, number of mesh points = {mesh.n_points}."
+                        f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = "
+                        f"{nb_points}, number of mesh cells = {mesh.n_cells}, number of mesh points = {mesh.n_points}."
                     )
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
                     interpolate_flag = True
