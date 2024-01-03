@@ -1987,6 +1987,7 @@ class TwinModel(Model):
 
         return tbrom.field_on_points
 
+
 class TwinModelError(Exception):
     def __str__(self):
         return f"[TwinModelError] {self.args[0]}"
