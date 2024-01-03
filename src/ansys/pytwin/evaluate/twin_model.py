@@ -14,6 +14,7 @@ from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
+import pyvista as pv
 
 
 class TwinModel(Model):
@@ -264,6 +265,43 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
+    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: pv.DataSet, namedselection: str = None):
+        """
+        Check if the arguments of mesh projection method are valid. Raise a ``TwinModelError`` message if not.
+        """
+        tbrom = None
+        if self._check_rom_name_is_valid(rom_name):
+            tbrom = self._tbroms[rom_name]
+
+        if not tbrom._hasoutmcs:
+            msg = self._error_msg_for_rom_output_connection(rom_name)
+            raise self._raise_error(msg)
+
+        if mesh.n_cells == 0 and mesh.n_points == 0:
+            msg = self._error_msg_for_pv_mesh_empty(rom_name, mesh)
+            raise self._raise_error(msg)
+
+        if namedselection is not None:
+            if namedselection not in tbrom.named_selections:
+                msg = self._error_msg_for_unknown_named_selection(namedselection, tbrom)
+                raise self._raise_error(msg)
+        return True
+
+    def _check_tbrom_mesh_update_args(self, rom_name: str):
+        """
+        Check if the arguments of mesh update method are valid. Raise a ``TwinModelError`` message if not.
+        """
+        if self._check_rom_name_is_valid(rom_name):
+            tbrom = self._tbroms[rom_name]
+            if not tbrom._hasoutmcs:
+                msg = self._error_msg_for_rom_output_connection(rom_name)
+                raise self._raise_error(msg)
+            if tbrom.field_on_mesh is None:
+                msg = self._error_msg_for_tbrom_mesh_empty(rom_name)
+                raise self._raise_error(msg)
+
+        return True
+
     def _error_msg_for_unknown_field_name(self, fieldname, tbrom):
         msg = f"[FieldName]The field name provided {fieldname} is not part of the list of input field names "
         msg += f"{tbrom.field_input_names}."
@@ -276,6 +314,17 @@ class TwinModel(Model):
             f"The geometry filepath that you are looking for is: {filepath}. Make sure to embed the geometry as part "
             f"of the TBROM."
         )
+        return msg
+
+    def _error_msg_for_pv_mesh_empty(self, rom_name, mesh):
+        msg = f"[PyVistaMesh]Mesh {mesh} "
+        msg += f"associated to the ROM name : {rom_name}"
+        msg += f"seems to be empty : number of points = {mesh.n_points}, number of cells = {mesh.n_cells}"
+        return msg
+
+    def _error_msg_for_tbrom_mesh_empty(self, rom_name):
+        msg = f"[TBROMMesh]The TBROM {rom_name} mesh_data attribute is not initialized yet."
+        msg += "\nMake sure to perform the mesh projection operation first before calling this method."
         return msg
 
     def _error_msg_for_rom_name(self, rom_name):
@@ -1801,6 +1850,87 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
+    def project_tbrom_on_mesh(self, rom_name: str, mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
+        """
+        Project the field ROM data onto a mesh
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the TBROM considered to project the results.
+        mesh: pyvista.DataSet
+            PyVista DataSet object of the targeted mesh.
+        interpolate: bool
+            Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
+            Interpolation is recommended when point cloud data and mesh data are not ordered in the same way, and when
+            the target mesh is different from the one used to generate the ROM. Interpolation is automatically enforced
+            if the target mesh size (i.e. number of cells/points) is different from the point cloud size.
+        named_selection: str (optional)
+            Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
+            entire domain is considered.
+
+        Returns
+        -------
+        pyvista.DataSet
+            PyVista DataSet object of the targeted mesh with projected field ROM data.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object has not been initialized.
+            If rom_name is not included in the Twin's list of TBROM
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs
+            If mesh is not a valid grid dataset
+            If name_selection is not included in the TBROM's list of Named Selections
+            If interpolate is True and no points file is available with the TBROM
+
+        TwinModelWarning:
+            If interpolate is False and the targeted mesh has a number of cells and points different from TBROM point
+            cloud. In that case, interpolate is automatically switched to True.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> import pyvista as pv
+        >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
+        >>> model1 = TwinModel('model.twin')
+        >>> model1.initialize_evaluation()
+        >>> romname = model1.tbrom_names[0]
+        >>> mesh = pv.read('mesh.vtk')
+        >>> fieldresults = model1.project_tbrom_on_mesh(romname, mesh)
+        """
+        self._log_key = "MeshProjection"
+
+        if not self.evaluation_is_initialized:
+            msg = self._error_msg_for_not_initialized()
+            self._raise_error(msg)
+
+        try:
+            if self._check_tbrom_mesh_projection_args(rom_name, mesh, named_selection):
+                if named_selection is None:
+                    nb_points = self._tbroms[rom_name].nb_points
+                else:
+                    nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
+                if not interpolate and (mesh.n_cells != nb_points and mesh.n_points != nb_points):
+                    msg = (
+                        f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = {nb_points}, "
+                        f"number of mesh cells = {mesh.n_cells}, number of mesh points = {mesh.n_points}."
+                    )
+                    self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+                    interpolate_flag = True
+                else:
+                    interpolate_flag = interpolate
+                if interpolate_flag:
+                    self._check_tbrom_points_file(rom_name)
+                self._tbroms[rom_name].project_on_mesh(mesh, interpolate_flag, named_selection)
+                self._update_tbrom_outmcs(self._tbroms[rom_name])
+                return self._tbroms[rom_name].field_on_mesh
+
+        except Exception as e:
+            msg = f"Something went wrong while projecting on target mesh:"
+            msg += f"\n{str(e)}."
+            self._raise_error(msg)
+
     def get_tbrom_output_field(self, rom_name: str):
         """
         Return the TBROM output field from point cloud data.
@@ -1856,7 +1986,6 @@ class TwinModel(Model):
             self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
         return tbrom.field_on_points
-
 
 class TwinModelError(Exception):
     def __str__(self):

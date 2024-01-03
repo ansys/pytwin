@@ -7,6 +7,15 @@ from typing import Union
 import numpy as np
 import pyvista as pv
 
+# Checking if tqdm is installed.
+# If it is, the default value for progress_bar is true.
+try:
+    from tqdm import tqdm
+
+    _HAS_TQDM = True
+except ModuleNotFoundError:  # pragma: no cover
+    _HAS_TQDM = False
+
 
 class TbRom:
     """
@@ -40,6 +49,7 @@ class TbRom:
         self._outmcs = None
         self._infbasis = None
         self._pointsdata = None
+        self._meshdata = None
         self._hasinfmcs = None
         self._hasoutmcs = False
 
@@ -165,17 +175,71 @@ class TbRom:
                 self._infmcs[name][item] = mc[index]
                 index = index + 1
 
+    def project_on_mesh(
+        self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None, progress_bar: bool = False
+    ):
+        """
+        Project the field ROM SVD basis onto a mesh.
+
+        Parameters
+        ----------
+        mesh: pyvista.DataSet
+            PyVista DataSet object of the targeted mesh.
+        interpolate: bool
+            Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
+        named_selection: str (optional)
+            Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
+            entire domain is considered.
+        progress_bar : bool (optional)
+            Display a progress bar using ``tqdm`` when ``True``. Helpful for showing interpolation progress. Default to
+            ``False``, it is automatically set to ``True`` if ``tqdm`` is available.
+        """
+        nbmc = self.nb_modes
+        if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
+            mesh_data = mesh
+            for i in range(0, nbmc):
+                vec = self.data_extract(named_selection, self._pointsdata["mode" + str(i + 1)])
+                mesh_data["mode" + str(i + 1)] = vec
+            nb_data = len(vec)
+        else:  # interpolation required, e.g. because target mesh is different
+            if not progress_bar and _HAS_TQDM:
+                progress_bar = True
+            if named_selection is not None:
+                pointsids = self.named_selection_indexes(named_selection)
+                listids = np.sort(pointsids)
+                pointsdata = self._pointsdata.extract_points(listids)
+            else:
+                pointsdata = self._pointsdata
+            mesh_data = mesh.interpolate(
+                pointsdata, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
+            )
+            mesh_data = mesh_data.point_data_to_cell_data()
+            nb_data = mesh_data.n_cells
+
+        # initialize output field data
+        mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
+
+        self._meshdata = mesh_data
+
     def update_output_field(self):
         """
         Compute the output field results with current mode coefficients.
         """
         mc = list(self._outmcs.values())
         self._pointsdata[self.field_output_name] = mc[0] * self._pointsdata["mode" + str(1)]
+        if self._meshdata is not None:
+            self._meshdata[self.field_output_name] = mc[0] * self._meshdata["mode" + str(1)]
         for i in range(1, len(mc)):
             self._pointsdata[self.field_output_name] = (
                 self._pointsdata[self.field_output_name] + mc[i] * self._pointsdata["mode" + str(i + 1)]
             )
+            if self._meshdata is not None:
+                self._meshdata[self.field_output_name] = (
+                    self._meshdata[self.field_output_name] + mc[i] * self._meshdata["mode" + str(i + 1)]
+                )
         self._pointsdata.set_active_scalars(self.field_output_name)
+        if self._meshdata is not None:
+            self._meshdata.set_active_scalars(self.field_output_name)
 
     def named_selection_indexes(self, nsname: str):
         return self._nsidslist[nsname]
@@ -329,6 +393,11 @@ class TbRom:
     @property
     def name(self):
         return self._name
+
+    @property
+    def field_on_mesh(self):
+        """Return the field data projected on mesh of this TBROM."""
+        return self._meshdata
 
     @property
     def field_on_points(self):
