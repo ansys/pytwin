@@ -10,7 +10,7 @@ import pyvista as pv
 # Checking if tqdm is installed.
 # If it is, the default value for progress_bar is true.
 try:
-    from tqdm import tqdm
+    from tqdm import tqdm  # noqa: F401
 
     _HAS_TQDM = True
 except ModuleNotFoundError:  # pragma: no cover
