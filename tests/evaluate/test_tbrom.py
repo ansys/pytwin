@@ -374,7 +374,7 @@ class TestTbRom:
             assert "[InputSnapshotPath]" in str(e)
 
         # Raise en exception if provided snapshot is a np.array with wrong shape
-        wrong_arr = np.zeros((len(memory_snp), 3))
+        wrong_arr = np.zeros((memory_snp.shape[0], 3))
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: wrong_arr}})
         except TwinModelError as e:
@@ -510,7 +510,7 @@ class TestTbRom:
             assert "[InputSnapshotType]" in str(e)
 
         # Raise en exception if provided snapshot is a np.array with wrong shape
-        wrong_arr = np.zeros((len(memory_snp), 3))
+        wrong_arr = np.zeros((memory_snp.shape[0], 3))
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: wrong_arr}})
         except TwinModelError as e:
@@ -699,7 +699,7 @@ class TestTbRom:
             assert "[InputSnapshotPath]" in str(e)
 
         # Raise an exception if provided snapshot is a np.array with wrong shape
-        wrong_arr = np.zeros((len(memory_snp), 3))
+        wrong_arr = np.zeros((memory_snp.shape[0], 3))
         try:
             twinmodel.evaluate_batch(
                 inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
@@ -756,18 +756,14 @@ class TestTbRom:
         # Generate snapshot on disk
         snp_filepath = twinmodel.generate_snapshot(romname, True)
         snp_vec_on_disk = TbRom._read_binary(snp_filepath)
-        assert len(snp_vec_on_disk) == 313266
+        assert snp_vec_on_disk.shape[0] == 313266
         assert np.isclose(snp_vec_on_disk[0], 1.7188266861184398e-05)
         assert np.isclose(snp_vec_on_disk[-1], -1.3100502753567515e-05)
 
         # Generate snapshot in memory
         snp_vec_in_memory = twinmodel.generate_snapshot(romname, False)
         # snapshot in memory is ndarray with (number of points, field dimensionality)
-        assert len(
-            snp_vec_in_memory.reshape(
-                -1,
-            )
-        ) == len(snp_vec_on_disk)
+        assert snp_vec_in_memory.reshape(-1,).shape[0] == snp_vec_on_disk.shape[0]
         assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0, 0])
         assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1, -1])
 
@@ -779,14 +775,7 @@ class TestTbRom:
         # TODO LUCAS - Use another twin model with named selection smaller than whole model
         ns = twinmodel.get_named_selections(romname)
         snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert (
-            len(
-                snp_vec_ns.reshape(
-                    -1,
-                )
-            )
-            == 313266
-        )
+        assert snp_vec_ns.reshape(-1,).shape[0] == 313266
         assert np.isclose(snp_vec_ns[0, 0], 1.7188266861184398e-05)
         assert np.isclose(snp_vec_ns[-1, -1], -1.3100502753567515e-05)
 
@@ -799,14 +788,7 @@ class TestTbRom:
         # Generate snapshot on named selection
         ns = twinmodel.get_named_selections(romname)
         snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert (
-            len(
-                snp_vec_ns.reshape(
-                    -1,
-                )
-            )
-            == 78594
-        )
+        assert snp_vec_ns.reshape(-1,).shape[0] == 78594
         if sys.platform != "linux":
             # TODO - Fix BUG881733
             assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
@@ -886,17 +868,13 @@ class TestTbRom:
         # Generate points on disk
         points_filepath = twinmodel.generate_points(romname, True)
         points_vec = TbRom._read_binary(points_filepath)
-        assert len(points_vec) == 313266
+        assert points_vec.shape[0] == 313266
         assert np.isclose(points_vec[0], 0.0)
         assert np.isclose(points_vec[-1], 38.919245779058635)
 
         # Generate points in memory
         points_vec2 = twinmodel.generate_points(romname, False)
-        assert len(points_vec) == len(
-            points_vec2.reshape(
-                -1,
-            )
-        )
+        assert points_vec.shape[0] == points_vec2.reshape(-1,).shape[0]
         assert np.isclose(points_vec[0], points_vec2[0, 0])
         assert np.isclose(points_vec[-1], points_vec2[-1, -1])
 
@@ -904,17 +882,13 @@ class TestTbRom:
         ns = twinmodel.get_named_selections(romname)
         points_filepath_ns = twinmodel.generate_points(romname, True, named_selection=ns[0])
         points_vec_ns = TbRom._read_binary(points_filepath_ns)
-        assert len(points_vec_ns) == 78594
+        assert points_vec_ns.shape[0] == 78594
         assert np.isclose(points_vec_ns[0], 0.0)
         assert np.isclose(points_vec_ns[-1], 68.18921187292435)
 
         # Generate points on named selection in memory
         points_vec_ns2 = twinmodel.generate_points(romname, False, named_selection=ns[0])
-        assert len(points_vec_ns) == len(
-            points_vec_ns2.reshape(
-                -1,
-            )
-        )
+        assert points_vec_ns.shape[0] == points_vec_ns2.reshape(-1,).shape[0]
         assert np.isclose(points_vec_ns[0], points_vec_ns2[0, 0])
         assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1, -1])
 
