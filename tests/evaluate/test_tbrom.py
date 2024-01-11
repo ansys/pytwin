@@ -1,4 +1,3 @@
-import math
 import os
 import sys
 
@@ -23,6 +22,8 @@ def reinit_settings():
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
 DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), "data", "HX_scalarDRB_23R1_other.twin")
 RC_HEAT_CIRCUIT_23R1 = os.path.join(os.path.dirname(__file__), "data", "RC_heat_circuit_23R1.twin")
+
+MESH_FILE = os.path.join(os.path.dirname(__file__), "data", "mesh.vtk")
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
@@ -118,14 +119,8 @@ INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_sn
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
-
-    norm = []
-    for i in range(0, int(len(field) / 3)):
-        x = field[i * 3]
-        y = field[i * 3 + 1]
-        z = field[i * 3 + 2]
-        norm.append(math.sqrt(x * x + y * y + z * z))
-    return norm
+    vec = field.reshape((-1, 3))
+    return np.sqrt((vec * vec).sum(axis=1))
 
 
 class TestTbRom:
@@ -379,7 +374,7 @@ class TestTbRom:
             assert "[InputSnapshotPath]" in str(e)
 
         # Raise en exception if provided snapshot is a np.array with wrong shape
-        wrong_arr = np.zeros((len(memory_snp), 3))
+        wrong_arr = np.zeros((memory_snp.shape[0], 3))
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: wrong_arr}})
         except TwinModelError as e:
@@ -515,7 +510,7 @@ class TestTbRom:
             assert "[InputSnapshotType]" in str(e)
 
         # Raise en exception if provided snapshot is a np.array with wrong shape
-        wrong_arr = np.zeros((len(memory_snp), 3))
+        wrong_arr = np.zeros((memory_snp.shape[0], 3))
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: wrong_arr}})
         except TwinModelError as e:
@@ -704,7 +699,7 @@ class TestTbRom:
             assert "[InputSnapshotPath]" in str(e)
 
         # Raise an exception if provided snapshot is a np.array with wrong shape
-        wrong_arr = np.zeros((len(memory_snp), 3))
+        wrong_arr = np.zeros((memory_snp.shape[0], 3))
         try:
             twinmodel.evaluate_batch(
                 inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
@@ -761,15 +756,21 @@ class TestTbRom:
         # Generate snapshot on disk
         snp_filepath = twinmodel.generate_snapshot(romname, True)
         snp_vec_on_disk = TbRom._read_binary(snp_filepath)
-        assert len(snp_vec_on_disk) == 313266
+        assert snp_vec_on_disk.shape[0] == 313266
         assert np.isclose(snp_vec_on_disk[0], 1.7188266861184398e-05)
         assert np.isclose(snp_vec_on_disk[-1], -1.3100502753567515e-05)
 
         # Generate snapshot in memory
         snp_vec_in_memory = twinmodel.generate_snapshot(romname, False)
-        assert len(snp_vec_in_memory) == len(snp_vec_on_disk)
-        assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0])
-        assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1])
+        # snapshot in memory is ndarray with (number of points, field dimensionality)
+        assert (
+            snp_vec_in_memory.reshape(
+                -1,
+            ).shape[0]
+            == snp_vec_on_disk.shape[0]
+        )
+        assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0, 0])
+        assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1, -1])
 
         # Generate snapshot gives same results as twin_model probe
         max_snp = max(norm_vector_field(snp_vec_in_memory))
@@ -779,9 +780,14 @@ class TestTbRom:
         # TODO LUCAS - Use another twin model with named selection smaller than whole model
         ns = twinmodel.get_named_selections(romname)
         snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert len(snp_vec_ns) == 313266
-        assert np.isclose(snp_vec_ns[0], 1.7188266861184398e-05)
-        assert np.isclose(snp_vec_ns[-1], -1.3100502753567515e-05)
+        assert (
+            snp_vec_ns.reshape(
+                -1,
+            ).shape[0]
+            == 313266
+        )
+        assert np.isclose(snp_vec_ns[0, 0], 1.7188266861184398e-05)
+        assert np.isclose(snp_vec_ns[-1, -1], -1.3100502753567515e-05)
 
     def test_generate_snapshot_on_named_selection_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM12
@@ -792,11 +798,16 @@ class TestTbRom:
         # Generate snapshot on named selection
         ns = twinmodel.get_named_selections(romname)
         snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert len(snp_vec_ns) == 78594
+        assert (
+            snp_vec_ns.reshape(
+                -1,
+            ).shape[0]
+            == 78594
+        )
         if sys.platform != "linux":
             # TODO - Fix BUG881733
-            assert np.isclose(snp_vec_ns[0], 1.7188266859172047e-05)
-            assert np.isclose(snp_vec_ns[-1], -1.5316792773713332e-05)
+            assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
+            assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
 
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
@@ -872,29 +883,39 @@ class TestTbRom:
         # Generate points on disk
         points_filepath = twinmodel.generate_points(romname, True)
         points_vec = TbRom._read_binary(points_filepath)
-        assert len(points_vec) == 313266
+        assert points_vec.shape[0] == 313266
         assert np.isclose(points_vec[0], 0.0)
         assert np.isclose(points_vec[-1], 38.919245779058635)
 
         # Generate points in memory
         points_vec2 = twinmodel.generate_points(romname, False)
-        assert len(points_vec) == len(points_vec2)
-        assert np.isclose(points_vec[0], points_vec2[0])
-        assert np.isclose(points_vec[-1], points_vec2[-1])
+        assert (
+            points_vec.shape[0]
+            == points_vec2.reshape(
+                -1,
+            ).shape[0]
+        )
+        assert np.isclose(points_vec[0], points_vec2[0, 0])
+        assert np.isclose(points_vec[-1], points_vec2[-1, -1])
 
         # Generate points on named selection on disk
         ns = twinmodel.get_named_selections(romname)
         points_filepath_ns = twinmodel.generate_points(romname, True, named_selection=ns[0])
         points_vec_ns = TbRom._read_binary(points_filepath_ns)
-        assert len(points_vec_ns) == 78594
+        assert points_vec_ns.shape[0] == 78594
         assert np.isclose(points_vec_ns[0], 0.0)
         assert np.isclose(points_vec_ns[-1], 68.18921187292435)
 
         # Generate points on named selection in memory
         points_vec_ns2 = twinmodel.generate_points(romname, False, named_selection=ns[0])
-        assert len(points_vec_ns) == len(points_vec_ns2)
-        assert np.isclose(points_vec_ns[0], points_vec_ns2[0])
-        assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1])
+        assert (
+            points_vec_ns.shape[0]
+            == points_vec_ns2.reshape(
+                -1,
+            ).shape[0]
+        )
+        assert np.isclose(points_vec_ns[0], points_vec_ns2[0, 0])
+        assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1, -1])
 
     def test_generate_points_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
@@ -1121,3 +1142,54 @@ class TestTbRom:
         with open(log_file, "r") as log:
             log_str = log.readlines()
         assert "[ViewFilePath]" in "".join(log_str)
+
+    def test_tbrom_get_output_field_errors(self):
+        reinit_settings()
+        romname = "unknown"
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twinmodel = TwinModel(model_filepath=model_filepath)
+
+        # Raise an exception if no tbrom available in the twin
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+
+        # Raise an exception if unknown rom name is given
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise an exception if the twin considered has not output MC connected
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
+
+        # Raise an exception if any issue occurs during the API execution
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "GetPointsData" in str(e)
+
+    def test_tbrom_new_instantiation_without_points(self):
+        model_filepath = TEST_TB_ROM3
+        try:
+            twinmodel = TwinModel(model_filepath=model_filepath)  # instantiation should be fine without points
+            romname = twinmodel.tbrom_names[0]
+            twinmodel.get_tbrom_output_field(romname)  # retrieving the output field pyvista object should raise an
+            # error since there is no point file
+        except TwinModelError as e:
+            assert "GeometryFile" in str(e)
