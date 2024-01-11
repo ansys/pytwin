@@ -6,7 +6,7 @@ import pandas as pd
 from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import get_pytwin_log_file
-
+import pyvista as pv
 
 def reinit_settings():
     import shutil
