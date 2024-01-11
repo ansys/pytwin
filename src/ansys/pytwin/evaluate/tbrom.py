@@ -170,10 +170,9 @@ class TbRom:
         mc = list(self._outmcs.values())
         self._pointsdata[self.field_output_name] = mc[0] * self._outbasis[0, :].reshape(-1, self.field_output_dim)
         for i in range(1, len(mc)):
-            self._pointsdata[self.field_output_name] = (
-                self._pointsdata[self.field_output_name] + mc[i] * self._outbasis[i, :].reshape(-1,
-                                                                                                self.field_output_dim)
-            )
+            self._pointsdata[self.field_output_name] = self._pointsdata[self.field_output_name] + mc[
+                i
+            ] * self._outbasis[i, :].reshape(-1, self.field_output_dim)
         self._pointsdata.set_active_scalars(self.field_output_name)
 
     def named_selection_indexes(self, nsname: str):
