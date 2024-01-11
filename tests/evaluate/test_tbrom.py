@@ -1165,15 +1165,14 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[RomName]" in str(e)
 
-        # Raise a warning as the twin considered has not output MC connected
+        # Raise an exception if the twin considered has not output MC connected
         twinmodel = TwinModel(model_filepath=model_filepath)
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
-        twinmodel.get_tbrom_output_field(romname)
-        log_file = get_pytwin_log_file()
-        with open(log_file, "r") as log:
-            log_str = log.readlines()
-        assert "No output field is associated" in "".join(log_str)
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
 
         # Raise an exception if any issue occurs during the API execution
         model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
@@ -1186,7 +1185,7 @@ class TestTbRom:
             assert "GetPointsData" in str(e)
 
     def test_tbrom_new_instantiation_without_points(self):
-        model_filepath = TEST_TB_ROM2
+        model_filepath = TEST_TB_ROM3
         try:
             twinmodel = TwinModel(model_filepath=model_filepath)  # instantiation should be fine without points
             romname = twinmodel.tbrom_names[0]

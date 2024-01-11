@@ -1825,10 +1825,7 @@ class TwinModel(Model):
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
             If the TBROM does not have any point file available.
-
-        TwinModelWarning:
-            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs. In that case, the returned
-            object can be used to visualize field modes only.
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs.
 
         Examples
         --------
@@ -1853,10 +1850,8 @@ class TwinModel(Model):
             self._raise_error(msg)
 
         if not tbrom._hasoutmcs:
-            msg = f"[RomOutputConnection]The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
-            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's outputs."
-            msg += "\nNo output field is associated to the returned object (only field modes)."
-            self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+            msg = self._error_msg_for_rom_output_connection(rom_name)
+            raise self._raise_error(msg)
 
         return tbrom.field_on_points
 

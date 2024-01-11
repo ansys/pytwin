@@ -39,6 +39,7 @@ class TbRom:
         self._infmcs = None
         self._outmcs = None
         self._infbasis = None
+        self._outbasis = None
         self._pointsdata = None
         self._hasinfmcs = None
         self._hasoutmcs = False
@@ -167,10 +168,11 @@ class TbRom:
         Compute the output field results with current mode coefficients.
         """
         mc = list(self._outmcs.values())
-        self._pointsdata[self.field_output_name] = mc[0] * self._pointsdata["mode" + str(0)]
+        self._pointsdata[self.field_output_name] = mc[0] * self._outbasis[0, :].reshape(-1, self.field_output_dim)
         for i in range(1, len(mc)):
             self._pointsdata[self.field_output_name] = (
-                self._pointsdata[self.field_output_name] + mc[i] * self._pointsdata["mode" + str(i)]
+                self._pointsdata[self.field_output_name] + mc[i] * self._outbasis[i, :].reshape(-1,
+                                                                                                self.field_output_dim)
             )
         self._pointsdata.set_active_scalars(self.field_output_name)
 
@@ -199,9 +201,7 @@ class TbRom:
         return has_point_file
 
     def _init_pointsdata(self, filepath):
-        basis = TbRom._read_basis(filepath)
-        for i in range(0, basis.shape[0]):
-            self._pointsdata["mode" + str(i)] = basis[i, :].reshape(-1, self.field_output_dim)
+        self._outbasis = TbRom._read_basis(filepath)
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
