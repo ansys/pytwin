@@ -1680,6 +1680,7 @@ class TwinModel(Model):
         TwinModelError:
             If ``TwinModel`` object has not been initialized.
             If rom_name is not included in the Twin's list of TBROM
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs.
             If name_selection is not included in the TBROM's list of Named Selections
 
         Examples
@@ -1740,6 +1741,7 @@ class TwinModel(Model):
         TwinModelError:
             If the :func:`pytwin.TwinModel.initialize_evaluation` method has not been called before.
             If rom_name is not included in the Twin's list of TBROM
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs.
             If name_selection is not included in the TBROM's list of Named Selections
 
         Examples
@@ -1821,6 +1823,7 @@ class TwinModel(Model):
         TwinModelError:
             If ``TwinModel`` object has not been initialized.
             If rom_name is not included in the Twin's list of TBROM
+            If the TBROM does not have any point file available
             If name_selection is not included in the TBROM's list of Named Selections
 
         Examples
@@ -1933,7 +1936,7 @@ class TwinModel(Model):
 
     def get_tbrom_output_field(self, rom_name: str):
         """
-        Return the TBROM output field from point cloud data.
+        Return the TBROM output field as a PyVista DataSet object, in the form of point cloud data.
 
         Parameters
         ----------
@@ -1944,7 +1947,7 @@ class TwinModel(Model):
         Returns
         -------
         pyvista.DataSet
-            PyVista DataSet object of the TBROM output field from point cloud data.
+            PyVista DataSet object of the TBROM output field in the form of point cloud data.
 
         Raises
         ------
@@ -1952,10 +1955,7 @@ class TwinModel(Model):
             If ``TwinModel`` object does not include any TBROMs.
             If the provided ROM name is not available.
             If the TBROM does not have any point file available.
-
-        TwinModelWarning:
-            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs. In that case, the returned
-            object can be used to visualize field modes only.
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs.
 
         Examples
         --------
@@ -1975,15 +1975,13 @@ class TwinModel(Model):
 
         tbrom = self._tbroms[rom_name]
 
-        if not tbrom.haspointfile:
+        if not tbrom.has_point_file:
             msg = self._check_tbrom_points_file(rom_name)
             self._raise_error(msg)
 
         if not tbrom._hasoutmcs:
-            msg = f"[RomOutputConnection]The TBROM {rom_name} has no common outputs with the Twin {self._model_name}."
-            msg += "\nMake sure the TBROM has its mode coefficients outputs properly connected to the twin's outputs."
-            msg += "\nNo output field is associated to the returned object (only field modes)."
-            self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+            msg = self._error_msg_for_rom_output_connection(rom_name)
+            raise self._raise_error(msg)
 
         return tbrom.field_on_points
 

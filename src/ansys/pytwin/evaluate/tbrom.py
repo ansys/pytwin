@@ -16,7 +16,6 @@ try:
 except ModuleNotFoundError:  # pragma: no cover
     _HAS_TQDM = False
 
-
 class TbRom:
     """
     Instantiates a TBROM that is part of a TWIN file created by Ansys Twin Builder.
@@ -50,6 +49,7 @@ class TbRom:
         self._infbasis = None
         self._pointsdata = None
         self._meshdata = None
+        self._outbasis = None
         self._hasinfmcs = None
         self._hasoutmcs = False
 
@@ -72,17 +72,14 @@ class TbRom:
         self._outname = outputname
         self._outunit = unit
         self._outputfilespath = None
+
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
         [nbpoints, nbmodes] = TbRom._read_properties(propertiespath)
         self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
 
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-        if not os.path.exists(pointpath):
-            self._haspointfile = False
-        else:
-            self._haspointfile = True
-        self._read_points(pointpath)
+        self._has_point_file = self._read_points(pointpath)
 
         outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
         self._init_pointsdata(outpath)
@@ -92,7 +89,7 @@ class TbRom:
         Generate a point file for the full field or a specific part.
 
         The point file can be saved in memory or written to disk. When it is written to disk,
-        the path specified for the ``output_file_name`` parameter is used.
+        the path specified for the ``output_file_path`` parameter is used.
 
         Parameters
         ----------
@@ -104,7 +101,7 @@ class TbRom:
             Named selection on which the point file has to be generated. The default is ``None``, in which case the
             entire domain is considered.
         """
-        vec = self.data_extract(named_selection, self._pointsdata.points)
+        vec = self._data_extract(named_selection, self._pointsdata.points)
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
             return output_file_path
@@ -130,7 +127,7 @@ class TbRom:
             Named selection on which the snasphot has to be generated. The default is ``None``, in which case the
             entire domain is considered.
         """
-        vec = self.data_extract(named_selection, self._pointsdata[self.field_output_name])
+        vec = self._data_extract(named_selection, self._pointsdata[self.field_output_name])
         if on_disk:
             TbRom._write_binary(output_file_path, vec)
             return output_file_path
@@ -198,7 +195,7 @@ class TbRom:
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             mesh_data = mesh
             for i in range(0, nbmc):
-                vec = self.data_extract(named_selection, self._pointsdata["mode" + str(i + 1)])
+                vec = self._data_extract(named_selection, self._pointsdata["mode" + str(i + 1)])
                 mesh_data["mode" + str(i + 1)] = vec
             nb_data = len(vec)
         else:  # interpolation required, e.g. because target mesh is different
@@ -226,13 +223,13 @@ class TbRom:
         Compute the output field results with current mode coefficients.
         """
         mc = list(self._outmcs.values())
-        self._pointsdata[self.field_output_name] = mc[0] * self._pointsdata["mode" + str(1)]
+        self._pointsdata[self.field_output_name] = mc[0] * self._outbasis[0, :].reshape(-1, self.field_output_dim)
         if self._meshdata is not None:
             self._meshdata[self.field_output_name] = mc[0] * self._meshdata["mode" + str(1)]
         for i in range(1, len(mc)):
-            self._pointsdata[self.field_output_name] = (
-                self._pointsdata[self.field_output_name] + mc[i] * self._pointsdata["mode" + str(i + 1)]
-            )
+            self._pointsdata[self.field_output_name] = self._pointsdata[self.field_output_name] + mc[
+                i
+            ] * self._outbasis[i, :].reshape(-1, self.field_output_dim)
             if self._meshdata is not None:
                 self._meshdata[self.field_output_name] = (
                     self._meshdata[self.field_output_name] + mc[i] * self._meshdata["mode" + str(i + 1)]
@@ -247,7 +244,7 @@ class TbRom:
     def input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
 
-    def data_extract(self, named_selection: str, data: np.ndarray):
+    def _data_extract(self, named_selection: str, data: np.ndarray):
         if named_selection is not None:
             pointsids = self.named_selection_indexes(named_selection)
             listids = np.sort(pointsids)
@@ -256,16 +253,17 @@ class TbRom:
             return data
 
     def _read_points(self, filepath):
-        if self.haspointfile:
+        if os.path.exists(filepath):
             points = TbRom._read_binary(filepath)
+            has_point_file = True
         else:
             points = np.zeros(3 * self.nb_points)
+            has_point_file = False
         self._pointsdata = pv.PolyData(points.reshape(-1, 3))
+        return has_point_file
 
     def _init_pointsdata(self, filepath):
-        basis = TbRom._read_basis(filepath)
-        for i in range(0, len(basis)):
-            self._pointsdata["mode" + str(i + 1)] = basis[i].reshape(-1, self.field_output_dim)
+        self._outbasis = TbRom._read_basis(filepath)
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
@@ -340,12 +338,12 @@ class TbRom:
         fields = {}
         if "fields" in data:
             fields = data["fields"]
-        outField = fields["outField"]
+        out_field = fields["outField"]
 
-        nbPoints = outField["nbDof"]
-        nbModes = outField["nbModes"]
+        nb_points = out_field["nbDof"]
+        nb_modes = out_field["nbModes"]
 
-        return [nbPoints, nbModes]
+        return [nb_points, nb_modes]
 
     @staticmethod
     def read_snapshot_size(filepath):
@@ -354,8 +352,8 @@ class TbRom:
         return nbdof
 
     @property
-    def haspointfile(self):
-        return self._haspointfile
+    def has_point_file(self):
+        return self._has_point_file
 
     @property
     def field_input_count(self):
