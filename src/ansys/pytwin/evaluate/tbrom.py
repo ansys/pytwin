@@ -50,6 +50,7 @@ class TbRom:
         self._pointsdata = None
         self._meshdata = None
         self._outbasis = None
+        self._outmeshbasis = None
         self._hasinfmcs = None
         self._hasoutmcs = False
 
@@ -192,25 +193,24 @@ class TbRom:
             ``False``, it is automatically set to ``True`` if ``tqdm`` is available.
         """
         nbmc = self.nb_modes
+        mesh_data = mesh.copy()
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
-            mesh_data = mesh
-            for i in range(0, nbmc):
-                vec = self._data_extract(named_selection, self._pointsdata["mode" + str(i + 1)])
-                mesh_data["mode" + str(i + 1)] = vec
-            nb_data = len(vec)
+            self._outmeshbasis = self._outbasis
+            nb_data = self._outmeshbasis.shape[1]
         else:  # interpolation required, e.g. because target mesh is different
             if not progress_bar and _HAS_TQDM:
                 progress_bar = True
+            pointsdata = self._pointsdata.copy()
+            for i in range(0, nbmc):
+                pointsdata[str(i)] = self._outbasis[i]
             if named_selection is not None:
                 pointsids = self.named_selection_indexes(named_selection)
                 listids = np.sort(pointsids)
-                pointsdata = self._pointsdata.extract_points(listids)
-            else:
-                pointsdata = self._pointsdata
-            mesh_data = mesh.interpolate(
+                pointsdata = pointsdata.extract_points(listids)
+            interpolated_mesh = mesh.interpolate(
                 pointsdata, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
-            )
-            mesh_data = mesh_data.point_data_to_cell_data()
+            ).point_data_to_cell_data()
+            self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
             nb_data = mesh_data.n_cells
 
         # initialize output field data
@@ -223,16 +223,16 @@ class TbRom:
         Compute the output field results with current mode coefficients.
         """
         mc = list(self._outmcs.values())
-        self._pointsdata[self.field_output_name] = mc[0] * self._outbasis[0, :].reshape(-1, self.field_output_dim)
+        self._pointsdata[self.field_output_name] = mc[0] * self._outbasis[0]
         if self._meshdata is not None:
-            self._meshdata[self.field_output_name] = mc[0] * self._meshdata["mode" + str(1)]
+            self._meshdata[self.field_output_name] = mc[0] * self._outmeshbasis[0]
         for i in range(1, len(mc)):
-            self._pointsdata[self.field_output_name] = self._pointsdata[self.field_output_name] + mc[
-                i
-            ] * self._outbasis[i, :].reshape(-1, self.field_output_dim)
+            self._pointsdata[self.field_output_name] = self._pointsdata[self.field_output_name] + \
+                                                       mc[i] * self._outbasis[i]
             if self._meshdata is not None:
                 self._meshdata[self.field_output_name] = (
-                    self._meshdata[self.field_output_name] + mc[i] * self._meshdata["mode" + str(i + 1)]
+                    self._meshdata[self.field_output_name] +
+                    mc[i] * self._outmeshbasis[i]
                 )
         self._pointsdata.set_active_scalars(self.field_output_name)
         if self._meshdata is not None:
@@ -263,7 +263,7 @@ class TbRom:
         return has_point_file
 
     def _init_pointsdata(self, filepath):
-        self._outbasis = TbRom._read_basis(filepath)
+        self._outbasis = TbRom._read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
