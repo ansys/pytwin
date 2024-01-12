@@ -16,6 +16,7 @@ try:
 except ModuleNotFoundError:  # pragma: no cover
     _HAS_TQDM = False
 
+
 class TbRom:
     """
     Instantiates a TBROM that is part of a TWIN file created by Ansys Twin Builder.
@@ -227,12 +228,12 @@ class TbRom:
         if self._meshdata is not None:
             self._meshdata[self.field_output_name] = mc[0] * self._outmeshbasis[0]
         for i in range(1, len(mc)):
-            self._pointsdata[self.field_output_name] = self._pointsdata[self.field_output_name] + \
-                                                       mc[i] * self._outbasis[i]
+            self._pointsdata[self.field_output_name] = (
+                self._pointsdata[self.field_output_name] + mc[i] * self._outbasis[i]
+            )
             if self._meshdata is not None:
                 self._meshdata[self.field_output_name] = (
-                    self._meshdata[self.field_output_name] +
-                    mc[i] * self._outmeshbasis[i]
+                    self._meshdata[self.field_output_name] + mc[i] * self._outmeshbasis[i]
                 )
         self._pointsdata.set_active_scalars(self.field_output_name)
         if self._meshdata is not None:
