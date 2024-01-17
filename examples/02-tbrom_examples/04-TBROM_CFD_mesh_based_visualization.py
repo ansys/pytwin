@@ -146,16 +146,16 @@ namedselection = "outlet"
 nsid = [zone_ids[zone_names.index(namedselection)]]
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=nsid).eval()
 target_mesh = whole_mesh[0].grid
-mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, True, namedselection)  # The projection is
-# performed with interpolation (point cloud data interpolated onto target mesh)
+# The projection is performed with interpolation (point cloud data interpolated onto target mesh)
+rom_on_outlet_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, True, namedselection)
 rom_inputs = {"Mass_Flow_HX": 85.0, "Tube_temperature": 1200.0, "shell_inlet_temp": 320.0}
 twin_model.initialize_evaluation(inputs=rom_inputs)
-mesh_data = mesh_data.cell_data_to_point_data()  # averaging cells data to points data
+rom_on_outlet_mesh = rom_on_outlet_mesh.cell_data_to_point_data()  # averaging cells data to points data
 plotter = pv.Plotter()
 plotter.set_background("white")
 plotter.add_axes()
 plotter.add_mesh(full_mesh, color="grey", opacity=0.25)
-plotter.add_mesh(mesh_data, scalar_bar_args={"color": "black"})
+plotter.add_mesh(rom_on_outlet_mesh, scalar_bar_args={"color": "black"})
 plotter.camera_position = [
     (3.662661397689252, -4.19966326640998, 2.017884510665788),
     (0.922469325699475, -1.2872255352003648, 4.932569683791402),
