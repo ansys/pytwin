@@ -660,6 +660,14 @@ class TwinModel(Model):
 
         return self._twin_runtime.twin_get_rom_resource_directory(rom_name)
 
+    def _warns_if_interpolation_is_forced(self):
+        msg = (
+            f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = "
+            f"{nb_points}, number of mesh cells = {target_mesh.n_cells}, number of mesh points = "
+            f"{target_mesh.n_points}."
+        )
+        self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
     def _warns_if_input_key_not_found(self, inputs: dict):
         if inputs is not None:
             for _input in inputs:
@@ -1849,8 +1857,8 @@ class TwinModel(Model):
             the target mesh is different from the one used to generate the ROM. Interpolation is automatically enforced
             if the target mesh size (i.e. number of cells/points) is different from the point cloud size.
         named_selection: str (optional)
-            Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
-            entire domain is considered.
+            Named selection from the ROM (i.e. subset of points cloud) that will be projected on the targeted mesh. The
+            default is ``None``, in which case the entire domain is considered.
 
         Returns
         -------
@@ -1895,12 +1903,7 @@ class TwinModel(Model):
                 else:
                     nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
                 if not interpolate and (target_mesh.n_cells != nb_points and target_mesh.n_points != nb_points):
-                    msg = (
-                        f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = "
-                        f"{nb_points}, number of mesh cells = {target_mesh.n_cells}, number of mesh points = "
-                        f"{target_mesh.n_points}."
-                    )
-                    self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+                    self._warns_if_interpolation_is_forced()
                     interpolate_flag = True
                 else:
                     interpolate_flag = interpolate
