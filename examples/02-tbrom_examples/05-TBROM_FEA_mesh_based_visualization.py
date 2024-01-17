@@ -94,7 +94,7 @@ target_mesh = whole_mesh.grid
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The projection is performed without interpolation (i.e. direct mapping of data)
 print("Projecting the results on target mesh")
-mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
+rom_on_fea_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 
 ###############################################################################
 # Post processing and field visualization using PyVista
@@ -104,7 +104,7 @@ print("Post processing")
 plotter = pv.Plotter()
 plotter.set_background("white")
 plotter.add_axes()
-plotter.add_mesh(mesh_data, scalar_bar_args={"color": "black"})
+plotter.add_mesh(rom_on_fea_mesh, scalar_bar_args={"color": "black"})
 # plotter.add_mesh(mesh_data, show_edges=True, scalar_bar_args={"color": "black"})
 plotter.camera_position = [
     (-0.03962092584614037, 0.013987037327583286, 0.10356162483172728),
