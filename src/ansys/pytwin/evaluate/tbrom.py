@@ -189,7 +189,6 @@ class TbRom:
             entire domain is considered.
         """
         nbmc = self.nb_modes
-        mesh_data = target_mesh.copy()
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             outmeshbasis = self._outbasis
             if named_selection is not None:
@@ -197,7 +196,6 @@ class TbRom:
                 listids = np.sort(pointsids)
                 outmeshbasis = outmeshbasis[:, listids]
             self._outmeshbasis = outmeshbasis
-            nb_data = self._outmeshbasis.shape[1]
         else:  # interpolation required, e.g. because target mesh is different
             progress_bar = False
             if _HAS_TQDM:
@@ -213,9 +211,10 @@ class TbRom:
                 pointsdata, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
             ).point_data_to_cell_data()
             self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
-            nb_data = mesh_data.n_cells
 
+        mesh_data = target_mesh.copy()
         # initialize output field data
+        nb_data = self._outmeshbasis.shape[1]
         mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
 
         self._meshdata = mesh_data
