@@ -110,7 +110,7 @@ target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) -
 # order as the CFD cells to which they are associated to. This is ensured if the same CFD mesh is used for the
 # projection as the one used to generate the training data for this ROM.
 print("Projecting the results on target mesh")
-mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
+rom_on_cfd_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 
 ###############################################################################
 # Post processing and field visualization using PyVista (part 1)
@@ -120,12 +120,11 @@ print("Post processing (part 1)")
 plotter = pv.Plotter()
 plotter.set_background("white")
 plotter.add_axes()
-full_mesh = mesh_data
+full_mesh = rom_on_cfd_mesh
 plotter.add_mesh(full_mesh, color="grey", opacity=0.1)
-mesh_data = mesh_data.slice(normal=[1, 0, 0])
-mesh_data.set_active_vectors(twin_model.get_field_output_name(rom_name))
-field_vector = mesh_data.glyph(factor=0.1)
-plotter.add_mesh(field_vector, scalar_bar_args={"title": twin_model.get_field_output_name(rom_name), "color": "black"})
+slice_data = rom_on_cfd_mesh.slice(normal=[1, 0, 0])
+glyph_data = slice_data.glyph(factor=0.1)
+plotter.add_mesh(glyph_data, scalar_bar_args={"title": twin_model.get_field_output_name(rom_name), "color": "black"})
 plotter.camera_position = [
     (7.50710902970841, 1.958889533928373, 10.523076657664214),
     (0.07444126006233703, -0.2615789288414023, 3.0867204291179635),
