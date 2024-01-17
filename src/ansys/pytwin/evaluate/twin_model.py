@@ -287,21 +287,6 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
-    def _check_tbrom_mesh_update_args(self, rom_name: str):
-        """
-        Check if the arguments of mesh update method are valid. Raise a ``TwinModelError`` message if not.
-        """
-        if self._check_rom_name_is_valid(rom_name):
-            tbrom = self._tbroms[rom_name]
-            if not tbrom._hasoutmcs:
-                msg = self._error_msg_for_rom_output_connection(rom_name)
-                raise self._raise_error(msg)
-            if tbrom.field_on_mesh is None:
-                msg = self._error_msg_for_tbrom_mesh_empty(rom_name)
-                raise self._raise_error(msg)
-
-        return True
-
     def _error_msg_for_unknown_field_name(self, fieldname, tbrom):
         msg = f"[FieldName]The field name provided {fieldname} is not part of the list of input field names "
         msg += f"{tbrom.field_input_names}."
@@ -320,11 +305,6 @@ class TwinModel(Model):
         msg = f"[PyVistaMesh]Mesh {mesh} "
         msg += f"associated to the ROM name : {rom_name}"
         msg += f"seems to be empty : number of points = {mesh.n_points}, number of cells = {mesh.n_cells}"
-        return msg
-
-    def _error_msg_for_tbrom_mesh_empty(self, rom_name):
-        msg = f"[TBROMMesh]The TBROM {rom_name} mesh_data attribute is not initialized yet."
-        msg += "\nMake sure to perform the mesh projection operation first before calling this method."
         return msg
 
     def _error_msg_for_rom_name(self, rom_name):
