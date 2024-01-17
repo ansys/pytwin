@@ -27,7 +27,7 @@ options. For more information, see the
 #
 #   To be able to use the functionalities to project an output field on a mesh, you
 #   must have a twin with one or more TBROMs. The output mode coefficients for the TBROMs
-#   must be enabled when exporting the TBROMs and connected to twin outputs with following
+#   must be enabled when exporting the TBROMs and connected to twin outputs following
 #   these conventions:
 #
 #   - If there are multiple TBROMs in the twin, the format for the name of the twin
