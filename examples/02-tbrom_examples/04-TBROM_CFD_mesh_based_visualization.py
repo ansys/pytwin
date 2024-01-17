@@ -106,7 +106,9 @@ target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) -
 ###############################################################################
 # Project the TBROM field onto the targeted mesh
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# The projection is performed without interpolation (i.e. direct mapping of data)
+# The projection is performed without interpolation. In that case, it is assumed that the TBROM points have the same
+# order as the CFD cells to which they are associated to. This is ensured if the same CFD mesh is used for the
+# projection as the one used to generate the training data for this ROM.
 print("Projecting the results on target mesh")
 mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 
