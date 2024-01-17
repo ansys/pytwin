@@ -96,19 +96,8 @@ model = dpf.Model(data_sources=ds)
 minfo = model.metadata.mesh_info
 zone_names_vec = minfo.get_property("zone_names")
 zone_ids = zone_names_vec.scoping.ids
-zone_names = zone_names_vec.data
-
-ids = []
-for i in range(0, len(named_selections)):
-    ind = 0
-    found = False
-    while ind < len(zone_names) and found is not True:
-        if zone_names[ind] == named_selections[i]:
-            found = True
-            ids.append(zone_ids[ind])
-        else:
-            ind = ind + 1
-
+zone_names = list(zone_names_vec.data)
+ids = [zone_ids[zone_names.index(name)] for name in named_selections if name in zone_names]
 # extracting the individual grid associated to each named selection and merging all of them in 1 single grid
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=ids).eval()
 target_mesh = whole_mesh[-1].grid
@@ -153,16 +142,8 @@ plotter.show()
 # Creation of the scene and results to display (e.g. velocity magnitude on a given boundary on top of geometry)
 print("Post processing (part 2)")
 namedselection = "outlet"
-ids = []
-ind = 0
-found = False
-while ind < len(zone_names) and found is not True:
-    if zone_names[ind] == namedselection:
-        found = True
-        ids.append(zone_ids[ind])
-    else:
-        ind = ind + 1
-whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=ids).eval()
+nsid = [zone_ids[zone_names.index(namedselection)]]
+whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=nsid).eval()
 target_mesh = whole_mesh[0].grid
 mesh_data = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, True, namedselection)  # The projection is
 # performed with interpolation (point cloud data interpolated onto target mesh)
