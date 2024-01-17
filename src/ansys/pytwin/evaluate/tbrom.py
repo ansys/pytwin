@@ -174,32 +174,28 @@ class TbRom:
                 self._infmcs[name][item] = mc[index]
                 index = index + 1
 
-    def project_on_mesh(
-        self, mesh: pv.DataSet, interpolate: bool, named_selection: str = None, progress_bar: bool = False
-    ):
+    def project_on_mesh(self, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
         """
         Project the field ROM SVD basis onto a mesh.
 
         Parameters
         ----------
-        mesh: pyvista.DataSet
+        target_mesh: pyvista.DataSet
             PyVista DataSet object of the targeted mesh.
         interpolate: bool
             Flag to indicate whether the point cloud data are interpolated (True) or not (False) on the targeted mesh.
         named_selection: str (optional)
             Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
             entire domain is considered.
-        progress_bar : bool (optional)
-            Display a progress bar using ``tqdm`` when ``True``. Helpful for showing interpolation progress. Default to
-            ``False``, it is automatically set to ``True`` if ``tqdm`` is available.
         """
         nbmc = self.nb_modes
-        mesh_data = mesh.copy()
+        mesh_data = target_mesh.copy()
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             self._outmeshbasis = self._outbasis
             nb_data = self._outmeshbasis.shape[1]
         else:  # interpolation required, e.g. because target mesh is different
-            if not progress_bar and _HAS_TQDM:
+            progress_bar = False
+            if _HAS_TQDM:
                 progress_bar = True
             pointsdata = self._pointsdata.copy()
             for i in range(0, nbmc):
@@ -208,7 +204,7 @@ class TbRom:
                 pointsids = self.named_selection_indexes(named_selection)
                 listids = np.sort(pointsids)
                 pointsdata = pointsdata.extract_points(listids)
-            interpolated_mesh = mesh.interpolate(
+            interpolated_mesh = target_mesh.interpolate(
                 pointsdata, sharpness=5, radius=0.0001, strategy="closest_point", progress_bar=progress_bar
             ).point_data_to_cell_data()
             self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
