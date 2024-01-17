@@ -1843,7 +1843,8 @@ class TwinModel(Model):
 
     def project_tbrom_on_mesh(self, rom_name: str, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
         """
-        Project the field ROM data onto a targeted mesh
+        Project the field ROM data onto a targeted mesh, using the current states of the TwinModel. The returned PyVista
+        DataSet object is automatically updated whenever the TwinModel is evaluated.
 
         Parameters
         ----------
@@ -1884,11 +1885,11 @@ class TwinModel(Model):
         >>> from pytwin import TwinModel
         >>> import pyvista as pv
         >>> # Instantiate a twin model, initialize it, and evaluate it step by step until you want to save its state
-        >>> model1 = TwinModel('model.twin')
-        >>> model1.initialize_evaluation()
-        >>> romname = model1.tbrom_names[0]
+        >>> model = TwinModel('model.twin')
+        >>> romname = model.tbrom_names[0]
         >>> target_mesh = pv.read('mesh.vtk')
-        >>> fieldresults = model1.project_tbrom_on_mesh(romname, target_mesh)
+        >>> rom_results_on_mesh = model.project_tbrom_on_mesh(romname, target_mesh)
+        >>> model.initialize_evaluation()
         """
         self._log_key = "MeshProjection"
 
@@ -1920,7 +1921,8 @@ class TwinModel(Model):
 
     def get_tbrom_output_field(self, rom_name: str):
         """
-        Return the TBROM output field as a PyVista DataSet object, in the form of point cloud data.
+        Return the TBROM output field as a PyVista DataSet object, in the form of point cloud data. The resulting field
+        is based on current states of the TwinModel and is automatically updated whenever the TwinModel is evaluated.
 
         Parameters
         ----------
@@ -1945,7 +1947,9 @@ class TwinModel(Model):
         --------
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.get_tbrom_output_field(model.tbrom_names[0])
+        >>> romname = model.tbrom_names[0]
+        >>> rom_results = model.get_tbrom_output_field(romname)
+        >>> model.initialize_evaluation()
         """
         self._log_key = "GetPointsData"
 
