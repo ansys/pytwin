@@ -176,7 +176,7 @@ class TbRom:
 
     def project_on_mesh(self, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
         """
-        Project the field ROM SVD basis onto a mesh.
+        Project the field ROM SVD basis onto a targeted mesh.
 
         Parameters
         ----------
@@ -191,7 +191,12 @@ class TbRom:
         nbmc = self.nb_modes
         mesh_data = target_mesh.copy()
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
-            self._outmeshbasis = self._outbasis
+            outmeshbasis = self._outbasis
+            if named_selection is not None:
+                pointsids = self.named_selection_indexes(named_selection)
+                listids = np.sort(pointsids)
+                outmeshbasis = outmeshbasis[:, listids]
+            self._outmeshbasis = outmeshbasis
             nb_data = self._outmeshbasis.shape[1]
         else:  # interpolation required, e.g. because target mesh is different
             progress_bar = False

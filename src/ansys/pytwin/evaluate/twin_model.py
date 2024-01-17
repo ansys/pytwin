@@ -1855,7 +1855,7 @@ class TwinModel(Model):
 
     def project_tbrom_on_mesh(self, rom_name: str, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
         """
-        Project the field ROM data onto a mesh
+        Project the field ROM data onto a targeted mesh
 
         Parameters
         ----------
