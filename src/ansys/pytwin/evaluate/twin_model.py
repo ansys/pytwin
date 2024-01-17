@@ -660,11 +660,11 @@ class TwinModel(Model):
 
         return self._twin_runtime.twin_get_rom_resource_directory(rom_name)
 
-    def _warns_if_interpolation_is_forced(self):
+    def _warns_if_interpolation_is_forced(self, nb_points, tm_ncells, tm_nbpoints):
         msg = (
             f"[MeshProjection]Switching interpolate flag from False to True. Number of TBROM points = "
-            f"{nb_points}, number of mesh cells = {target_mesh.n_cells}, number of mesh points = "
-            f"{target_mesh.n_points}."
+            f"{nb_points}, number of mesh cells = {tm_ncells}, number of mesh points = "
+            f"{tm_nbpoints}."
         )
         self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
@@ -1903,7 +1903,7 @@ class TwinModel(Model):
                 else:
                     nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
                 if not interpolate and (target_mesh.n_cells != nb_points and target_mesh.n_points != nb_points):
-                    self._warns_if_interpolation_is_forced()
+                    self._warns_if_interpolation_is_forced(nb_points, target_mesh.n_cells, target_mesh.n_points)
                     interpolate_flag = True
                 else:
                     interpolate_flag = interpolate
