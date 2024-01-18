@@ -5,9 +5,9 @@ import struct
 from typing import Union
 
 import numpy as np
+from pytwin import _HAS_TQDM
 import pyvista as pv
 
-from pytwin import _HAS_TQDM
 
 class TbRom:
     """

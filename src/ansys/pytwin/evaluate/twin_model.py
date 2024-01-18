@@ -1841,7 +1841,9 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def project_tbrom_on_mesh(self, rom_name: str, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
+    def project_tbrom_on_mesh(
+        self, rom_name: str, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None
+    ):
         """
         Project the field ROM data onto a targeted mesh, using the current states of the TwinModel. The returned PyVista
         DataSet object is automatically updated whenever the TwinModel is evaluated.
