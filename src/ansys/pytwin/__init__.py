@@ -8,6 +8,15 @@ try:
 except ModuleNotFoundError:
     import importlib_metadata
 
+# Checking if tqdm is installed.
+# If it is, the default value for progress_bar is true.
+try:
+    from tqdm import tqdm  # noqa: F401
+
+    _HAS_TQDM = True
+except ModuleNotFoundError:  # pragma: no cover
+    _HAS_TQDM = False
+
 
 __version__ = importlib_metadata.version("pytwin")
 
