@@ -215,20 +215,13 @@ class TbRom:
         """
         Compute the output field results with current mode coefficients.
         """
-        mc = list(self._outmcs.values())
-        self._pointsdata[self.field_output_name] = mc[0] * self._outbasis[0]
-        if self._meshdata is not None:
-            self._meshdata[self.field_output_name] = mc[0] * self._outmeshbasis[0]
-        for i in range(1, len(mc)):
-            self._pointsdata[self.field_output_name] = (
-                self._pointsdata[self.field_output_name] + mc[i] * self._outbasis[i]
-            )
-            if self._meshdata is not None:
-                self._meshdata[self.field_output_name] = (
-                    self._meshdata[self.field_output_name] + mc[i] * self._outmeshbasis[i]
-                )
+        mc = np.asarray(list(self._outmcs.values()))
+
+        self._pointsdata[self.field_output_name] = np.tensordot(mc, self._outbasis, axes=1)
         self._pointsdata.set_active_scalars(self.field_output_name)
+
         if self._meshdata is not None:
+            self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
             self._meshdata.set_active_scalars(self.field_output_name)
 
     def _named_selection_indexes(self, nsname: str):
