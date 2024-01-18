@@ -159,12 +159,12 @@ class TwinModel(Model):
             if not os.path.exists(snapshot_detail):
                 msg = self._error_msg_input_snapshot_path_does_not_exist(snapshot_detail)
                 raise self._raise_error(msg)
-            snapshotsize = TbRom.read_snapshot_size(snapshot_detail)
+            snapshotsize = TbRom._read_snapshot_size(snapshot_detail)
         else:
             msg = self._error_msg_input_snapshot_detail_wrong_type(snapshot_detail)
             raise self._raise_error(msg)
 
-        inputfieldsize = tbrom.input_field_size(fieldname)
+        inputfieldsize = tbrom._input_field_size(fieldname)
         if snapshotsize != inputfieldsize:
             msg = self._error_msg_input_snapshot_size(snapshotsize, inputfieldsize)
             raise self._raise_error(msg)
@@ -765,7 +765,7 @@ class TwinModel(Model):
         """
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
-        tbrom.update_output_field()
+        tbrom._update_output_field()
 
     def _update_field_inputs(self, field_inputs: dict):
         for tbrom_name, field_inputs in field_inputs.items():
@@ -1692,7 +1692,7 @@ class TwinModel(Model):
         try:
             output_filename = self._snapshot_filename(rom_name, named_selection)
             output_filepath = os.path.join(self._tbroms[rom_name]._outputfilespath, output_filename)
-            return self._tbroms[rom_name].generate_snapshot(on_disk, output_filepath, named_selection)
+            return self._tbroms[rom_name]._generate_snapshot(on_disk, output_filepath, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the snapshot:"
@@ -1834,7 +1834,7 @@ class TwinModel(Model):
             if self._check_tbrom_points_generation_args(rom_name, named_selection):
                 output_file = self._points_filename(rom_name, named_selection)
                 output_file_path = os.path.join(self._tbroms[rom_name]._outputfilespath, output_file)
-                return self._tbroms[rom_name].generate_points(on_disk, output_file_path, named_selection)
+                return self._tbroms[rom_name]._generate_points(on_disk, output_file_path, named_selection)
 
         except Exception as e:
             msg = f"Something went wrong while generating the points file:"
@@ -1902,7 +1902,7 @@ class TwinModel(Model):
                 if named_selection is None:
                     nb_points = self._tbroms[rom_name].nb_points
                 else:
-                    nb_points = len(self._tbroms[rom_name].named_selection_indexes(named_selection))
+                    nb_points = len(self._tbroms[rom_name]._named_selection_indexes(named_selection))
                 if not interpolate and (target_mesh.n_cells != nb_points and target_mesh.n_points != nb_points):
                     self._warns_if_interpolation_is_forced(nb_points, target_mesh.n_cells, target_mesh.n_points)
                     interpolate_flag = True
@@ -1910,7 +1910,7 @@ class TwinModel(Model):
                     interpolate_flag = interpolate
                 if interpolate_flag:
                     self._check_tbrom_points_file(rom_name)
-                self._tbroms[rom_name].project_on_mesh(target_mesh, interpolate_flag, named_selection)
+                self._tbroms[rom_name]._project_on_mesh(target_mesh, interpolate_flag, named_selection)
                 self._update_tbrom_outmcs(self._tbroms[rom_name])
                 return self._tbroms[rom_name].field_on_mesh
 

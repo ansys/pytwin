@@ -78,7 +78,7 @@ class TbRom:
         outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)
         self._init_pointsdata(outpath)
 
-    def generate_points(self, on_disk: bool, output_file_path: str, named_selection: str = None):
+    def _generate_points(self, on_disk: bool, output_file_path: str, named_selection: str = None):
         """
         Generate a point file for the full field or a specific part.
 
@@ -97,12 +97,12 @@ class TbRom:
         """
         vec = self._data_extract(named_selection, self._pointsdata.points)
         if on_disk:
-            TbRom._write_binary(output_file_path, vec)
+            TbRom.write_binary(output_file_path, vec)
             return output_file_path
         else:
             return vec
 
-    def generate_snapshot(self, on_disk: bool, output_file_path: str, named_selection: str = None):
+    def _generate_snapshot(self, on_disk: bool, output_file_path: str, named_selection: str = None):
         """
         Generate a field snapshot based on current states of the TBROM for the
         full field or a specific part.
@@ -123,7 +123,7 @@ class TbRom:
         """
         vec = self._data_extract(named_selection, self._pointsdata[self.field_output_name])
         if on_disk:
-            TbRom._write_binary(output_file_path, vec)
+            TbRom.write_binary(output_file_path, vec)
             return output_file_path
         else:
             return vec
@@ -144,7 +144,7 @@ class TbRom:
         if isinstance(snapshot, np.ndarray):
             vecnp = snapshot
         else:
-            vecnp = TbRom._read_binary(snapshot)
+            vecnp = TbRom.read_binary(snapshot)
 
         if name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
@@ -166,7 +166,7 @@ class TbRom:
                 self._infmcs[name][item] = mc[index]
                 index = index + 1
 
-    def project_on_mesh(self, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
+    def _project_on_mesh(self, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None):
         """
         Project the field ROM SVD basis onto a targeted mesh.
 
@@ -184,7 +184,7 @@ class TbRom:
         if not interpolate:  # target mesh is same as the one used to generate the ROM -> no interpolation required
             outmeshbasis = self._outbasis
             if named_selection is not None:
-                pointsids = self.named_selection_indexes(named_selection)
+                pointsids = self._named_selection_indexes(named_selection)
                 listids = np.sort(pointsids)
                 outmeshbasis = outmeshbasis[:, listids]
             self._outmeshbasis = outmeshbasis
@@ -196,7 +196,7 @@ class TbRom:
             for i in range(0, nbmc):
                 pointsdata[str(i)] = self._outbasis[i]
             if named_selection is not None:
-                pointsids = self.named_selection_indexes(named_selection)
+                pointsids = self._named_selection_indexes(named_selection)
                 listids = np.sort(pointsids)
                 pointsdata = pointsdata.extract_points(listids)
             interpolated_mesh = target_mesh.interpolate(
@@ -211,7 +211,7 @@ class TbRom:
 
         self._meshdata = mesh_data
 
-    def update_output_field(self):
+    def _update_output_field(self):
         """
         Compute the output field results with current mode coefficients.
         """
@@ -231,15 +231,15 @@ class TbRom:
         if self._meshdata is not None:
             self._meshdata.set_active_scalars(self.field_output_name)
 
-    def named_selection_indexes(self, nsname: str):
+    def _named_selection_indexes(self, nsname: str):
         return self._nsidslist[nsname]
 
-    def input_field_size(self, fieldname: str):
+    def _input_field_size(self, fieldname: str):
         return len(self._infbasis[fieldname][0])
 
     def _data_extract(self, named_selection: str, data: np.ndarray):
         if named_selection is not None:
-            pointsids = self.named_selection_indexes(named_selection)
+            pointsids = self._named_selection_indexes(named_selection)
             listids = np.sort(pointsids)
             return data[listids]
         else:
@@ -247,7 +247,7 @@ class TbRom:
 
     def _read_points(self, filepath):
         if os.path.exists(filepath):
-            points = TbRom._read_binary(filepath)
+            points = TbRom.read_binary(filepath)
             has_point_file = True
         else:
             points = np.zeros(3 * self.nb_points)
@@ -262,21 +262,13 @@ class TbRom:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
 
     @staticmethod
-    def _read_basis(filepath):
-        with open(filepath, "rb") as f:
-            var = struct.unpack("cccccccccccccccc", f.read(16))[0]
-            nb_val = struct.unpack("Q", f.read(8))[0]
-            nb_mc = struct.unpack("Q", f.read(8))[0]
-            return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
-
-    @staticmethod
-    def _read_binary(filepath):
+    def read_binary(filepath):
         return np.fromfile(filepath, dtype=np.double, offset=8).reshape(
             -1,
         )
 
     @staticmethod
-    def _write_binary(filepath, vec):
+    def write_binary(filepath, vec):
         vec = vec.reshape(
             -1,
         )
@@ -286,6 +278,14 @@ class TbRom:
             f.write(struct.pack("Q", len(vec)))
             vec.tofile(f)
         return True
+
+    @staticmethod
+    def _read_basis(filepath):
+        with open(filepath, "rb") as f:
+            var = struct.unpack("cccccccccccccccc", f.read(16))[0]
+            nb_val = struct.unpack("Q", f.read(8))[0]
+            nb_mc = struct.unpack("Q", f.read(8))[0]
+            return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
 
     @staticmethod
     def _read_settings(filepath):
@@ -339,7 +339,7 @@ class TbRom:
         return [nb_points, nb_modes]
 
     @staticmethod
-    def read_snapshot_size(filepath):
+    def _read_snapshot_size(filepath):
         with open(filepath, "rb") as f:
             nbdof = struct.unpack("Q", f.read(8))[0]
         return nbdof
