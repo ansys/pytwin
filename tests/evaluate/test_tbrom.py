@@ -6,6 +6,7 @@ import pandas as pd
 from pytwin import TwinModel, TwinModelError, download_file
 from pytwin.evaluate.tbrom import TbRom
 from pytwin.settings import get_pytwin_log_file
+import pyvista as pv
 
 
 def reinit_settings():
@@ -320,7 +321,7 @@ class TestTbRom:
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
-        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        memory_snp = TbRom.read_binary(INPUT_SNAPSHOT)
         twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": memory_snp}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
         assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
@@ -360,7 +361,7 @@ class TestTbRom:
             assert "[InputSnapshotNone]" in str(e)
 
         # Raise en exception if provided snapshot is not string, Path or np.array
-        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        memory_snp = TbRom.read_binary(INPUT_SNAPSHOT)
         try:
             twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp.tolist()}})
         except TwinModelError as e:
@@ -445,7 +446,7 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
         fieldname = "inputPressure"
-        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        memory_snp = TbRom.read_binary(INPUT_SNAPSHOT)
         # Step t=0.0s
         twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp}})
         assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
@@ -503,7 +504,7 @@ class TestTbRom:
             assert "[InputSnapshotNone]" in str(e)
 
         # Raise en exception if provided snapshot is not string, Path or np.array
-        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        memory_snp = TbRom.read_binary(INPUT_SNAPSHOT)
         try:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp.tolist()}})
         except TwinModelError as e:
@@ -587,7 +588,7 @@ class TestTbRom:
         twinmodel.initialize_evaluation()
         romname = twinmodel.tbrom_names[0]
         fieldname = "inputPressure"
-        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        memory_snp = TbRom.read_binary(INPUT_SNAPSHOT)
 
         # Step t=0.0s
         twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp}})
@@ -655,7 +656,7 @@ class TestTbRom:
             assert "[InputSnapshotListNone]" in str(e)
 
         # Raise an exception if provided snapshots are not string, Path or np.array
-        memory_snp = TbRom._read_binary(INPUT_SNAPSHOT)
+        memory_snp = TbRom.read_binary(INPUT_SNAPSHOT)
         try:
             twinmodel.evaluate_batch(
                 inputs_df=pd.DataFrame({"Time": [0.0, 1.0]}),
@@ -755,7 +756,7 @@ class TestTbRom:
 
         # Generate snapshot on disk
         snp_filepath = twinmodel.generate_snapshot(romname, True)
-        snp_vec_on_disk = TbRom._read_binary(snp_filepath)
+        snp_vec_on_disk = TbRom.read_binary(snp_filepath)
         assert snp_vec_on_disk.shape[0] == 313266
         assert np.isclose(snp_vec_on_disk[0], 1.7188266861184398e-05)
         assert np.isclose(snp_vec_on_disk[-1], -1.3100502753567515e-05)
@@ -858,9 +859,9 @@ class TestTbRom:
         snapshot_paths = twinmodel.generate_snapshot_batch(batch_results, romname)
         assert len(snapshot_paths) == 3
 
-        snp0 = twinmodel._tbroms[romname]._read_binary(snapshot_paths[0])
-        snp1 = twinmodel._tbroms[romname]._read_binary(snapshot_paths[1])
-        snp2 = twinmodel._tbroms[romname]._read_binary(snapshot_paths[2])
+        snp0 = twinmodel._tbroms[romname].read_binary(snapshot_paths[0])
+        snp1 = twinmodel._tbroms[romname].read_binary(snapshot_paths[1])
+        snp2 = twinmodel._tbroms[romname].read_binary(snapshot_paths[2])
 
         assert np.isclose(max(snp0), 4.4525419095601117e-05)
         assert np.isclose(max(snp1), 4.452541222688557e-05)
@@ -882,7 +883,7 @@ class TestTbRom:
 
         # Generate points on disk
         points_filepath = twinmodel.generate_points(romname, True)
-        points_vec = TbRom._read_binary(points_filepath)
+        points_vec = TbRom.read_binary(points_filepath)
         assert points_vec.shape[0] == 313266
         assert np.isclose(points_vec[0], 0.0)
         assert np.isclose(points_vec[-1], 38.919245779058635)
@@ -901,7 +902,7 @@ class TestTbRom:
         # Generate points on named selection on disk
         ns = twinmodel.get_named_selections(romname)
         points_filepath_ns = twinmodel.generate_points(romname, True, named_selection=ns[0])
-        points_vec_ns = TbRom._read_binary(points_filepath_ns)
+        points_vec_ns = TbRom.read_binary(points_filepath_ns)
         assert points_vec_ns.shape[0] == 78594
         assert np.isclose(points_vec_ns[0], 0.0)
         assert np.isclose(points_vec_ns[-1], 68.18921187292435)
@@ -1142,6 +1143,87 @@ class TestTbRom:
         with open(log_file, "r") as log:
             log_str = log.readlines()
         assert "[ViewFilePath]" in "".join(log_str)
+
+    def test_tbrom_projection_errors(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        mesh = pv.PolyData()
+        romname = "unknown"
+
+        # Raise an exception if twin model not initialized
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[Initialization]" in str(e)
+
+        twinmodel.initialize_evaluation()
+
+        # Raise an exception if unknown rom name is given
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise an exception as the twin considered has not output MC connected
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
+
+        # Raise an exception if mesh provided is not consistent
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[PyVistaMesh]" in str(e)
+
+        mesh = pv.read(MESH_FILE)
+
+        # Raise an exception if unknown named selection is given
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[NamedSelection]" in str(e)
+
+        # Raise an exception if interpolate is True and no points file is available
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        filepath = twinmodel.get_geometry_filepath(rom_name=romname)
+        os.remove(filepath)
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, True, nslist[0])
+        except TwinModelError as e:
+            assert "[GeometryFile]" in str(e)
+
+        # Raise a warning if interpolation flag set to False and target mesh has not same size as point cloud
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "Switching interpolate flag from False to True" in "".join(log_str)
+
+        # Raise an exception if any issue occurs during projection
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        except TwinModelError as e:
+            assert "MeshProjection" in str(e)
 
     def test_tbrom_get_output_field_errors(self):
         reinit_settings()
