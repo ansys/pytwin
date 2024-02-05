@@ -28,7 +28,7 @@ def reinit_settings():
 
 
 class TestDefaultSettings:
-    #def test_default_setting(self):
+    # def test_default_setting(self):
     #    # Working directory is created in temp folder
     #    wd = get_pytwin_working_dir()
     #    assert tempfile.gettempdir() in wd
@@ -203,7 +203,7 @@ class TestDefaultSettings:
         assert os.path.exists(UNIT_TEST_WD)
         assert UNIT_TEST_WD == get_pytwin_working_dir()
 
-    #def test_modify_working_dir_with_existing_erase_false(self):
+    # def test_modify_working_dir_with_existing_erase_false(self):
     #    # Init unit test
     #    reinit_settings()
     #    os.mkdir(UNIT_TEST_WD)
@@ -218,7 +218,7 @@ class TestDefaultSettings:
     #    assert "test.txt" in os.listdir(UNIT_TEST_WD)
     #    assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
     #
-    #def test_modify_working_dir_with_existing_erase_true(self):
+    # def test_modify_working_dir_with_existing_erase_true(self):
     #    # Init unit test
     #    reinit_settings()
     #    os.mkdir(UNIT_TEST_WD)
