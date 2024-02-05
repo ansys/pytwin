@@ -1,7 +1,6 @@
 import logging
 import os
 import shutil
-#import tempfile
 
 from pytwin import (
     PyTwinLogLevel,
@@ -14,6 +13,9 @@ from pytwin import (
     modify_pytwin_working_dir,
     pytwin_logging_is_enabled,
 )
+
+# import tempfile
+
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
