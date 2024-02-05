@@ -1,7 +1,7 @@
 import logging
 import os
 import shutil
-import tempfile
+#import tempfile
 
 from pytwin import (
     PyTwinLogLevel,
