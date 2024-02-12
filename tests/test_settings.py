@@ -48,7 +48,7 @@ class TestDefaultSettings:
             lines = f.readlines()
         n_lines2 = len(lines)
         assert "Hello 10" not in lines
-        assert n_lines2-n_lines1 == 4 # all the logger additions except debug
+        assert n_lines2 - n_lines1 == 4  # all the logger additions except debug
         assert os.path.exists(log_file)
         assert len(logger.handlers) == 1
         assert pytwin_logging_is_enabled()
