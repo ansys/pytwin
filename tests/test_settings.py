@@ -236,7 +236,7 @@ class TestDefaultSettings:
         # Existing dir with erase = false
         modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=True)
         temp = os.listdir(UNIT_TEST_WD)
-        #assert len(os.listdir(UNIT_TEST_WD)) == 1  # log file -> CP change as failing on Linux testing
+        # assert len(os.listdir(UNIT_TEST_WD)) == 1  # log file -> CP change as failing on Linux testing
         assert "test.txt" not in os.listdir(UNIT_TEST_WD)
         assert "pytwin.log" in os.listdir(UNIT_TEST_WD)  # CP change
         assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
