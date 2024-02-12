@@ -14,7 +14,7 @@ from pytwin import (
     pytwin_logging_is_enabled,
 )
 
-# import tempfile
+import tempfile
 
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
@@ -30,27 +30,28 @@ def reinit_settings():
 
 
 class TestDefaultSettings:
-    # def test_default_setting(self):
-    #    # Working directory is created in temp folder
-    #    wd = get_pytwin_working_dir()
-    #    assert tempfile.gettempdir() in wd
-    #    assert os.path.exists(wd)
-    #    # Logging is redirected to a file with INFO level
-    #    log_file = get_pytwin_log_file()
-    #    logger = get_pytwin_logger()
-    #    logger.debug("Hello 10")
-    #    logger.info("Hello 20")
-    #    logger.warning("Hello 30")
-    #    logger.error("Hello 40")
-    #    logger.critical("Hello 50")
-    #    with open(log_file, "r") as f:
-    #        lines = f.readlines()
-    #    assert "Hello 10" not in lines
-    #    assert len(lines) == 5
-    #    assert os.path.exists(log_file)
-    #    assert len(logger.handlers) == 1
-    #    assert pytwin_logging_is_enabled()
-    #
+    def test_default_setting(self):
+        # Working directory is created in temp folder
+        wd = get_pytwin_working_dir()
+        assert tempfile.gettempdir() in wd
+        assert os.path.exists(wd)
+        # Logging is redirected to a file with INFO level
+        log_file = get_pytwin_log_file()
+        logger = get_pytwin_logger()
+        logger.debug("Hello 10")
+        logger.info("Hello 20")
+        logger.warning("Hello 30")
+        logger.error("Hello 40")
+        logger.critical("Hello 50")
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        print(lines)
+        assert "Hello 10" not in lines
+        assert len(lines) == 5
+        assert os.path.exists(log_file)
+        assert len(logger.handlers) == 1
+        assert pytwin_logging_is_enabled()
+
     def test_modify_logging_raises_error(self):
         # Init unit test
         reinit_settings()
