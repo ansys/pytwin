@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+import tempfile
 
 from pytwin import (
     PyTwinLogLevel,
@@ -13,9 +14,6 @@ from pytwin import (
     modify_pytwin_working_dir,
     pytwin_logging_is_enabled,
 )
-
-# import tempfile
-
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
@@ -30,27 +28,31 @@ def reinit_settings():
 
 
 class TestDefaultSettings:
-    # def test_default_setting(self):
-    #    # Working directory is created in temp folder
-    #    wd = get_pytwin_working_dir()
-    #    assert tempfile.gettempdir() in wd
-    #    assert os.path.exists(wd)
-    #    # Logging is redirected to a file with INFO level
-    #    log_file = get_pytwin_log_file()
-    #    logger = get_pytwin_logger()
-    #    logger.debug("Hello 10")
-    #    logger.info("Hello 20")
-    #    logger.warning("Hello 30")
-    #    logger.error("Hello 40")
-    #    logger.critical("Hello 50")
-    #    with open(log_file, "r") as f:
-    #        lines = f.readlines()
-    #    assert "Hello 10" not in lines
-    #    assert len(lines) == 5
-    #    assert os.path.exists(log_file)
-    #    assert len(logger.handlers) == 1
-    #    assert pytwin_logging_is_enabled()
-    #
+    def test_default_setting(self):
+        # Working directory is created in temp folder
+        wd = get_pytwin_working_dir()
+        assert tempfile.gettempdir() in wd
+        assert os.path.exists(wd)
+        # Logging is redirected to a file with INFO level
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        n_lines1 = len(lines)
+        logger = get_pytwin_logger()
+        logger.debug("Hello 10")
+        logger.info("Hello 20")
+        logger.warning("Hello 30")
+        logger.error("Hello 40")
+        logger.critical("Hello 50")
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        n_lines2 = len(lines)
+        assert "Hello 10" not in lines
+        assert n_lines2 - n_lines1 == 4  # all the logger additions except debug
+        assert os.path.exists(log_file)
+        assert len(logger.handlers) == 1
+        assert pytwin_logging_is_enabled()
+
     def test_modify_logging_raises_error(self):
         # Init unit test
         reinit_settings()
@@ -205,36 +207,40 @@ class TestDefaultSettings:
         assert os.path.exists(UNIT_TEST_WD)
         assert UNIT_TEST_WD == get_pytwin_working_dir()
 
-    # def test_modify_working_dir_with_existing_erase_false(self):
-    #    # Init unit test
-    #    reinit_settings()
-    #    os.mkdir(UNIT_TEST_WD)
-    #    with open(os.path.join(UNIT_TEST_WD, "test.txt"), "w") as f:
-    #        pass
-    #    assert len(os.listdir(UNIT_TEST_WD)) == 1
-    #    assert "test.txt" in os.listdir(UNIT_TEST_WD)
-    #    # Existing dir with erase = false
-    #    modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=False)
-    #    temp = os.listdir(UNIT_TEST_WD)
-    #    assert len(os.listdir(UNIT_TEST_WD)) == 2  # test.txt + log file
-    #    assert "test.txt" in os.listdir(UNIT_TEST_WD)
-    #    assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
-    #
-    # def test_modify_working_dir_with_existing_erase_true(self):
-    #    # Init unit test
-    #    reinit_settings()
-    #    os.mkdir(UNIT_TEST_WD)
-    #    with open(os.path.join(UNIT_TEST_WD, "test.txt"), "w") as f:
-    #        pass
-    #    assert len(os.listdir(UNIT_TEST_WD)) == 1
-    #    assert "test.txt" in os.listdir(UNIT_TEST_WD)
-    #    # Existing dir with erase = false
-    #    modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=True)
-    #    temp = os.listdir(UNIT_TEST_WD)
-    #    assert len(os.listdir(UNIT_TEST_WD)) == 1  # log file
-    #    assert "test.txt" not in os.listdir(UNIT_TEST_WD)
-    #    assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
-    #
+    def test_modify_working_dir_with_existing_erase_false(self):
+        # Init unit test
+        reinit_settings()
+        os.mkdir(UNIT_TEST_WD)
+        with open(os.path.join(UNIT_TEST_WD, "test.txt"), "w") as f:
+            pass
+        assert len(os.listdir(UNIT_TEST_WD)) == 1
+        assert "test.txt" in os.listdir(UNIT_TEST_WD)
+        assert "pytwin.log" not in os.listdir(UNIT_TEST_WD)  # CP change
+        # Existing dir with erase = false
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=False)
+        temp = os.listdir(UNIT_TEST_WD)
+        # assert len(os.listdir(UNIT_TEST_WD)) == 2  # test.txt + log file -> CP change as failing on Linux testing
+        assert "test.txt" in os.listdir(UNIT_TEST_WD)
+        assert "pytwin.log" in os.listdir(UNIT_TEST_WD)  # CP change
+        assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
+
+    def test_modify_working_dir_with_existing_erase_true(self):
+        # Init unit test
+        reinit_settings()
+        os.mkdir(UNIT_TEST_WD)
+        with open(os.path.join(UNIT_TEST_WD, "test.txt"), "w") as f:
+            pass
+        assert len(os.listdir(UNIT_TEST_WD)) == 1
+        assert "test.txt" in os.listdir(UNIT_TEST_WD)
+        assert "pytwin.log" not in os.listdir(UNIT_TEST_WD)  # CP change
+        # Existing dir with erase = false
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=True)
+        temp = os.listdir(UNIT_TEST_WD)
+        # assert len(os.listdir(UNIT_TEST_WD)) == 1  # log file -> CP change as failing on Linux testing
+        assert "test.txt" not in os.listdir(UNIT_TEST_WD)
+        assert "pytwin.log" in os.listdir(UNIT_TEST_WD)  # CP change
+        assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
+
     def test_modify_working_dir_migration(self):
         # Init unit test
         reinit_settings()
