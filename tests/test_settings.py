@@ -207,21 +207,21 @@ class TestDefaultSettings:
         assert os.path.exists(UNIT_TEST_WD)
         assert UNIT_TEST_WD == get_pytwin_working_dir()
 
-    # def test_modify_working_dir_with_existing_erase_false(self):
-    #    # Init unit test
-    #    reinit_settings()
-    #    os.mkdir(UNIT_TEST_WD)
-    #    with open(os.path.join(UNIT_TEST_WD, "test.txt"), "w") as f:
-    #        pass
-    #    assert len(os.listdir(UNIT_TEST_WD)) == 1
-    #    assert "test.txt" in os.listdir(UNIT_TEST_WD)
-    #    # Existing dir with erase = false
-    #    modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=False)
-    #    temp = os.listdir(UNIT_TEST_WD)
-    #    assert len(os.listdir(UNIT_TEST_WD)) == 2  # test.txt + log file
-    #    assert "test.txt" in os.listdir(UNIT_TEST_WD)
-    #    assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
-    #
+    def test_modify_working_dir_with_existing_erase_false(self):
+        # Init unit test
+        reinit_settings()
+        os.mkdir(UNIT_TEST_WD)
+        with open(os.path.join(UNIT_TEST_WD, "test.txt"), "w") as f:
+            pass
+        assert len(os.listdir(UNIT_TEST_WD)) == 1
+        assert "test.txt" in os.listdir(UNIT_TEST_WD)
+        # Existing dir with erase = false
+        modify_pytwin_working_dir(new_path=UNIT_TEST_WD, erase=False)
+        temp = os.listdir(UNIT_TEST_WD)
+        assert len(os.listdir(UNIT_TEST_WD)) == 2  # test.txt + log file
+        assert "test.txt" in os.listdir(UNIT_TEST_WD)
+        assert os.path.split(get_pytwin_log_file())[-1] in os.listdir(UNIT_TEST_WD)
+
     # def test_modify_working_dir_with_existing_erase_true(self):
     #    # Init unit test
     #    reinit_settings()
