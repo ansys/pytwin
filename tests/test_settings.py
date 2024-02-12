@@ -35,6 +35,9 @@ class TestDefaultSettings:
         assert os.path.exists(wd)
         # Logging is redirected to a file with INFO level
         log_file = get_pytwin_log_file()
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        n_lines1 = len(lines)
         logger = get_pytwin_logger()
         logger.debug("Hello 10")
         logger.info("Hello 20")
@@ -43,9 +46,9 @@ class TestDefaultSettings:
         logger.critical("Hello 50")
         with open(log_file, "r") as f:
             lines = f.readlines()
-        print(lines)
+        n_lines2 = len(lines)
         assert "Hello 10" not in lines
-        assert len(lines) == 5
+        assert n_lines2-n_lines1 == 4 # all the logger additions except debug
         assert os.path.exists(log_file)
         assert len(logger.handlers) == 1
         assert pytwin_logging_is_enabled()
