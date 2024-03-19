@@ -1,0 +1,19 @@
+
+:orphan:
+
+.. _sphx_glr_examples_01-twin_examples_sg_execution_times:
+
+
+Computation times
+=================
+**01:30.949** total execution time for **examples_01-twin_examples** files:
+
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_01-twin_examples_01-electricRange.py` (``01-electricRange.py``)     | 01:17.027 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_01-twin_examples_00-coupledClutches.py` (``00-coupledClutches.py``) | 00:06.985 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_01-twin_examples_03-scalarDROM.py` (``03-scalarDROM.py``)           | 00:04.198 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_01-twin_examples_02-heatExchangerRS.py` (``02-heatExchangerRS.py``) | 00:02.738 | 0.0 MB |
++---------------------------------------------------------------------------------------------+-----------+--------+
