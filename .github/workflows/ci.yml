@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v5
+        uses: ansys/actions/doc-style@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Set up Python"
-        uses: ansys/actions/_setup-python@v5
+        uses: ansys/actions/_setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-cache: true
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Build library source and wheel artifacts"
-        uses: ansys/actions/build-library@v5
+        uses: ansys/actions/build-library@v6
         with:
           library-name: "pytwin"
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -105,7 +105,7 @@ jobs:
           sudo apt-get install libosmesa6
 
       - name: Run pytest
-        uses: ansys/actions/tests-pytest@v5
+        uses: ansys/actions/tests-pytest@v6
         with:
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Validate third party licenses"
-        uses: ansys/actions/check-licenses@v5
+        uses: ansys/actions/check-licenses@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -138,7 +138,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Release to the public PyPI repository"
-        uses: ansys/actions/release-pypi-public@v5
+        uses: ansys/actions/release-pypi-public@v6
         with:
           library-name: "pytwin"
           twine-username: "__token__"
@@ -152,7 +152,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@v5
+        uses: ansys/actions/doc-deploy-dev@v6
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
@@ -164,7 +164,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Deploy the stable documentation"
-        uses: ansys/actions/doc-deploy-stable@v5
+        uses: ansys/actions/doc-deploy-stable@v6
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
