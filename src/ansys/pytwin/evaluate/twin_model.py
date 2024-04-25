@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from pytwin.evaluate.model import Model
 from pytwin.evaluate.saved_state_registry import SavedState, SavedStateRegistry
-from pytwin.evaluate.tbrom import TbRom
+from pytwin.evaluate.tbrom import TbRom, read_snapshot_size
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
@@ -159,7 +159,7 @@ class TwinModel(Model):
             if not os.path.exists(snapshot_detail):
                 msg = self._error_msg_input_snapshot_path_does_not_exist(snapshot_detail)
                 raise self._raise_error(msg)
-            snapshotsize = TbRom._read_snapshot_size(snapshot_detail)
+            snapshotsize = read_snapshot_size(snapshot_detail)
         else:
             msg = self._error_msg_input_snapshot_detail_wrong_type(snapshot_detail)
             raise self._raise_error(msg)

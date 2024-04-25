@@ -66,6 +66,29 @@ def write_binary(filepath: str, vec: np.ndarray):
         vec.tofile(f)
     return True
 
+def read_snapshot_size(filepath):
+    """
+    Return the number of data stored in a snapshot binary file.
+
+    Parameters
+    ----------
+    filepath : str
+        Path of the binary file to be written.
+
+    Returns
+    -------
+    int
+        Number of data stored in the binary file
+
+    Examples
+    --------
+    >>> from pytwin import write_binary
+    >>> number_data = read_snapshot_size('snapshot.bin')
+    """
+    with open(filepath, "rb") as f:
+        nbdof = struct.unpack("Q", f.read(8))[0]
+    return nbdof
+
 def _read_basis(filepath):
     with open(filepath, "rb") as f:
         var = struct.unpack("cccccccccccccccc", f.read(16))[0]
@@ -121,11 +144,6 @@ def _read_properties(filepath):
     nb_modes = out_field["nbModes"]
 
     return [nb_points, nb_modes]
-
-def _read_snapshot_size(filepath):
-    with open(filepath, "rb") as f:
-        nbdof = struct.unpack("Q", f.read(8))[0]
-    return nbdof
 
 class TbRom:
     """

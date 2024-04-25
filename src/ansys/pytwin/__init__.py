@@ -51,7 +51,7 @@ PYTWIN_LOGGING_OPT_NOLOGGING = PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
 PUBLIC API TO PYTWIN EVALUATE 
 """
 from pytwin.evaluate.twin_model import TwinModel, TwinModelError
-from pytwin.evaluate.tbrom import read_binary, write_binary
+from pytwin.evaluate.tbrom import read_binary, write_binary, read_snapshot_size
 
 """
 PUBLIC API TO PYTWIN RUNTIME 

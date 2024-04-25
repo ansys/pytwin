@@ -41,7 +41,7 @@ the thermal structural analysis.
 from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, download_file
+from pytwin import TwinModel, download_file, read_binary
 import pyvista as pv
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
@@ -70,8 +70,8 @@ def snapshot_to_fea(snapshot_file, geometry_file):
     """Create a Pandas dataframe containing the x, y, z coordinates for the ROM
     and snapshot file results."""
 
-    geometry_data = np.fromfile(geometry_file, dtype=np.double, offset=8).reshape(-1, 3)
-    snapshot_data = np.fromfile(snapshot_file, dtype=np.double, offset=8).reshape(-1, 1)
+    geometry_data = read_binary(geometry_file).reshape(-1, 3)
+    snapshot_data = read_binary(snapshot_file).reshape(-1, 1)
     res_list = np.hstack((geometry_data, snapshot_data))
 
     return pd.DataFrame(res_list)
