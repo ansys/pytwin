@@ -9,6 +9,124 @@ from pytwin import _HAS_TQDM
 import pyvista as pv
 
 
+def read_binary(filepath):
+    """
+    Read a binary snapshot file from the disk.
+
+    Parameters
+    ----------
+    filepath : str
+        Path of the binary file to be read.
+
+    Returns
+    -------
+    np.ndarray
+        Return a 1D flatenned Numpy array of snapshot data read.
+
+    Examples
+    --------
+    >>> from pytwin import write_binary
+    >>> snapshot_data = read_binary('snapshot.bin')
+    """
+    return np.fromfile(filepath, dtype=np.double, offset=8).reshape(
+        -1,
+    )
+
+def write_binary(filepath: str, vec: np.ndarray):
+    """
+    Write a binary snapshot file on the disk.
+
+    Parameters
+    ----------
+    filepath : str
+        Path of the binary file to be written.
+    vec : np.ndarray
+        N-dimensional Numpy array of snapshot data to be written in binary file.
+
+    Returns
+    -------
+    bool
+        Return True
+
+    Examples
+    --------
+    >>> from pytwin import write_binary
+    >>> scalar_field = np.ndarray([1.0, 2.0, 3.0, 5.0])
+    >>> write_binary('snapshot_scalar.bin', scalar_field)
+    >>> vector_field = np.ndarray([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
+    >>> write_binary('snapshot_vector.bin', vector_field)
+    """
+    vec = vec.reshape(
+        -1,
+    )
+    if os.path.exists(filepath):
+        os.remove(filepath)
+    with open(filepath, "xb") as f:
+        f.write(struct.pack("Q", len(vec)))
+        vec.tofile(f)
+    return True
+
+def _read_basis(filepath):
+    with open(filepath, "rb") as f:
+        var = struct.unpack("cccccccccccccccc", f.read(16))[0]
+        nb_val = struct.unpack("Q", f.read(8))[0]
+        nb_mc = struct.unpack("Q", f.read(8))[0]
+        return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
+
+def _read_settings(filepath):
+    with open(filepath) as f:
+        data = json.load(f)
+
+    namedselection = {}
+    dimensionality = None
+    name = None
+    unit = None
+
+    if "namedSelections" in data:
+        namedselection = data["namedSelections"]
+    if "dimensionality" in data:
+        dimensionality = data["dimensionality"]
+    if "name" in data:
+        name = data["name"]
+    if "unit" in data:
+        unit = data["unit"]
+
+    tbromns = dict()
+    outputname = name.replace(" ", "_")
+
+    # Create list of name selections indexes
+    for name, idsList in namedselection.items():
+        idsListNp = np.array(idsList)
+        ind = np.where(idsListNp == -1)
+        i = 0
+        for elem in np.nditer(ind):
+            subarray = np.arange(idsListNp[elem - 1 - i] + 1, idsListNp[elem + 1 - i])
+            idsListNp = np.delete(idsListNp, elem - i)
+            idsListNp = np.concatenate((idsListNp, subarray))
+            i = i + 1
+        tbromns.update({name: idsListNp})
+
+    return [tbromns, dimensionality, outputname, unit]
+
+def _read_properties(filepath):
+    with open(filepath) as f:
+        data = json.load(f)
+
+    fields = {}
+    if "fields" in data:
+        fields = data["fields"]
+    out_field = fields["outField"]
+
+    nb_points = out_field["nbDof"]
+    nb_modes = out_field["nbModes"]
+
+    return [nb_points, nb_modes]
+
+def _read_snapshot_size(filepath):
+    with open(filepath, "rb") as f:
+        nbdof = struct.unpack("Q", f.read(8))[0]
+    return nbdof
+
 class TbRom:
     """
     Instantiates a TBROM that is part of a TWIN file created by Ansys Twin Builder.
@@ -55,12 +173,12 @@ class TbRom:
                 folder = file.split("_")
                 fname = folder[1]
                 inpath = os.path.join(tbrom_path, file, TbRom.TBROM_BASIS)
-                inbasis = TbRom._read_basis(inpath)
+                inbasis = _read_basis(inpath)
                 infdata.update({fname: inbasis})
         self._infbasis = infdata
 
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
-        [nsidslist, dimensionality, outputname, unit] = TbRom._read_settings(settingspath)
+        [nsidslist, dimensionality, outputname, unit] = _read_settings(settingspath)
         self._nsidslist = nsidslist
         self._outdim = int(dimensionality[0])
         self._outname = outputname
@@ -68,7 +186,7 @@ class TbRom:
         self._outputfilespath = None
 
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
-        [nbpoints, nbmodes] = TbRom._read_properties(propertiespath)
+        [nbpoints, nbmodes] = _read_properties(propertiespath)
         self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
 
@@ -97,7 +215,7 @@ class TbRom:
         """
         vec = self._data_extract(named_selection, self._pointsdata.points)
         if on_disk:
-            TbRom.write_binary(output_file_path, vec)
+            write_binary(output_file_path, vec)
             return output_file_path
         else:
             return vec
@@ -123,7 +241,7 @@ class TbRom:
         """
         vec = self._data_extract(named_selection, self._pointsdata[self.field_output_name])
         if on_disk:
-            TbRom.write_binary(output_file_path, vec)
+            write_binary(output_file_path, vec)
             return output_file_path
         else:
             return vec
@@ -144,7 +262,7 @@ class TbRom:
         if isinstance(snapshot, np.ndarray):
             vecnp = snapshot
         else:
-            vecnp = TbRom.read_binary(snapshot)
+            vecnp = read_binary(snapshot)
 
         if name is None or self.field_input_count == 1:
             basis = list(self._infbasis.values())[0]
@@ -240,7 +358,7 @@ class TbRom:
 
     def _read_points(self, filepath):
         if os.path.exists(filepath):
-            points = TbRom.read_binary(filepath)
+            points = read_binary(filepath)
             has_point_file = True
         else:
             points = np.zeros(3 * self.nb_points)
@@ -249,93 +367,10 @@ class TbRom:
         return has_point_file
 
     def _init_pointsdata(self, filepath):
-        self._outbasis = TbRom._read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+        self._outbasis = _read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
-
-    @staticmethod
-    def read_binary(filepath):
-        return np.fromfile(filepath, dtype=np.double, offset=8).reshape(
-            -1,
-        )
-
-    @staticmethod
-    def write_binary(filepath, vec):
-        vec = vec.reshape(
-            -1,
-        )
-        if os.path.exists(filepath):
-            os.remove(filepath)
-        with open(filepath, "xb") as f:
-            f.write(struct.pack("Q", len(vec)))
-            vec.tofile(f)
-        return True
-
-    @staticmethod
-    def _read_basis(filepath):
-        with open(filepath, "rb") as f:
-            var = struct.unpack("cccccccccccccccc", f.read(16))[0]
-            nb_val = struct.unpack("Q", f.read(8))[0]
-            nb_mc = struct.unpack("Q", f.read(8))[0]
-            return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
-
-    @staticmethod
-    def _read_settings(filepath):
-        with open(filepath) as f:
-            data = json.load(f)
-
-        namedselection = {}
-        dimensionality = None
-        name = None
-        unit = None
-
-        if "namedSelections" in data:
-            namedselection = data["namedSelections"]
-        if "dimensionality" in data:
-            dimensionality = data["dimensionality"]
-        if "name" in data:
-            name = data["name"]
-        if "unit" in data:
-            unit = data["unit"]
-
-        tbromns = dict()
-        outputname = name.replace(" ", "_")
-
-        # Create list of name selections indexes
-        for name, idsList in namedselection.items():
-            idsListNp = np.array(idsList)
-            ind = np.where(idsListNp == -1)
-            i = 0
-            for elem in np.nditer(ind):
-                subarray = np.arange(idsListNp[elem - 1 - i] + 1, idsListNp[elem + 1 - i])
-                idsListNp = np.delete(idsListNp, elem - i)
-                idsListNp = np.concatenate((idsListNp, subarray))
-                i = i + 1
-            tbromns.update({name: idsListNp})
-
-        return [tbromns, dimensionality, outputname, unit]
-
-    @staticmethod
-    def _read_properties(filepath):
-        with open(filepath) as f:
-            data = json.load(f)
-
-        fields = {}
-        if "fields" in data:
-            fields = data["fields"]
-        out_field = fields["outField"]
-
-        nb_points = out_field["nbDof"]
-        nb_modes = out_field["nbModes"]
-
-        return [nb_points, nb_modes]
-
-    @staticmethod
-    def _read_snapshot_size(filepath):
-        with open(filepath, "rb") as f:
-            nbdof = struct.unpack("Q", f.read(8))[0]
-        return nbdof
 
     @property
     def has_point_file(self):
