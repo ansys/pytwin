@@ -47,7 +47,7 @@ def write_binary(filepath: str, vec: np.ndarray):
     Returns
     -------
     bool
-        Return True
+        Return True if the binary file is successfully written.
 
     Examples
     --------
@@ -80,7 +80,7 @@ def read_snapshot_size(filepath):
     Returns
     -------
     int
-        Number of data stored in the binary file
+        Number of data stored in the binary file.
 
     Examples
     --------
