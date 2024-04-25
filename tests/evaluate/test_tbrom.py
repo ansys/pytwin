@@ -3,9 +3,8 @@ import sys
 
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, TwinModelError, download_file
+from pytwin import TwinModel, TwinModelError, download_file, read_binary, write_binary
 from pytwin.settings import get_pytwin_log_file
-from pytwin import write_binary, read_binary
 import pyvista as pv
 
 
@@ -1279,10 +1278,10 @@ class TestTbRom:
 
     def test_read_write_api(self):
         scalar_field = np.array([1.0, 2.0, 3.0, 5.0])
-        write_binary(os.path.join(os.path.dirname(__file__), "data", 'snapshot_scalar.bin'), scalar_field)
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
         vector_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
-        write_binary(os.path.join(os.path.dirname(__file__), "data", 'snapshot_vector.bin'), vector_field)
-        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", 'snapshot_scalar.bin'))
-        vector_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", 'snapshot_vector.bin'))
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"), vector_field)
+        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
+        vector_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"))
         assert len(scalar_field_read) is 4
-        assert len(vector_field_read) is 3*4
+        assert len(vector_field_read) is 3 * 4

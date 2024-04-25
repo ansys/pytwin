@@ -32,6 +32,7 @@ def read_binary(filepath):
         -1,
     )
 
+
 def write_binary(filepath: str, vec: np.ndarray):
     """
     Write a binary snapshot file on the disk.
@@ -66,6 +67,7 @@ def write_binary(filepath: str, vec: np.ndarray):
         vec.tofile(f)
     return True
 
+
 def read_snapshot_size(filepath):
     """
     Return the number of data stored in a snapshot binary file.
@@ -89,12 +91,14 @@ def read_snapshot_size(filepath):
         nbdof = struct.unpack("Q", f.read(8))[0]
     return nbdof
 
+
 def _read_basis(filepath):
     with open(filepath, "rb") as f:
         var = struct.unpack("cccccccccccccccc", f.read(16))[0]
         nb_val = struct.unpack("Q", f.read(8))[0]
         nb_mc = struct.unpack("Q", f.read(8))[0]
         return np.fromfile(f, dtype=np.double, offset=0).reshape(-1, nb_val)
+
 
 def _read_settings(filepath):
     with open(filepath) as f:
@@ -131,6 +135,7 @@ def _read_settings(filepath):
 
     return [tbromns, dimensionality, outputname, unit]
 
+
 def _read_properties(filepath):
     with open(filepath) as f:
         data = json.load(f)
@@ -144,6 +149,7 @@ def _read_properties(filepath):
     nb_modes = out_field["nbModes"]
 
     return [nb_points, nb_modes]
+
 
 class TbRom:
     """
