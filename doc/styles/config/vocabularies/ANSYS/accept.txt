@@ -1,0 +1,21 @@
+ANSYS
+Ansys
+ansys
+Twin Builder
+Twin Deployer
+Deployer
+PyAnsys
+pyansys
+PyTwin
+APIs
+License Manager
+Modelica
+pytest
+Postprocessing
+postprocessing
+postprocess
+Pythonic
+ROM
+ROMs
+runtimes
+pytwin
