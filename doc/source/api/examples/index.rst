@@ -12,3 +12,6 @@ Other PyTwin functions are available and used in :ref:`ref_example_gallery`.
 
    pytwin.download_file
    pytwin.load_data
+   pytwin.read_binary
+   pytwin.read_snapshot_size
+   pytwin.write_binary

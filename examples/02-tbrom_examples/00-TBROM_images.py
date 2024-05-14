@@ -48,7 +48,7 @@ from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
 import numpy as np
-from pytwin import TwinModel, download_file
+from pytwin import TwinModel, download_file, read_binary
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
 cfd_file = download_file("T_Junction.cas.h5", "other_files", force_download=True)
@@ -80,8 +80,8 @@ def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
     field of scalar data (temperature field).
     """
 
-    geometry_data = np.fromfile(geometry_file, dtype=np.double, offset=8).reshape(-1, 3)
-    snapshot_data = np.fromfile(snapshot_file, dtype=np.double, offset=8).reshape(-1, 1)
+    geometry_data = read_binary(geometry_file).reshape(-1, 3)
+    snapshot_data = read_binary(snapshot_file).reshape(-1, 1)
     res_list = np.hstack((geometry_data, snapshot_data))
 
     with open(outputFilePath, "w") as ipfile:
