@@ -25,7 +25,7 @@ def read_binary(filepath):
 
     Examples
     --------
-    >>> from pytwin import write_binary
+    >>> from pytwin import read_binary
     >>> snapshot_data = read_binary('snapshot.bin')
     """
     return np.fromfile(filepath, dtype=np.double, offset=8).reshape(
