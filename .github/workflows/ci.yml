@@ -108,7 +108,7 @@ jobs:
           sudo apt-get install libosmesa6
 
       - name: Setup headless display
-        if: matrix.os == 'pytwin-win10'
+        if: matrix.os == 'windows-latest'
         uses: pyvista/setup-headless-display-action@v2
 
       - name: Run pytest
