@@ -18,4 +18,5 @@ Pythonic
 ROM
 ROMs
 runtimes
+THIRDPARTY
 pytwin
