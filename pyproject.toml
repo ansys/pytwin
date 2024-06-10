@@ -42,7 +42,7 @@ default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.codespell]
-ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
+ignore-words = "doc/styles/config/vocabularies/ANSYS/accept.txt"
 
 [tool.coverage.run]
 source = ["ansys.pytwin"]
