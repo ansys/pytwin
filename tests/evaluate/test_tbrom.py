@@ -116,6 +116,12 @@ TEST_TB_ROM12 = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_Fi
 INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
 INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
 
+"""
+TEST_TB_ROM_TENSOR
+Twin with 1 TBROM with tensor field
+(https://github.com/ansys/pytwin/discussions/164)
+"""
+TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.twin")
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -1285,3 +1291,9 @@ class TestTbRom:
         vector_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"))
         assert len(scalar_field_read) is 4
         assert len(vector_field_read) is 3 * 4
+
+    def test_tbrom_tensor_field(self):
+        model_filepath = TEST_TB_ROM_TENSOR
+        twinmodel = TwinModel(model_filepath=model_filepath)  # instantiation should be fine without points
+        tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]
+        assert tbrom1._outdim is 6
