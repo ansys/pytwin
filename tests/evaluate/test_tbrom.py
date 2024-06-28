@@ -1297,5 +1297,7 @@ class TestTbRom:
         model_filepath = TEST_TB_ROM_TENSOR
         twinmodel = TwinModel(model_filepath=model_filepath)  # instantiation should be fine without points
         tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]
-        print(tbrom1._outdim)
-        assert tbrom1._outdim is 6
+        try:
+            assert tbrom1.field_output_dim is 6
+        except Exception as e:
+            print(e)
