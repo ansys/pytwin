@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import pandas as pd
 from pytwin import TwinModel, TwinModelError, download_file, read_binary, write_binary
+from pytwin.evaluate import tbrom
 from pytwin.settings import get_pytwin_log_file
 import pyvista as pv
 
@@ -115,6 +116,13 @@ TEST_TB_ROM12 = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_Fi
 
 INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
 INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
+
+"""
+TEST_TB_ROM_TENSOR
+Twin with 1 TBROM with tensor field
+(https://github.com/ansys/pytwin/discussions/164)
+"""
+TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.json")
 
 
 def norm_vector_field(field: list):
@@ -1285,3 +1293,10 @@ class TestTbRom:
         vector_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"))
         assert len(scalar_field_read) is 4
         assert len(vector_field_read) is 3 * 4
+
+    def test_tbrom_tensor_field(self):
+        model_filepath = TEST_TB_ROM_TENSOR
+        [nsidslist, dimensionality, outputname, unit] = tbrom._read_settings(
+            model_filepath
+        )  # instantiation should be fine without points
+        assert int(dimensionality[0]) is 6
