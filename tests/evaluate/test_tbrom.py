@@ -1296,5 +1296,7 @@ class TestTbRom:
 
     def test_tbrom_tensor_field(self):
         model_filepath = TEST_TB_ROM_TENSOR
-        [nsidslist, dimensionality, outputname, unit] = tbrom._read_settings(model_filepath)  # instantiation should be fine without points
+        [nsidslist, dimensionality, outputname, unit] = tbrom._read_settings(
+            model_filepath
+        )  # instantiation should be fine without points
         assert int(dimensionality[0]) is 6
