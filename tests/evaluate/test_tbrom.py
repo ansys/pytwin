@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import pandas as pd
 from pytwin import TwinModel, TwinModelError, download_file, read_binary, write_binary
+from pytwin.evaluate import tbrom
 from pytwin.settings import get_pytwin_log_file
 import pyvista as pv
 
@@ -121,7 +122,7 @@ TEST_TB_ROM_TENSOR
 Twin with 1 TBROM with tensor field
 (https://github.com/ansys/pytwin/discussions/164)
 """
-TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.twin")
+TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.json")
 
 
 def norm_vector_field(field: list):
@@ -1295,9 +1296,5 @@ class TestTbRom:
 
     def test_tbrom_tensor_field(self):
         model_filepath = TEST_TB_ROM_TENSOR
-        twinmodel = TwinModel(model_filepath=model_filepath)  # instantiation should be fine without points
-        tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]
-        try:
-            assert tbrom1.field_output_dim is 6
-        except Exception as e:
-            print(e)
+        [nsidslist, dimensionality, outputname, unit] = tbrom._read_settings(model_filepath)  # instantiation should be fine without points
+        assert int(dimensionality[0]) is 6
