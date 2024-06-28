@@ -123,6 +123,7 @@ Twin with 1 TBROM with tensor field
 """
 TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.twin")
 
+
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
     vec = field.reshape((-1, 3))

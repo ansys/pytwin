@@ -113,10 +113,10 @@ def _read_settings(filepath):
         namedselection = data["namedSelections"]
     if "dimensionality" in data:
         dimensionality = data["dimensionality"]
-        if len(dimensionality)>1: # tensor field
-            if data["symmetricalDim"]: # symmetric tensor -> 6 components
+        if len(dimensionality) > 1:  # tensor field
+            if data["symmetricalDim"]:  # symmetric tensor -> 6 components
                 dimensionality = [6]
-            else: # non symmetric tensor -> 9 components
+            else:  # non symmetric tensor -> 9 components
                 dimensionality = [9]
 
     if "name" in data:
