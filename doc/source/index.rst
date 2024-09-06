@@ -25,7 +25,7 @@ costs, and both gain and retain competitive advantages.
   :width: 800
   :alt: Ansys Digital Twins
 
-Ansys Twin Builder and Ansys Twin Deployer are open solutions that allow engineers to create
+Ansys Twin Builder and Ansys TwinAI are open solutions that allow engineers to create
 digital twins and export them in the form of deployable twin runtimes.
 
 What is PyTwin?
@@ -67,14 +67,14 @@ License
 PyTwin is licensed under the MIT license.
 
 PyTwin makes no commercial claim over Ansys whatsoever. This library
-extends the functionality of Ansys Twin Builder and Twin Deployer by adding
+extends the functionality of Ansys Twin Builder and Ansys TwinAI by adding
 a Pythonic interface to twin runtimes without changing the
 core behavior or license of the original software. The interactive
 control of twin runtimes through PyTwin may require a license of
-Twin Deployer depending on the case, see :ref:`getting_started` section for more information.
+Ansys TwinAI depending on the case, see :ref:`getting_started` section for more information.
 
-For more information on both Ansys Twin Builder and Twin Deployer, see
-`Ansys Twin Builder <https://www.ansys.com/products/digital-twin/ansys-twin-builder>`_
+For more information on both Ansys Twin Builder and Ansys TwinAI, see
+`Ansys Digital Twin <https://www.ansys.com/products/digital-twin>`_
 on the Ansys website.
 
 Project index
