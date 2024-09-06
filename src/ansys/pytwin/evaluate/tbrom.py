@@ -128,7 +128,6 @@ def _read_settings(filepath):
 
     tbromns = dict()
 
-
     # Create list of name selections indexes
     for name, idsList in namedselection.items():
         idsListNp = np.array(idsList)
