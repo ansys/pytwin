@@ -107,6 +107,7 @@ def _read_settings(filepath):
     namedselection = {}
     dimensionality = None
     name = None
+    outputname = None
     unit = None
 
     if "namedSelections" in data:
@@ -121,11 +122,12 @@ def _read_settings(filepath):
 
     if "name" in data:
         name = data["name"]
+        outputname = name.replace(" ", "_")
     if "unit" in data:
         unit = data["unit"]
 
     tbromns = dict()
-    outputname = name.replace(" ", "_")
+
 
     # Create list of name selections indexes
     for name, idsList in namedselection.items():
