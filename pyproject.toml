@@ -46,7 +46,7 @@ doc = [
     "sphinxemoji==0.3.1"
 ]
 
-test = [
+tests = [
     "pytest==8.3.3",
     "pytest-cov==5.0.0",
 ]
