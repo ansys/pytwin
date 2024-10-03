@@ -3,7 +3,7 @@
 from datetime import datetime
 import os
 
-from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
+from ansys_sphinx_theme import ansys_favicon, get_version_match
 from pytwin import __version__
 import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
@@ -134,7 +134,6 @@ sphinx_gallery_conf = {
 # -- Options for HTML output -------------------------------------------------
 html_short_title = html_title = "PyTwin"
 html_theme = "ansys_sphinx_theme"
-html_logo = pyansys_logo_black
 html_theme_options = {
     "github_url": "https://github.com/ansys/pytwin",
     "show_prev_next": False,
@@ -147,6 +146,7 @@ html_theme_options = {
         "json_url": f"https://{cname}/versions.json",
         "version_match": get_version_match(__version__),
     },
+    "logo": "pyansys"
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
