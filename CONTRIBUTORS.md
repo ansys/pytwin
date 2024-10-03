@@ -13,5 +13,3 @@
 * [German Martinez](https://github.com/germa89)
 * [Kathy Pippert](https://github.com/PipKat)
 * [Edward Carman](https://github.com/EDCarman)
-
-
