@@ -98,8 +98,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
        matrix:
-           os: [ubuntu-20.04]
-           #os: [windows-latest, ubuntu-20.04] CP disabling windows testing while tests-pytest@v8 is not fixed
+           os: [windows-latest, ubuntu-20.04]
            python-version: ["3.9", "3.10", "3.11", "3.12"]
     steps:
       - name: Install Ubuntu dependencies for RomViewerSharedLib.so
