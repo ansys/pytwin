@@ -147,6 +147,7 @@ html_theme_options = {
         "version_match": get_version_match(__version__),
     },
     "logo": "pyansys",
+    "logo": "pyansys",
     
 }
 
