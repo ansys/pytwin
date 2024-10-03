@@ -31,6 +31,13 @@ pyvista = ">=0.38.6"
 tqdm = ">=4.45.0"
 pywin32 = {version = ">=304", markers = "platform_system == 'Windows'"}
 
+[tool.poetry.group.tests]
+optional = true
+
+[tool.poetry.group.tests.dependencies]
+pytest = ">=7.1.0"
+pytest-cov = ">=3.0.0"
+
 [tool.black]
 line-length = 120
 
