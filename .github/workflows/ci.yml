@@ -114,7 +114,7 @@ jobs:
         uses: pyvista/setup-headless-display-action@v2
 
       - name: Run pytest
-        uses: ansys/actions/tests-pytest@fix/poetry-tests-pytest
+        uses: ansys/actions/tests-pytest@v8
         with:
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
