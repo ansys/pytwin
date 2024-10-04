@@ -48,11 +48,13 @@ jobs:
 
       - name: "Install Python library"
         shell: bash
-        run: python -m pip install .
+        run: |
+          python -m pip install poetry
+          poetry install
 
       - name: "Install documentation dependencies"
         shell: bash
-        run: python -m pip install .[doc]
+        run: poetry install --with doc
 
       - name: Setup headless display
         uses: pyvista/setup-headless-display-action@v2
