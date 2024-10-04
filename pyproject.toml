@@ -30,6 +30,9 @@ pyvista = ">=0.38.6"
 tqdm = ">=4.45.0"
 pywin32 = {version = ">=304", markers = "platform_system == 'Windows'"}
 
+[tool.poetry.group.doc]
+optional = true
+
 [tool.poetry.group.doc.dependencies]
 ansys-fluent-core = "^0.16.0"
 ansys-dpf-core = "^0.9.0"
@@ -46,6 +49,8 @@ sphinx-gallery = "^0.15.0"
 sphinx-notfound-page = "^1.0.0"
 sphinxemoji = "^0.3.1"
 
+[tool.poetry.group.tests]
+optional = true
 
 [tool.poetry.group.tests.dependencies]
 pytest = "^8.3.3"
