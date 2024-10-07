@@ -48,7 +48,7 @@ and made available in that environment.
 Install the package
 -------------------
 
-The ``pytwin`` package supports Python 3.9 through Python 3.12 on Windows and Linux.
+The ``pytwin`` package supports Python 3.10 through Python 3.12 on Windows and Linux.
 
 Install the latest release from `PyPi <https://pypi.org/project/pytwin/>`_
 with this command:
