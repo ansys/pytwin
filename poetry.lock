@@ -187,27 +187,28 @@ grpcio = "*"
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.65.2"
+version = "0.67.0"
 description = "A Python wrapper for Ansys MAPDL."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "ansys_mapdl_core-0.65.2-py3-none-any.whl", hash = "sha256:8e224214dd4ee874c99d36451a915e974899b2328111bdedb6dc706c5e32db21"},
-    {file = "ansys_mapdl_core-0.65.2.tar.gz", hash = "sha256:61746799a2dccb60ce1fb00629dcd07e217aa1cc22d35ee72bf0aa30f293e2c6"},
+    {file = "ansys_mapdl_core-0.67.0-py3-none-any.whl", hash = "sha256:a859a2b9b558150a95e3f97c2da56850d23cbe9815f8e1e3ecb3f42fe23e43cd"},
+    {file = "ansys_mapdl_core-0.67.0.tar.gz", hash = "sha256:c2270639b8f6c5c92898d0c32184bf5c37de4599e78f23386dd75b3fee2067ad"},
 ]
 
 [package.dependencies]
 ansys-api-mapdl = "0.5.1"
 ansys-mapdl-reader = ">=0.51.7"
+ansys-math-core = ">=0.1.2"
 ansys-platform-instancemanagement = ">=1.0,<2.0"
-ansys-tools-path = ">=0.2.4"
-appdirs = ">=1.4.0"
+ansys-tools-path = ">=0.3.1"
 click = ">=8.1.3"
 grpcio = ">=1.30.0"
 importlib-metadata = ">=4.0"
 matplotlib = ">=3.0.0"
 numpy = {version = ">=1.14.0", markers = "python_version >= \"3.9\""}
 pexpect = {version = ">=4.8.0", markers = "platform_system == \"Linux\""}
+platformdirs = ">=3.6.0"
 protobuf = ">=3.12.2"
 psutil = ">=5.9.4"
 pyansys-tools-versioning = ">=0.3.3"
@@ -218,8 +219,8 @@ tqdm = ">=4.45.0"
 vtk = ">=9.0.0"
 
 [package.extras]
-doc = ["ansys-dpf-core (==0.9.0)", "ansys-mapdl-reader (==0.52.19)", "ansys-sphinx-theme (==0.10.0)", "grpcio (==1.51.1)", "imageio (==2.30.0)", "imageio-ffmpeg (==0.4.8)", "jupyter_sphinx (==0.4.0)", "jupyterlab (>=3.2.8)", "matplotlib (==3.7.1)", "numpydoc (==1.5.0)", "pandas (==2.0.1)", "plotly (==5.14.1)", "pypandoc (==1.11)", "pytest-sphinx (==0.5.0)", "pythreejs (==2.4.2)", "pyvista[trame] (==0.41.1)", "sphinx (==7.1.1)", "sphinx-autobuild (==2021.3.14)", "sphinx-autodoc-typehints (==1.23.0)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.13.0)", "sphinx-notfound-page (==0.8.3)", "sphinxcontrib-websupport (==1.2.4)", "sphinxemoji (==0.2.0)", "vtk (==9.2.6)"]
-tests = ["ansys-dpf-core (==0.9.0)", "autopep8 (==2.0.2)", "matplotlib (==3.7.1)", "pandas (==2.0.1)", "pyansys-tools-report (==0.6.0)", "pytest (==7.3.1)", "pytest-cov (==4.1.0)", "pytest-rerunfailures (==11.1.2)", "pyvista (==0.41.1)", "scipy (==1.10.1)", "vtk (==9.2.6)"]
+doc = ["ansys-dpf-core (==0.9.0)", "ansys-mapdl-reader (==0.52.20)", "ansys-sphinx-theme (==0.12.2)", "grpcio (==1.51.1)", "imageio (==2.31.5)", "imageio-ffmpeg (==0.4.9)", "jupyter_sphinx (==0.4.0)", "jupyterlab (>=3.2.8)", "matplotlib (==3.8.0)", "numpydoc (==1.6.0)", "pandas (==2.1.1)", "plotly (==5.17.0)", "pyiges[full] (==0.3.1)", "pypandoc (==1.11)", "pytest-sphinx (==0.5.0)", "pythreejs (==2.4.2)", "pyvista[trame] (==0.42.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2021.3.14)", "sphinx-autodoc-typehints (==1.24.0)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.14.0)", "sphinx-reredirects (==0.1.2)", "sphinxcontrib-websupport (==1.2.6)", "sphinxemoji (==0.2.0)", "vtk (==9.2.6)"]
+tests = ["ansys-dpf-core (==0.9.0)", "autopep8 (==2.0.4)", "matplotlib (==3.8.0)", "pandas (==2.1.1)", "pyansys-tools-report (==0.7.0)", "pyiges[full] (==0.3.1)", "pytest (==7.4.2)", "pytest-cov (==4.1.0)", "pytest-pyvista (==0.1.9)", "pytest-rerunfailures (==12.0)", "pyvista (==0.42.2)", "scipy (==1.10.1)", "scipy (==1.11.3)", "vtk (==9.2.6)"]
 
 [[package]]
 name = "ansys-mapdl-reader"
@@ -257,6 +258,28 @@ numpy = ">=1.16.0,<3"
 pyvista = ">=0.32.0"
 tqdm = ">=4.45.0"
 vtk = ">=9.0.0"
+
+[[package]]
+name = "ansys-math-core"
+version = "0.1.5"
+description = "A Python wrapper for PyAnsys Math libraries."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "ansys_math_core-0.1.5-py3-none-any.whl", hash = "sha256:5316aa088f68e550c5c6d5c59f86ed8983fed5906d4d4447cbe48e159a6ab162"},
+    {file = "ansys_math_core-0.1.5.tar.gz", hash = "sha256:f088a13c716b03f06e60594c68524695582ffe03fc7f58e7d508f86f592d5f44"},
+]
+
+[package.dependencies]
+ansys-mapdl-core = ">=0.64.0"
+ansys-tools-path = ">=0.2.4"
+numpy = ">=1.14.0"
+pyansys-tools-versioning = ">=0.3.3"
+scipy = ">=1.3.0"
+
+[package.extras]
+doc = ["Sphinx (==7.3.7)", "ansys-mapdl-core (==0.68.1)", "ansys-mapdl-reader (==0.53.0)", "ansys-sphinx-theme (==0.15.2)", "jupyter_sphinx (==0.5.3)", "jupyterlab (==4.1.6)", "numpydoc (==1.7.0)", "pypandoc (==1.13)", "pytest-sphinx (==0.6.3)", "pyvista[jupyter,trame] (==0.43.5)", "scipy (==1.13.0)", "sphinx-autobuild (==2024.4.16)", "sphinx-autodoc-typehints (==2.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.5.0)", "sphinx-gallery (==0.15.0)", "sphinx-notfound-page (==1.0.0)", "trame (==3.6.0)", "vtk (==9.3.0)"]
+tests = ["ansys-mapdl-core (==0.68.1)", "numpy (==1.26.4)", "pyansys-tools-report (==0.7.0)", "pytest (==8.1.1)", "pytest-cov (==5.0.0)", "pytest-rerunfailures (==14.0)", "pyvista (==0.43.5)", "scipy (==1.13.0)", "vtk (==9.3.0)"]
 
 [[package]]
 name = "ansys-platform-instancemanagement"
@@ -3891,4 +3914,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "7fd9981a8693798c4fa533b632fee3f19393b042d8b5cf5e14504e8009d49afb"
+content-hash = "840ccc6cf22210f8bc732c81169e6d8b361e9b9b862f1133e515e8d85e1280c0"
