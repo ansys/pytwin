@@ -130,22 +130,22 @@ reader = ["h5py (>=3.8.0)"]
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.7.1"
+version = "0.8.0"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.9,<4.0"
 files = [
-    {file = "ansys_fluent_visualization-0.7.1-py3-none-any.whl", hash = "sha256:f577e1d2b87844f23801a703fd3fa3a69296f744dbf87396532b70038bf8e655"},
-    {file = "ansys_fluent_visualization-0.7.1.tar.gz", hash = "sha256:8e7f5daa0b010067771f0bcf27b4857910f5e1d9b6aa52e41720a7f4be6c4ca8"},
+    {file = "ansys_fluent_visualization-0.8.0-py3-none-any.whl", hash = "sha256:e6099837ac701e2683001005fd1b8e66c960cd05d35d103f1988ed75ad08cee0"},
+    {file = "ansys_fluent_visualization-0.8.0.tar.gz", hash = "sha256:a0d7db24bc6a9256de21afea5bf9876b655acdbd5acb42ac0f07372a9d04b956"},
 ]
 
 [package.dependencies]
-ansys-fluent-core = ">=0.13.dev0,<1.0"
+ansys-fluent-core = ">=0.18,<1.0"
 matplotlib = ">=3.5.1"
 pyside6 = ">=6.2.3"
-pyvista = ">=0.33.2"
+pyvista = ">=0.39.0"
 pyvistaqt = ">=0.7.0"
-vtk = {version = ">=9.0.3", markers = "python_full_version <= \"3.9.0\""}
+vtk = ">=9.3.0.rc0"
 
 [[package]]
 name = "ansys-mapdl-core"
@@ -3876,4 +3876,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "c2663c1430876de26164cd2fb4e63c2546a8264c4adc35c0e7cdf5ec2d4b7b3e"
+content-hash = "5914e46150a215f2099699250849b4dde85b2359c5ec8b0e620e492a3fd4d30d"
