@@ -75,54 +75,30 @@ protobuf = ">=3.19,<6"
 
 [[package]]
 name = "ansys-dpf-core"
-version = "0.9.0"
+version = "0.12.2"
 description = "Data Processing Framework - Python Core"
 optional = false
-python-versions = ">=3.8, <4"
+python-versions = "<4,>=3.9"
 files = [
-    {file = "ansys_dpf_core-0.9.0-py3-none-any.whl", hash = "sha256:4471ade564411f0864e3d0e837a1be036065a276dfbf90fc7cfaac9a32e145fb"},
-    {file = "ansys_dpf_core-0.9.0.tar.gz", hash = "sha256:1c84834c62750d4b306c3ddaded8c44b5aaa145ca127f162679fb322d52f6622"},
+    {file = "ansys_dpf_core-0.12.2-py3-none-any.whl", hash = "sha256:9738ce0c2661f05b2eb90a586785f9f40d9c63dfdf40aa590c2cfc33b2e322bb"},
+    {file = "ansys_dpf_core-0.12.2-py3-none-manylinux1_x86_64.whl", hash = "sha256:c2674f952323cb154e365493b12f73554158a0347ce3a05563b11c79aa4d0f80"},
+    {file = "ansys_dpf_core-0.12.2-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:9fda25cfd89c18549b985dcca0215e43e6012a6efbde6f5ddf7667cebe06bea3"},
+    {file = "ansys_dpf_core-0.12.2-py3-none-win_amd64.whl", hash = "sha256:f6c4ab0bb54d457b719073f62b95ae4e340f3e72bd437664a64f8b84696e3c1d"},
 ]
 
 [package.dependencies]
-ansys-dpf-gate = ">=0.4.0"
+google-api-python-client = "*"
+grpcio = "*"
 importlib-metadata = ">=4.0"
 numpy = "*"
 packaging = "*"
+protobuf = "*"
 psutil = "*"
 setuptools = "*"
 tqdm = "*"
 
 [package.extras]
 plotting = ["imageio (<2.28.1)", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)"]
-
-[[package]]
-name = "ansys-dpf-gate"
-version = "0.4.1"
-description = "DPF Python helpers to call DPF C and gRPC APIs"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "ansys_dpf_gate-0.4.1-py3-none-any.whl", hash = "sha256:37506d424e6094363b5a8cf2fee3191a6f2f947173b80a21039d1e7c676d684d"},
-]
-
-[package.dependencies]
-ansys-dpf-gatebin = {version = "*", markers = "platform_system != \"Darwin\""}
-"ansys.grpc.dpf" = ">=0.2.3"
-numpy = "*"
-packaging = "*"
-
-[[package]]
-name = "ansys-dpf-gatebin"
-version = "0.4.1"
-description = "DPF binaries dependencies for ansys-dpf-gate"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "ansys_dpf_gatebin-0.4.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:5682760164f8d11cb76252d8e7f59a24516083dff8e80bd31b6705682255a631"},
-    {file = "ansys_dpf_gatebin-0.4.1-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:5e986741b2c591101ce8ab067aa7a5ea20907ccd6d306b5284e7317e0e29a9b0"},
-    {file = "ansys_dpf_gatebin-0.4.1-py3-none-win_amd64.whl", hash = "sha256:930028ad79506c61ae9a508b24ea96ffabe02babfe8150f38ff6a4be2d2a01b5"},
-]
 
 [[package]]
 name = "ansys-fluent-core"
@@ -170,20 +146,6 @@ pyside6 = ">=6.2.3"
 pyvista = ">=0.33.2"
 pyvistaqt = ">=0.7.0"
 vtk = {version = ">=9.0.3", markers = "python_full_version <= \"3.9.0\""}
-
-[[package]]
-name = "ansys-grpc-dpf"
-version = "0.8.1"
-description = "Package for ansys-grpc-dpf python gRPC client"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "ansys_grpc_dpf-0.8.1-py3-none-any.whl", hash = "sha256:4c1c52fd4dba992139f6962085e5edf65a24b8f095eca548772f55d2418c4a8c"},
-]
-
-[package.dependencies]
-google-api-python-client = "*"
-grpcio = "*"
 
 [[package]]
 name = "ansys-mapdl-core"
@@ -3914,4 +3876,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "840ccc6cf22210f8bc732c81169e6d8b361e9b9b862f1133e515e8d85e1280c0"
+content-hash = "c2663c1430876de26164cd2fb4e63c2546a8264c4adc35c0e7cdf5ec2d4b7b3e"
