@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: "3.9"
+  MAIN_PYTHON_VERSION: "3.10"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
 
 concurrency:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v7
+        uses: ansys/actions/doc-style@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Set up Python"
-        uses: ansys/actions/_setup-python@v7
+        uses: ansys/actions/_setup-python@v8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-cache: true
@@ -48,11 +48,13 @@ jobs:
 
       - name: "Install Python library"
         shell: bash
-        run: python -m pip install .
+        run: |
+          python -m pip install poetry
+          poetry install
 
-      - name: "Install documentation dependencies from requirements file"
+      - name: "Install documentation dependencies"
         shell: bash
-        run: python -m pip install -r requirements/requirements_doc.txt --upgrade
+        run: poetry install --with doc
 
       - name: Setup headless display
         uses: pyvista/setup-headless-display-action@v2
@@ -87,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Build library source and wheel artifacts"
-        uses: ansys/actions/build-library@v7
+        uses: ansys/actions/build-library@v8
         with:
           library-name: "pytwin"
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -99,7 +101,7 @@ jobs:
     strategy:
        matrix:
            os: [windows-latest, ubuntu-20.04]
-           python-version: ["3.9", "3.10", "3.11", "3.12"]
+           python-version: ["3.10", "3.11", "3.12"]
     steps:
       - name: Install Ubuntu dependencies for RomViewerSharedLib.so
         if: matrix.os == 'ubuntu-20.04'
@@ -112,7 +114,7 @@ jobs:
         uses: pyvista/setup-headless-display-action@v2
 
       - name: Run pytest
-        uses: ansys/actions/tests-pytest@v7
+        uses: ansys/actions/tests-pytest@v8
         with:
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
@@ -134,7 +136,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Validate third party licenses"
-        uses: ansys/actions/check-licenses@v7
+        uses: ansys/actions/check-licenses@v8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -145,7 +147,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Release to the public PyPI repository"
-        uses: ansys/actions/release-pypi-public@v7
+        uses: ansys/actions/release-pypi-public@v8
         with:
           library-name: "pytwin"
           twine-username: "__token__"
@@ -159,7 +161,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@v7
+        uses: ansys/actions/doc-deploy-dev@v8
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
@@ -171,7 +173,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Deploy the stable documentation"
-        uses: ansys/actions/doc-deploy-stable@v7
+        uses: ansys/actions/doc-deploy-stable@v8
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}

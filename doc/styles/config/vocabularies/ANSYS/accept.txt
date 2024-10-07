@@ -20,3 +20,4 @@ ROMs
 runtimes
 THIRDPARTY
 pytwin
+astroid
