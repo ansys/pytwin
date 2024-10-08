@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """
 pytwin.
 
@@ -22,7 +44,7 @@ except ModuleNotFoundError:  # pragma: no cover
 __version__ = importlib_metadata.version("pytwin")
 
 """
-PUBLIC API TO PYTWIN SETTINGS 
+PUBLIC API TO PYTWIN SETTINGS
 """
 from pytwin.settings import (
     PyTwinLogLevel,
@@ -48,13 +70,13 @@ PYTWIN_LOGGING_OPT_CONSOLE = PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE
 PYTWIN_LOGGING_OPT_NOLOGGING = PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
 
 """
-PUBLIC API TO PYTWIN EVALUATE 
+PUBLIC API TO PYTWIN EVALUATE
 """
 from pytwin.evaluate.tbrom import read_binary, read_snapshot_size, write_binary
 from pytwin.evaluate.twin_model import TwinModel, TwinModelError
 
 """
-PUBLIC API TO PYTWIN RUNTIME 
+PUBLIC API TO PYTWIN RUNTIME
 """
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime, TwinRuntimeError
