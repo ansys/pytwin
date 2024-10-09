@@ -123,11 +123,11 @@ tb.set_active_design(parentDesign+"::SubSheet"+str(idSubSheet))
 
 # Place the ROM component, parameterize and connect to port interfaces.
 rom1 = tb.modeler.schematic.create_component("ROM1", "", "staticrom", [40 * G, 25 * G])
-rom1.set_property("field_data_storage_period", "0")
-rom1.set_property("store_snapshots", "1")
-#tb.modeler.schematic.update_property_value(rom1.composed_name, "field_data_storage_period", "0")
-#tb.modeler.schematic.update_property_value(rom1.composed_name, "store_snapshots", "1")
+rom1["field_data_storage_period"] = "0"
+rom1["store_snapshots"] = "1"
 tb.modeler.schematic.add_pin_iports("ROM1", rom1.id)
+
+tb.logger.info("Subsheet created, starting Twin compilation")
 
 # twin compilation
 twinname = "TwinModel"
@@ -136,6 +136,8 @@ tb.odesign.CompileAsTwin(twinname, ["1", "0.001", "1e-4", "1e-12"])
 # twin export
 twinFile = os.path.join(training_data_folder, twinname+'.twin')
 tb.modeler.schematic.o_simmodel_manager.ExportTwinModel(twinname, twinFile, "twin", "other", "1", "1")
+
+tb.logger.info("Twin compiled and exported. Closing Twin Builder.")
 
 tb.release_desktop()
 
