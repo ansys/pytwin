@@ -50,13 +50,13 @@ ansys-sphinx-theme = "^1.1.2"
 jupyter_sphinx = "^0.5.3"
 matplotlib = "^3.7.1"
 numpydoc = ">=1.6.0"
-requests = { git = "https://github.com/ansys/pyaedt", branch = "main" } # use main branch while the latest development are not released
 Sphinx = "^7.0.1"
 sphinx-autodoc-typehints = ">=1.25.2,<3.0.0"
 sphinx-copybutton = "^0.5.0"
 sphinx-gallery = "^0.17.0"
 sphinx-notfound-page = "^1.0.0"
 sphinxemoji = ">=0.2,<0.4"
+pyaedt = {git = "https://github.com/ansys/pyaedt", rev = "main"} # use main branch while the latest development are not released
 
 [tool.black]
 line-length = 120
