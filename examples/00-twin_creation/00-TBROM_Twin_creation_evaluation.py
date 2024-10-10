@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """.. _ref_example_pyAEDT_Twin:
 
 Static ROM creation, Twin generation and evaluation
@@ -29,35 +51,37 @@ a given probe location)
 
 import csv
 import json
+import os
+import shutil
 import zipfile
 
+from ansys.aedt.core import TwinBuilder, generate_unique_project_name
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import pandas as pd
-import shutil
-from ansys.aedt.core import TwinBuilder, generate_unique_project_name
 from pytwin import TwinModel, download_file, read_binary
 
 training_data_zip = "training_data.zip"
-download_folder = download_file(training_data_zip,"other_files", force_download=True)
+download_folder = download_file(training_data_zip, "other_files", force_download=True)
 training_data_folder = os.path.join(os.path.dirname(download_folder), "training_data")
 # Unzip training data
 with zipfile.ZipFile(download_folder) as zf:
-   zf.extractall(training_data_folder)
+    zf.extractall(training_data_folder)
 
 ###############################################################################
 # Define auxiliary functions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define auxiliary functions for computing # the norm of the output field.
 
+
 def norm_vector_history(field: np.ndarray, index: int):
     """Compute the norm of a vector field."""
     result = []
     for i in range(0, field.shape[0]):
-        vec = field[i,:].reshape((-1, 3))
+        vec = field[i, :].reshape((-1, 3))
         result.append(np.sqrt((vec * vec).sum(axis=1))[index])
     return result
+
 
 ###############################################################################
 # Project settings
@@ -69,20 +93,21 @@ def norm_vector_history(field: np.ndarray, index: int):
 # launch Twin Builder in an existing AEDT session if one is running.
 
 source_build_conf_file = "SROMbuild.conf"
-source_props_conf_file = "SROM_props.conf" # Note : SROM_props.conf may need to be adapted if inputs names change!
+source_props_conf_file = "SROM_props.conf"  # Note : SROM_props.conf may need to be adapted if inputs names change!
 desktop_version = "2025.1"
 non_graphical = False
 new_thread = True
 confpath = os.path.join(training_data_folder, source_build_conf_file)
-doefile = os.path.join(training_data_folder, 'doe.csv')
-settingsfile = os.path.join(training_data_folder, 'settings.json')
+doefile = os.path.join(training_data_folder, "doe.csv")
+settingsfile = os.path.join(training_data_folder, "settings.json")
 
 ###############################################################################
 # ROM creation
 # ~~~~~~~~~~~~
 # Create a Twin Builder instance
-tb = TwinBuilder(project=generate_unique_project_name(), version=desktop_version,
-                 non_graphical=non_graphical, new_desktop=new_thread)
+tb = TwinBuilder(
+    project=generate_unique_project_name(), version=desktop_version, non_graphical=non_graphical, new_desktop=new_thread
+)
 
 # Switch the current desktop configuration and the schematic environment to "Twin Builder" (Static ROM Builder is
 # available with Twin Builder).
@@ -96,17 +121,17 @@ rom_manager = tb.odesign.GetROMManager()
 static_rom_builder = rom_manager.GetStaticROMBuilder()
 
 # Build the static ROM with specified configuration file
-static_rom_builder.Build(confpath.replace('\\', '/'))
+static_rom_builder.Build(confpath.replace("\\", "/"))
 
 # Test if ROM was created successfully
-static_rom_path = os.path.join(training_data_folder, 'StaticRom.rom')
+static_rom_path = os.path.join(training_data_folder, "StaticRom.rom")
 if os.path.exists(static_rom_path):
     tb.logger.info("Built intermediate rom file successfully at: %s", static_rom_path)
 else:
     tb.logger.error("Intermediate rom file not found at: %s", static_rom_path)
 
 # Create the ROM component definition in Twin Builder
-rom_manager.CreateROMComponent(static_rom_path.replace('\\', '/'), 'staticrom')
+rom_manager.CreateROMComponent(static_rom_path.replace("\\", "/"), "staticrom")
 
 ###############################################################################
 # Twin composition and export
@@ -115,11 +140,11 @@ rom_manager.CreateROMComponent(static_rom_path.replace('\\', '/'), 'staticrom')
 G = 0.00254
 
 # Create the Twin Subsheet.
-parentDesign = 'ParentDesign'
-subSheet = 'SubSheet'
+parentDesign = "ParentDesign"
+subSheet = "SubSheet"
 tb.create_subsheet(subSheet, parentDesign)
 idSubSheet = len(tb.odesign.GetSubDesigns())
-tb.set_active_design(parentDesign+"::SubSheet"+str(idSubSheet))
+tb.set_active_design(parentDesign + "::SubSheet" + str(idSubSheet))
 
 # Place the ROM component, parameterize and connect to port interfaces.
 rom1 = tb.modeler.schematic.create_component("ROM1", "", "staticrom", [40 * G, 25 * G])
@@ -134,7 +159,7 @@ twinname = "TwinModel"
 tb.odesign.CompileAsTwin(twinname, ["1", "0.001", "1e-4", "1e-12"])
 
 # twin export
-twinFile = os.path.join(training_data_folder, twinname+'.twin')
+twinFile = os.path.join(training_data_folder, twinname + ".twin")
 tb.modeler.schematic.o_simmodel_manager.ExportTwinModel(twinname, twinFile, "twin", "other", "1", "1")
 
 tb.logger.info("Twin compiled and exported. Closing Twin Builder.")
@@ -177,15 +202,15 @@ twin_model.initialize_evaluation(inputs=inputs)
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # The time history predictions for a particular probe (point #23) are post processed and compared to reference results.
 
-ref_snapshot = os.path.join(training_data_folder, 'snapshots', inputs_df[inputs_df.columns[0]][data_index])
+ref_snapshot = os.path.join(training_data_folder, "snapshots", inputs_df[inputs_df.columns[0]][data_index])
 ref_data = read_binary(ref_snapshot).reshape(len(timeGrid), -1)
 snapshot = twin_model.get_snapshot_filepath(romname)
 snap_data = read_binary(snapshot).reshape(len(timeGrid), -1)
 probe_id = 23
-plt.plot(timeGrid, norm_vector_history(ref_data, probe_id), label='reference')
-plt.plot(timeGrid, norm_vector_history(snap_data, probe_id), label='rom')
+plt.plot(timeGrid, norm_vector_history(ref_data, probe_id), label="reference")
+plt.plot(timeGrid, norm_vector_history(snap_data, probe_id), label="rom")
 plt.legend(loc="lower left")
-plt.title('Displacement vs Time for point {}'.format(probe_id))
+plt.title("Displacement vs Time for point {}".format(probe_id))
 plt.show()
 
 # Clean up the downloaded data
