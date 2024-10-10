@@ -108,7 +108,7 @@ named_selections = twin_model.get_named_selections(rom_name)
 
 ###############################################################################
 # Extract the CFD mesh information for projection
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the Fluent cas file through PyDPF and extract all the zones associated to the ROM's named selections
 print("Reading the CFD mesh")
 ds = dpf.DataSources()
@@ -127,7 +127,7 @@ target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) -
 
 ###############################################################################
 # Project the TBROM field onto the targeted mesh
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The projection is performed without interpolation. In that case, it is assumed that the TBROM points have the same
 # order as the CFD cells to which they are associated to. This is ensured if the same CFD mesh is used for the
 # projection as the one used to generate the training data for this ROM.
@@ -136,7 +136,7 @@ rom_on_cfd_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 
 ###############################################################################
 # Post processing and field visualization using PyVista (part 1)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Creation of the scene and results to display (e.g. velocity vectors field on cross section on top of geometry)
 print("Post processing (part 1)")
 plotter = pv.Plotter()
@@ -161,7 +161,7 @@ plotter.show()
 
 ###############################################################################
 # Post processing and field visualization using PyVista (part 2)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Creation of the scene and results to display (e.g. velocity magnitude on a given boundary on top of geometry)
 print("Post processing (part 2)")
 namedselection = "outlet"

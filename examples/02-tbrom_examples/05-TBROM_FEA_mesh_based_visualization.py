@@ -100,7 +100,7 @@ named_selections = twin_model.get_named_selections(rom_name)
 
 ###############################################################################
 # Extract the FEA mesh information for projection
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the Mechanical rst file through PyDPF and extract the mesh
 print("Reading the FEA mesh")
 ds = dpf.DataSources()
@@ -113,7 +113,7 @@ target_mesh = whole_mesh.grid
 
 ###############################################################################
 # Project the TBROM field onto the targeted mesh
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The projection is performed without interpolation (i.e. direct mapping of data)
 print("Projecting the results on target mesh")
 rom_on_fea_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
