@@ -52,9 +52,9 @@ jobs:
 
       - name: "Install documentation dependencies, including DPF server"
         run: |
+          cp -r ~ansys/Documents/devEnv/pyansys/pytwin/ansys_dpf_server_win_v2024.1.pre0/ ./
           .venv\Scripts\Activate.ps1
           poetry install --with doc
-          cp -r ~ansys/Documents/devEnv/pyansys/pytwin/ansys_dpf_server_win_v2024.1.pre0/ ./
           cd ansys_dpf_server_win_v2024.1.pre0
           pip install -e .
           cd ..
