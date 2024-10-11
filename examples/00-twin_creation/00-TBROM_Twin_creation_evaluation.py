@@ -164,6 +164,10 @@ tb.modeler.schematic.o_simmodel_manager.ExportTwinModel(twinname, twinFile, "twi
 
 tb.logger.info("Twin compiled and exported. Closing Twin Builder.")
 
+# Restore earlier desktop configuration and schematic environment.
+tb.odesktop.SetDesktopConfiguration(current_desktop_config)
+tb.odesktop.SetSchematicEnvironment(current_schematic_environment)
+
 tb.release_desktop()
 
 ###############################################################################
