@@ -343,13 +343,13 @@ pyvistaqt = ">=0.11.1,<0.12.0"
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.68.5"
+version = "0.68.6"
 description = "A Python wrapper for Ansys MAPDL."
 optional = false
 python-versions = "<3.13,>=3.10"
 files = [
-    {file = "ansys_mapdl_core-0.68.5-py3-none-any.whl", hash = "sha256:b8b41515b782f2e197fd08f288562ce90ee3cc59d9f63130886a48b5428acd28"},
-    {file = "ansys_mapdl_core-0.68.5.tar.gz", hash = "sha256:f181b0f9f834686e3c0edd7d4858480633e8521c6a00e989054b303f566b9372"},
+    {file = "ansys_mapdl_core-0.68.6-py3-none-any.whl", hash = "sha256:8a62178e7b0aeb71a40edd4b97cfc2fa7849df643ad574f41b52aebea552b2f8"},
+    {file = "ansys_mapdl_core-0.68.6.tar.gz", hash = "sha256:cb387b4f6a251f8da1ce0f5a6cca73b2ad83cdd8574fdb1da102280cb95c9f44"},
 ]
 
 [package.dependencies]
@@ -376,9 +376,9 @@ tqdm = ">=4.45.0"
 vtk = ">=9.0.0"
 
 [package.extras]
-doc = ["ansys-dpf-core (==0.10.1)", "ansys-mapdl-reader (==0.54.1)", "ansys-sphinx-theme (==1.1.2)", "ansys-tools-visualization-interface (==0.4.4)", "grpcio (==1.66.1)", "imageio (==2.35.1)", "imageio-ffmpeg (==0.5.1)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.9.2)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==5.24.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.13)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.0.2)", "sphinx-autobuild (==2024.9.19)", "sphinx-autodoc-typehints (==1.25.2)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.17.1)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.0.4)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.3.1)"]
+doc = ["ansys-dpf-core (==0.10.1)", "ansys-mapdl-reader (==0.54.1)", "ansys-sphinx-theme (==1.1.2)", "ansys-tools-visualization-interface (==0.4.5)", "grpcio (==1.66.2)", "imageio (==2.35.1)", "imageio-ffmpeg (==0.5.1)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.9.2)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==5.24.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.14)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.1.0)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==1.25.2)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.18.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.0.4)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.3.1)"]
 jupyter = ["ipywidgets", "jupyterlab (>=3)"]
-tests = ["ansys-dpf-core (==0.10.1)", "ansys-tools-visualization-interface (==0.4.4)", "autopep8 (==2.3.1)", "matplotlib (==3.9.2)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.3)", "pytest-cov (==5.0.0)", "pytest-memprof (<0.3.0)", "pytest-pyvista (==0.1.9)", "pytest-rerunfailures (==14.0)", "scipy (==1.14.1)", "vtk (==9.3.1)"]
+tests = ["ansys-dpf-core (==0.10.1)", "ansys-tools-visualization-interface (==0.4.5)", "autopep8 (==2.3.1)", "matplotlib (==3.9.2)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.3)", "pytest-cov (==5.0.0)", "pytest-memprof (<0.3.0)", "pytest-pyvista (==0.1.9)", "pytest-rerunfailures (==14.0)", "scipy (==1.14.1)", "vtk (==9.3.1)"]
 
 [[package]]
 name = "ansys-mapdl-reader"
@@ -4646,13 +4646,13 @@ rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
 
 [[package]]
 name = "sphinx-gallery"
-version = "0.17.1"
+version = "0.18.0"
 description = "A Sphinx extension that builds an HTML gallery of examples from any set of Python scripts."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "sphinx_gallery-0.17.1-py3-none-any.whl", hash = "sha256:0a1142a15a9d63169fe7b12167dc028891fb8db31bfc6d7de03ba0d68d591830"},
-    {file = "sphinx_gallery-0.17.1.tar.gz", hash = "sha256:c9969abcc5ca8c24496014da8260833b8c3ccdb32c17716b5ba66f2e0a3cc183"},
+    {file = "sphinx_gallery-0.18.0-py3-none-any.whl", hash = "sha256:54317366e77b182672797e5b46ab13cca9a27eafc3142c59dc4c211d4afe3420"},
+    {file = "sphinx_gallery-0.18.0.tar.gz", hash = "sha256:4b5b5bc305348c01d00cf66ad852cfd2dd8b67f7f32ae3e2820c01557b3f92f9"},
 ]
 
 [package.dependencies]
@@ -5360,4 +5360,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "37c30687606d19745140f5b50936ce04b6fdf636446718fd48962d4d2c27e4d3"
+content-hash = "d4dc79adefb74df5d3e0bbef905fe2aa103479bc3c9e998f7069e7de2dad2311"
