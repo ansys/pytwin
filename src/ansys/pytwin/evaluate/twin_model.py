@@ -1254,9 +1254,8 @@ class TwinModel(Model):
 
     def get_image_filepath(self, rom_name: str, view_name: str, evaluation_time: float = 0.0):
         """
-        Get the image file that was created by the given ROM at the given time instant.
-
-        The image file shows the field results of the ROM in the given predefined view.
+        Get the image file that was created by the given ROM at the given time instant. The image file shows the field
+        results of the ROM in the given predefined view.
 
         Parameters
         ----------
@@ -1396,7 +1395,7 @@ class TwinModel(Model):
 
     def get_named_selections(self, rom_name):
         """
-        Get the list of named selections associated to the TBROM named rom_name
+        Get the list of named selections associated to the TBROM named rom_name.
 
         Parameters
         ----------
@@ -1432,7 +1431,7 @@ class TwinModel(Model):
 
     def get_field_input_names(self, rom_name):
         """
-        Get the list of input fields names associated to the TBROM named rom_name
+        Get the list of input fields names associated to the TBROM named rom_name.
 
         Parameters
         ----------
@@ -1468,7 +1467,7 @@ class TwinModel(Model):
 
     def get_field_output_name(self, rom_name):
         """
-        Get the output field name associated to the TBROM named rom_name
+        Get the output field name associated to the TBROM named rom_name.
 
         Parameters
         ----------
