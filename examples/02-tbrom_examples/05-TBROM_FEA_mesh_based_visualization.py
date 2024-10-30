@@ -122,9 +122,9 @@ rom_on_fea_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 ###############################################################################
 # Deform the target mesh using the ROM displacement
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ROM was generted from a large deformation analysis, so use a scale factor of 1
+# ROM was generated from a large deformation analysis, so use a scale factor of 1
 print("Deforming the target mesh")
-rom_on_fea_deformed_mesh = rom_on_fea_mesh.warp_by_vector('Deformation', factor=1)
+rom_on_fea_deformed_mesh = rom_on_fea_mesh.warp_by_vector("Deformation", factor=1)
 
 ###############################################################################
 # Post processing and field visualization using PyVista
