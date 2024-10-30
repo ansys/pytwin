@@ -89,13 +89,14 @@ fea_file = download_file("FEA_deformation.rst", "other_files", force_download=Tr
 rom_inputs = {"Force_X_Component": 101.471}
 
 ###############################################################################
-# Load the twin runtime and generate temperature results
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and generate displacement results
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the twin runtime, initialize and extract ROM related information.
 print("Initializing the Twin")
 twin_model = TwinModel(twin_file)
 twin_model.initialize_evaluation(inputs=rom_inputs)
 rom_name = twin_model.tbrom_names[0]
+output_name = twin_model.get_field_output_name(rom_name)
 named_selections = twin_model.get_named_selections(rom_name)
 
 ###############################################################################
@@ -119,6 +120,13 @@ print("Projecting the results on target mesh")
 rom_on_fea_mesh = twin_model.project_tbrom_on_mesh(rom_name, target_mesh, False)
 
 ###############################################################################
+# Deform the target mesh using the ROM displacement
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ROM was generated from a large deformation analysis, so use a scale factor of 1
+print("Deforming the target mesh")
+rom_on_fea_deformed_mesh = rom_on_fea_mesh.warp_by_vector("Deformation", factor=1)
+
+###############################################################################
 # Post processing and field visualization using PyVista
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Creation of the scene and results to display
@@ -126,7 +134,7 @@ print("Post processing")
 plotter = pv.Plotter()
 plotter.set_background("white")
 plotter.add_axes()
-plotter.add_mesh(rom_on_fea_mesh, scalar_bar_args={"color": "black"})
+plotter.add_mesh(rom_on_fea_deformed_mesh, scalar_bar_args={"color": "black"})
 # plotter.add_mesh(mesh_data, show_edges=True, scalar_bar_args={"color": "black"})
 plotter.camera_position = [
     (-0.03962092584614037, 0.013987037327583286, 0.10356162483172728),
