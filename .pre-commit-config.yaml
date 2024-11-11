@@ -35,7 +35,7 @@ repos:
       additional_dependencies: [black==22.12.0]
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.4.3
+  rev: v0.4.4
   hooks:
     - id: add-license-headers
       files: '(ansys|examples|tests)/.*\.(py)'
