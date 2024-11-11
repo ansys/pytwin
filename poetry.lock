@@ -264,15 +264,15 @@ protobuf = ">=3.19,<5"
 
 [[package]]
 name = "ansys-dpf-core"
-version = "0.13.0"
+version = "0.13.2"
 description = "Data Processing Framework - Python Core"
 optional = false
 python-versions = "<4,>=3.9"
 files = [
-    {file = "ansys_dpf_core-0.13.0-py3-none-any.whl", hash = "sha256:765195ee06db16a124568384caafb334a5d5b777639fd99564abc3f0c7872ea5"},
-    {file = "ansys_dpf_core-0.13.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:1cf4838a6d0c0efd8cd649c311dd8fc80b404aeaacd0d20fc60041ee27904f27"},
-    {file = "ansys_dpf_core-0.13.0-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:31c5d45800176db40142f9e9f0f2b797b5a02aba3323951194349b9e792a8472"},
-    {file = "ansys_dpf_core-0.13.0-py3-none-win_amd64.whl", hash = "sha256:70ccecd50baf757f1abb88562298df2b66c78a08e0d4124d29bbf95af786372e"},
+    {file = "ansys_dpf_core-0.13.2-py3-none-any.whl", hash = "sha256:91f6d23d14dbc3485f6141747ba2e3d98212a193b4f681fc587f46497162bb4e"},
+    {file = "ansys_dpf_core-0.13.2-py3-none-manylinux1_x86_64.whl", hash = "sha256:654493f4c1b749f85b306bc62492dbf10beaaecc1a6fd3edb8b9168111768422"},
+    {file = "ansys_dpf_core-0.13.2-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:38ce4df8a62a811b7d1eac5f8351a6f3df8b6655a4b639d160cb42f427099c95"},
+    {file = "ansys_dpf_core-0.13.2-py3-none-win_amd64.whl", hash = "sha256:390c1a0bbad727e29e93f87549105480cdf91c05ed1e025b17709f315c607f87"},
 ]
 
 [package.dependencies]
