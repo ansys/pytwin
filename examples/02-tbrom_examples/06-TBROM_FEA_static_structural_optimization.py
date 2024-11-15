@@ -25,7 +25,7 @@
 Static structural analysis and optimization using 3D field ROM
 --------------------------------------------------------------
 
-This example shows how PyTwin can be used to perform different types of static structural analsyis using 3D field ROM.
+This example shows how PyTwin can be used to perform different types of static structural analysis using 3D field ROM.
 A static structural model of a dog bone is created with Ansys Mechanical. A fixed support is applied on the right hand
 side, while a remote force is supplied on the left hand side resulting in a stress field and associated displacement.
 Non-linear structcural steel is used a representative material. A static ROM has been generated out of the original
@@ -51,13 +51,14 @@ No
 # Perform required imports, which include downloading and importing the input
 # files.
 
+import os
+
+import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pytwin import TwinModel, download_file
-import os
 import pyvista as pv
-import ansys.dpf.core as dpf
 
 twin_file = download_file("TwinDogBone.twin", "twin_files", force_download=True)
 fea_file = download_file("TwinDogBone.rst", "other_files", force_download=True)
@@ -78,14 +79,16 @@ print("Initializing the Twin")
 twin_model = TwinModel(twin_file)
 input_name = list(twin_model.inputs.keys())[0]
 results = []
-for dp in np.linspace(start=applied_force_min, stop=applied_force_max, num=int((applied_force_max - applied_force_min) / step + 1)):
+for dp in np.linspace(
+    start=applied_force_min, stop=applied_force_max, num=int((applied_force_max - applied_force_min) / step + 1)
+):
     dp_input = {input_name: dp}
     twin_model.initialize_evaluation(inputs=dp_input)
     outputs = [dp]
     for item in twin_model.outputs:
         outputs.append(twin_model.outputs[item])
     results.append(outputs)
-    if dp % 10*step == 0.0:
+    if dp % 10 * step == 0.0:
         print("Simulating the model with input {}".format(dp))
 sim_results = pd.DataFrame(results, columns=[input_name] + list(twin_model.outputs), dtype=float)
 
@@ -106,9 +109,9 @@ fig.set_tight_layout({"pad": 0.0})
 axes0 = ax
 axes1 = ax.twinx()
 
-sim_results.plot(x=x_ind, y=y0_ind, ax=axes0, color='g', ls="-.", label="{}".format("Max Displacement"))
+sim_results.plot(x=x_ind, y=y0_ind, ax=axes0, color="g", ls="-.", label="{}".format("Max Displacement"))
 axes0.legend(loc="upper left")
-sim_results.plot(x=x_ind, y=y1_ind, ax=axes1, color='b', ls="-.", label="{}".format("Max Stress (Von Mises)"))
+sim_results.plot(x=x_ind, y=y1_ind, ax=axes1, color="b", ls="-.", label="{}".format("Max Stress (Von Mises)"))
 axes1.legend(loc="upper right")
 
 axes0.set_xlabel(sim_results.columns[x_ind] + " [N]")
@@ -130,7 +133,7 @@ fig.set_tight_layout({"pad": 0.0})
 
 axes0 = ax
 
-sim_results.plot(x=y0_ind, y=y1_ind, ax=axes0, color='g', ls="-.")
+sim_results.plot(x=y0_ind, y=y1_ind, ax=axes0, color="g", ls="-.")
 
 axes0.set_xlabel("Max Displacement")
 axes0.set_ylabel("Max Stress (Von Mises)")
@@ -154,9 +157,9 @@ target_mesh = whole_mesh.grid
 ###############################################################################
 # Project the deformation field ROM onto the targeted mesh
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-romname = twin_model.tbrom_names[0] # 0 = Deformation ROM, 1 = Stress ROM
-#field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
-field_data = twin_model.project_tbrom_on_mesh(romname, target_mesh, True) # mesh based results
+romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
+# field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
+field_data = twin_model.project_tbrom_on_mesh(romname, target_mesh, True)  # mesh based results
 plotter = pv.Plotter()
 plotter.set_background("white")
 plotter.add_axes()
