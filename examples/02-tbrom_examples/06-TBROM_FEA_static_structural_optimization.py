@@ -39,7 +39,7 @@ No
 #   :width: 400pt
 #   :align: center
 
-# sphinx_gallery_thumbnail_path = '_static/TBROM_FEA_mesh_projection'
+# sphinx_gallery_thumbnail_path = '_static/TBROM_FEA_static_structural_optimization.png'
 
 ###############################################################################
 # .. note::
@@ -93,7 +93,7 @@ for dp in np.linspace(
 sim_results = pd.DataFrame(results, columns=[input_name] + list(twin_model.outputs), dtype=float)
 
 ##################################################################################
-# Results analysis
+# Results analysis (2D curves, as well as 3D visualization of field results)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Plot the maximum displacement and stress computed with respect to supplied force
 x_ind = 0
@@ -155,8 +155,8 @@ whole_mesh = dpf.operators.mesh.mesh_provider(streams_container=streams).eval()
 target_mesh = whole_mesh.grid
 
 ###############################################################################
-# Project the deformation field ROM onto the targeted mesh
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Project the deformation field ROM onto the targeted mesh, and visualize
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
 # field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
 field_data = twin_model.project_tbrom_on_mesh(romname, target_mesh, True)  # mesh based results
