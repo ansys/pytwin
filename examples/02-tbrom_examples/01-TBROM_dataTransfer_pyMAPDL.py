@@ -62,7 +62,6 @@ the thermal structural analysis.
 
 from ansys.mapdl.core import launch_mapdl
 import numpy as np
-import pandas as pd
 from pytwin import TwinModel, download_file, snapshot_to_array
 import pyvista as pv
 
