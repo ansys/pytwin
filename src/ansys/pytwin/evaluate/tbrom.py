@@ -106,7 +106,7 @@ def read_snapshot_size(filepath):
 
     Examples
     --------
-    >>> from pytwin import write_binary
+    >>> from pytwin import read_snapshot_size
     >>> number_data = read_snapshot_size('snapshot.bin')
     """
     with open(filepath, "rb") as f:
