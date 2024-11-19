@@ -63,7 +63,7 @@ the thermal structural analysis.
 from ansys.mapdl.core import launch_mapdl
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, download_file, read_binary
+from pytwin import TwinModel, download_file, snapshot_to_array
 import pyvista as pv
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
@@ -80,23 +80,6 @@ print(mapdl)
 
 cfd_inputs = {"main_inlet_temperature": 353.15, "side_inlet_temperature": 293.15}
 rom_parameters = {"ThermalROM23R1_1_store_snapshots": 1}
-
-###############################################################################
-# Define auxiliary functions
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define an auxiliary function for converting the ROM snapshot for data mapping
-# on an FEA mesh.
-
-
-def snapshot_to_fea(snapshot_file, geometry_file):
-    """Create a Pandas dataframe containing the x, y, z coordinates for the ROM
-    and snapshot file results."""
-
-    geometry_data = read_binary(geometry_file).reshape(-1, 3)
-    snapshot_data = read_binary(snapshot_file).reshape(-1, 1)
-    res_list = np.hstack((geometry_data, snapshot_data))
-
-    return pd.DataFrame(res_list)
 
 
 ###############################################################################
@@ -125,14 +108,12 @@ rom_name = twin_model.tbrom_names[0]
 snapshot = twin_model.get_snapshot_filepath(rom_name=rom_name)
 geometry = twin_model.get_geometry_filepath(rom_name=rom_name)
 
-temperature_file = snapshot_to_fea(snapshot, geometry)
-
 ###############################################################################
 # Map temperature data to FEA mesh
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Map the temperature data to the FEA mesh.
 
-temperature_data = temperature_file.values  # Save data to a NumPy array
+temperature_data = snapshot_to_array(snapshot, geometry)  # Save data to a NumPy array
 nd_temp_data = temperature_data[:, :].astype(float)  # Change data type to float
 
 # Map temperature data to the FE mesh
