@@ -69,7 +69,6 @@ from ansys.fluent.visualization import set_config
 from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
-import numpy as np
 from pytwin import TwinModel, download_file, snapshot_to_array
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
@@ -80,7 +79,7 @@ set_config(blocking=True, set_view_on_display="isometric")
 ###############################################################################
 # Define ROM inputs
 # ~~~~~~~~~~~~~~~~~
-# Define the ROM inputs.
+# Define the ROM iuts.
 
 rom_inputs = {"main_inlet_temperature": 353.15, "side_inlet_temperature": 293.15}
 rom_parameters = {
