@@ -130,10 +130,8 @@ def snapshot_to_array(snapshot_file, geometry_file):
     -------
     np.ndarray
         Return a 2D Numpy array of x,y,z coordinates and snapshot data read.
-        Array has shape (m,n), where:
-
-        - `m = n_g / 3` where `n_g` is the length of the geometry snapshot and.
-        - `n = (n_g + n_s) / m` where `n_s` is the length of the field snapshot.
+        Array has shape (m,n), where m is the number of points in the geometry
+        file and n is the dimension of the snapshot field + 3.
 
     Raises
     ------
