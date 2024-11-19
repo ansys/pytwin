@@ -114,6 +114,50 @@ def read_snapshot_size(filepath):
     return nbdof
 
 
+def snapshot_to_array(snapshot_file, geometry_file):
+    """
+    Create an array containing the x, y, z coordinates and data from geometry
+    and field snapshot files.
+
+    Parameters
+    ----------
+    snapshot_file : str
+        Path of the binary field data file to be read.
+    geometry_file : str
+        Path of the binary points data file to be read.
+
+    Returns
+    -------
+    np.ndarray
+        Return a 2D Numpy array of x,y,z coordinates and snapshot data read.
+        Array has shape (m,n), where:
+
+        - `m = n_g / 3` where `n_g` is the length of the geometry snapshot and.
+        - `n = (n_g + n_s) / m` where `n_s` is the lenght of the field snapshot.
+
+    Raises
+    ------
+    ValueError
+        if snapshot lengths are incompatible.
+
+    Examples
+    --------
+    >>> from pytwin import snapshot_to_fea
+    >>> snapshot_data = snapshot_to_array('snapshot.bin', 'points.bin')
+    """
+    n_g = read_snapshot_size(geometry_file)
+    if n_g % 3 > 0:
+        raise ValueError("Geometry snapshot length must be divisible by 3.")
+    n_points = n_g // 3
+    n_s = read_snapshot_size(snapshot_file)
+    if n_s % n_points > 0:
+        raise ValueError(f"Field snapshot length must be divisible by the number of points.")
+
+    geometry_data  = read_binary(geometry_file).reshape(-1,3)
+    snapshot_data  = read_binary(snapshot_file).reshape(geometry_data .shape[0],-1)
+    return np.concatenate((geometry_data,snapshot_data ), axis=1)
+
+
 def _read_basis(filepath):
     with open(filepath, "rb") as f:
         var = struct.unpack("cccccccccccccccc", f.read(16))[0]
