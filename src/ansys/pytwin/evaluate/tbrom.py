@@ -149,7 +149,7 @@ def snapshot_to_array(snapshot_file, geometry_file):
     n_points = n_g // 3
     n_s = read_snapshot_size(snapshot_file)
     if n_s % n_points > 0:
-        raise ValueError(f"Field snapshot length must be divisible by the number of points.")
+        raise ValueError(f"Field snapshot length {n_s} must be divisible by the number of points {n_points}.")
 
     geometry_data = read_binary(geometry_file).reshape(-1, 3)
     snapshot_data = read_binary(snapshot_file).reshape(geometry_data.shape[0], -1)
