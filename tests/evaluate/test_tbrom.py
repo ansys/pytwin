@@ -25,7 +25,7 @@ import sys
 
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, TwinModelError, download_file, read_binary, write_binary, snapshot_to_array
+from pytwin import TwinModel, TwinModelError, download_file, read_binary, snapshot_to_array, write_binary
 from pytwin.evaluate import tbrom
 from pytwin.settings import get_pytwin_log_file
 import pyvista as pv
@@ -1318,8 +1318,14 @@ class TestTbRom:
 
     def test_snapshot_to_array_api(self):
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
-        tensor_field = np.array([[1.0, 2.0, 3.0, 5.0, 7.0, 11.0],[1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-                                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],[1.0, 2.0, 3.0, 5.0, 7.0, 11.0]])
+        tensor_field = np.array(
+            [
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+            ]
+        )
         write_binary(tensor_path, tensor_field)
         geometry_path = os.path.join(os.path.dirname(__file__), "data", "geometry_vector.bin")
         geometry_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
@@ -1331,14 +1337,21 @@ class TestTbRom:
     def test_snapshot_to_array_api_mismatch(self):
         # Snapshot of length 24
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
-        tensor_field = np.array([[1.0, 2.0, 3.0, 5.0, 7.0, 11.0],[1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-                                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],[1.0, 2.0, 3.0, 5.0, 7.0, 11.0]])
+        tensor_field = np.array(
+            [
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+            ]
+        )
         write_binary(tensor_path, tensor_field)
-        
+
         # Snapshot of length 18 is not divisible by 4 points
         wrong_size_tensor = os.path.join(os.path.dirname(__file__), "data", "snapshot_wrong.bin")
-        tensor_field = np.array([[1.0, 2.0, 3.0, 5.0, 7.0, 11.0],[1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-                                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0]])
+        tensor_field = np.array(
+            [[1.0, 2.0, 3.0, 5.0, 7.0, 11.0], [1.0, 2.0, 3.0, 5.0, 7.0, 11.0], [1.0, 2.0, 3.0, 5.0, 7.0, 11.0]]
+        )
         write_binary(wrong_size_tensor, tensor_field)
 
         # Snapshot of length 12

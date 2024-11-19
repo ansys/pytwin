@@ -133,7 +133,7 @@ def snapshot_to_array(snapshot_file, geometry_file):
         Array has shape (m,n), where:
 
         - `m = n_g / 3` where `n_g` is the length of the geometry snapshot and.
-        - `n = (n_g + n_s) / m` where `n_s` is the lenght of the field snapshot.
+        - `n = (n_g + n_s) / m` where `n_s` is the length of the field snapshot.
 
     Raises
     ------
@@ -153,9 +153,9 @@ def snapshot_to_array(snapshot_file, geometry_file):
     if n_s % n_points > 0:
         raise ValueError(f"Field snapshot length must be divisible by the number of points.")
 
-    geometry_data  = read_binary(geometry_file).reshape(-1,3)
-    snapshot_data  = read_binary(snapshot_file).reshape(geometry_data .shape[0],-1)
-    return np.concatenate((geometry_data,snapshot_data ), axis=1)
+    geometry_data = read_binary(geometry_file).reshape(-1, 3)
+    snapshot_data = read_binary(snapshot_file).reshape(geometry_data.shape[0], -1)
+    return np.concatenate((geometry_data, snapshot_data), axis=1)
 
 
 def _read_basis(filepath):
