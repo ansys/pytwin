@@ -79,7 +79,7 @@ set_config(blocking=True, set_view_on_display="isometric")
 ###############################################################################
 # Define ROM inputs
 # ~~~~~~~~~~~~~~~~~
-# Define the ROM iuts.
+# Define the ROM inputs.
 
 rom_inputs = {"main_inlet_temperature": 353.15, "side_inlet_temperature": 293.15}
 rom_parameters = {
