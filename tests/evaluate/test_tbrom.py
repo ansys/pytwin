@@ -1367,7 +1367,7 @@ class TestTbRom:
         try:
             vector_field_read = snapshot_to_array(wrong_size_tensor, geometry_path)
         except ValueError as e:
-            assert "Field snapshot length must be divisible by the number of points." in str(e)
+            assert "Field snapshot length 18 must be divisible by the number of points 4." in str(e)
         try:
             vector_field_read = snapshot_to_array(tensor_field, wrong_geometry)
         except ValueError as e:
