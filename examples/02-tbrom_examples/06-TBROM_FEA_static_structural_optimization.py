@@ -180,18 +180,21 @@ plotter.show()
 # should be the applied force to get a given maximum stress.
 
 stress_target = 4.8e8
+
+
 def example_optimize(input_force):
     input_name = list(twin_model.inputs.keys())[0]
     dp_input = {input_name: input_force}
     twin_model.initialize_evaluation(inputs=dp_input)
     max_stress_val = twin_model.outputs["max_stress"]
 
-    return np.sqrt((max_stress_val - stress_target)**2)
+    return np.sqrt((max_stress_val - stress_target) ** 2)
+
 
 bounds = [(1, 920)]
 mymin = minimize(example_optimize, 100, bounds=bounds)
 print(f"Found solution : applied force = {mymin['x']}")
 input_name = list(twin_model.inputs.keys())[0]
-dp_input = {input_name: mymin['x']}
+dp_input = {input_name: mymin["x"]}
 twin_model.initialize_evaluation(inputs=dp_input)
 print(f"Found solution : corresponding maximum stress = {twin_model.outputs['max_stress']}")
