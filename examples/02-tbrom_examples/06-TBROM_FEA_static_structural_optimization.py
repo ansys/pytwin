@@ -31,7 +31,8 @@ side, while a remote force is supplied on the left hand side resulting in a stre
 Non-linear structcural steel is used a representative material. A static ROM has been generated out of the original
 3D model, so that the resulting Twin model can be evaluated using PyTwin, giving the possibilities to evaluate multiple
 configurations and operating conditions quickly, while keeping predictions accuracy similar to original 3D FEA model.
-No
+The PyTwin worklow illustrates different APIs usage to evaluate the models at different conditions, visualize 3D
+detailed field results, as well as performing optimization and inverse problems.
 """
 
 ###############################################################################
