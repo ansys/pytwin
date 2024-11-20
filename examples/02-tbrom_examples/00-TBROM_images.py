@@ -69,8 +69,7 @@ from ansys.fluent.visualization import set_config
 from ansys.fluent.visualization.pyvista import Graphics
 import matplotlib.image as img
 import matplotlib.pyplot as plt
-import numpy as np
-from pytwin import TwinModel, download_file, read_binary
+from pytwin import TwinModel, download_file, snapshot_to_array
 
 twin_file = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
 cfd_file = download_file("T_Junction.cas.h5", "other_files", force_download=True)
@@ -101,21 +100,18 @@ def snapshot_to_cfd(snapshot_file, geometry_file, field_name, outputFilePath):
     and map to the CFD mesh. This code shows the implementation for a single
     field of scalar data (temperature field).
     """
-
-    geometry_data = read_binary(geometry_file).reshape(-1, 3)
-    snapshot_data = read_binary(snapshot_file).reshape(-1, 1)
-    res_list = np.hstack((geometry_data, snapshot_data))
+    res_arr = snapshot_to_array(snapshot_file, geometry_file)
 
     with open(outputFilePath, "w") as ipfile:
         ipfile.write("3\n")  # IP file format
         ipfile.write("3\n")  # 2D or 3D - 3D for now
-        ipfile.write(str(len(res_list)) + "\n")  # number of data
+        ipfile.write(str(len(res_arr)) + "\n")  # number of data
         ipfile.write("1\n")  # number of field data
         ipfile.write(field_name + "\n")  # name of field data
-        for j in range(0, len(res_list[0])):
+        for j in range(0, len(res_arr[0])):
             ipfile.write("(")
-            for i in range(0, len(res_list)):
-                ipfile.write(str(res_list[i][j]) + "\n")
+            for i in range(0, len(res_arr)):
+                ipfile.write(str(res_arr[i][j]) + "\n")
             ipfile.write(")\n")
 
     return outputFilePath
