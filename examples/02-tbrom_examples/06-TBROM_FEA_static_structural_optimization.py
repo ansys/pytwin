@@ -59,6 +59,7 @@ import numpy as np
 import pandas as pd
 from pytwin import TwinModel, download_file
 import pyvista as pv
+from scipy.optimize import minimize
 
 twin_file = download_file("TwinDogBone.twin", "twin_files", force_download=True)
 fea_file = download_file("TwinDogBone.rst", "other_files", force_download=True)
@@ -174,4 +175,22 @@ plotter.show()
 ###############################################################################
 # Using the Twin and ROM for inverse problems
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# x
+# In this section, we are going to use a simple optimizer for inverse problems. For example, we want to determine what
+# should be the applied force to get a given maximum stress.
+
+stress_target = 4.8e8
+def example_optimize(input_force):
+    input_name = list(twin_model.inputs.keys())[0]
+    dp_input = {input_name: input_force}
+    twin_model.initialize_evaluation(inputs=dp_input)
+    max_stress_val = twin_model.outputs["max_stress"]
+
+    return np.sqrt((max_stress_val - stress_target)**2)
+
+bounds = [(1, 920)]
+mymin = minimize(example_optimize, 100, bounds=bounds)
+print(f"Found solution : applied force = {mymin['x']}")
+input_name = list(twin_model.inputs.keys())[0]
+dp_input = {input_name: mymin['x']}
+twin_model.initialize_evaluation(inputs=dp_input)
+print(f"Found solution : corresponding maximum stress = {twin_model.outputs['max_stress']}")
