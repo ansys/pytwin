@@ -52,8 +52,6 @@ detailed field results, as well as performing optimization and inverse problems.
 # Perform required imports, which include downloading and importing the input
 # files.
 
-import os
-
 import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 import numpy as np
