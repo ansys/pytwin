@@ -27,12 +27,12 @@ Static structural analysis and optimization using 3D field ROM
 
 This example shows how PyTwin can be used to perform different types of static structural analysis using 3D field ROM.
 A static structural model of a dog bone is created with Ansys Mechanical. A fixed support is applied on the right hand
-side, while a remote force is supplied on the left hand side. A non-linear structural analysis with plastic material 
-behavior (using steel) is performed to compute the resulting stress field and associated displacement. A static ROM 
-has been generated out of the original 3D model, so that the resulting Twin model can be evaluated using PyTwin, 
-giving the possibilities to evaluate multiple configurations and operating conditions quickly, while keeping 
-predictions accuracy similar to original 3D FEA model. The PyTwin worklow illustrates different APIs usage to evaluate 
-the models at different conditions, visualize 3D detailed field results, as well as performing optimization and 
+side, while a remote force is supplied on the left hand side. A non-linear structural analysis with plastic material
+behavior (using steel) is performed to compute the resulting stress field and associated displacement. A static ROM
+has been generated out of the original 3D model, so that the resulting Twin model can be evaluated using PyTwin,
+giving the possibilities to evaluate multiple configurations and operating conditions quickly, while keeping
+predictions accuracy similar to original 3D FEA model. The PyTwin worklow illustrates different APIs usage to evaluate
+the models at different conditions, visualize 3D detailed field results, as well as performing optimization and
 inverse problems.
 """
 
