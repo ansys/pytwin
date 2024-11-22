@@ -73,9 +73,7 @@ applied_force_max = 920.0
 step = 5.0
 
 design_points = np.linspace(
-    start=applied_force_min,
-    stop=applied_force_max,
-    num=int((applied_force_max - applied_force_min) / step + 1)
+    start=applied_force_min, stop=applied_force_max, num=int((applied_force_max - applied_force_min) / step + 1)
 )
 
 ###############################################################################
