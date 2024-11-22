@@ -39,7 +39,7 @@ options. For more information, see the
 #   :width: 400pt
 #   :align: center
 
-# sphinx_gallery_thumbnail_path = '_static/TBROM_FEA_mesh_projection'
+# sphinx_gallery_thumbnail_path = '_static/TBROM_FEA_mesh_projection.png'
 
 ###############################################################################
 # .. note::
