@@ -48,6 +48,22 @@ class TestDownloads:
         my_file_path = dld.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
         assert os.path.exists(my_file_path)
 
+    def test_cache_download_file(self):
+        dld.delete_downloads()
+        my_file_path = dld.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
+        first_modified_time = os.path.getmtime(my_file_path)
+        my_file_path = dld.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=False)
+        second_modified_time = os.path.getmtime(my_file_path)
+        assert first_modified_time == second_modified_time
+
+    def test_force_download_file(self):
+        dld.delete_downloads()
+        my_file_path = dld.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
+        first_modified_time = os.path.getmtime(my_file_path)
+        my_file_path = dld.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
+        second_modified_time = os.path.getmtime(my_file_path)
+        assert first_modified_time != second_modified_time
+
     def test_load_data(self):
         csv_input = dld.download_file("CoupledClutches_input.csv", "twin_input_files")
         data = dld.load_data(csv_input)
