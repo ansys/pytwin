@@ -166,7 +166,7 @@ def download_file(
     if not destination:
         destination = EXAMPLES_PATH
     if force_download:
-        local_path = os.path.join(destination, file_name)
+        local_path = os.path.join(destination, directory, os.path.basename(file_name))
         if os.path.exists(local_path):
             os.unlink(local_path)
     return _download_file(file_name, directory, destination)
