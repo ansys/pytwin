@@ -45,7 +45,7 @@ inverse problems.
 
 ###############################################################################
 # .. note::
-#   This example uses similar functionalities and requirements as _ref_example_TBROM_FEA_mesh_projection
+#   This example uses similar functionalities and requirements as :ref:`ref_example_TBROM_FEA_mesh_projection`
 
 ###############################################################################
 # Perform required imports
@@ -67,22 +67,24 @@ fea_file = download_file("TwinDogBone.rst", "other_files", force_download=True)
 ###############################################################################
 # Definition of the force values for which the model will be evaluated
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the force range and step size and create a simple design of experiments with uniformly space values.
 applied_force_min = 10.0
 applied_force_max = 920.0
 step = 5.0
 
+design_points = np.linspace(
+    start=applied_force_min, stop=applied_force_max, num=int((applied_force_max - applied_force_min) / step + 1)
+)
+
 ###############################################################################
-# Load the twin runtime and generate displacement and stress results for
-# different forces applied.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load the twin runtime and generate displacement and stress results for different forces applied.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the twin runtime, initialize and extract ROM related information.
 print("Initializing the Twin")
 twin_model = TwinModel(twin_file)
 input_name = list(twin_model.inputs.keys())[0]
 results = []
-for dp in np.linspace(
-    start=applied_force_min, stop=applied_force_max, num=int((applied_force_max - applied_force_min) / step + 1)
-):
+for dp in design_points:
     dp_input = {input_name: dp}
     twin_model.initialize_evaluation(inputs=dp_input)
     outputs = [dp]
@@ -158,17 +160,30 @@ target_mesh = whole_mesh.grid
 ###############################################################################
 # Project the deformation field ROM onto the targeted mesh, and visualize
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
+def_romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
 # field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
-field_data = twin_model.project_tbrom_on_mesh(romname, target_mesh, True)  # mesh based results
-plotter = pv.Plotter()
-plotter.set_background("white")
-plotter.add_axes()
-plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
-plotter.show()
+def_field_data = twin_model.project_tbrom_on_mesh(def_romname, target_mesh, True)  # mesh based results
+def_plotter = pv.Plotter()
+def_plotter.set_background("white")
+def_plotter.add_axes()
+def_plotter.add_mesh(def_field_data, scalar_bar_args={"color": "black"})
+def_plotter.show()
 
 ###############################################################################
 # .. image:: /_static/TBROM_FEA_static_structural_optimization_postPro.png
+#   :width: 400pt
+#   :align: center
+
+stress_romname = twin_model.tbrom_names[1]  # 0 = Deformation ROM, 1 = Stress ROM
+stress_field_data = twin_model.project_tbrom_on_mesh(stress_romname, target_mesh, True)  # mesh based results
+stress_plotter = pv.Plotter()
+stress_plotter.set_background("white")
+stress_plotter.add_axes()
+stress_plotter.add_mesh(stress_field_data, scalar_bar_args={"color": "black"})
+stress_plotter.show()
+
+###############################################################################
+# .. image:: /_static/TBROM_FEA_static_structural_optimization_postPro_stress.png
 #   :width: 400pt
 #   :align: center
 
