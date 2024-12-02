@@ -264,22 +264,22 @@ protobuf = ">=3.19,<5"
 
 [[package]]
 name = "ansys-dpf-core"
-version = "0.13.2"
+version = "0.13.3"
 description = "Data Processing Framework - Python Core"
 optional = false
 python-versions = "<4,>=3.9"
 files = [
-    {file = "ansys_dpf_core-0.13.2-py3-none-any.whl", hash = "sha256:91f6d23d14dbc3485f6141747ba2e3d98212a193b4f681fc587f46497162bb4e"},
-    {file = "ansys_dpf_core-0.13.2-py3-none-manylinux1_x86_64.whl", hash = "sha256:654493f4c1b749f85b306bc62492dbf10beaaecc1a6fd3edb8b9168111768422"},
-    {file = "ansys_dpf_core-0.13.2-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:38ce4df8a62a811b7d1eac5f8351a6f3df8b6655a4b639d160cb42f427099c95"},
-    {file = "ansys_dpf_core-0.13.2-py3-none-win_amd64.whl", hash = "sha256:390c1a0bbad727e29e93f87549105480cdf91c05ed1e025b17709f315c607f87"},
+    {file = "ansys_dpf_core-0.13.3-py3-none-any.whl", hash = "sha256:09d1089005043728b8ac53dd0c88dee9c27b3a3dc051ab586bc658bf403ab0e2"},
+    {file = "ansys_dpf_core-0.13.3-py3-none-manylinux1_x86_64.whl", hash = "sha256:ff76d86892eb34a6f8ac97b26e50aefc7456c0b9535a72b71a2d05d1897a4065"},
+    {file = "ansys_dpf_core-0.13.3-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:bd1a6a80f8f56c8efb1bf67c3f621aaa5adaa45b427802fc2fbeb952c8ad4a47"},
+    {file = "ansys_dpf_core-0.13.3-py3-none-win_amd64.whl", hash = "sha256:4daa55f8644e5745eff34eeecad23671957508bb5a2878b484b29ad0375677ce"},
 ]
 
 [package.dependencies]
 google-api-python-client = "*"
 grpcio = ">=1.63.0"
 importlib-metadata = ">=4.0"
-numpy = "<2"
+numpy = "*"
 packaging = "*"
 protobuf = "*"
 psutil = "*"
@@ -287,7 +287,7 @@ setuptools = "*"
 tqdm = "*"
 
 [package.extras]
-plotting = ["imageio (<2.28.1)", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)"]
+plotting = ["imageio (<2.28.1)", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)", "vtk (!=9.4.0)"]
 
 [[package]]
 name = "ansys-fluent-core"
