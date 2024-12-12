@@ -1,3 +1,6 @@
+#------------------------------------------------------------------------------
+# (c) 2020-2024 ANSYS, Inc. All rights reserved.
+#------------------------------------------------------------------------------
 from enum import Enum
 
 
@@ -11,7 +14,7 @@ class TwinRuntimeError(Exception):
                 self.twin_status = twin_runtime._twin_status
 
     def add_message(self, new_message):
-        self.message += '\n'+new_message
+        self.message += "\n" + new_message
 
 
 class PropertyStatusFlag(Enum):
