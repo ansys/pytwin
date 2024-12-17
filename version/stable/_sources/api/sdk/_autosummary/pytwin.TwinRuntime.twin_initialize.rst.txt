@@ -1,0 +1,6 @@
+twin\_initialize
+================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_initialize
