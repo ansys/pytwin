@@ -343,13 +343,13 @@ pyvistaqt = ">=0.11.1,<0.12.0"
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.68.6"
+version = "0.69.1"
 description = "A Python wrapper for Ansys MAPDL."
 optional = false
 python-versions = "<3.13,>=3.10"
 files = [
-    {file = "ansys_mapdl_core-0.68.6-py3-none-any.whl", hash = "sha256:8a62178e7b0aeb71a40edd4b97cfc2fa7849df643ad574f41b52aebea552b2f8"},
-    {file = "ansys_mapdl_core-0.68.6.tar.gz", hash = "sha256:cb387b4f6a251f8da1ce0f5a6cca73b2ad83cdd8574fdb1da102280cb95c9f44"},
+    {file = "ansys_mapdl_core-0.69.1-py3-none-any.whl", hash = "sha256:627c0bbba6b3435ddc4a08f8916bee3c4fc5d0a58ea334f078c62b0a24862538"},
+    {file = "ansys_mapdl_core-0.69.1.tar.gz", hash = "sha256:cd6006c02eadd57f84d88d56699bc16bc218ca6ca89f2bbe8b2fe76ab036fc58"},
 ]
 
 [package.dependencies]
@@ -361,9 +361,8 @@ ansys-tools-path = ">=0.3.1"
 ansys-tools-visualization-interface = ">=0.2.6"
 click = ">=8.1.3"
 grpcio = ">=1.30.0"
-importlib-metadata = ">=4.0"
 matplotlib = ">=3.0.0"
-numpy = {version = ">=1.14.0,<3.0.0", markers = "python_version >= \"3.9\""}
+numpy = ">=1.14.0,<3.0.0"
 pexpect = {version = ">=4.8.0", markers = "platform_system == \"Linux\""}
 platformdirs = ">=3.6.0"
 protobuf = ">=3.12.2"
@@ -376,9 +375,9 @@ tqdm = ">=4.45.0"
 vtk = ">=9.0.0"
 
 [package.extras]
-doc = ["ansys-dpf-core (==0.10.1)", "ansys-mapdl-reader (==0.54.1)", "ansys-sphinx-theme (==1.1.2)", "ansys-tools-visualization-interface (==0.4.5)", "grpcio (==1.66.2)", "imageio (==2.35.1)", "imageio-ffmpeg (==0.5.1)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.9.2)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==5.24.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.14)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.1.0)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==1.25.2)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.18.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.0.4)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.3.1)"]
+doc = ["ansys-dpf-core (==0.10.1)", "ansys-mapdl-reader (==0.54.2)", "ansys-sphinx-theme (==1.2.4)", "ansys-tools-visualization-interface (==0.6.2)", "grpcio (==1.68.1)", "imageio (==2.36.1)", "imageio-ffmpeg (==0.5.1)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.10.0)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==5.24.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.14)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.1.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==1.25.2)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.18.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.0.4)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.3.1)"]
 jupyter = ["ipywidgets", "jupyterlab (>=3)"]
-tests = ["ansys-dpf-core (==0.10.1)", "ansys-tools-visualization-interface (==0.4.5)", "autopep8 (==2.3.1)", "matplotlib (==3.9.2)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.3)", "pytest-cov (==5.0.0)", "pytest-memprof (<0.3.0)", "pytest-pyvista (==0.1.9)", "pytest-rerunfailures (==14.0)", "scipy (==1.14.1)", "vtk (==9.3.1)"]
+tests = ["ansys-dpf-core (==0.10.1)", "ansys-tools-visualization-interface (==0.6.2)", "autopep8 (==2.3.1)", "matplotlib (==3.10.0)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.1)", "pyfakefs (==5.7.3)", "pyiges[full] (==0.3.1)", "pytest (==8.3.4)", "pytest-cov (==6.0.0)", "pytest-pyvista (==0.1.9)", "pytest-random-order (==1.1.1)", "pytest-rerunfailures (==15.0)", "pytest-timeout (==2.3.1)", "scipy (==1.14.1)", "vtk (==9.3.1)"]
 
 [[package]]
 name = "ansys-mapdl-reader"
@@ -5354,4 +5353,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "500ab06f80d65df1e4f89c68b466351a1ab2064b517704d84df67cc68a81ceb1"
+content-hash = "7b7a9844a24d0e47922e52c42e152acbc7703bea3c8b27ad736f3839d52b4049"
