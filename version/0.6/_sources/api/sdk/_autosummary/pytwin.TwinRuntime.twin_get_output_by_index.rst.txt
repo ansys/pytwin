@@ -1,0 +1,6 @@
+twin\_get\_output\_by\_index
+============================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_output_by_index
