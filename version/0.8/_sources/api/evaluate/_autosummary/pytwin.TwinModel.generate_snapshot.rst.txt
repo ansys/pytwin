@@ -1,0 +1,6 @@
+generate\_snapshot
+==================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.generate_snapshot
