@@ -492,14 +492,14 @@ clr-loader = ">=0.2.6,<0.3.0"
 
 [[package]]
 name = "ansys-sphinx-theme"
-version = "1.3.2"
+version = "1.3.3"
 description = "A theme devised by ANSYS, Inc. for Sphinx documentation."
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_sphinx_theme-1.3.2-py3-none-any.whl", hash = "sha256:62a11d9ecabdb0f01bf6859e8f42d5bc69550295fe09fb5fc9289459df2c6f6c"},
-    {file = "ansys_sphinx_theme-1.3.2.tar.gz", hash = "sha256:29515ac58b2bfcc1a622ea2679063af9dac0ff3ca88988e70fdfd2d0dc469b24"},
+    {file = "ansys_sphinx_theme-1.3.3-py3-none-any.whl", hash = "sha256:cd831d2e439690505837e1268e722ab4c56de56f7225b749718b63d406f3cf06"},
+    {file = "ansys_sphinx_theme-1.3.3.tar.gz", hash = "sha256:635377b17e6049026712eacc5e6b3c95913690460848d1c4f92dc2a0f36fa964"},
 ]
 
 [package.dependencies]
@@ -512,7 +512,7 @@ Sphinx = ">=4.2.0"
 [package.extras]
 autoapi = ["astroid (>=3.0,<4.0)", "sphinx-autoapi (==3.4.0)", "sphinx-design (==0.6.1)", "sphinx-jinja (==2.0.2)"]
 changelog = ["PyYAML (==6.0.2)", "sphinx-design (==0.6.1)"]
-doc = ["Pillow (>=9.0)", "PyGitHub (==2.5.0)", "PyYAML (==6.0.2)", "Sphinx (==8.1.3)", "jupytext (==1.16.6)", "nbsphinx (==0.9.6)", "notebook (==7.3.2)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "pyvista[jupyter] (==0.44.2)", "requests (==2.32.3)", "sphinx-autoapi (==3.4.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.18.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)"]
+doc = ["Pillow (>=9.0)", "PyGitHub (==2.6.1)", "PyYAML (==6.0.2)", "Sphinx (==8.1.3)", "jupytext (==1.16.6)", "nbsphinx (==0.9.6)", "notebook (==7.3.2)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "pyvista[jupyter] (==0.44.2)", "requests (==2.32.3)", "sphinx-autoapi (==3.4.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.18.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)"]
 
 [[package]]
 name = "ansys-tools-filetransfer"
