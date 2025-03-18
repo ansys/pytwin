@@ -282,10 +282,14 @@ class TbRom:
 
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
         [nbpoints, nbmodes] = _read_properties(propertiespath)
-        self._nbpoints = int(nbpoints / self._outdim)
+        # bug 1168769 (fixed in 2025R2)
+        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+        if os.path.exists(pointpath):
+            self._nbpoints = read_snapshot_size(pointpath) // 3
+        else:
+            self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
 
-        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         self._has_point_file = self._read_points(pointpath)
 
         outpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_BASIS)

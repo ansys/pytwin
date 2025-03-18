@@ -146,6 +146,12 @@ Twin with 1 TBROM with tensor field
 """
 TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.json")
 
+"""
+TEST_TB_ROM_NDOF
+Twin with Dynamic ROM and NDOF not properly defined (bug 1168769 fixed in 2025R2)
+"""
+TEST_TB_ROM_NDOF = os.path.join(os.path.dirname(__file__), "data", "twin_ndof.twin")
+
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -1379,3 +1385,10 @@ class TestTbRom:
             model_filepath
         )  # instantiation should be fine without points
         assert int(dimensionality[0]) is 6
+
+    def test_tbrom_fix_bug_1168769(self):
+        model_filepath = TEST_TB_ROM_NDOF
+        try:
+            twinmodel = TwinModel(model_filepath=model_filepath)
+        except TwinModelError as e:
+            assert "cannot reshape array" not in str(e)
