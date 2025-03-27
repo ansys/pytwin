@@ -393,6 +393,7 @@ class TbRom:
         strategy: str = "closest_point",
         null_value: float = 0.0,
         n_points: int = None,
+        all_points: bool = False,
     ):
         """
         Project the field ROM SVD basis onto a targeted mesh.
@@ -406,24 +407,33 @@ class TbRom:
         named_selection: str (optional)
             Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
             entire domain is considered.
-        sharpness : float, default: 5.0
+        sharpness: float, default: 5.0
             Set the sharpness (i.e., falloff) of the Gaussian interpolation kernel. As the sharpness increases the
             effects of distant points are reduced.
-        radius : float, default: 0.0001
+        radius: float, default: 0.0001
             Specify the radius within which the basis points must lie.
-        strategy : str, default: "closest_point"
+        strategy: str, default: "closest_point"
             Specify a strategy to use when encountering a "null" point during the interpolation process. Null points
             occur when the local neighborhood (of nearby points to interpolate from) is empty. If the strategy is set to
-            ``'mask_points'``, then an output array is created that marks points as being valid (=1) or null
-            (invalid =0) (and the NullValue is set as well). If the strategy is set to ``'null_value'``, then the output
-            data value(s) are set to the ``null_value`` (specified in the output point data). Finally, the strategy
+            ``'mask_points'``, then only cells with some or all valid points (according to the ``all_points`` setting)
+            are used in the projected SVD basis. If the strategy is set to ``'null_value'``, then the output data
+            value(s) are set to the ``null_value`` (specified in the output point data). Finally, the strategy
             ``'closest_point'`` is to simply use the closest point to perform the interpolation.
-        null_value : float, default: 0.0
+        null_value: float, default: 0.0
             Specify the null point value. When a null point is encountered then all components of each null tuple are
             set to this value.
-        n_points : int, optional
+        n_points: int, optional
             If given, specifies the number of the closest points used to form the interpolation basis. This will
             invalidate the radius argument in favor of an N closest points approach. This typically has poorer results.
+        all_points: bool, default: False
+            When ``strategy='mask_points'``, when this value is ``True`` only cells where all points are valid are kept.
+            When ``False`` cells are kept if any of their points are valid and invalid points are given the
+            ``null_value``.
+
+        Raises
+        ------
+        ValueError
+            If masking interpolation strategy finds no valid points.
 
         See Also
         --------
@@ -449,7 +459,7 @@ class TbRom:
                 pointsids = self._named_selection_indexes(named_selection)
                 listids = np.sort(pointsids)
                 pointsdata = pointsdata.extract_points(listids)
-            interpolated_mesh = target_mesh.interpolate(
+            interpolated_points = target_mesh.interpolate(
                 pointsdata,
                 sharpness=sharpness,
                 radius=radius,
@@ -457,10 +467,25 @@ class TbRom:
                 null_value=null_value,
                 n_points=n_points,
                 progress_bar=progress_bar,
-            ).point_data_to_cell_data()
+            )
+            if strategy == "mask_points" or "null_value":
+                interpolated_points = interpolated_points.threshold(
+                    value=0.5, scalars="vtkValidPointMask", preference="point", all_scalars=all_points
+                )
+                if interpolated_points.n_cells == 0:
+                    raise ValueError(
+                        "[TbRomInterpolation]No valid points found. Check mesh size and interpolation settings"
+                    )
+            interpolated_mesh = interpolated_points.point_data_to_cell_data()
             self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
 
-        mesh_data = target_mesh.copy()
+        if interpolate and strategy == "mask_points":
+            mesh_data = interpolated_mesh.copy()
+        else:
+            mesh_data = target_mesh.copy()
+        # Clear the mesh data to strip out any existing field data
+        mesh_data.clear_data()
+
         # initialize output field data
         nb_data = self._outmeshbasis.shape[1]
         mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
