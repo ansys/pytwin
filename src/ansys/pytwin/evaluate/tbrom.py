@@ -468,7 +468,7 @@ class TbRom:
                 n_points=n_points,
                 progress_bar=progress_bar,
             )
-            if strategy == "mask_points" or "null_value":
+            if strategy == "mask_points":
                 interpolated_points = interpolated_points.threshold(
                     value=0.5, scalars="vtkValidPointMask", preference="point", all_scalars=all_points
                 )
