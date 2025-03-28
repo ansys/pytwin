@@ -182,3 +182,17 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
             bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
             bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+
+  automerge-prs:
+    name: "Automerging dependabot and pre-commit.ci PRs"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: "Automerging PRs"
+        uses: ansys/actions/hk-automerge-prs@v8.2
+        with:
+          approver: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          approver-token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
