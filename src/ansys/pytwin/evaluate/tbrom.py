@@ -140,7 +140,7 @@ def snapshot_to_array(snapshot_file, geometry_file):
 
     Examples
     --------
-    >>> from pytwin import snapshot_to_fea
+    >>> from pytwin import snapshot_to_array
     >>> snapshot_data = snapshot_to_array('snapshot.bin', 'points.bin')
     """
     n_g = read_snapshot_size(geometry_file)
