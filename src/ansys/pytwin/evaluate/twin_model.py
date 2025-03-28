@@ -1868,6 +1868,7 @@ class TwinModel(Model):
         target_mesh: pv.DataSet,
         interpolate: bool,
         named_selection: str = None,
+        nodal_values: bool = False,
         sharpness: float = 5.0,
         radius: float = 0.0001,
         strategy: str = "closest_point",
@@ -1890,6 +1891,8 @@ class TwinModel(Model):
             Interpolation is recommended when point cloud data and mesh data are not ordered in the same way, and when
             the target mesh is different from the one used to generate the ROM. Interpolation is automatically enforced
             if the target mesh size (i.e. number of cells/points) is different from the point cloud size.
+        nodal_values: bool (optional)
+            Control whether the interpolated results are returned as nodal values, or cell values (default)
         named_selection: str (optional)
             Named selection from the ROM (i.e. subset of points cloud) that will be projected on the targeted mesh. The
             default is ``None``, in which case the entire domain is considered.
@@ -1975,6 +1978,7 @@ class TwinModel(Model):
                     target_mesh,
                     interpolate_flag,
                     named_selection,
+                    nodal_values=nodal_values,
                     sharpness=sharpness,
                     radius=radius,
                     strategy=strategy,

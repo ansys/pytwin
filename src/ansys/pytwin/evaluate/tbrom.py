@@ -388,6 +388,7 @@ class TbRom:
         target_mesh: pv.DataSet,
         interpolate: bool,
         named_selection: str = None,
+        nodal_values: bool = False,
         sharpness: float = 5.0,
         radius: float = 0.0001,
         strategy: str = "closest_point",
@@ -407,6 +408,8 @@ class TbRom:
         named_selection: str (optional)
             Named selection on which the mesh projection has to be performed. The default is ``None``, in which case the
             entire domain is considered.
+        nodal_values: bool (optional)
+            Control whether the interpolated results are returned as nodal values, or cell values (default)
         sharpness: float, default: 5.0
             Set the sharpness (i.e., falloff) of the Gaussian interpolation kernel. As the sharpness increases the
             effects of distant points are reduced.
@@ -476,8 +479,12 @@ class TbRom:
                     raise ValueError(
                         "[TbRomInterpolation]No valid points found. Check mesh size and interpolation settings"
                     )
-            interpolated_mesh = interpolated_points.point_data_to_cell_data()
-            self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
+            if not nodal_values:
+                interpolated_mesh = interpolated_points.point_data_to_cell_data()
+                self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
+            else:
+                interpolated_mesh = interpolated_points
+                self._outmeshbasis = np.array([interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)])
 
         if interpolate and strategy == "mask_points":
             mesh_data = interpolated_mesh.copy()
