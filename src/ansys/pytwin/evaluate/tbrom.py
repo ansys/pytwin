@@ -411,23 +411,17 @@ class TbRom:
         nodal_values: bool (optional)
             Control whether the interpolated results are returned as nodal values, or cell values (default)
         sharpness: float, default: 5.0
-            Set the sharpness (i.e., falloff) of the Gaussian interpolation kernel. As the sharpness increases the
-            effects of distant points are reduced.
+            Set the sharpness (i.e., falloff) of the Gaussian interpolation kernel.
         radius: float, default: 0.0001
             Specify the radius within which the basis points must lie.
         strategy: str, default: "closest_point"
-            Specify a strategy to use when encountering a "null" point during the interpolation process. Null points
-            occur when the local neighborhood (of nearby points to interpolate from) is empty. If the strategy is set to
-            ``'mask_points'``, then only cells with some or all valid points (according to the ``all_points`` setting)
-            are used in the projected SVD basis. If the strategy is set to ``'null_value'``, then the output data
-            value(s) are set to the ``null_value`` (specified in the output point data). Finally, the strategy
-            ``'closest_point'`` is to simply use the closest point to perform the interpolation.
+            Specify a strategy to use when encountering a "null" point during the interpolation process. Valid values
+            are ``'null_value'``, ``'mask_points'`` and ``'closest_point'``. If the ``'mask_points'`` strategy is used
+            then only non-null points are retained in the projected SVD basis.
         null_value: float, default: 0.0
-            Specify the null point value. When a null point is encountered then all components of each null tuple are
-            set to this value.
+            Specify the null point value.
         n_points: int, optional
-            If given, specifies the number of the closest points used to form the interpolation basis. This will
-            invalidate the radius argument in favor of an N closest points approach. This typically has poorer results.
+            If given, specifies the number of the closest points used to form the interpolation basis.
         all_points: bool, default: False
             When ``strategy='mask_points'``, when this value is ``True`` only cells where all points are valid are kept.
             When ``False`` cells are kept if any of their points are valid and invalid points are given the
