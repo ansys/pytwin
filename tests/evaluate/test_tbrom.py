@@ -1250,6 +1250,20 @@ class TestTbRom:
             log_str = log.readlines()
         assert "Switching interpolate flag from False to True" in "".join(log_str)
 
+        # Raise an exception if projection with masking removes all points
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        max_coord = twinmodel.generate_points(romname, on_disk=False).max()
+        radius = max_coord / 10
+        mesh = pv.Sphere(radius, (max_coord, max_coord, max_coord))
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0], radius=radius, strategy="mask_points")
+        except TwinModelError as e:
+            assert "[TbRomInterpolation]" in str(e)
+
         # Raise an exception if any issue occurs during projection
         model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
         twinmodel = TwinModel(model_filepath=model_filepath)

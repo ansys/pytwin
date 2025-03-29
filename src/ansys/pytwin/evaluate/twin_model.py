@@ -1863,7 +1863,18 @@ class TwinModel(Model):
             self._raise_error(msg)
 
     def project_tbrom_on_mesh(
-        self, rom_name: str, target_mesh: pv.DataSet, interpolate: bool, named_selection: str = None
+        self,
+        rom_name: str,
+        target_mesh: pv.DataSet,
+        interpolate: bool,
+        named_selection: str = None,
+        nodal_values: bool = False,
+        sharpness: float = 5.0,
+        radius: float = 0.0001,
+        strategy: str = "closest_point",
+        null_value: float = 0.0,
+        n_points: int = None,
+        all_points: bool = False,
     ):
         """
         Project the field ROM data onto a targeted mesh, using the current states of the TwinModel. The returned PyVista
@@ -1880,9 +1891,33 @@ class TwinModel(Model):
             Interpolation is recommended when point cloud data and mesh data are not ordered in the same way, and when
             the target mesh is different from the one used to generate the ROM. Interpolation is automatically enforced
             if the target mesh size (i.e. number of cells/points) is different from the point cloud size.
+        nodal_values: bool (optional)
+            Control whether the interpolated results are returned as nodal values, or cell values (default)
         named_selection: str (optional)
             Named selection from the ROM (i.e. subset of points cloud) that will be projected on the targeted mesh. The
             default is ``None``, in which case the entire domain is considered.
+        sharpness : float, default: 5.0
+            Set the sharpness (i.e., falloff) of the Gaussian interpolation kernel. As the sharpness increases the
+            effects of distant points are reduced.
+        radius : float, default: 0.0001
+            Specify the radius within which the interpolation basis points must lie.
+        strategy : str, default: "closest_point"
+            Specify a strategy to use when encountering a "null" point during the interpolation process. Null points
+            occur when the local neighborhood (of nearby points to interpolate from) is empty. If the strategy is set to
+            ``'mask_points'``, then only cells with some or all valid points (according to the ``all_points`` setting)
+            are included in the returned PyVista DataSet. If the strategy is set to ``'null_value'``, then the output
+            data value(s) are set to the ``null_value`` (specified in the output point data). Finally, the strategy
+            ``'closest_point'`` is to simply use the closest point to perform the interpolation.
+        null_value : float, default: 0.0
+            Specify the null point value. When a null point is encountered then all components of field ROM data
+            associated with that point are set to this value.
+        n_points : int, optional
+            If given, specifies the number of the closest points used to form the interpolation basis. This will
+            invalidate the radius argument in favor of an N closest points approach. This typically has poorer results.
+        all_points: bool, default: False
+            When ``strategy='mask_points'``, when this value is ``True`` only cells where all points are valid are kept.
+            When ``False`` cells are kept if any of their points are valid and invalid points are given the
+            ``null_value``.
 
         Returns
         -------
@@ -1898,10 +1933,16 @@ class TwinModel(Model):
             If target_mesh is not a valid grid dataset
             If name_selection is not included in the TBROM's list of Named Selections
             If interpolate is True and no points file is available with the TBROM
+            If strategy is ``'mask_points'`` and all points are removed.
 
         TwinModelWarning:
             If interpolate is False and the targeted mesh has a number of cells and points different from TBROM point
             cloud. In that case, interpolate is automatically switched to True.
+
+        See Also
+        --------
+        pyvista.DataSetFilters.interpolate :
+            Detailed description of ``sharpness``, ``radius``, ``strategy``, ``null_value`` and ``n_points`` parameters.
 
         Examples
         --------
@@ -1933,7 +1974,18 @@ class TwinModel(Model):
                     interpolate_flag = interpolate
                 if interpolate_flag:
                     self._check_tbrom_points_file(rom_name)
-                self._tbroms[rom_name]._project_on_mesh(target_mesh, interpolate_flag, named_selection)
+                self._tbroms[rom_name]._project_on_mesh(
+                    target_mesh,
+                    interpolate_flag,
+                    named_selection,
+                    nodal_values=nodal_values,
+                    sharpness=sharpness,
+                    radius=radius,
+                    strategy=strategy,
+                    null_value=null_value,
+                    n_points=n_points,
+                    all_points=all_points,
+                )
                 self._update_tbrom_outmcs(self._tbroms[rom_name])
                 return self._tbroms[rom_name].field_on_mesh
 
