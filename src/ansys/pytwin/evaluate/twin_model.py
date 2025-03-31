@@ -1261,7 +1261,7 @@ class TwinModel(Model):
         ----------
         rom_name : str
             Name of the ROM. To get a list of available ROMs, see
-            the :attr:`pytwin.TwinModel.tbrom_names' attribute.
+            the :attr:`pytwin.TwinModel.tbrom_names` attribute.
         view_name : str
             View name associated with the rendering view in which ROM results are displayed. To get
             a list of available rendering view names for a given ROM, use the

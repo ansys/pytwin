@@ -3,7 +3,7 @@
 Twin runtimes
 =============
 
-The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to
+The :class:`TwinRuntime <pytwin.TwinRuntime>` class provides access to
 twin runtime functionalities.
 
 .. currentmodule:: pytwin

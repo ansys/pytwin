@@ -87,7 +87,9 @@ def modify_pytwin_logging(
     new_level: PyTwinLogLevel = PyTwinLogLevel.PYTWIN_LOG_INFO,
 ):
     """
-    Modify global PyTwin logging. You can choose to take these actions:
+    Modify global PyTwin logging.
+
+    You can choose to take these actions:
 
     - Redirect logging to a log file.
     - Redirect logging to the console.

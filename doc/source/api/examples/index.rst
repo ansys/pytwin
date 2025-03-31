@@ -10,9 +10,9 @@ Other PyTwin functions are available and used in :ref:`ref_example_gallery`.
 .. autosummary::
    :toctree: _autosummary
 
-   pytwin.download_file
-   pytwin.load_data
-   pytwin.read_binary
-   pytwin.read_snapshot_size
-   pytwin.snapshot_to_array
-   pytwin.write_binary
+   download_file
+   load_data
+   read_binary
+   read_snapshot_size
+   snapshot_to_array
+   write_binary
