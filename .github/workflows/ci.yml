@@ -53,12 +53,11 @@ jobs:
           .venv\Scripts\Activate.ps1
           python -m pip install pip -U
           python -m pip install poetry
-          poetry install
 
       - name: "Install documentation dependencies, including DPF server"
         run: |
           .venv\Scripts\Activate.ps1
-          poetry install --with doc
+          poetry install --with doc,graphics
           cd ansys_dpf_server_win_v2024.1.pre0
           pip install -e .
           cd ..
