@@ -28,7 +28,10 @@ from typing import Union
 
 import numpy as np
 from pytwin import _HAS_TQDM
-import pyvista as pv
+from pytwin.decorators import needs_graphics
+
+if TYPE_CHECKING:  # pragma: no cover
+    import pyvista as pv
 
 
 def read_binary(filepath):
@@ -520,6 +523,7 @@ class TbRom:
         else:
             return data
 
+    @needs_graphics
     def _read_points(self, filepath):
         if os.path.exists(filepath):
             points = read_binary(filepath)

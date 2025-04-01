@@ -25,7 +25,7 @@ import os
 from pathlib import Path
 import shutil
 import time
-from typing import Union
+from typing import TYPE_CHECKING, Union
 import weakref
 
 import numpy as np
@@ -36,7 +36,10 @@ from pytwin.evaluate.tbrom import TbRom, read_snapshot_size
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
-import pyvista as pv
+
+
+if TYPE_CHECKING:  # pragma: no cover
+    import pyvista as pv
 
 
 class TwinModel(Model):
