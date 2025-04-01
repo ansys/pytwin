@@ -37,7 +37,6 @@ from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
 
-
 if TYPE_CHECKING:  # pragma: no cover
     import pyvista as pv
 

@@ -30,7 +30,7 @@ tqdm = ">=4.45.0"
 pywin32 = { version = ">=304", markers = "platform_system == 'Windows'" }
 
 [tool.poetry.group.graphics]
-optiona = true
+optional = true
 
 [tool.poetry.group.graphics.dependencies]
 pyvista = ">=0.38.6"
