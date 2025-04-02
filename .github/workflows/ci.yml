@@ -116,7 +116,7 @@ jobs:
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v8
         with:
-          optional-dependencies-name: "graphics"
+          optional-dependencies-name: "tests,graphics"
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
