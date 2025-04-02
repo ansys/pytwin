@@ -24,7 +24,7 @@ import json
 import os
 from pathlib import Path
 import struct
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 import numpy as np
 from pytwin import _HAS_TQDM
