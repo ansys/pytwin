@@ -525,6 +525,8 @@ class TbRom:
 
     @needs_graphics
     def _read_points(self, filepath):
+        import pyvista as pv
+
         if os.path.exists(filepath):
             points = read_binary(filepath)
             has_point_file = True
