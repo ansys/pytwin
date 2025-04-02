@@ -6,20 +6,20 @@ API reference
 
 This section describes the core Pythonic interfaces for twin runtimes.
 Here, you can find all APIs for consuming twin runtimes, from the lowest-level APIs
-with the :class:`ansys.pytwin.TwinRuntime` class to the higher-level
-APIs with the :class:`ansys.pytwin.TwinModel` class.
+with the :class:`pytwin.TwinRuntime` class to the higher-level
+APIs with the :class:`pytwin.TwinModel` class.
 
 Twin runtimes
 -------------
 
-The :class:`TwinRuntime <ansys.pytwin.TwinRuntime` class provides access to all
+The :class:`TwinRuntime <pytwin.TwinRuntime>` class provides access to all
 the twin runtime functionalities. It is the lowest-level API of the twin runtime SDK.
 For a workflow example, see :ref:`ref_index_api_sdk`.
 
 Evaluate
 --------
 
-The :class:`TwinModel <ansys.pytwin.TwinModel` class implements a higher-level
+The :class:`TwinModel <pytwin.TwinModel>` class implements a higher-level
 abstraction to facilitate the manipulation and execution of a twin model. For more
 information, see :ref:`ref_index_api_evaluate`.
 
