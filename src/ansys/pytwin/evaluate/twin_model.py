@@ -25,7 +25,7 @@ import os
 from pathlib import Path
 import shutil
 import time
-from typing import Union
+from typing import TYPE_CHECKING, Union
 import weakref
 
 import numpy as np
@@ -36,7 +36,9 @@ from pytwin.evaluate.tbrom import TbRom, read_snapshot_size
 from pytwin.settings import PyTwinLogLevel, get_pytwin_log_level, pytwin_logging_is_enabled
 from pytwin.twin_runtime.log_level import LogLevel
 from pytwin.twin_runtime.twin_runtime_core import TwinRuntime
-import pyvista as pv
+
+if TYPE_CHECKING:  # pragma: no cover
+    import pyvista as pv
 
 
 class TwinModel(Model):
@@ -287,7 +289,7 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
-    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: pv.DataSet, namedselection: str = None):
+    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: "pv.DataSet", namedselection: str = None):
         """
         Check if the arguments of mesh projection method are valid. Raise a ``TwinModelError`` message if not.
         """
@@ -1865,7 +1867,7 @@ class TwinModel(Model):
     def project_tbrom_on_mesh(
         self,
         rom_name: str,
-        target_mesh: pv.DataSet,
+        target_mesh: "pv.DataSet",
         interpolate: bool,
         named_selection: str = None,
         nodal_values: bool = False,
