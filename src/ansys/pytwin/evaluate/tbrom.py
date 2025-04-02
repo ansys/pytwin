@@ -24,11 +24,14 @@ import json
 import os
 from pathlib import Path
 import struct
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 import numpy as np
 from pytwin import _HAS_TQDM
-import pyvista as pv
+from pytwin.decorators import needs_graphics
+
+if TYPE_CHECKING:  # pragma: no cover
+    import pyvista as pv
 
 
 def read_binary(filepath):
@@ -385,7 +388,7 @@ class TbRom:
 
     def _project_on_mesh(
         self,
-        target_mesh: pv.DataSet,
+        target_mesh: "pv.DataSet",
         interpolate: bool,
         named_selection: str = None,
         nodal_values: bool = False,
@@ -520,7 +523,10 @@ class TbRom:
         else:
             return data
 
+    @needs_graphics
     def _read_points(self, filepath):
+        import pyvista as pv
+
         if os.path.exists(filepath):
             points = read_binary(filepath)
             has_point_file = True
