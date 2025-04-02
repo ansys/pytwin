@@ -289,7 +289,7 @@ class TwinModel(Model):
                 raise self._raise_error(msg)
         return True
 
-    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: pv.DataSet, namedselection: str = None):
+    def _check_tbrom_mesh_projection_args(self, rom_name: str, mesh: "pv.DataSet", namedselection: str = None):
         """
         Check if the arguments of mesh projection method are valid. Raise a ``TwinModelError`` message if not.
         """
@@ -1867,7 +1867,7 @@ class TwinModel(Model):
     def project_tbrom_on_mesh(
         self,
         rom_name: str,
-        target_mesh: pv.DataSet,
+        target_mesh: "pv.DataSet",
         interpolate: bool,
         named_selection: str = None,
         nodal_values: bool = False,
