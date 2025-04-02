@@ -388,7 +388,7 @@ class TbRom:
 
     def _project_on_mesh(
         self,
-        target_mesh: pv.DataSet,
+        target_mesh: "pv.DataSet",
         interpolate: bool,
         named_selection: str = None,
         nodal_values: bool = False,
