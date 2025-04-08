@@ -1246,7 +1246,7 @@ class TwinModel(Model):
             msg = self._error_msg_for_rom_name(rom_name)
             self._raise_error(msg)
 
-        view_names = list(self._tbrom_info[rom_name][self.TBROM_VIEWS_KEY])
+        view_names = list(self._tbrom_info[rom_name][self.TBROM_VIEWS_KEY].values())
 
         if len(view_names) == 0:
             msg = f"No views are available for the given ROM name: {rom_name}."
