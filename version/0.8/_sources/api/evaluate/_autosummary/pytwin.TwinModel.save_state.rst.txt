@@ -1,0 +1,6 @@
+save\_state
+===========
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.save_state
