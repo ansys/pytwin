@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v8
+        uses: ansys/actions/doc-style@v9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Set up Python"
-        uses: ansys/actions/_setup-python@v8
+        uses: ansys/actions/_setup-python@v9
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-cache: true
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Build library source and wheel artifacts"
-        uses: ansys/actions/build-library@v8
+        uses: ansys/actions/build-library@v9
         with:
           library-name: "pytwin"
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -114,7 +114,7 @@ jobs:
         uses: pyvista/setup-headless-display-action@v3
 
       - name: Run pytest
-        uses: ansys/actions/tests-pytest@v8
+        uses: ansys/actions/tests-pytest@v9
         with:
           optional-dependencies-name: "tests,graphics"
           python-version: ${{ matrix.python-version }}
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Validate third party licenses"
-        uses: ansys/actions/check-licenses@v8
+        uses: ansys/actions/check-licenses@v9
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -148,7 +148,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Release to the public PyPI repository"
-        uses: ansys/actions/release-pypi-public@v8
+        uses: ansys/actions/release-pypi-public@v9
         with:
           library-name: "pytwin"
           twine-username: "__token__"
@@ -162,7 +162,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@v8
+        uses: ansys/actions/doc-deploy-dev@v9
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
@@ -176,7 +176,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Deploy the stable documentation"
-        uses: ansys/actions/doc-deploy-stable@v8
+        uses: ansys/actions/doc-deploy-stable@v9
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
@@ -192,7 +192,7 @@ jobs:
       pull-requests: write
     steps:
       - name: "Automerging PRs"
-        uses: ansys/actions/hk-automerge-prs@v8.2
+        uses: ansys/actions/hk-automerge-prs@v9
         with:
           approver: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           approver-token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
