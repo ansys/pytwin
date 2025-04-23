@@ -76,6 +76,37 @@ design_points = np.linspace(
     start=applied_force_min, stop=applied_force_max, num=int((applied_force_max - applied_force_min) / step + 1)
 )
 
+
+###############################################################################
+# Define auxiliary functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the auxiliary function for calculating the von Mises / equivalent tensile stress from the ROM stress snapshot.
+
+def vonMises_stress(stress_tensor: np.ndarray, signed: bool = False):
+    """
+    Calculate the von Mises stress.
+
+    Parameters
+    ----------
+    stress_tensor : np.ndarray
+        Cauchy stress tensor array of shape ``(n,6)`` where each row contains 
+        the three enormal stress components, followed by three shear stress
+        components.
+    signed : bool, default = False
+        if true, calculate the signed von Mises stress.
+
+    Returns
+    -------
+    np.ndarray
+        von Mises equivalent stress vector of shape ``(n,)``.
+    """
+    s11,s22,s33,s12,s23,s13 = np.split(stress_tensor,stress_tensor.shape[1],axis=1)
+    vonMises = ((1/2)*((s11-s22)**2 + (s22-s33)**2 + (s33-s11)**2 + 6*(s12**2 + s23**2 + s13**2)))**0.5
+    if signed:
+        hydrostatic = (s11 + s22 + s33)/3
+        vonMises = np.sign(hydrostatic)*vonMises
+    return vonMises.flatten()
+
 ###############################################################################
 # Load the twin runtime and generate displacement and stress results for different forces applied.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,13 +191,23 @@ target_mesh = whole_mesh.grid
 ###############################################################################
 # Project the deformation field ROM onto the targeted mesh, and visualize
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Projection is performed using nodal values since ROM is builf from nodal deformation values. The default plotting
+# method calculates the magnitude (norm) of the components for display.
+
 def_romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
 # field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
-def_field_data = twin_model.project_tbrom_on_mesh(def_romname, target_mesh, True)  # mesh based results
+def_field_data = twin_model.project_tbrom_on_mesh(
+    def_romname, target_mesh, True, nodal_values=True
+    )  # mesh based results
 def_plotter = pv.Plotter()
 def_plotter.set_background("white")
 def_plotter.add_axes()
 def_plotter.add_mesh(def_field_data, scalar_bar_args={"color": "black"})
+def_plotter.camera_position = [
+    (-0.04, 0.04, -0.04),
+    (0.0, 0, 0),
+    (0, 1, 0),
+]
 def_plotter.show()
 
 ###############################################################################
@@ -174,12 +215,33 @@ def_plotter.show()
 #   :width: 400pt
 #   :align: center
 
+###############################################################################
+# Project the stress field ROM onto the targeted mesh, and visualize
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Projection is performed using nodal values since ROM is build from nodal-averaged stress values.
+# :func:`vonMises_stress`, defined earlier, is used to calculate the von Mises stress from the ROM stress tensor and
+# this value is plotted.
+
 stress_romname = twin_model.tbrom_names[1]  # 0 = Deformation ROM, 1 = Stress ROM
-stress_field_data = twin_model.project_tbrom_on_mesh(stress_romname, target_mesh, True)  # mesh based results
+stress_field_data = twin_model.project_tbrom_on_mesh(stress_romname, target_mesh, True, nodal_values=True)
+vonMises = vonMises_stress(stress_field_data.active_scalars)
+fname = "von Mises Stress"
+if stress_field_data.active_scalars.association == pv.FieldAssociation.CELL:
+    stress_field_data.cell_data[fname] = vonMises
+    stress_field_data.set_active_scalars(fname, preference='cell')
+else:
+    stress_field_data.point_data[fname] = vonMises
+    stress_field_data.set_active_scalars(fname, preference='point')
+
 stress_plotter = pv.Plotter()
 stress_plotter.set_background("white")
 stress_plotter.add_axes()
 stress_plotter.add_mesh(stress_field_data, scalar_bar_args={"color": "black"})
+stress_plotter.camera_position = [
+    (-0.04, 0.04, -0.04),
+    (0.0, 0, 0),
+    (0, 1, 0),
+]
 stress_plotter.show()
 
 ###############################################################################
