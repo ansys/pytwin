@@ -82,6 +82,7 @@ design_points = np.linspace(
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the auxiliary function for calculating the von Mises / equivalent tensile stress from the ROM stress snapshot.
 
+
 def vonMises_stress(stress_tensor: np.ndarray, signed: bool = False):
     """
     Calculate the von Mises stress.
@@ -89,7 +90,7 @@ def vonMises_stress(stress_tensor: np.ndarray, signed: bool = False):
     Parameters
     ----------
     stress_tensor : np.ndarray
-        Cauchy stress tensor array of shape ``(n,6)`` where each row contains 
+        Cauchy stress tensor array of shape ``(n,6)`` where each row contains
         the three enormal stress components, followed by three shear stress
         components.
     signed : bool, default = False
@@ -100,12 +101,15 @@ def vonMises_stress(stress_tensor: np.ndarray, signed: bool = False):
     np.ndarray
         von Mises equivalent stress vector of shape ``(n,)``.
     """
-    s11,s22,s33,s12,s23,s13 = np.split(stress_tensor,stress_tensor.shape[1],axis=1)
-    vonMises = ((1/2)*((s11-s22)**2 + (s22-s33)**2 + (s33-s11)**2 + 6*(s12**2 + s23**2 + s13**2)))**0.5
+    s11, s22, s33, s12, s23, s13 = np.split(stress_tensor, stress_tensor.shape[1], axis=1)
+    vonMises = (
+        (1 / 2) * ((s11 - s22) ** 2 + (s22 - s33) ** 2 + (s33 - s11) ** 2 + 6 * (s12**2 + s23**2 + s13**2))
+    ) ** 0.5
     if signed:
-        hydrostatic = (s11 + s22 + s33)/3
-        vonMises = np.sign(hydrostatic)*vonMises
+        hydrostatic = (s11 + s22 + s33) / 3
+        vonMises = np.sign(hydrostatic) * vonMises
     return vonMises.flatten()
+
 
 ###############################################################################
 # Load the twin runtime and generate displacement and stress results for different forces applied.
@@ -198,7 +202,7 @@ def_romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
 # field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
 def_field_data = twin_model.project_tbrom_on_mesh(
     def_romname, target_mesh, True, nodal_values=True
-    )  # mesh based results
+)  # mesh based results
 def_plotter = pv.Plotter()
 def_plotter.set_background("white")
 def_plotter.add_axes()
@@ -228,10 +232,10 @@ vonMises = vonMises_stress(stress_field_data.active_scalars)
 fname = "von Mises Stress"
 if stress_field_data.active_scalars.association == pv.FieldAssociation.CELL:
     stress_field_data.cell_data[fname] = vonMises
-    stress_field_data.set_active_scalars(fname, preference='cell')
+    stress_field_data.set_active_scalars(fname, preference="cell")
 else:
     stress_field_data.point_data[fname] = vonMises
-    stress_field_data.set_active_scalars(fname, preference='point')
+    stress_field_data.set_active_scalars(fname, preference="point")
 
 stress_plotter = pv.Plotter()
 stress_plotter.set_background("white")
