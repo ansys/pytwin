@@ -3,7 +3,7 @@
 Evaluate
 ========
 
-The :class:`TwinModel <ansys.pytwin.TwinModel` class implements a higher-level
+The :class:`TwinModel <pytwin.TwinModel>` class implements a higher-level
 abstraction to facilitate the manipulation and execution of a twin model. 
 
 .. currentmodule:: pytwin

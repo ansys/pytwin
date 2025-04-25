@@ -205,7 +205,7 @@ class TwinRuntime:
         Returns
         -------
         int
-            Number of expected number of deployments for the TWIN model.
+            Expected number of deployments for the TWIN model.
         """
         runtime_library = TwinRuntime.load_dll()
         TwinNumberOfDeployments = runtime_library.TwinGetNumberOfDeployments
@@ -763,9 +763,10 @@ class TwinRuntime:
         ----------
         log_level : LogLevel
             Log level selected for the log file
-            (LogLevel.TWIN_LOG_ALL, LogLevel.TWIN_LOG_WARNING,
-             LogLevel.TWIN_LOG_ERROR, LogLevel.TWIN_LOG_FATAL,
-             LogLevel.TWIN_NO_LOG).
+
+                LogLevel.TWIN_LOG_ALL, LogLevel.TWIN_LOG_WARNING,
+                LogLevel.TWIN_LOG_ERROR, LogLevel.TWIN_LOG_FATAL,
+                LogLevel.TWIN_NO_LOG
         """
         # This ensures that DLL loading mechanism gets reset to its default
         # behavior, which is altered when the SDK launches in Twin Deployer.
@@ -835,6 +836,15 @@ class TwinRuntime:
     """
 
     def twin_number_of_deployments_from_instance(self):
+        """
+        Returns the expected number of deployments for the current TWIN model
+        instance as defined at the export time.
+        
+        Returns
+        -------
+        int
+            Expected number of deployments for the TWIN model instance.
+        """
         if self._is_model_opened is False:
             raise TwinRuntimeError(
                 "The model has to be opened before returning "
@@ -1870,16 +1880,21 @@ class TwinRuntime:
         str
             Information about TBROM models visualization resources included
             in the TWIN. Example of output:
-            {'myTBROM_1': {
-              'type': 'image,3D',
-              'modelname': 'myTBROM',
-              'views': {'View1': 'View1'},
-              'trigger': {
-                'field_data_storage': 'field_data_storage'
-               }
-              }
-            }
 
+            .. code-block:: python
+
+                {
+                    'myTBROM_1': {
+                        'type': 'image,3D',
+                        'modelname': 'myTBROM',
+                        'views': {
+                            'View1': 'View1'
+                            },
+                        'trigger': {
+                            'field_data_storage': 'field_data_storage'
+                            }
+                    }
+                }
         """
         visualization_info = c_char_p()
         self._twin_status = self._TwinGetVisualizationResources(
