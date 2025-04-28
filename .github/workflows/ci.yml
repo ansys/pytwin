@@ -63,7 +63,7 @@ jobs:
           cd ..
 
       - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
 
       - name: "Clean documentation build folder"
         run: |
@@ -111,7 +111,7 @@ jobs:
 
       - name: Setup headless display
         if: matrix.os == 'windows-latest'
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
 
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v9
