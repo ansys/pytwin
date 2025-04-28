@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: "3.10"
+  MAIN_PYTHON_VERSION: "3.13"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
 
 concurrency:
@@ -101,7 +101,7 @@ jobs:
     strategy:
        matrix:
            os: [windows-latest, ubuntu-20.04]
-           python-version: ["3.10", "3.11", "3.12"]
+           python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Install Ubuntu dependencies for RomViewerSharedLib.so
         if: matrix.os == 'ubuntu-20.04'
