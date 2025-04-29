@@ -36,6 +36,14 @@ jobs:
       - name: "Install Git and clone project"
         uses: actions/checkout@v4
 
+      - name: 'Check pip availability'
+        run: |
+          where python
+          python --version
+          pip --version
+          pip cache dir
+        shell: cmd
+
       - name: "Set up Python"
         uses: ansys/actions/_setup-python@v9
         with:
