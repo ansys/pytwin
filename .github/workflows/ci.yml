@@ -40,8 +40,8 @@ jobs:
         run: |
           where python
           python --version
-          pip --version
-          pip cache dir
+          python -m pip --version
+          python -m pip cache dir
         shell: cmd
 
       - name: "Set up Python"
@@ -49,6 +49,7 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-cache: true
+
 
       - name: "Copy source files for DPF server installation"
         shell: bash
