@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: |
           cp -r ~ansys/Documents/devEnv/pyansys/pytwin/ansys_dpf_server_win_v2024.1.pre0/ ./
-
+          
       - name: "Create virtual environment and Install Python library"
         run: |
           python -m venv .venv --clear
@@ -63,7 +63,7 @@ jobs:
           cd ..
 
       - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
 
       - name: "Clean documentation build folder"
         run: |
@@ -111,7 +111,7 @@ jobs:
 
       - name: Setup headless display
         if: matrix.os == 'windows-latest'
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
 
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v9
