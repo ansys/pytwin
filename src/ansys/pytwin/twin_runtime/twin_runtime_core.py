@@ -879,6 +879,52 @@ class TwinRuntime:
         ]
         self._TwinGetRomResourcePath.restype = c_int
 
+        self._TwinGetRomOutputBasisSize = (
+            self._twin_runtime_library.TwinGetRomOutputBasisSize
+        )
+        self._TwinGetRomOutputBasisSize.argtypes = [
+            c_void_p,
+            c_char_p,
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomOutputBasisSize.restype = c_int
+
+        self._TwinGetRomOutputBasis = (
+            self._twin_runtime_library.TwinGetRomOutputBasis
+        )
+        self._TwinGetRomOutputBasis.argtypes = [
+            c_void_p,
+            c_char_p,
+            POINTER(c_double),
+            POINTER(c_size_t),
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomOutputBasis.restype = c_int
+
+        self._TwinGetRomInputBasisSize = (
+            self._twin_runtime_library.TwinGetRomInputBasisSize
+        )
+        self._TwinGetRomInputBasisSize.argtypes = [
+            c_void_p,
+            c_char_p,
+            c_char_p,
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomInputBasisSize.restype = c_int
+
+        self._TwinGetRomInputBasis = (
+            self._twin_runtime_library.TwinGetRomInputBasis
+        )
+        self._TwinGetRomInputBasis.argtypes = [
+            c_void_p,
+            c_char_p,
+            c_char_p,
+            POINTER(c_double),
+            POINTER(c_size_t),
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomInputBasis.restype = c_int
+
         self._TwinSetROMImageDirectory = (
             self._twin_runtime_library.TwinSetROMImageDirectory
         )
@@ -2212,6 +2258,78 @@ class TwinRuntime:
         )
         if ret:
             return ret.value.decode()
+
+    def twin_get_rom_output_basis(self, model_name):
+        """
+        Retrieve the output field basis for the given TBROM model name.
+        This method is only supported for Twin models created from one or more TBROM components.
+
+        Parameters
+        ----------
+        model_name : str
+            Model name of the TBROM for which the basis needs to be retrieved.
+
+        Returns
+        -------
+        list
+            A list representing the basis (numpy array), the number of modes (int) and the field size (int)
+        """
+        if type(model_name) != bytes:
+            model_name = model_name.encode()
+        c_basis_size = c_size_t()
+        self._twin_status = self._TwinGetRomOutputBasisSize(self._modelPointer, c_char_p(model_name),
+                                                            byref(c_basis_size))
+        self.evaluate_twin_status(self._twin_status, self, 'twin_get_rom_output_basis')
+
+        basis = (c_double * c_basis_size.value)()
+        c_nb_modes = c_size_t()
+        c_field_size = c_size_t()
+        self._twin_status = self._TwinGetRomOutputBasis(self._modelPointer, c_char_p(model_name), byref(basis),
+                                                        byref(c_nb_modes), byref(c_field_size))
+        self.evaluate_twin_status(self._twin_status, self, 'twin_get_rom_output_basis')
+        np_basis = np.array([x for x in basis])
+
+        if basis:
+            return np_basis, c_nb_modes.value, c_field_size.value
+
+    def twin_get_rom_input_basis(self, model_name, field_name):
+        """
+        Retrieve the input field basis for the given TBROM model name and field name.
+        This method is only supported for Twin models created from one or more TBROM components, and having input fields.
+
+        Parameters
+        ----------
+        model_name : str
+            Model name of the TBROM for which the basis needs to be retrieved.
+        field_name : str
+            Input field name of the TBROM for which the basis needs to be retrieved.
+
+        Returns
+        -------
+        list
+            A list representing the basis (numpy array), the number of modes (int) and the field size (int)
+        """
+        if type(model_name) != bytes:
+            model_name = model_name.encode()
+        if type(field_name) != bytes:
+            field_name = field_name.encode()
+        c_basis_size = c_size_t()
+        self._twin_status = self._TwinGetRomInputBasisSize(self._modelPointer, c_char_p(model_name),
+                                                           c_char_p(field_name),
+                                                           byref(c_basis_size))
+        self.evaluate_twin_status(self._twin_status, self, 'twin_get_rom_input_basis')
+
+        basis = (c_double * c_basis_size.value)()
+        c_nb_modes = c_size_t()
+        c_field_size = c_size_t()
+        self._twin_status = self._TwinGetRomInputBasis(self._modelPointer, c_char_p(model_name), c_char_p(field_name),
+                                                       byref(basis),
+                                                       byref(c_nb_modes), byref(c_field_size))
+        self.evaluate_twin_status(self._twin_status, self, 'twin_get_rom_input_basis')
+        np_basis = np.array([x for x in basis])
+
+        if basis:
+            return np_basis, c_nb_modes.value, c_field_size.value
 
     def twin_enable_3d_rom_model_data(self, model_name):
         """
