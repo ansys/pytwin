@@ -589,10 +589,8 @@ class TwinRuntime:
         model_path = Path(model_path)
         self.log_level = log_level
 
-        if model_path.is_file() is False:
-            raise FileNotFoundError(
-                "File is not found at {}".format(model_path.absolute())
-            )
+        # if model_path.is_file() is False:
+        #     raise FileNotFoundError("File is not found at {}".format(model_path.absolute()))
 
         self._twin_runtime_library = TwinRuntime.load_dll(
             twin_runtime_library_path
@@ -900,10 +898,8 @@ class TwinRuntime:
         self._TwinLoadState.restype = c_int
 
         self.model_path = Path(model_path).resolve()
-        if self.model_path.is_file() is False:
-            raise FileNotFoundError(
-                "File is not found at {}".format(model_path.absolute())
-            )
+        # if model_path.is_file() is False:
+        #     raise FileNotFoundError("File is not found at {}".format(model_path.absolute()))
 
         if log_path is None:
             # Getting parent directory
