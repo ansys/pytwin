@@ -39,7 +39,6 @@ from .twin_runtime_error import (
 import inspect
 
 CUR_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
-os.environ["TWIN_RUNTIME_SDK"] = CUR_DIR
 default_log_name = "model.log"
 
 
