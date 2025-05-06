@@ -1007,6 +1007,15 @@ class TwinRuntime:
     """
 
     def twin_number_of_deployments_from_instance(self):
+        """
+        Returns the expected number of deployments for the current TWIN model
+        instance as defined at the export time.
+
+        Returns
+        -------
+        int
+            Number of expected number of deployments for the TWIN model.
+        """
         if self._is_model_opened is False:
             raise TwinRuntimeError(
                 "The model has to be opened before returning "
