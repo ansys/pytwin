@@ -169,7 +169,6 @@ def stress_strain_scalar(str_vectors: np.ndarray, item: str, comp: str | int, ef
     Calculated as described in `2.4. Combined Stresses and Strains`_ and
     `19.5.2.3. Maximum Shear`_ in the Ansys Mechanical APDL and Ansys Mechanical
     help.
-    :math:`Max(|S1-S2|) + a^2`
 
     Parameters
     ----------
@@ -184,8 +183,8 @@ def stress_strain_scalar(str_vectors: np.ndarray, item: str, comp: str | int, ef
         Component of the item. See the table below in the notes section.
     effective_pr : float | None, default = None
         Effective Poisson's ratio for calculating equivalent strain. Assumed to be constant for all entries in
-        ``str_vectors``. Refer to `2.4. Combined Stresses and Strains`_ for potential values when handling strains other than
-        elastic strain.
+        ``str_vectors``. Refer to `2.4. Combined Stresses and Strains`_ for potential values when handling strains other
+        than elastic strain.
 
     Returns
     -------
@@ -233,14 +232,14 @@ def stress_strain_scalar(str_vectors: np.ndarray, item: str, comp: str | int, ef
     |      | maxShear            | Maximum shear strain                 |
     +------+---------------------+--------------------------------------+
 
-    .. _2.1.1. Stress-Strain Relationships: https://ansyshelp.ansys.com/public/account/secured?returnurl=//Views/Secured/corp/v251/en/ans_thry/thy_str1.html%23strucstressstrain
+    .. _2.1.1. Stress-Strain Relationships: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/ans_thry/thy_str1.html%23strucstressstrain
     .. _2.4. Combined Stresses and Strains: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/ans_thry/thy_str4.html%23struccombstrain
     .. _19.5.2.3. Maximum Shear: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/wb_sim/ds_Maximum_Stress.html
 
-    """
+    """  # noqa: E501
     # Check inputs
     if str_vectors.shape != (str_vectors.shape[0], 6):
-        raise ValueError(f"Input array shape is {str_vectors.shape}, but must be {(str_vectors.shape[0],6)}.")
+        raise ValueError(f"Input array shape is {str_vectors.shape}, but must be {(str_vectors.shape[0], 6)}.")
     if item == "S":
         if str(comp) not in (
             "X",
