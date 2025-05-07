@@ -1491,3 +1491,33 @@ class TestTbRom:
         assert np.allclose(stress_strain_scalar(strain_vectors, "E", "maxShear"), maxShear_strain, atol=1e-11)
         assert np.allclose(stress_strain_scalar(stress_vectors, "S", "absMaxPrin"), absMaxPrin_stress)
         assert np.allclose(stress_strain_scalar(stress_vectors, "S", "sgnEQV"), sgnEqv_stress)
+
+    def test_stress_strain_scalar_output_errors(self):
+        stress_vectors = np.array(
+            [
+                [168.123993, 533.840027, 149.458389, -18.4201412, 84.3208466, 19.6648216],
+                [-14.2597857, -47.3646698, -15.0713329, 115.835953, -49.9352531, 19.6648216],
+                [145.930695, 293.001648, 70.5488815, -42.9542503, -64.7307892, -4.86928749],
+            ]
+        )
+
+        try:
+            output = stress_strain_scalar(stress_vectors[:, :5], "S", "X")
+        except ValueError as e:
+            assert "Input array shape is (3, 5), but must be (3, 6)." in str(e)
+        try:
+            output = stress_strain_scalar(stress_vectors, "S", "noComp")
+        except ValueError as e:
+            assert "Invalid stress component argument 'noComp'." in str(e)
+        try:
+            output = stress_strain_scalar(stress_vectors, "E", "absMaxPrin")
+        except ValueError as e:
+            assert "Invalid strain component argument 'absMaxPrin'." in str(e)
+        try:
+            output = stress_strain_scalar(stress_vectors, "E", "EQV")
+        except ValueError as e:
+            assert "Enter a valid effective Poisson's ratio to calculate equivalent strain." in str(e)
+        try:
+            output = stress_strain_scalar(stress_vectors, "X", "EQV")
+        except ValueError as e:
+            assert "Invalid 'item' label, 'X'. Valid labels are 'S' and 'E'." in str(e)

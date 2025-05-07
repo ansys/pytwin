@@ -268,7 +268,7 @@ def stress_strain_scalar(str_vectors: np.ndarray, item: str, comp: str | int, ef
             except TypeError:
                 raise ValueError(f"Enter a valid effective Poisson's ratio to calculate equivalent strain.")
     else:
-        raise ValueError(f"Invalid 'item' label, {item}. Valid labels are 'S' and 'E'.")
+        raise ValueError(f"Invalid 'item' label, '{item}'. Valid labels are 'S' and 'E'.")
 
     # Normal stress/strain components are returned directly
     if comp in ("X", "Y", "Z", "XY", "YZ", "XZ"):
