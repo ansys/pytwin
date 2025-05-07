@@ -33,6 +33,9 @@ from pytwin.decorators import needs_graphics
 if TYPE_CHECKING:  # pragma: no cover
     import pyvista as pv
 
+#: Map tensor components to TBROM snapshot ordering
+TENSOR_MAP = {"X": 0, "Y": 1, "Z": 2, "XY": 3, "YZ": 4, "XZ": 5}
+
 
 def read_binary(filepath):
     """
@@ -157,6 +160,163 @@ def snapshot_to_array(snapshot_file, geometry_file):
     geometry_data = read_binary(geometry_file).reshape(-1, 3)
     snapshot_data = read_binary(snapshot_file).reshape(geometry_data.shape[0], -1)
     return np.concatenate((geometry_data, snapshot_data), axis=1)
+
+
+def stress_strain_scalar(str_vectors: np.ndarray, item: str, comp: str | int, effective_pr: float | None = None):
+    """
+    Reduce an array of stress or strain tensors to an array of scalar values.
+
+    Calculated as described in `2.4. Combined Stresses and Strains`_ and
+    `19.5.2.3. Maximum Shear`_ in the Ansys Mechanical APDL and Ansys Mechanical
+    help.
+    :math:`Max(|S1-S2|) + a^2`
+
+    Parameters
+    ----------
+    str_vectors : np.ndarray
+        ``(n,6)`` array where rows are stress or strain vectors containing components of the symmetric Cauchy tensor.
+        Components are ordered as X,Y,Z,XY,YZ,XZ for consistency with the conventions used in Ansys TBROM snapshots and
+        Ansys Mechanical APDL (`2.1.1. Stress-Strain Relationships`_). In addition, shear strains are interpreted as
+        being the engineering shear strains, which are twice the tensor shear strains.
+    item : str
+        Label identifying the result type of ``str_vectors``. ``S`` for stress and ``E`` for strain.
+    comp : str | int
+        Component of the item. See the table below in the notes section.
+    effective_pr : float | None, default = None
+        Effective Poisson's ratio for calculating equivalent strain. Assumed to be constant for all entries in
+        ``str_vectors``. Refer to `2.4. Combined Stresses and Strains`_ for potential values when handling strains other than
+        elastic strain.
+
+    Returns
+    -------
+    np.ndarray
+        array of shape ``(n,)`` containing the requested scalar stress or strain values.
+
+    Raises
+    ------
+    ValueError
+        if shape of ``str_vectors`` is not ``(n,6)``.
+    ValueError
+        if invalid combinations for ``item`` and ``comp`` are entered.
+    ValueError
+        if ``item = E`` and ``comp = EQV`` and ``effective_pr`` is not given.
+
+    Notes
+    -----
+    This table lists the results values available to this method.
+
+    +------+---------------------+--------------------------------------+
+    | item | comp                | Description                          |
+    +------+---------------------+--------------------------------------+
+    | S    | X, Y, Z, XY, YZ, XZ | Component stress.                    |
+    |      +---------------------+--------------------------------------+
+    |      | 1, 2, 3             | Principal stress.                    |
+    |      +---------------------+--------------------------------------+
+    |      | INT                 | Stress intensity.                    |
+    |      +---------------------+--------------------------------------+
+    |      | EQV                 | Equivalent (von Mises) stress.       |
+    |      +---------------------+--------------------------------------+
+    |      | maxShear            | Maximum shear stress                 |
+    |      +---------------------+--------------------------------------+
+    |      | absMaxPrin          | Absolute maximum principal stress.   |
+    |      +---------------------+--------------------------------------+
+    |      | sgnEQV              | Signed equivalent (von Mises) stress.|
+    +------+---------------------+--------------------------------------+
+    | E    | X, Y, Z, XY, YZ, XZ | Component strain.                    |
+    |      +---------------------+--------------------------------------+
+    |      | 1, 2, 3             | Principal strain.                    |
+    |      +---------------------+--------------------------------------+
+    |      | INT                 | Strain intensity.                    |
+    |      +---------------------+--------------------------------------+
+    |      | EQV                 | Equivalent (von Mises) strain.       |
+    |      +---------------------+--------------------------------------+
+    |      | maxShear            | Maximum shear strain                 |
+    +------+---------------------+--------------------------------------+
+
+    .. _2.1.1. Stress-Strain Relationships: https://ansyshelp.ansys.com/public/account/secured?returnurl=//Views/Secured/corp/v251/en/ans_thry/thy_str1.html%23strucstressstrain
+    .. _2.4. Combined Stresses and Strains: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/ans_thry/thy_str4.html%23struccombstrain
+    .. _19.5.2.3. Maximum Shear: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/wb_sim/ds_Maximum_Stress.html
+
+    """
+    # Check inputs
+    if str_vectors.shape != (str_vectors.shape[0], 6):
+        raise ValueError(f"Input array shape is {str_vectors.shape}, but must be {(str_vectors.shape[0],6)}.")
+    if item == "S":
+        if str(comp) not in (
+            "X",
+            "Y",
+            "Z",
+            "XY",
+            "YZ",
+            "XZ",
+            "1",
+            "2",
+            "3",
+            "INT",
+            "EQV",
+            "maxShear",
+            "absMaxPrin",
+            "sgnEQV",
+        ):
+            raise ValueError(f"Invalid stress component argument '{comp}'.")
+    elif item == "E":
+        if str(comp) not in ("X", "Y", "Z", "XY", "YZ", "XZ", "1", "2", "3", "INT", "EQV", "maxShear"):
+            raise ValueError(f"Invalid strain component argument '{comp}'.")
+        if comp == "EQV":
+            try:
+                effective_pr = float(effective_pr)
+            except TypeError:
+                raise ValueError(f"Enter a valid effective Poisson's ratio to calculate equivalent strain.")
+    else:
+        raise ValueError(f"Invalid 'item' label, {item}. Valid labels are 'S' and 'E'.")
+
+    # Normal stress/strain components are returned directly
+    if comp in ("X", "Y", "Z", "XY", "YZ", "XZ"):
+        return str_vectors[:, TENSOR_MAP[comp]].copy()
+
+    # Set multiplier to convert engineering shear strain to tensor shear strain.
+    shear_scaling = 0.5 if item == "E" else 1.0
+
+    # Build tensor array by stacking vector of components
+    X = str_vectors[:, TENSOR_MAP["X"]]
+    Y = str_vectors[:, TENSOR_MAP["Y"]]
+    Z = str_vectors[:, TENSOR_MAP["Z"]]
+    XY = str_vectors[:, TENSOR_MAP["XY"]] * shear_scaling
+    YZ = str_vectors[:, TENSOR_MAP["YZ"]] * shear_scaling
+    XZ = str_vectors[:, TENSOR_MAP["XZ"]] * shear_scaling
+    str_tensors = np.stack([X, XY, XZ, XY, Y, YZ, XZ, YZ, Z], axis=1).reshape((-1, 3, 3))
+
+    # Calculate principle components and directions
+    principals, principal_vectors = np.linalg.eig(str_tensors)
+
+    # Sort by decreasing eigenvalue size, since Numpy does not necessarily order eigenvalues.
+    sort_order = np.flip(np.argsort(principals, axis=1), axis=1)
+    vec_sort_order = np.expand_dims(sort_order, axis=2)
+    principals = np.take_along_axis(principals, sort_order, axis=1)
+    principal_vectors = np.take_along_axis(principal_vectors, vec_sort_order, axis=1)
+    P1, P2, P3 = [arr.flatten() for arr in np.split(principals, 3, axis=1)]
+
+    if str(comp) == "1":
+        return P1
+    elif str(comp) == "2":
+        return P2
+    elif str(comp) == "3":
+        return P3
+    elif comp == "INT":
+        return np.max(np.stack([np.abs(P1 - P2), np.abs(P2 - P3), np.abs(P3 - P1)], axis=1), axis=1)
+    elif comp in ("EQV", "sgnEQV"):
+        eqv_scaling = 1 / (1 + effective_pr) if item == "E" else 1.0
+        eqv = eqv_scaling * ((1 / 2) * ((P1 - P2) ** 2 + (P2 - P3) ** 2 + (P3 - P1) ** 2)) ** 0.5
+        if comp == "sgnEQV":
+            absMax_indices = np.argmax(np.abs(principals), axis=1, keepdims=True)
+            sign = np.sign(np.take_along_axis(principals, absMax_indices, axis=1)).flatten()
+            eqv = sign * eqv
+        return eqv
+    elif comp == "maxShear":
+        return 0.5 * (P1 - P3) / shear_scaling
+    elif comp == "absMaxPrin":
+        absMax_indices = np.argmax(np.abs(principals), axis=1, keepdims=True)
+        return np.take_along_axis(principals, absMax_indices, axis=1).flatten()
 
 
 def _read_basis(filepath):
