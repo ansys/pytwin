@@ -368,7 +368,7 @@ class TestDefaultSettings:
         result = subprocess.run([sys.executable, "-c", "import pytwin"], capture_output=True)
         new_wd_dir_count = len(os.listdir(os.path.dirname(get_pytwin_working_dir())))
 
-        assert len(result.stdout) == 0 
+        assert len(result.stdout) == 0
         assert len(result.stderr) == 0
         assert new_wd_dir_count == current_wd_dir_count
 
