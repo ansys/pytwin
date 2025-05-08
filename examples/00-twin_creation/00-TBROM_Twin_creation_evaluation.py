@@ -64,6 +64,8 @@ from pytwin import TwinModel, download_file, read_binary
 training_data_zip = "training_data.zip"
 download_folder = download_file(training_data_zip, "other_files", force_download=True)
 training_data_folder = os.path.join(os.path.dirname(download_folder), "training_data")
+if os.path.exists(training_data_folder) and os.path.isdir(training_data_folder):
+    shutil.rmtree(training_data_folder)
 # Unzip training data
 with zipfile.ZipFile(download_folder) as zf:
     zf.extractall(training_data_folder)
