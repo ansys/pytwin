@@ -2185,7 +2185,7 @@ class TwinRuntime:
         views : list
             View names for which the image generation needs to be enabled.
         """
-        n_views_c = c_int(len(views))
+        n_views_c = c_size_t(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
@@ -2215,7 +2215,7 @@ class TwinRuntime:
         views : list
             View names for which the image generation needs to be disabled.
         """
-        n_views_c = c_int(len(views))
+        n_views_c = c_size_t(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
@@ -2400,7 +2400,7 @@ class TwinRuntime:
         list
             List of path of all the images retrieved
         """
-        n_views_c = c_int(len(views))
+        n_views_c = c_size_t(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
@@ -2425,7 +2425,7 @@ class TwinRuntime:
             c_char_p(model_name.encode()),
             array_ctypes,
             n_views_c,
-            byref(image_files_c),
+            image_files_c,
             c_double(time_from),
             c_double(time_to),
         )
@@ -2478,7 +2478,7 @@ class TwinRuntime:
         self._twin_status = self._TwinGetRomModeCoefFiles(
             self._modelPointer,
             c_char_p(model_name.encode()),
-            byref(bin_files_c),
+            bin_files_c,
             c_double(time_from),
             c_double(time_to),
         )
@@ -2529,7 +2529,7 @@ class TwinRuntime:
         self._twin_status = self._TwinGetRomSnapshotFiles(
             self._modelPointer,
             c_char_p(model_name.encode()),
-            byref(bin_files_c),
+            bin_files_c,
             c_double(time_from),
             c_double(time_to),
         )
