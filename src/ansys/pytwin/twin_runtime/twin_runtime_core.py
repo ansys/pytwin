@@ -1891,7 +1891,7 @@ class TwinRuntime:
                             },
                         'trigger': {
                             'field_data_storage': 'field_data_storage'
-                            }
+                            },
                         'inputfields': 'inputPressure','inputTemperature'
                     }
                 }
