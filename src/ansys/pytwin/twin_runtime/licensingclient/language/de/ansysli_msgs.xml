@@ -3,7 +3,48 @@
   <LANGUAGE>
     <ID>en-us</ID>
     <LABEL>English</LABEL>
-  </LANGUAGE><!-- Begin ACL FNP Messages [18001 - 19000] --><MESSAGE>
+  </LANGUAGE><!-- Begin ACL APIP Messages [19001 - 20000] --><MESSAGE>
+        <ID>19005</ID>
+        <MSG>
+            Das erforderliche zugehörige Verzeichnis gemeinsamer Dateien kann nicht gefunden werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>19004</ID>
+        <MSG>
+            Die erforderlichen APIP-Konfigurationsdateien können nicht gefunden werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>19003</ID>
+        <MSG>
+            APIP-Konfiguration nicht vom Benutzer zugelassen.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>19002</ID>
+        <MSG>
+            APIP-Konfiguration in Bereich nicht zulässig.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>19001</ID>
+        <MSG>
+            APIP-Konfiguration global nicht zulässig.
+        </MSG>
+    </MESSAGE><!-- Begin ACL FNP Messages [18001 - 19000] --><MESSAGE>
+        <ID>18008</ID>
+        <MSG>
+            Es sind nicht genügend FlexNet Publisher (FNP)-Lizenzen von %1 zur Verwendung verfügbar, nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 im Kontext %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18007</ID>
+        <MSG>
+            Es sind nicht genügend FlexNet Publisher (FNP)-Lizenzen von %1 zur Verwendung verfügbar, nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 in der Funktion %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>18006</ID>
         <MSG>
             %1 (Feature: %2)
@@ -40,6 +81,24 @@
             FNP-Lizenzpfad: %2
         </MSG>
     </MESSAGE><!-- Begin Shared Web Messages [17001 - 18000] --><MESSAGE>
+        <ID>17029</ID>
+        <MSG>
+            Es werden Zwischenspeicherdaten vom Web-Server abgerufen: Bitte warten Sie ...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>17028</ID>
+        <MSG>
+            Es sind nicht genügend Shared Web-Produkte von %1 zur Verwendung verfügbar, nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 im Kontext %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>17027</ID>
+        <MSG>
+            Es sind nicht genügend Shared Web-Produkte von %1 zur Verwendung verfügbar, nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 in der Funktion %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
       <ID>17026</ID>
       <MSG>
         Zeitüberschreitung beim Ansyscl-Prozess, nachdem %1 Sekunden auf eine Antwort von %2 gewartet wurde.
@@ -195,6 +254,18 @@
             Es konnte keine gemeinsame Web-Lizenzlizenz gefunden werden, die die Funktion %1 ermöglicht
         </MSG>
     </MESSAGE><!-- Begin ACL Messages [16001 - 17000] --><MESSAGE>
+        <ID>16016</ID>
+        <MSG>
+            Es sind nicht genügend Funktionen %1 zur Verwendung verfügbar. Nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 in Kontext %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16015</ID>
+        <MSG>
+            Es sind nicht genügend Funktionen %1 zur Verwendung verfügbar. Nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 in der Funktion %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>16014</ID>
         <MSG>
             Lizenzierte %1 Version %2 unzureichend, Anfrage für Version %3 der Funktion %4 verweigert.
@@ -313,6 +384,12 @@
             Ungültige Umgebungsvariable %1 Wert %2, Verzeichnis nicht gefunden.
         </MSG>
     </MESSAGE><!-- End Debug Messages [15001 - 16000] --> <!-- Begin License Context specific Messages [14001 - 15000] --><MESSAGE>
+        <ID>14054</ID>
+        <MSG>
+            %1 Kontext mit ID %2 kann nicht aus Wiederherstellungsdaten erstellt werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>14053</ID>
         <MSG>
           %1 Kontext %2 Reinitialisierung erfolgreich.
@@ -630,6 +707,24 @@
             %1 Kontext erstellt mit ID %2.
         </MSG>
     </MESSAGE><!-- End License Context specific Messages [14001 - 15000] --> <!-- Begin Elastic Web (formerly LaaS) specific Messages [13001 - 14000] --><MESSAGE>
+    <ID>13044</ID>
+    <MSG>
+      Aktuelle Elastic-Sitzungs-ID %1 wurde als &quot;abgelaufen&quot; gekennzeichnet. Eine neue Elastic-Sitzungs-ID %2 wird erstellt.
+    </MSG>
+  </MESSAGE>
+    <MESSAGE>
+        <ID>13043</ID>
+        <MSG>
+            Unzureichende Elastic-Anzahl von %1 zur Verwendung verfügbar. Nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 in Kontext %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>13042</ID>
+        <MSG>
+            Unzureichende Elastic-Anzahl von %1 zur Verwendung verfügbar. Nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die %4 in der Funktion %5 enthaltenen Kerne verwendet wurden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>13041</ID>
         <MSG>
             Elastic-Checkout nicht versucht für Funktion %1.
@@ -716,7 +811,7 @@
   <MESSAGE>
     <ID>13027</ID>
     <MSG>
-      LaaS-Sitzungswiederverbindung fehlgeschlagen.
+      LaaS-Sitzungswiederverbindung fehlgeschlagen. 
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -794,7 +889,7 @@
     <MESSAGE>
         <ID>13014</ID>
         <MSG>
-            Ungültige PIN für Cloud-Lizenzserver %1,
+            Ungültige PIN für Cloud-Lizenzserver %1, 
 nicht möglich abzuschliessen: %2.
         </MSG>
     </MESSAGE>
@@ -1043,7 +1138,7 @@ nicht möglich abzuschliessen: %2.
         <MSG>
             Feature %1 ist ausgelaufen. Nutzungsberechtigung wurde nicht aktiviert oder rechtzeitig verlängert.
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>12034</ID>
         <MSG>
@@ -1253,253 +1348,253 @@ Bitte speichern Sie Ihre Arbeit.
     <MSG>
       Gültiger Name, keine Datenaufzeichnung des angfragten Typs.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>11003</ID>
     <MSG>
        Dies ist ein nicht reparierbarer Fehler.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>11002</ID>
     <MSG>
        Es wurde kein  nicht-autorisierender Host gefunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>11001</ID>
     <MSG>
        Host nicht gefunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10109</ID>
     <MSG>
        Klassentyp nicht gefunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10101</ID>
     <MSG>
        Ordnungsgemäßes Herunterfahren wird durchgeführt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10093</ID>
     <MSG>
        Erfolgreiches WSAStartup noch nicht durchgeführt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10092</ID>
     <MSG>
        Winsock.dll Version außerhalb des Bereichs.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10091</ID>
     <MSG>
        Das Netzwerk-Subsystem ist nicht verfügbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10067</ID>
     <MSG>
        Zu viele Prozesse.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10065</ID>
     <MSG>
        Keine Route zum Host.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10064</ID>
     <MSG>
        Host ist heruntergefahren
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10061</ID>
     <MSG>
        Verbindung wurde verweigert
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10060</ID>
     <MSG>
        Bei der Verbindung zum Lizenzserver ist eine Zeitüberschreitung aufgetreten.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10058</ID>
     <MSG>
        Nach dem Herunterfahren des Sockets ist ein Senden nicht möglich.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10057</ID>
     <MSG>
        Das Socket ist nicht verbunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10056</ID>
     <MSG>
        Das Socket ist bereits verbunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10055</ID>
     <MSG>
        Es ist kein Platz für das Puffern verfügbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10054</ID>
     <MSG>
        Die Verbindung wurde durch den Lizenzserver zurückgesetzt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10053</ID>
     <MSG>
        Die Software hat einen Abbruch der Verbindung verursacht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10052</ID>
     <MSG>
        Das Netzwerk hat beim Zurücksetzen die Verbindung verloren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10051</ID>
     <MSG>
        Das Netzwerk ist nicht erreichbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10050</ID>
     <MSG>
        Das Netzwerk ist heruntergefahren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10049</ID>
     <MSG>
        Die angefragte Adresse kann nicht zugewiesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10048</ID>
     <MSG>
        Adresse wird bereits verwendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10047</ID>
     <MSG>
        Die Adress-Familie wird von der Protokoll-Familie nicht unterstützt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10046</ID>
     <MSG>
        Protokoll-Familie wird nicht unterstützt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10045</ID>
     <MSG>
        Operation wird nicht unterstützt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10044</ID>
     <MSG>
        Der Socket-Typ ist nicht unterstützt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10043</ID>
     <MSG>
        Protokoll wird nicht unterstützt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10042</ID>
     <MSG>
        Falsche Protokolloption.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10041</ID>
     <MSG>
        Falscher Protokoll-Typ für das Socket.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10040</ID>
     <MSG>
        Meldung zu lang.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10039</ID>
     <MSG>
        Zieladresse erforderlich.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10038</ID>
     <MSG>
        Socket-Operation auf ein nicht-Socket.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10037</ID>
     <MSG>
        Operation ist bereits im Gange.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10036</ID>
     <MSG>
        Operation ist jetzt im Gange.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10035</ID>
     <MSG>
        Ressource ist temporär nicht verfügbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10024</ID>
     <MSG>
        Zu viele offene Dateien.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10022</ID>
     <MSG>
        Ungültiges Argument.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10014</ID>
     <MSG>
        Falsche Adresse.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10013</ID>
     <MSG>
        Zugriff verweigert.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>10004</ID>
     <MSG>
@@ -1510,19 +1605,19 @@ Bitte speichern Sie Ihre Arbeit.
         <MSG>
             Falsche Proxyserver-Einstellung. Geben Sie den Proxyserver im Format „http://&lt;proxyserver&gt;:&lt;port&gt;“ oder „http://&lt;username&gt;:&lt;password&gt;@&lt;proxyserver&gt;:&lt;port&gt;“ an.
         </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
         <ID>1352</ID>
         <MSG>
             Die angeforderte Aktion %1 ist nicht unterstützt in Ansys Common Licensing. Bitte kontaktieren Sie das Ansys Support Team.
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
   <MESSAGE>
     <ID>1351</ID>
     <MSG>
        Gebunden an System-Loopback
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1350</ID>
     <MSG>
@@ -1545,7 +1640,7 @@ Bitte speichern Sie Ihre Arbeit.
         <MSG>
             Informationen von FlexNet Embedded werden abgerufen. Bitte warten ...
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>1315</ID>
         <MSG>
@@ -1581,7 +1676,7 @@ Bitte speichern Sie Ihre Arbeit.
     <MSG>
       Die IP-Adresse des Servers %1 konnte nicht abgerufen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>1309</ID>
     <MSG>
@@ -1593,49 +1688,49 @@ Bitte speichern Sie Ihre Arbeit.
     <MSG>
        Zwischenspeicher-Informationen konnten nicht abgefragt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1307</ID>
     <MSG>
        Der redundante Server %1 IP=%2 ist bereits in den Zwischenspeicher geladen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1306</ID>
     <MSG>
        Der Server %1 IP=%2 wurde bereits in den Zwischenspeicher geladen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1305</ID>
     <MSG>
        Es werden Zwischenspeicherdaten vom Server abgerufen: %1. Bitte warten Sie...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1304</ID>
     <MSG>
        Ausleih-Information wird abgerufen. Bitte warten...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1303</ID>
     <MSG>
        Zwischenspeicherdaten werden aus folgender Datei abgerufen: %1. Bitte warten Sie...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1302</ID>
     <MSG>
        Zwischenspeicher wurde abgerufen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1301</ID>
     <MSG>
        Zwischenspeichern abgeschlossen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1300</ID>
     <MSG>
@@ -1652,7 +1747,7 @@ Bitte speichern Sie Ihre Arbeit.
     <MSG>
       %1 wurde mit %2 erstellt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
       <ID>1264</ID>
       <MSG>
@@ -1706,7 +1801,7 @@ Bitte speichern Sie Ihre Arbeit.
         <MSG>
             FlexNet Embedded-Server wird gestartet.
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>1255</ID>
         <MSG>
@@ -1734,9 +1829,9 @@ Bitte speichern Sie Ihre Arbeit.
     <MESSAGE>
         <ID>1251</ID>
         <MSG>
-            Das Binärprogramm Ansys Licensing wird gestartet.
+            Die Ansys Licensing Binärdatei wird gestartet.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>    
     <MESSAGE>
         <ID>1250</ID>
         <MSG>
@@ -1772,7 +1867,7 @@ Bitte speichern Sie Ihre Arbeit.
         <MSG>
             Setzt die Wartezeit des Monitors für das Löschen des Server-Ports.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
     <MESSAGE>
         <ID>1244</ID>
         <MSG>
@@ -1781,7 +1876,7 @@ Um die Zeit für das Freigeben von belegten Ports zu verkürzen, empfehlen wir, 
 ndd -set /dev/tcp tcp_time_wait_interval 30000
 ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
         </MSG>
-    </MESSAGE>
+    </MESSAGE>    
    <MESSAGE>
       <ID>1243</ID>
       <MSG>
@@ -1811,13 +1906,13 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       Der Prozess %1 mit der PID %2 reagiert nicht, aber es findet immer noch eine Aktualisierung der Protokolldatei %3 des Prozesses statt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>1238</ID>
     <MSG>
       Der Prozess %1 mit der PID %2 konnte nicht abgebrochen werden. Es wird ein &quot;Hard-Kill&quot; versucht...
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>1237</ID>
     <MSG>
@@ -1835,218 +1930,230 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Es wird immer noch versucht, den FLEXlm-Server zu starten. Bitte warten ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1234</ID>
     <MSG>
         Es gibt keinen Server zur Überwachung. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1233</ID>
     <MSG>
         Der Prozess %1 mit der PID %2 wurde unerwartet beendet. In %3 Sekunden wird ein Neustart versucht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1232</ID>
     <MSG>
         Der Prozess %1 mit der PID %2 konnte nicht gekilled werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1231</ID>
     <MSG>
         %1 %2 konnte nicht neugestartet werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1230</ID>
     <MSG>
         %1 wurde neu gestartet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1229</ID>
     <MSG>
         Der Prozess %1 mit der PID %2 wurde gekilled. In %3 Sekunden wird ein Neustart versucht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1228</ID>
     <MSG>
         Der Prozess %1 mit der PID %2 scheint ausgeführt zu werden, reagiert aber nicht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1227</ID>
     <MSG>
         Überwachung wurde gestartet für %1 mit Pid %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1226</ID>
     <MSG>
         Monitor-Prozess wurde beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1225</ID>
     <MSG>
         ===== Verbleibende Anfragen: Ende.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1224</ID>
     <MSG>
         ===== Verbleibende Pool-Anfragen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1223</ID>
     <MSG>
         ===== Verbleibende Anfragen insgesamt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1222</ID>
     <MSG>
         ===== Verbleibende Anfragen: Start.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1221</ID>
     <MSG>
         FLEXlm-Server wurde beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1220</ID>
     <MSG>
         FLEXlm-Server konnte nicht beendet werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1219</ID>
     <MSG>
         FLEXlm-Server wurde gestartet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1218</ID>
     <MSG>
         Es wird immer noch versucht, den FLEXlm-Server zu beenden. Bitte warten ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1217</ID>
     <MSG>
         Sicherung der FLEXlm-Debugging-Protokolldatei nach %1:
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1216</ID>
     <MSG>
         ANSYSLI-Server konnte nicht gestartet werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1215</ID>
     <MSG>
         Es wird versucht, ANSYSLI-Server zu starten. Bitte warten Sie ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1214</ID>
     <MSG>
         Der Ausleih-Server wird gestartet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1213</ID>
     <MSG>
         Der Demo-Server wird gestartet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1212</ID>
     <MSG>
         Der lokale Server wird gestartet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1211</ID>
     <MSG>
-        Das Binärprogramm Ansys Licensing wurde gestartet.
+        Die Ansys Licensing Binärdatei wurde gestartet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1210</ID>
     <MSG>
         Demo-Lizenzdatei %1 existiert.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1209</ID>
     <MSG>
         Es gibt ausleihbare Lizenzen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1208</ID>
     <MSG>
         Das Herunterfahren des Lizenzservers ist abgeschlossen. Vielen Dank.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1207</ID>
     <MSG>
         Es müssen noch %1 nicht verbundene Clients geschlossen werden... Bitte warten Sie.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1206</ID>
     <MSG>
         Es müssen noch %1 verbundene Clients geschlossen werden... Bitte warten Sie.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1205</ID>
     <MSG>
         FLEXlm-Server wurde bereits heruntergefahren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1204</ID>
     <MSG>
         Windows-Dienst beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1203</ID>
     <MSG>
         Bereit für das Annehmen von Verbindungen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1202</ID>
     <MSG>
        Binden des Sockets an den Port %1 war erfolgreich.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1201</ID>
     <MSG>
         Die folgenden Verbindungen [sofern vorhanden] verwenden den Port %1:
 %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1200</ID>
     <MSG>
         Der FLEXlm-Server wird bereits ausgeführt.
     </MSG>
   </MESSAGE><!-- End Log messages: CACHE_SERVER 1200 - 1299 --> <!-- Begin Log messages: ERROR 1000 - 1199 --><MESSAGE>
+    <ID>1076</ID>
+    <MSG>
+      Unzureichende Berechtigungen zum Starten der Ansys Licensing Binärdatei: %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>1075</ID>
+    <MSG>
+      Verbindung zum angegebenen Portbereich konnte nicht hergestellt werden. %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
     <ID>1074</ID>
     <MSG>
       Heartbeat wird an FLEXlm gesendet: %1.
@@ -2055,7 +2162,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   <MESSAGE>
     <ID>1073</ID>
     <MSG>
-      Ein ungültiger Portbereich wurde festgelegt.
+      Portbereich konnte nicht verwendet werden. ACL verwendet den vom Betriebssystem bereitgestellten freien Port.
     </MSG>
   </MESSAGE>
     <MESSAGE>
@@ -2087,7 +2194,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       Die FlexNet-Lizenzen von %1 können nicht zwischengespeichert werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
     <MESSAGE>
         <ID>1067</ID>
         <MSG>
@@ -2232,7 +2339,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       Die Lizenzdatei %1 wurde verändert. Bitte veranlassen Sie einen Neueinlesen (Reread) der Einstellungen, um den Server zu aktualisieren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>1043</ID>
     <MSG>
@@ -2250,109 +2357,109 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         FLEXlm ist nicht verfügbar. Ein Neustart wird versucht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1040</ID>
     <MSG>
         Überwachung wurde gestartet für &apos;%1&apos; mit Pid = %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1039</ID>
     <MSG>
         Es kann nicht ermittelt werden, ob der Lizenzserver ausgeführt wird.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1038</ID>
     <MSG>
         Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1037</ID>
     <MSG>
         Das Starten des FLEXlm-Lizenzmanagers ist fehlgeschlagen. Bitte prüfen Sie die FLEXlm-Protokolldatei %1 für weitere Informationen (errno = %2).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1036</ID>
     <MSG>
         Das Starten des FLEXlm-Lizenzmanagers ist fehlgeschlagen. Bitte prüfen Sie die FLEXlm-Protokolldatei %1 für weitere Informationen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1035</ID>
     <MSG>
        &quot;%1&quot; exitiert nicht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1034</ID>
     <MSG>
         Es gab ein Problem beim Parsen der Datei %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1033</ID>
     <MSG>
        Es gab ein Problem beim Entschlüsseln der Datei %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1032</ID>
     <MSG>
        Produktdefinitionen sind leer.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1031</ID>
     <MSG>
        Beim Lesen der Produktdefinitionen ist ein Problem aufgetreten.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1030</ID>
     <MSG>
        FLEXlm ist nicht verfügbar und konnte nicht neu gestartet werden. Überprüfen Sie die FLEXlm-Protokolldatei. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1029</ID>
     <MSG>
         Es konnte nicht ermittelt werden, ob der FLEXlm-Server ausgeführt wird.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1028</ID>
     <MSG>
        Der Ausleih-Status kann nicht bestimmt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1027</ID>
     <MSG>
        Der FLEXlm-Server konnte nicht beendet werden. Bitte prüfen Sie die FLEXlm-Protokolldatei. %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1026</ID>
     <MSG>
        Socket kann nicht an den Port %1 gebunden werden. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1025</ID>
     <MSG>
-       Es wird immer noch versucht ...
+       Es wird immer noch versucht ... 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1024</ID>
     <MSG>
         Versuche es erneut für %1 Minuten...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1023</ID>
     <MSG>
@@ -2364,7 +2471,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
        1) Warten Sie, bis das Betriebssystem diesen Port löscht.
        2) Beenden Sie den Prozess mit dieser Portnummer. Verwenden Sie den Befehl &quot;netstat&quot;, um den Prozess zu finden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1022</ID>
     <MSG>
@@ -2376,133 +2483,133 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
        1) Warten Sie, bis das Betriebssystem diesen Port löscht.
        2) Beenden Sie den Prozess, der diese Portnummer verwendet. Verwenden Sie &quot;netstat -ab -p TCP&quot;, um den Prozess zu finden.
      </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1021</ID>
     <MSG>
        Es war nicht möglich, das Socket an an einen Port aus dem Bereich %1 - %2 zu binden. %3. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1020</ID>
     <MSG>
        Das Socket %1 konnte nicht erstellt werden. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1019</ID>
     <MSG>
        ansysli_monitor konnte nicht gestartet werden. %1. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1018</ID>
     <MSG>
        Der FLEXlm-Server konnte nicht gestartet werden. Bitte prüfen Sie die FLEXlm-Protokolldatei. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1017</ID>
     <MSG>
         Ungültige FLEXlm-Optionsdatei %1. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1016</ID>
     <MSG>
        Ungültige FLEXlm-Lizenzdatei %1. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1015</ID>
     <MSG>
        Ungültige Lizenzdatei %1. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1014</ID>
     <MSG>
        In das Berichtsverzeichnis %1 konnte nicht geschrieben werden. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1013</ID>
     <MSG>
         Ungültige Debugging-Protokolldatei: %1. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1012</ID>
     <MSG>
        Ungültige Initialisierungsdatei %1. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1011</ID>
     <MSG>
        ansysli_monitor konnte nicht gestartet werden. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1010</ID>
     <MSG>
        Die Protokolldatei %1 konnte nicht geöffnet werden. Abbruch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1009</ID>
     <MSG>
        %1 oder eine andere Version davon läuft bereits. Vorgang wird abgebrochen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1008</ID>
     <MSG>
        Ungültige %1 Kombination von Optionen. Mindestens eine Client-Startoption wurde angegeben. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1007</ID>
     <MSG>
        Ungültige %1 Kombination von Optionen. Mindestens eine Client-Startoption muss angegeben werden. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1006</ID>
     <MSG>
        Ungültige %1 Kombination von Optionen. Sie können -noflex nicht mit FLEXlm-Startoptionen kombinieren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1005</ID>
     <MSG>
        Ungültige FLEXlm-Protokolldatei angegeben: %1. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1004</ID>
     <MSG>
        Ungültige FLEXlm-Lizenzdatei angegeben: %1. Vorgang wird beendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1003</ID>
     <MSG>
        Ungültige Versionsoption angegeben %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1002</ID>
     <MSG>
        Es wurde ein ungültiges Verzeichnis für die Produktreihenfolge angegeben: %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1001</ID>
     <MSG>
-       Ungültiger Typ des Debugging-Protokolls angegeben: %1. Vorgang wird beendet.
+       Ungültiger Typ des Debugging-Protokolls angegeben: %1. Vorgang wird beendet.       
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>1000</ID>
     <MSG>
@@ -2513,25 +2620,31 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       Es konnte keine neue Dateibeschreibung zugeordnet werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>952</ID>
     <MSG>
        %1 ist ungültig.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>951</ID>
     <MSG>
        Die Optionsdatei %1 konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>950</ID>
     <MSG>
-       Ungültige Syntax für Schlüsselwort:
+       Ungültige Syntax für Schlüsselwort: 
     </MSG>
   </MESSAGE><!-- End Lic Exception Messages [950 - 999] --> <!-- Begin Socket Exception Messages [900 - 949] --><MESSAGE>
+    <ID>932</ID>
+    <MSG>
+      Das Internetprotokoll der Version %1 wird verwendet.
+    </MSG>
+  </MESSAGE>
+    <MESSAGE>
         <ID>931</ID>
         <MSG>
             Verbunden mit Lizenzclient-Proxyserver: %1@%2.
@@ -2598,76 +2711,76 @@ Beim Lizenzserver besteht möglicherweise eine hohe Nachfrage oder ein vorüberg
   <MESSAGE>
     <ID>921</ID>
     <MSG>
-       Die SSL-Zustimmung ist noch nicht vollständig. %1.
+       Die SSL-Zustimmung ist noch nicht vollständig. %1.        
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>920</ID>
     <MSG>
        Lizenz-Sockets konnten nicht ausgewählt werden.
        Systemfehler: %1 &quot;%2&quot;.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>919</ID>
     <MSG>
        Bei der Verbindung ist eine Zeitüberschreitung aufgetreten.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>918</ID>
     <MSG>
        Falsches SSL-Client-Zertifikat.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>917</ID>
     <MSG>
        Falscher SSL-Client-Aussteller.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>916</ID>
     <MSG>
        Falsches SSL-Client-Subjekt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>915</ID>
     <MSG>
        Der private Schlüssel stimmt nicht mit dem privaten Schlüssel des Zertifikats überein.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>914</ID>
     <MSG>
        Die Schlüssel-Datei des Servers konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>913</ID>
     <MSG>
        SERVER_private_key konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>912</ID>
     <MSG>
        Falscher SSL-Server-Aussteller.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>911</ID>
     <MSG>
        Falsches SSL-Server-Zertifikat.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>910</ID>
     <MSG>
        Falsches SSL-Server-Subjekt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>909</ID>
     <MSG>
@@ -2675,55 +2788,55 @@ Die Antwort des Lizenzservers dauert zu lange.
 Die Anwendung wartet nicht mehr auf eine Antwort.
 Beim Lizenzserver besteht möglicherweise eine hohe Nachfrage oder ein vorübergehender Ausfall. Versuchen Sie es später erneut.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>908</ID>
     <MSG>
        CA_certificate konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>907</ID>
     <MSG>
        Die Schlüssel-Datei des Clients konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>906</ID>
     <MSG>
        Datei CLIENT_private konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>905</ID>
     <MSG>
        Die Zertifikatsdatei konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>904</ID>
     <MSG>
        CLIENT_certificate konnte nicht erstellt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>903</ID>
     <MSG>
        Es konnte kein neuer SSL-Kontext erstellt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>902</ID>
     <MSG>
        Keine Verbindung.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>901</ID>
     <MSG>
        Systemfehler: %1 &quot;%2&quot;.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>900</ID>
     <MSG>
@@ -2778,12 +2891,12 @@ Beim Lizenzserver besteht möglicherweise eine hohe Nachfrage oder ein vorüberg
             Warnung
         </MSG>
     </MESSAGE>
-    <MESSAGE>
+    <MESSAGE> 
         <ID>843</ID>
         <MSG>
             Information
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>842</ID>
         <MSG>
@@ -2875,7 +2988,7 @@ Bitte speichern Sie Ihre Arbeit.
     <MSG>
     Heartbeat-Signal für das Monitoring der Lizenzverbindung %1 kann nicht erstellt werden, Thread-Erstellung ist fehlgeschlagen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>827</ID>
     <MSG>
@@ -2884,7 +2997,7 @@ Der angegebene Lizenzpfad:
 hat keine Lizenzen für ein Produkt. Bitte stellen Sie sicher,
 dass der Lizenzserver korrekt gestartet wurde.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>826</ID>
     <MSG>
@@ -2900,7 +3013,7 @@ Die Funktion %1 existiert nicht im Ansys-Lizenzpool.
 Keine angegebenen Lizenzvoreinstellungen für den Benutzer stimmen mit Produkten überein, die diese Funktion im angegebenen Lizenzpfad aktivieren:
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>824</ID>
     <MSG>
@@ -2966,114 +3079,114 @@ FLEXlm-Server antwortet nicht. Ressource vorübergehend nicht verfügbar.
       ANSYS LICENSE MANAGER WARNUNG
     </MSG>
   </MESSAGE>
-  <MESSAGE>
+  <MESSAGE> 
     <ID>815</ID>
     <MSG>
      ANSYS LICENSE MANAGER MELDUNG
    </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>814</ID>
     <MSG>
 Lizenzpfad:
         FLEXlm-Server: %1
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>813</ID>
     <MSG>
 Die Verbindung zum Lizenzserver wurde wiederhergestellt.
 Mit Server %1 verbunden.
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>812</ID>
     <MSG>
-Verbunden mit Lizenzserver: %1@%2.
+Verbunden mit Lizenzserver: %1@%2. 
     FLEXlm-Server: %3
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>811</ID>
     <MSG>
        Verbunden mit lokalem Server: %1@%2.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>810</ID>
     <MSG>
 Durchführung eines SSL-Handshakes mit dem Server %1@%2 ist fehlgeschlagen.
 %3
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>809</ID>
     <MSG>
        Nicht mit einem lokalen Port verbunden.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>808</ID>
     <MSG>
        Verbunden mit Client: %1@%2.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>807</ID>
     <MSG>
 Durchführung eines SSL-Handshakes mit dem Client %1@%2 ist fehlgeschlagen.
 %3.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>806</ID>
     <MSG>
        Zu dem folgenden Client konnte keine Verbindung hergestellt werden: %1@%2. %3.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>805</ID>
     <MSG>
        Es konnte kein Lizenz-Socket %1 erzeugt werden.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>804</ID>
     <MSG>
 Verbindung zum Lizenzserver für %1 Sekunde verloren.
-Bitte speichern Sie Ihre Arbeit.
+Bitte speichern Sie Ihre Arbeit. 
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>803</ID>
     <MSG>
 Verbindung zum Lizenzserver für %1 Sekunden verloren.
-Bitte speichern Sie Ihre Arbeit.
+Bitte speichern Sie Ihre Arbeit. 
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>802</ID>
     <MSG>
 Verbindung zum Lizenzserver für mehr als %1 Minute verloren.
-Bitte speichern Sie Ihre Arbeit.
+Bitte speichern Sie Ihre Arbeit. 
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>801</ID>
     <MSG>
 Verbindung zum Lizenzserver für mehr als %1 Minuten verloren.
-Bitte speichern Sie Ihre Arbeit.
+Bitte speichern Sie Ihre Arbeit. 
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>800</ID>
     <MSG>
-Zeitlimit für Feature %1 überschritten.
+Zeitlimit für Feature %1 überschritten. 
     FLEXlm-Server: %2
     </MSG>
   </MESSAGE><!-- End Message Messages [800 - 849] --> <!-- Begin Ansys License Interconnect Messages [700 - 799] --><MESSAGE>
@@ -3246,145 +3359,145 @@ Zeitlimit für Feature %1 überschritten.
       Es wird versucht, die Anfragen der Warteschlange auszuchecken:
     </MSG>
   </MESSAGE>
-  <MESSAGE>
+  <MESSAGE>  
   <ID>723</ID>
     <MSG>
      FEHLER: Es ist nicht möglich %1 in die Datei &apos;%2&apos; zu schreiben.
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>722</ID>
     <MSG>
      FEHLER: Benutzer-Voreinstellungen können nicht abgefragt werden.
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>721</ID>
     <MSG>
      FEHLER: Benutzer-Voreinstellungen können nicht in die Datei &apos;%1&apos; geschrieben werden.
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>720</ID>
     <MSG>
      lizenzierte Standortvoreinstellungen
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>719</ID>
     <MSG>
        Voreinstellung für Standortreihenfolge
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>718</ID>
     <MSG>
        FEHLER: %1 Daten können nicht abgerufen werden.
 %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>717</ID>
     <MSG>
        FEHLER: Es wurde eine ungültige Versionsoption angegeben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>716</ID>
     <MSG>
        Datei %1 kann nicht geparst werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>715</ID>
     <MSG>
        Revision, die für %1 benötigt wird.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>714</ID>
     <MSG>
        Ungültiger Dateiname &apos;%1&apos; für %2 angegeben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>713</ID>
     <MSG>
        Die aktualisierte Datei der Standort-Voreinstellungen kann nicht geparst werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>712</ID>
     <MSG>
        Es ist nicht möglich, die veränderten Standort-Voreinstellungen nach %1 zu schreiben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>711</ID>
     <MSG>
        Die Lizenzpfad-Information kann nicht abgefragt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>710</ID>
     <MSG>
        Die Lizenzdatei-Information kann nicht geparst werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>709</ID>
     <MSG>
        Es ist nicht möglich, den Lizenzpfad nach &apos;%1&apos; zu schreiben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>708</ID>
     <MSG>
        Die ungültige Eingabedatei &apos;%1&apos; wurde an %2 weitergegeben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>707</ID>
     <MSG>
        Die Datei der aktiven Standort-Voreinstellung &apos;%1&apos; kann nicht gelöscht werden!
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>706</ID>
     <MSG>
        Die Datei für die Standort-Voreinstellung kann nicht gefunden werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>705</ID>
     <MSG>
        Die Datei der Standort-Voreinstellungen kann nicht geparst werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>704</ID>
     <MSG>
        Es ist nicht möglich, die Standort-Voreinstellungen nach %1 zu schreiben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>703</ID>
     <MSG>
        Das Herunterfahren von Ansys Licensing Interconnect wurde abgebrochen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>702</ID>
     <MSG>
        Es ist nicht möglich Ansys Licensing Interconnect herunterzufahren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>701</ID>
     <MSG>
        Ansys Licensing Interconnect ist heruntergefahren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>700</ID>
     <MSG>
@@ -3424,7 +3537,7 @@ Zeitlimit für Feature %1 überschritten.
    <MESSAGE>
       <ID>318</ID>
       <MSG>
-Die für den Checkout der Funktion %1 übergebene Reservierungs-ID wurde nicht vom Server %2 reserviert.
+Die für den Checkout der Funktion %1 übergebene Reservierungs-ID wurde nicht vom Server %2 reserviert.  
 Stellen Sie sicher, dass alle Reservierungen denselben Lizenzserver verwenden.
 Reservierungs-ID: %3.
       </MSG>
@@ -3471,7 +3584,7 @@ Reservierungs-ID: %2.
     <MSG>
       Es gibt keine aktiven FLEXlm-Optionen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>310</ID>
     <MSG>
@@ -3489,49 +3602,49 @@ Reservierungs-ID: %2.
     <MSG>
        Verfügbare Lizenzen aus der Datei %1:
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>307</ID>
     <MSG>
        Datei für die Produktreihenfolge %1 existiert nicht.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>306</ID>
     <MSG>
        Der Speicherort der Datei für die Produktreihenfolge konnte nicht relativ zu %1 bestimmt werden.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>305</ID>
     <MSG>
        Der angefragte Name %1 existiert nicht im Lizenzpool.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>304</ID>
     <MSG>
        Es ist ein ungültiges Anwendungskennungsformat angegeben - %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>303</ID>
     <MSG>
        App-ID - %1 kann nicht abgefragt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>302</ID>
     <MSG>
        Es ist eine ungültige Anwendungskennung angegeben - %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>301</ID>
     <MSG>
        Es erfolgte eine Rückgabe in den Pool, da der zugehörige Client für %1 Sekunden getrennt wurde.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>300</ID>
     <MSG>
@@ -3590,13 +3703,13 @@ Reservierungs-ID: %2.
       <MSG>
         Borrow
       </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
       <ID>276</ID>
       <MSG>
         zurückgegeben
       </MSG>
-   </MESSAGE>
+   </MESSAGE> 
    <MESSAGE>
       <ID>275</ID>
       <MSG>
@@ -3680,7 +3793,7 @@ Reservierungs-ID: %2.
       <MSG>
         Rückgabedatum und -zeit muss später als der aktuelle Tag und Zeit liegen.
       </MSG>
-   </MESSAGE>
+   </MESSAGE> 
    <MESSAGE>
       <ID>261</ID>
       <MSG>
@@ -3696,7 +3809,7 @@ Reservierungs-ID: %2.
    <MESSAGE>
       <ID>259</ID>
       <MSG>
-         Ihre Version der Ansys Lizenz-Client-Software ist veraltet. Weitere Informationen finden Sie unter Fehlermeldungen zur Lizenzierung im Abschnitt &quot;Fehlerbehebung&quot; im Lizenzierungshandbuch von ANSYS, Inc.
+         Ihre Version der Ansys Lizenz-Client-Software ist veraltet. Weitere Informationen finden Sie unter Fehlermeldungen zur Lizenzierung im Abschnitt &quot;Fehlerbehebung&quot; im Lizenzierungshandbuch von ANSYS, Inc. 
          Die Version des Lizenz-Clients %1 [%2] muss höher oder gleich der Client %3-Version [%4] sein.
       </MSG>
    </MESSAGE>
@@ -3705,7 +3818,7 @@ Reservierungs-ID: %2.
     <MSG>
       Die Lizenz kann derzeit nicht zur Warteschlange hinzugefügt werden. Die maximale Anzahl von Anfragen an die Warteschlange wurde bereits erreicht: %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>257</ID>
     <MSG>
@@ -3718,19 +3831,19 @@ Reservierungs-ID: %2.
 Die Verbindung zum Lizenzserver %1 wurde unerwartet getrennt.
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>255</ID>
     <MSG>
        In der Warteschlange.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>254</ID>
     <MSG>
        Es wurde eine unbekannte Operation angefragt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>253</ID>
     <MSG>
@@ -3738,21 +3851,21 @@ Für den Lizenzserver %1 wurde die maximal zulässige Anzahl der verbundenen Cli
     FLEXlm-Server: %3
 Bitte verwenden Sie einen anderen Lizenzserver.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>252</ID>
     <MSG>
 Ein Mitglied der Gruppe %1 ist nicht berechtigt den Lizenzserver herunterzufahren.
 Nur ein Mitglied der Gruppe %2 ist dazu berechtigt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>251</ID>
     <MSG>
 Benutzer %1 ist nicht dazu berechtigt, den Lizenzserver herunterzufahren.
 Nur der Benutzer %2 ist dazu berechtigt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>250</ID>
     <MSG>
@@ -3794,25 +3907,25 @@ Die Version des Lizenzservers %1 [%2] muss höher oder gleich der Client %3-Vers
         <MSG>
             Anfrage kann aufgrund Privatsphäre-Einstellungen auf dem Server %1 nicht verarbeitet werden.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
     <MESSAGE>
         <ID>224</ID>
         <MSG>
             Der Zwischenspeicher des Servers %1 wird blockiert, wenn mit ausgeliehenen Lizenzen weitergearbeitet wird.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
   <MESSAGE>
     <ID>223</ID>
     <MSG>
       Eine von der Workbench abgeleitete Anwendung muss darauf warten, dass die Workbench ihre Lizenzen erneut auscheckt.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>222</ID>
     <MSG>
       Geben Sie die Port-Nummer des LCP-Servers an
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>221</ID>
       <MSG>
@@ -3848,13 +3961,13 @@ Die Version des Lizenzservers %1 [%2] muss höher oder gleich der Client %3-Vers
     <MSG>
       Die Revision der angeforderten Lizenz %1 [%2] ist größer als die zuletzt unterstützte Revision [%3] für %4.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>    
   <MESSAGE>
     <ID>215</ID>
     <MSG>
       Die Revision der angeforderten Lizenz %1 [%2] ist kleiner als die erste unterstützte Revision [%3] für %4.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>    
   <MESSAGE>
     <ID>214</ID>
     <MSG>
@@ -3913,43 +4026,43 @@ oder ANSYS, Inc.
     <MSG>
        Das in den Lizenz-Voreinstellungen angegebene Failover-Feature &apos;%1&apos; ist nicht verfügbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>206</ID>
     <MSG>
        Abhängiges Feature %1 in AND-Schlüsselwort ist nicht verfügbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>205</ID>
     <MSG>
        Die Zeitzone %1 ist nicht lizenziert.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>204</ID>
     <MSG>
        Die Lizenz %1 ist am %2 ausgelaufen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>203</ID>
     <MSG>
        Die IP-Adresse Ihres Rechners wurde durch den Administrator des Lizenzservers ausgeschlossen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>202</ID>
     <MSG>
        Lizenz %1 reserviert für die Gruppe %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>201</ID>
     <MSG>
        Lizenz %1 reserviert für den Benutzer %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>200</ID>
     <MSG>
@@ -3984,7 +4097,7 @@ oder ANSYS, Inc.
     <MSG>
       Setzen Sie FLEXLM_TIMEOUT für alle FlexNet-Verbindungsversuche.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>177</ID>
       <MSG>
@@ -4073,79 +4186,79 @@ Gültige FLEXlm-Server: %2
     <MSG>
        Der Server läuft schon seit %1 Tagen, %2 Stunden, %3 Minuten und %4 Sekunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>163</ID>
     <MSG>
        SEPARATER MODUS
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>162</ID>
     <MSG>
        GEMEINSAMER MODUS
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>161</ID>
     <MSG>
        Die temporäre Datei tmp.lic für das Ausleihen von Lizenzen konnte nicht erstellt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>160</ID>
     <MSG>
        Nicht genügend %1 Lizenzen %2/%3.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>159</ID>
     <MSG>
        In einer Anfrage für das Ausleihen wurde kein BORROWS-Attribut gefunden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>158</ID>
     <MSG>
        Das Feature %1 steht für das Ausleihen nicht zur Verfügung.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>157</ID>
     <MSG>
        Es wurden keine ausgeliehenen Features gefunden, die zurückgegeben werden müssen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>156</ID>
     <MSG>
        Die ausgeliehenen Features konnten nicht verschlüsselt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>155</ID>
     <MSG>
        Die ausgeliehenen Features konnten nicht entschlüsselt werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>154</ID>
     <MSG>
         Leistungsmerkmal %1 ist in der aktuellen Version [ %2 ] des Lizenzmanagers nicht enthalten. Bitte installieren Sie die aktuellste Version des Ansys License Manager.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>153</ID>
     <MSG>
      Die Anfrage nach %1 Tasks des Features %2 kann nicht bewilligt werden. Nur %3 Tasks sind verfügbar.
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>152</ID>
     <MSG>
        Nicht genügend %1 Lizenzen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>151</ID>
     <MSG>
@@ -4252,7 +4365,7 @@ Gültige FLEXlm-Server: %2
         <MSG>
             Nicht mit einem Lizenzserver für Lizenzierungs-Aktionen verbunden.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
     <MESSAGE>
         <ID>132</ID>
         <MSG>
@@ -4380,75 +4493,75 @@ FLEXlm-Server: %1
     <MSG>
        Zu dem folgenden Lizenzserver konnte keine Verbindung hergestellt werden: %1@%2. %3.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>111</ID>
     <MSG>
-       Zu dem folgenden lokalen Server konnte keine Verbindung hergestellt werden: %1@localhost %2.
+       Zu dem folgenden lokalen Server konnte keine Verbindung hergestellt werden: %1@localhost %2. 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>110</ID>
     <MSG>
-       Zu dem folgenden Lizenzserver konnte keine Verbindung hergestellt werden: %1@localhost %2.
+       Zu dem folgenden Lizenzserver konnte keine Verbindung hergestellt werden: %1@localhost %2. 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>109</ID>
     <MSG>
-Es konnte keine Verbindung zu einem Lizenzserver hergestellt werden.
-Verwenden Sie ANSLIC_ADMIN, um Ihren Lizenzserver einzurichten.
+Es konnte keine Verbindung zu einem Lizenzserver hergestellt werden. 
+Verwenden Sie ANSLIC_ADMIN, um Ihren Lizenzserver einzurichten. 
     FLEXlm-Server: %1
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>108</ID>
     <MSG>
-Es konnte keine Verbindung zu einem Lizenzserver hergestellt werden.
-Der Server ist nicht verfügbar oder reagiert nicht.
+Es konnte keine Verbindung zu einem Lizenzserver hergestellt werden. 
+Der Server ist nicht verfügbar oder reagiert nicht. 
     FLEXlm-Server: %1
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>107</ID>
     <MSG>
 Zu dem folgenden Lizenzserver konnte keine Verbindung hergestellt werden: %1@%2. %3.
-Der Server ist nicht verfügbar oder reagiert nicht.
+Der Server ist nicht verfügbar oder reagiert nicht. 
     FLEXlm-Server: %4
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>106</ID>
     <MSG>
-Es konnte kein Lizenz-Socket %1 erzeugt werden
+Es konnte kein Lizenz-Socket %1 erzeugt werden 
     FLEXlm-Server: %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>105</ID>
     <MSG>
 Keine Server angegeben.
     FLEXlm-Server: %1
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>104</ID>
     <MSG>
        Der lokale Server wurde beendet oder der lokale Server-Port %1 konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>103</ID>
     <MSG>
        ANSYSLI wurde beendet oder der Server-Port %1 konnte nicht gelesen werden.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>102</ID>
     <MSG>
        Nicht verbunden mit Peer.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>101</ID>
     <MSG>
@@ -4470,13 +4583,13 @@ Keine Server angegeben.
     <MSG>
       FlexNet Embedded-Modus wird gestartet
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>96</ID>
     <MSG>
       Legt fest, ob der Ansys Licensing Interconnect Versuche zum erneuten Checkout erlauben soll. Standardmäßig ist diese Einstellung aktiviert.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>95</ID>
     <MSG>
@@ -4492,7 +4605,7 @@ Keine Server angegeben.
   <MESSAGE>
     <ID>93</ID>
     <MSG>
-      Server der bei port@host(*) läuft und seine zugehörige Triadenserver beenden.
+      Server der bei port@host(*) läuft und seine zugehörige Triadenserver beenden. 
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -4500,13 +4613,13 @@ Keine Server angegeben.
     <MSG>
       Geben Sie die Anzahl der Zeiten an, die der Ansys Licensing Interconnect versuchen soll, den FlexNet-Server neuzustarten.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>91</ID>
     <MSG>
       Umgehen der Namensauflösung währen des Checkout-Aufrufs.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>90</ID>
     <MSG>
@@ -4542,13 +4655,13 @@ Keine Server angegeben.
     <MSG>
       Legt fest, ob der Ansys Licensing Interconnect die Standard &quot;split check logic&quot; verwenden soll. Standardmäßig ist diese Einstellung aktiviert.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
     <ID>84</ID>
     <MSG>
       Legt den Host-Namen, die IP-Adresse oder eine durch Komma getrennte Liste von FLEXlm-Server oder Server fest, die für alle FLEXlm-Operationen ignoriert werden sollen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>82</ID>
       <MSG>
@@ -4560,25 +4673,25 @@ Keine Server angegeben.
     <MSG>
       Geben Sie an, ob das Tracking der Workbench-Lizenzverwendung unterstützt wird oder nicht. Der Standardwert ist, dass dies unterstützt wird.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>81</ID>
     <MSG>
       Geben Sie die Anzahl an Tagen an, wie lange archivierte Informationen zum Tracking der Workbench-Lizenzverwendung beibehalten werden sollen, bevor diese gelöscht werden. Der Standardwert ist/sind %1 Tag(e).
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>80</ID>
     <MSG>
       Geben Sie die Minutenanzahl an, bevor eine Archivierung der Informationen zum Tracking der Workbench-Lizenzverwendung durchgeführt wird. Der Standardwert sind %1 Minuten.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>79</ID>
     <MSG>
       Zahl
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>78</ID>
     <MSG>
@@ -4597,7 +4710,7 @@ Keine Server angegeben.
       Um LM_PROJECT zu verwenden, müssen Sie den Server mit der Option &quot;-UseLmProject ON&quot; starten
       oder aktivieren Sie ANSYSLI_USE_LMPROJECT in der Datei ansyslmd.ini.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
       <ID>75</ID>
       <MSG>
@@ -4609,43 +4722,43 @@ Keine Server angegeben.
     <MSG>
       Geben Sie die maximale Anzahl an Anfragen an, die sich in der Warteschlange befinden dürfen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>73</ID>
     <MSG>
       Sekunden
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>72</ID>
     <MSG>
       Geben Sie das Warteschlangen-Intervall an, wann Checkout-Versuche bei den anstehenden Anfragen der Warteschlange gemacht werden sollen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>71</ID>
     <MSG>
       Gruppenliste
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>70</ID>
     <MSG>
       Legen Sie eine Gruppe oder (eine Komma-getrennte Liste von) Gruppen fest, die für alle Anwender reservierte Lizenzen zurückgeben dürfen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>69</ID>
     <MSG>
       Benutzerliste
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>68</ID>
     <MSG>
       Legen Sie einen Anwender oder (eine Komma-getrennte Liste von) Anwendern fest, die für alle Anwender reservierte Lizenzen zurückgeben dürfen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>64</ID>
       <MSG>
@@ -4670,139 +4783,139 @@ Keine Server angegeben.
      Filterfehler beim Checkout: %1
 FLEXlm-Fehler: %2
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>36</ID>
     <MSG>
      Bestimmt die FLEXlm-Lizenzdatei für das Zwischenspeichern. Diese Option ist nur in Verbindung mit der Option -noflex gültig.
    </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>35</ID>
     <MSG>
      Funktion nicht für bevorzugtes Feature (%1).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>34</ID>
     <MSG>
      Die geteilte Lizenz %1 wird derzeit von einem anderen Prozess verwendet.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>33</ID>
     <MSG>
      Nicht genügend %1 Lizenzen verfügbar.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>32</ID>
     <MSG>
      ein laufender Server auf localhost automatisch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>31</ID>
     <MSG>
      Falls Port@Host nicht eingetragen ist, wird der Versuch unternommen, den richtigen Eintrag zu ermitteln
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>30</ID>
     <MSG>
      Server, der bei port@host(*) läuft, beenden
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>29</ID>
     <MSG>
      Informationen für den Server, der auf Port@Host(*) ausgeführt wird, neu einlesen.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>28</ID>
     <MSG>
      Informationen für den Server, der auf Port@Host(*) ausgeführt wird, zurückgeben.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>27</ID>
     <MSG>
      Startet den Windows-Dienst.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>26</ID>
     <MSG>
      Führt Deinstallation des Windows-Dienstes durch.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>25</ID>
     <MSG>
      Windows-Dienst für das Starten mit den ausgewiesenen Optionen installieren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>24</ID>
     <MSG>
-     An FLEXlm lmgrd weitergeleitet: Eine Beschreibung finden Sie im FLEXlm-Endbenutzer-Handbuch.
+     An FLEXlm lmgrd weitergeleitet: Eine Beschreibung finden Sie im FLEXlm-Endbenutzer-Handbuch.     
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>23</ID>
     <MSG>
      An FLEXlm lmgrd weitergeleitet: Bestimmt die Debugging-Protokolldatei von FLEXlm.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>22</ID>
     <MSG>
      An FLEXlm lmgrd weitergeleitet: Bestimmt die FLEXlm-Lizenzdatei.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>21</ID>
     <MSG>
       Nur ein Mitglied der gegebenen Gruppe kann den Server herunterfahren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>20</ID>
     <MSG>
       Nur der Benutzer, der den Server gestartet hat, kann diesen auch herunterfahren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>19</ID>
     <MSG>
       Versionsinformation von ansysli anzeigen (long, short, build, ali, oder revn).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>18</ID>
     <MSG>
       Verwendungsinformation in das angegebene Verzeichnis protokollieren.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>17</ID>
     <MSG>
       Veraltete Option, verwenden Sie stattdessen -ini.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>16</ID>
     <MSG>
       Startoptionen aus der angegebenen ansysli-Initialisierungsdatei (ansyslmd.ini) lesen
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>15</ID>
     <MSG>
       Der ansysli_server wird vom monitor gestartet
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>14</ID>
     <MSG>
@@ -4820,25 +4933,25 @@ FLEXlm-Fehler: %2
     <MSG>
       Zwingt ansysli_server, den FLEXlm-Dienst NICHT zu starten. Die Standardeinstellung ist, den Dienst zu starten
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>11</ID>
     <MSG>
       Richten Sie Ihren Server nicht als Daemon ein
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>10</ID>
     <MSG>
       Zeigt die Debugging-Stufe (entweder STANDARD [Standardwert] oder CONNECTIONS oder VERBOSE) an, die protokolliert werden soll
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>9</ID>
     <MSG>
       Zeigt an, dass das Debugging-Protokoll (siehe -log) angehängt werden soll an
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>8</ID>
     <MSG>
@@ -4850,7 +4963,7 @@ FLEXlm-Fehler: %2
     <MSG>
       Lizenzdatei von ansysli_server lesen
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>6</ID>
     <MSG>
@@ -4862,14 +4975,14 @@ FLEXlm-Fehler: %2
     <MSG>
       Produktreihenfolge-Verzeichnis (enthält die &apos;prodord&apos;-XML-Datei(en))
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
 
   <MESSAGE>
     <ID>4</ID>
     <MSG>
       Für lokale Lizenzierung gestartet
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>3</ID>
     <MSG>

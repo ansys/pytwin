@@ -9,14 +9,1092 @@
 			Japanese
 		</LABEL>
 	</LANGUAGE>
+    
+    <!-- Begin ACL FNP Messages [18001 - 19000] -->
+    <MESSAGE>
+        <ID>
+            18008
+        </ID>
+        <MSG>
+            Insufficient FlexNet Publisher (FNP) license count of %1 are available for use, only %2 of the requested %3 tasks were available after using the %4 cores included with %5 context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18007
+        </ID>
+        <MSG>
+            Insufficient FlexNet Publisher (FNP) license count of %1 are available for use, only %2 of the requested %3 tasks were available after using the %4 cores included with feature %5.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18006
+        </ID>
+        <MSG>
+            %1 (feature: %2)
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18005
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) license %1 version %2 insufficient, request for version %3 of feature %4 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18004
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) license %1 expired as of %2, request for feature %3 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18003
+        </ID>
+        <MSG>
+            Insufficient FlexNet Publisher (FNP) license count of %1 are available for use, only %2 of the requested %3 tasks were available.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18002
+        </ID>
+        <MSG>
+            FlexNet Publisher
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18001
+        </ID>
+        <MSG>
+            No FlexNet Publisher (FNP) license found for feature %1.
+            FNP license path: %2
+        </MSG>
+    </MESSAGE>
 
-    <!-- Begin LaaS specific Messages [13001 - 14000] -->
+    <!-- Begin Shared Web Messages [17001 - 18000] -->
+    <MESSAGE>
+        <ID>
+            17028
+        </ID>
+        <MSG>
+            Insufficient Shared Web products count of %1 are available for use, only %2 of the requested %3 tasks were available after using the %4 cores included with %5 context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17027
+        </ID>
+        <MSG>
+            Insufficient Shared Web products count of %1 are available for use, only %2 of the requested %3 tasks were available after using the %4 cores included with feature %5.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        17026
+      </ID>
+      <MSG>
+        The Ansyscl process timed out after waiting %1 seconds for a response from %2.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17025
+        </ID>
+        <MSG>
+            Data verification failed
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17024
+        </ID>
+        <MSG>
+            Shared Web - Roaming
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17023
+        </ID>
+        <MSG>
+            Shared Web - On demand
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17022
+        </ID>
+        <MSG>
+            %1 local license cache reset.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17021
+        </ID>
+        <MSG>
+            Checkout out by application %1 with pid %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        17020
+      </ID>
+      <MSG>
+        Shared Web checkout of feature '%1' lost.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17019
+        </ID>
+        <MSG>
+            Diagnostic Detail: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17018
+        </ID>
+        <MSG>
+            Shared Web license has expired. Attempting a re-checkout using other licensing technologies if configured.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17017
+        </ID>
+        <MSG>
+            Unable to find %1 file to execute, the following locations were tried: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17016
+        </ID>
+        <MSG>
+            Shared Web checkin call to %1 for %2 tasks of product %3 failed:
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17015
+        </ID>
+        <MSG>
+            No error returned by %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17014
+        </ID>
+        <MSG>
+            Help URL: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17013
+        </ID>
+        <MSG>
+            Status code: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17012
+        </ID>
+        <MSG>
+            Error Detail: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17011
+        </ID>
+        <MSG>
+            Shared Web checkout call to %1 for %2 tasks of %3 failed:
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17010
+        </ID>
+        <MSG>
+            Feature %1 from Shared Web license timed out.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17009
+        </ID>
+        <MSG>
+            Unable to renew Shared Web licenses.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17008
+        </ID>
+        <MSG>
+            Shared Web licenses renewed.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17007
+        </ID>
+        <MSG>
+            Shared Web
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17006
+        </ID>
+        <MSG>
+            Insufficient Shared Web products count of %1 are available for use, only %2 of the requested %3 tasks were available.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17005
+        </ID>
+        <MSG>
+            Shared Web license %1 version %2 insufficient, request for version %3 of feature %4 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17004
+        </ID>
+        <MSG>
+            Shared Web license %1 expired as of %2, request for feature %3 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17003
+        </ID>
+        <MSG>
+            Unable to checkin %1 tasks of feature %2, only %3 tasks were checked out.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17002
+        </ID>
+        <MSG>
+            Insufficient tasks of Shared Web license %1 available, request for feature %2 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17001
+        </ID>
+        <MSG>
+            No Shared Web license found that enables feature %1.
+        </MSG>
+    </MESSAGE>
+
+    <!-- Begin ACL Messages [16001 - 17000] -->
+    <MESSAGE>
+        <ID>
+            16016
+        </ID>
+        <MSG>
+            Insufficient count of feature %1 available for use.  Only %2 of the requested %3 tasks were available after using the %4 cores included with %5 context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16015
+        </ID>
+        <MSG>
+            Insufficient count of feature %1 available for use.  Only %2 of the requested %3 tasks were available after using the %4 cores included with feature %5.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16014
+        </ID>
+        <MSG>
+            Licensed %1 version %2 insufficient, request for version %3 of feature %4 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16013
+        </ID>
+        <MSG>
+            License %1 expired as of %2, request for feature %3 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16012
+        </ID>
+        <MSG>
+            Insufficient count of feature %1 available for use.  Only %2 of the requested %3 tasks were available.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16011
+        </ID>
+        <MSG>
+            Checkout for %1 is not allowed in %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16010
+        </ID>
+        <MSG>
+            No server identified for %1 License Service.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16009
+        </ID>
+        <MSG>
+            Unknown License Service Priority specified: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16008
+        </ID>
+        <MSG>
+            Unable to checkout ladder feature %1:
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16007
+        </ID>
+        <MSG>
+            Ansys Release %1 %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16006
+        </ID>
+        <MSG>
+            ACL Core Shutdown
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16005
+        </ID>
+        <MSG>
+            Shutting Down ACL Core
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16004
+        </ID>
+        <MSG>
+            ACL Shutdown
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16003
+        </ID>
+        <MSG>
+            Listen Socket Created
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16002
+        </ID>
+        <MSG>
+            ACL Core Initialized
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16001
+        </ID>
+        <MSG>
+            Configuring ACL Core
+        </MSG>
+    </MESSAGE>
+    <!-- End ACL Messages [16001 - 17000] -->
+
+    <!-- Begin Debug Messages [15001 - 16000] -->
+    <MESSAGE>
+        <ID>
+            15006
+        </ID>
+        <MSG>
+            PPID tree limit of %1 reached, remaining PPIDs have been truncated.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            15005
+        </ID>
+        <MSG>
+          Default Version Specific Licensing Directory (%1) is used.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            15004
+        </ID>
+        <MSG>
+            Invalid Licensing directory passed %1, directory could not be found.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            15003
+        </ID>
+        <MSG>
+            Licensing directory set to %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            15002
+        </ID>
+        <MSG>
+            Invalid %1 environment variable value %2, unable to find relative file %3.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            15001
+        </ID>
+        <MSG>
+            Invalid %1 environment variable value %2, directory could not be found.
+        </MSG>
+    </MESSAGE>
+    <!-- End Debug Messages [15001 - 16000] -->
+    
+    <!-- Begin License Context specific Messages [14001 - 15000] -->
+    <MESSAGE>
+        <ID>
+            14054
+        </ID>
+        <MSG>
+            Unable to create %1 context with id %2 from recovery details.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14053
+        </ID>
+        <MSG>
+          %1 context %2 re-initialization successful.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14052
+        </ID>
+        <MSG>
+          Re-initializing %1 context %2 triggered by lost feature(s).
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14051
+        </ID>
+        <MSG>
+          Context not initialized for checkout of feature %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14050
+        </ID>
+        <MSG>
+          %1 context, id %2, re-acquired lost licenses.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14049
+        </ID>
+        <MSG>
+          %1 context, id %2, has lost one or more licenses.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14048
+        </ID>
+        <MSG>
+            Unable to create %1 context in current %2 license handler.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14047
+        </ID>
+        <MSG>
+            Using features allowed by process %1 in context %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14046
+        </ID>
+        <MSG>
+            Using features shared by process %1 in context %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14045
+        </ID>
+        <MSG>
+            Process %1 is allowing features in context %2: %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14044
+        </ID>
+        <MSG>
+            Process %1 is sharing features in context %2: %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14043
+        </ID>
+        <MSG>
+            Reestablish client connection to already recreated %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14042
+        </ID>
+        <MSG>
+            Unable to recreate terminated %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14041
+        </ID>
+        <MSG>
+            Unable to recreate closed %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14040
+        </ID>
+        <MSG>
+            Attempt to recreate missing %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14039
+        </ID>
+        <MSG>
+            Unknown Context id passed: %1. Context may have been terminated or closed. Licensing actions will follow standard checkouts.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14038
+        </ID>
+        <MSG>
+            Parallel preference for %1 context with id %2 has been set to %3.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14037
+        </ID>
+        <MSG>
+            Unable to set %1 attribute, the attribute and value to set were not supplied by the incoming request.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14036
+        </ID>
+        <MSG>
+            Unable to update context attribute, context with id '%1' was not found.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14035
+        </ID>
+        <MSG>
+            Allowed features for %1 context with id %2: %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14034
+        </ID>
+        <MSG>
+            Unable to perform %1 checkouts, the features and counts to checkout were not supplied by the incoming request.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14033
+        </ID>
+        <MSG>
+            Unable to perform context checkouts, context with id '%1' was not found.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14032
+        </ID>
+        <MSG>
+            Unable to perform %1 checkouts, the features and counts to checkout could not be parsed from incoming request.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14031
+        </ID>
+        <MSG>
+            Included Variants HPC Parametric
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14030
+        </ID>
+        <MSG>
+            Shared features for %1 context with id %2: %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14029
+        </ID>
+        <MSG>
+            Returning licenses from %1 context with id %2:
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14028
+        </ID>
+        <MSG>
+            Unable to create requested %1 context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14027
+        </ID>
+        <MSG>
+            Updated existing %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14026
+        </ID>
+        <MSG>
+            User/Host/Display
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14025
+        </ID>
+        <MSG>
+            Parent Child
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14024
+        </ID>
+        <MSG>
+            Parent/Child Default
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14023
+      </ID>
+      <MSG>
+        License handler was unable to create %1 context for request.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14022
+      </ID>
+      <MSG>
+        Upfront HPC parametric checkout failed due to parsing error reading HPC parametric features.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14021
+      </ID>
+      <MSG>
+        Unable to perform upfront HPC parametric checkouts, HPC parametric features must be specified.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14020
+      </ID>
+      <MSG>
+        Unable to perform upfront HPC parametric checkouts, cores per HPC parametric variance must be specified.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14019
+      </ID>
+      <MSG>
+        Unable to perform upfront HPC parametric checkouts, HPC parametric variance count must be greater than or equal 1 (%1 specified).
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14018
+      </ID>
+      <MSG>
+        Unable to perform upfront HPC parametric checkouts, HPC parametric context must be specified.  Context id %1 is a %2 context.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14017
+      </ID>
+      <MSG>
+        Unable to perform upfront HPC parametric checkouts without an HPC parametric context identified.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        14016
+      </ID>
+      <MSG>
+        Context id %1 has been terminated, no checkouts are permitted to a terminated context id.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14015
+        </ID>
+        <MSG>
+            Unable to find HPC Parametric definition.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14014
+        </ID>
+        <MSG>
+            Checked out %1 of requested %2 tasks from FlexNet Publisher path '%3'.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14013
+        </ID>
+        <MSG>
+            Invalid EBU Parametric checkout request. Requested capability %1 does not support %2 requests.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14012
+        </ID>
+        <MSG>
+            Invalid EBU Parametric checkout request, preferred parallel feature %1 is not valid for %2 requests.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14011
+        </ID>
+        <MSG>
+            Invalid EBU Parametric bulk checkout request, multiple %1 preferred features specified (%2).  Only one preferred feature can be specified.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14010
+        </ID>
+        <MSG>
+            Invalid argument passed to bulk checkout.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14009
+        </ID>
+        <MSG>
+            Updated %1 context %2 value, %3
+        </MSG>
+    </MESSAGE>
+  <MESSAGE>
+    <ID>
+      14008
+    </ID>
+    <MSG>
+      Context id %1 has been closed, no checkouts are permitted to a closed context id. Attempting to checkout %2 without a context...
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      14007
+    </ID>
+    <MSG>
+      %1 context, id %2, has been terminated
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      14006
+    </ID>
+    <MSG>
+      %1 context, id %2, has been closed
+    </MSG>
+  </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14005
+        </ID>
+        <MSG>
+            License handler is missing the definition of %1 context id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14004
+        </ID>
+        <MSG>
+            HPC Parametric
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14003
+        </ID>
+        <MSG>
+            Licensing
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14002
+        </ID>
+        <MSG>
+            Using %1 context %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14001
+        </ID>
+        <MSG>
+            %1 context created with id %2.
+        </MSG>
+    </MESSAGE>
+    <!-- End License Context specific Messages [14001 - 15000] -->
+
+    <!-- Begin Elastic Web (formerly LaaS) specific Messages [13001 - 14000] -->
+    <MESSAGE>
+        <ID>
+            13043
+        </ID>
+        <MSG>
+            Insufficient elastic count of %1 are available for use.  Only %2 of the requested %3 tasks were available after using the %4 cores included with %5 context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13042
+        </ID>
+        <MSG>
+            Insufficient elastic count of %1 are available for use.  Only %2 of the requested %3 tasks were available after using the %4 cores included with feature %5.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13041
+        </ID>
+        <MSG>
+            Elastic checkout not tried for feature %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13040
+        </ID>
+        <MSG>
+            Elastic license %1 version %2 insufficient, request for version %3 of feature %4 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13039
+        </ID>
+        <MSG>
+            Elastic license %1 expired as of %2, request for feature %3 denied.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13038
+        </ID>
+        <MSG>
+            Insufficient elastic count of %1 are available for use.  Only %2 of the requested %3 tasks were available.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13037
+        </ID>
+        <MSG>
+            Elastic Web
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        13036
+      </ID>
+      <MSG>
+        Returning the following licenses from elastic session id %1 : %2
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        13035
+      </ID>
+      <MSG>
+        Session id %1 has been deleted from LaaS, unable to complete %2 of features %3.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        13034
+      </ID>
+      <MSG>
+        Session id %1 not found by LaaS, unable to complete %2 of features %3.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        13033
+      </ID>
+      <MSG>
+        Unable to checkin multiple features: %1 to LaaS, one of more features not found in active session %2 checkouts.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+      <ID>
+        13032
+      </ID>
+      <MSG>
+        Unable to checkout multiple features: %1 from LaaS, one or more features not found in active entitlements for Cloud License Server %2.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13031
+        </ID>
+        <MSG>
+            Transaction retry failed for Laas Session Id %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13030
+        </ID>
+        <MSG>
+            Retrying the transaction for Laas Session Id %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13029
+        </ID>
+        <MSG>
+            Elastic %1 call returned a different id than the one passed to the server, session id %2 was returned by the server when session id %3 was passed.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13028
+        </ID>
+        <MSG>
+            Incomplete data returned from Elastic %1 call, LaaS session id was not included in the data returned by the server.
+        </MSG>
+    </MESSAGE>
+  <MESSAGE>
+    <ID>
+      13027
+    </ID>
+    <MSG>
+      LaaS session reconnection failed. 
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      13026
+    </ID>
+    <MSG>
+      LaaS session successfully reconnected with new session id %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      13025
+    </ID>
+    <MSG>
+      LaaS disconnected session id %1. Attempting to reconnect with new session id.
+    </MSG>
+  </MESSAGE>
+    <MESSAGE>
+      <ID>
+          13024
+      </ID>
+      <MSG>
+          LaaS checkout - The feature %1 is not in the list of LaaS allowed features.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            13023
+        </ID>
+        <MSG>
+            LaaS support removed for this feature.
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             13022
         </ID>
         <MSG>
-            Cloud License Server with id %1 is not known to the ANSYS Licensing as a Service application, please verify that the id was entered correctly.  If it has please contact our administrator to verify you have the correct id.
+            Cloud License Server with id %1 is not known to the Ansys Licensing as a Service application, please verify that the id was entered correctly.  If it has please contact our administrator to verify you have the correct id.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -24,7 +1102,7 @@
             13021
         </ID>
         <MSG>
-            Your external IP has not been included on the whitelist for Cloud License Server %1, please contact your administrator to add your external IP to the whitelist.
+            Your external IP has not been allowed for Cloud License Server %1, please contact your administrator to add your external IP to the allowed list.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -72,7 +1150,7 @@
             13015
         </ID>
         <MSG>
-            No PIN has been assigned for Cloud License Server %1, please have your administrator log into the ANSYS Licensing Portal to assign a PIN.
+            No PIN has been assigned for Cloud License Server %1, please have your administrator log into the Ansys Licensing Portal to assign a PIN.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -168,7 +1246,7 @@
             13003
         </ID>
         <MSG>
-            Read the ANSYS Elastic Proxy settings from the passed XML file.
+            Read the Ansys Elastic Proxy settings from the passed XML file.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -176,7 +1254,7 @@
             13002
         </ID>
         <MSG>
-            Using generated session id %1 for %2.
+            Using generated session id %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -184,7 +1262,7 @@
             13001
         </ID>
         <MSG>
-            Set the ANSYS Licensing as a Service elastic heartbeat interval. Should be between %1 and %2 seconds.
+            Set the Ansys Licensing as a Service elastic heartbeat interval. Should be between %1 and %2 seconds.
         </MSG>
     </MESSAGE>
 
@@ -413,7 +1491,7 @@
         <MSG>
             Feature %1 timed out.  Subscription entitlement was not activated or refreshed in time.
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>
             12034
@@ -452,7 +1530,7 @@ Please save your work.
             12030
         </ID>
         <MSG>
-            Warning deactivated license subscription with activation id '%1' is currently in use by one or more applications running on this system (%2).  Please save and exit all ANSYS subscription applications.
+            Warning deactivated license subscription with activation id '%1' is currently in use by one or more applications running on this system (%2).  Please save and exit all Ansys subscription applications.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -468,7 +1546,7 @@ Please save your work.
             12028
         </ID>
         <MSG>
-            Unable to process response from ANSYS subscription registration service: %1
+            Unable to process response from Ansys subscription registration service: %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -476,7 +1554,7 @@ Please save your work.
             12027
         </ID>
         <MSG>
-            Unable to connect to ANSYS subscription registration service: %1
+            Unable to connect to Ansys subscription registration service: %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -628,7 +1706,7 @@ Please save your work.
             12008
         </ID>
         <MSG>
-            There are no current ANSYS subscriptions that enable feature %1.
+            There are no current Ansys subscriptions that enable feature %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -652,7 +1730,7 @@ Please save your work.
             12005
         </ID>
         <MSG>
-            ANSYS subscription license expiration warning: Your ANSYS Technical Enhancements &amp; Customer Support (TECS) agreement will expire on %1 for one or more ANSYS products.  Please contact your ANSYS Sales Representative or ANSYS, Inc. to renew this agreement.
+            Ansys subscription license expiration warning: Your Ansys Technical Enhancements &amp; Customer Support (TECS) agreement will expire on %1 for one or more Ansys products.  Please contact your Ansys Sales Representative or ANSYS, Inc. to renew this agreement.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -660,7 +1738,7 @@ Please save your work.
             12004
         </ID>
         <MSG>
-            ANSYS subscription license expiration warning: The license for one or more ANSYS products will expire in %1 day(s).  Please contact your ANSYS Sales Representative or ANSYS, Inc.
+            Ansys subscription license expiration warning: The license for one or more Ansys products will expire in %1 day(s).  Please contact your Ansys Sales Representative or ANSYS, Inc.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -668,7 +1746,7 @@ Please save your work.
             12003
         </ID>
         <MSG>
-            ANSYS subscription license expiration warning: The license for one or more ANSYS products will expire tonight.  Please contact your ANSYS Sales Representative or ANSYS, Inc.
+            Ansys subscription license expiration warning: The license for one or more Ansys products will expire tonight.  Please contact your Ansys Sales Representative or ANSYS, Inc.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -676,7 +1754,7 @@ Please save your work.
             12002
         </ID>
         <MSG>
-            Requested version (v%1) of feature %2 is not supported by current ANSYS subscription licenses.
+            Requested version (v%1) of feature %2 is not supported by current Ansys subscription licenses.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -684,7 +1762,7 @@ Please save your work.
             12001
         </ID>
         <MSG>
-            Requested version (v%1) of %2 (feature: %3) is not supported by current ANSYS subscription licenses.
+            Requested version (v%1) of %2 (feature: %3) is not supported by current Ansys subscription licenses.
         </MSG>
     </MESSAGE>
 
@@ -696,7 +1774,7 @@ Please save your work.
     <MSG>
       Valid name, no data record of requested type.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       11003
@@ -704,7 +1782,7 @@ Please save your work.
     <MSG>
        This is a nonrecoverable error.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       11002
@@ -712,7 +1790,7 @@ Please save your work.
     <MSG>
        Nonauthoritative host not found.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       11001
@@ -720,7 +1798,7 @@ Please save your work.
     <MSG>
        Host not found.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10109
@@ -728,7 +1806,7 @@ Please save your work.
     <MSG>
        Class type not found.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10101
@@ -736,7 +1814,7 @@ Please save your work.
     <MSG>
        Graceful shutdown in progress.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10093
@@ -744,7 +1822,7 @@ Please save your work.
     <MSG>
        Successful WSAStartup not yet performed.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10092
@@ -752,7 +1830,7 @@ Please save your work.
     <MSG>
        Winsock.dll version out of range.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10091
@@ -760,7 +1838,7 @@ Please save your work.
     <MSG>
        Network subsystem is unavailable.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10067
@@ -768,7 +1846,7 @@ Please save your work.
     <MSG>
        Too many processes.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10065
@@ -776,7 +1854,7 @@ Please save your work.
     <MSG>
        No route to host.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10064
@@ -784,7 +1862,7 @@ Please save your work.
     <MSG>
        Host is down.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10061
@@ -792,7 +1870,7 @@ Please save your work.
     <MSG>
        Connection is refused.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10060
@@ -800,7 +1878,7 @@ Please save your work.
     <MSG>
        Connection to license server timed out.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10058
@@ -808,7 +1886,7 @@ Please save your work.
     <MSG>
        Cannot send after socket shutdown.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10057
@@ -816,7 +1894,7 @@ Please save your work.
     <MSG>
        Socket is not connected.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10056
@@ -824,7 +1902,7 @@ Please save your work.
     <MSG>
        Socket is already connected.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10055
@@ -832,7 +1910,7 @@ Please save your work.
     <MSG>
        No buffer space available.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10054
@@ -840,7 +1918,7 @@ Please save your work.
     <MSG>
        Connection reset by license server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10053
@@ -848,7 +1926,7 @@ Please save your work.
     <MSG>
        Software caused connection abort.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10052
@@ -856,7 +1934,7 @@ Please save your work.
     <MSG>
        Network dropped connection on reset.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10051
@@ -864,7 +1942,7 @@ Please save your work.
     <MSG>
        Network is unreachable.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10050
@@ -872,7 +1950,7 @@ Please save your work.
     <MSG>
        Network is down.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10049
@@ -880,7 +1958,7 @@ Please save your work.
     <MSG>
        Cannot assign requested address.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10048
@@ -888,7 +1966,7 @@ Please save your work.
     <MSG>
        Address already in use.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10047
@@ -896,7 +1974,7 @@ Please save your work.
     <MSG>
        Address family not supported by protocol family.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10046
@@ -904,7 +1982,7 @@ Please save your work.
     <MSG>
        Protocol family not supported.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10045
@@ -912,7 +1990,7 @@ Please save your work.
     <MSG>
        Operation not supported.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10044
@@ -920,7 +1998,7 @@ Please save your work.
     <MSG>
        Socket type not supported.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10043
@@ -928,7 +2006,7 @@ Please save your work.
     <MSG>
        Protocol not supported.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10042
@@ -936,7 +2014,7 @@ Please save your work.
     <MSG>
        Bad protocol option.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10041
@@ -944,7 +2022,7 @@ Please save your work.
     <MSG>
        Protocol wrong type for socket.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10040
@@ -952,7 +2030,7 @@ Please save your work.
     <MSG>
        Message too long.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10039
@@ -960,7 +2038,7 @@ Please save your work.
     <MSG>
        Destination address required.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10038
@@ -968,7 +2046,7 @@ Please save your work.
     <MSG>
        Socket operation on non-socket.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10037
@@ -976,7 +2054,7 @@ Please save your work.
     <MSG>
        Operation already in progress.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10036
@@ -984,7 +2062,7 @@ Please save your work.
     <MSG>
        Operation now in progress.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10035
@@ -992,7 +2070,7 @@ Please save your work.
     <MSG>
        Resource temporarily unavailable.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10024
@@ -1000,7 +2078,7 @@ Please save your work.
     <MSG>
        Too many open files.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10022
@@ -1008,7 +2086,7 @@ Please save your work.
     <MSG>
        Invalid argument.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10014
@@ -1016,7 +2094,7 @@ Please save your work.
     <MSG>
        Bad address.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10013
@@ -1024,7 +2102,7 @@ Please save your work.
     <MSG>
        Permission denied.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       10004
@@ -1032,9 +2110,33 @@ Please save your work.
     <MSG>
        Interrupted function call.
     </MSG>
-  </MESSAGE>
-  <!-- End Socket Error Messages -->
-  <!-- Begin Log messages: WARNING 1350 - 1399 -->
+  </MESSAGE> 
+    <!-- End Socket Error Messages --> 
+    <!-- Begin Log messages: WARNING 1350 - 1399 -->
+  <MESSAGE>
+        <ID>
+            1353
+        </ID>
+        <MSG>
+            Incorrect proxy server setting. Please specify proxy server in the format &quot;http://&lt;proxyserver&gt;:&lt;port&gt;&quot; or &quot;http://&lt;username&gt;:&lt;password&gt;@&lt;proxyserver&gt;:&lt;port&gt;&quot;.
+        </MSG>
+  </MESSAGE>  
+  <MESSAGE>
+        <ID>
+            1352
+        </ID>
+        <MSG>
+            Requested action %1 is not supported in Ansys Common Licensing. Please contact Ansys product development or support team.
+        </MSG>
+    </MESSAGE> 
+  <MESSAGE>
+    <ID>
+      1351
+    </ID>
+    <MSG>
+       Bound to system loopback.
+    </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1350
@@ -1042,9 +2144,17 @@ Please save your work.
     <MSG>
        The active product order file version (%1) differs from the base version (%2).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Log messages: WARNING 1350 - 1399 -->
   <!-- Begin Log messages: CACHE_SERVER 1300 - 1349 -->
+    <MESSAGE>
+        <ID>
+            1318
+        </ID>
+        <MSG>
+            Adding cache information from redundant server: %1@%2 IP=%3
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             1317
@@ -1060,7 +2170,7 @@ Please save your work.
         <MSG>
             Getting FlexNet Embedded information. Please wait...
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>
             1315
@@ -1082,7 +2192,7 @@ Please save your work.
          1313
       </ID>
       <MSG>
-         ANSYS Licensing Interconnect handling appropriate FLEXlm options file restrictions.
+         Ansys Licensing Interconnect handling appropriate FLEXlm options file restrictions.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -1108,7 +2218,7 @@ Please save your work.
     <MSG>
       Could not get IP address from server %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       1309
@@ -1124,7 +2234,7 @@ Please save your work.
     <MSG>
        Could not get cache information.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1307
@@ -1132,7 +2242,7 @@ Please save your work.
     <MSG>
        Redundant server %1 IP=%2 already cached.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1306
@@ -1140,7 +2250,7 @@ Please save your work.
     <MSG>
        Server %1 IP=%2 already cached.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1305
@@ -1148,7 +2258,7 @@ Please save your work.
     <MSG>
        Getting cache information from server: %1. Please wait ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1304
@@ -1156,7 +2266,7 @@ Please save your work.
     <MSG>
        Getting borrow information. Please wait...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1303
@@ -1164,7 +2274,7 @@ Please save your work.
     <MSG>
        Getting cache information from file: %1. Please wait...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1302
@@ -1172,7 +2282,7 @@ Please save your work.
     <MSG>
        Done getting cache.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1301
@@ -1180,7 +2290,7 @@ Please save your work.
     <MSG>
        Done caching.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1300
@@ -1188,9 +2298,49 @@ Please save your work.
     <MSG>
        Caching information from FLEXlm server: %1. Please wait...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Log messages: CACHE_SERVER -->
     <!-- Begin Log messages: INFO 1200 - 1299 -->
+  <MESSAGE>
+    <ID>
+      1266
+    </ID>
+    <MSG>
+      Product used: %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1265
+    </ID>
+    <MSG>
+      %1 built using %2.
+    </MSG>
+  </MESSAGE>  
+  <MESSAGE>
+      <ID>
+        1264
+      </ID>
+      <MSG>
+        ACL Core shutdown is complete. Thank you.
+      </MSG>
+    </MESSAGE>
+    <MESSAGE>
+       <ID>
+           1263
+       </ID>
+       <MSG>
+         Passed feature name is empty.
+       </MSG>
+    </MESSAGE>
+    <MESSAGE>
+       <ID>
+           1262
+       </ID>
+       <MSG>
+         Passed feature %1 exceeds the maximum allowed length of %2.
+       </MSG>
+    </MESSAGE>
     <MESSAGE>
        <ID>
            1261
@@ -1238,7 +2388,7 @@ Please save your work.
         <MSG>
             Starting FlexNet Embedded server.
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>
             1255
@@ -1276,9 +2426,9 @@ Please save your work.
             1251
         </ID>
         <MSG>
-            Starting Licensing Client Proxy server.
+            Starting Ansys Licensing binary.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>    
     <MESSAGE>
         <ID>
             1250
@@ -1326,7 +2476,7 @@ Please save your work.
         <MSG>
             Specifies the monitor's wait time for the server's port to clear.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
     <MESSAGE>
         <ID>
             1244
@@ -1337,7 +2487,7 @@ To reduce the time of freeing busy ports we recommend adding the following comma
 ndd -set /dev/tcp tcp_time_wait_interval 30000
 ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
         </MSG>
-    </MESSAGE>
+    </MESSAGE>    
    <MESSAGE>
       <ID>
          1243
@@ -1377,7 +2527,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       %1 with pid %2 is not responsive but is updating its log file %3.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       1238
@@ -1385,7 +2535,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       %1 with pid %2 could not be aborted. Trying a hard kill...
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       1237
@@ -1409,7 +2559,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Still trying to start FLEXlm server. Please wait ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1234
@@ -1417,7 +2567,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         No server to monitor. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1233
@@ -1425,7 +2575,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 with pid %2 has died unexpectedly. It will be restarted in %3 seconds.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1232
@@ -1433,7 +2583,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 with pid %2 could not be killed.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1231
@@ -1441,7 +2591,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 %2 could not be restarted.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1230
@@ -1449,7 +2599,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 restarted.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1229
@@ -1457,7 +2607,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 with pid %2 was killed. It will be restarted in %3 seconds.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1228
@@ -1465,7 +2615,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 with pid %2 appears to be running but is not responsive.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1227
@@ -1473,7 +2623,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Monitor started for %1 with pid %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1226
@@ -1481,7 +2631,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Monitor process stopped.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1225
@@ -1489,7 +2639,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         ===== Remaining requests: end.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1224
@@ -1497,7 +2647,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         ===== Remaining pool requests.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1223
@@ -1505,7 +2655,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         ===== Remaining overall requests.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1222
@@ -1513,7 +2663,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         ===== Remaining requests: start.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1221
@@ -1521,7 +2671,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Stopped FLEXlm server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1220
@@ -1529,7 +2679,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Failed to stop FLEXlm server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1219
@@ -1537,7 +2687,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Started FLEXlm server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1218
@@ -1545,7 +2695,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Still trying to stop FLEXlm server. Please wait ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1217
@@ -1553,7 +2703,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Backing up FLEXlm debug log file to %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1216
@@ -1561,7 +2711,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Failed starting ANSYSLI server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1215
@@ -1569,7 +2719,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Trying to start ANSYSLI server. Please wait ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1214
@@ -1577,7 +2727,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Starting borrow server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1213
@@ -1585,7 +2735,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Starting demo server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1212
@@ -1593,15 +2743,15 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Starting local server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1211
     </ID>
     <MSG>
-        Started ANSYSLI server.
+        Started Ansys Licensing binary.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1210
@@ -1609,7 +2759,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Demo license file %1 exists.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1209
@@ -1617,7 +2767,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Borrowed licenses exist.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1208
@@ -1625,7 +2775,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         License server shutdown is complete. Thank you.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1207
@@ -1633,7 +2783,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 disconnected clients to close... Please wait.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1206
@@ -1641,7 +2791,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         %1 connected clients to close... Please wait.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1205
@@ -1649,7 +2799,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         FLEXlm server is already down.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1204
@@ -1657,7 +2807,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Windows service stopped.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1203
@@ -1665,7 +2815,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Ready to accept connections.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1202
@@ -1673,7 +2823,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Succeeded in binding socket to port %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1201
@@ -1682,7 +2832,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
         The following connections [if any] are using the port %1:
 %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1200
@@ -1690,9 +2840,41 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         FLEXlm server is already running.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Log messages: CACHE_SERVER 1200 - 1299 -->
     <!-- Begin Log messages: ERROR 1000 - 1199 -->
+  <MESSAGE>
+    <ID>
+      1075
+    </ID>
+    <MSG>
+      Failed to connect to provided port range. %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1074
+    </ID>
+    <MSG>
+      Sending heartbeat to FLEXlm: %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1073
+    </ID>
+    <MSG>
+      Could not use port range. ACL will use Operating System provided free port.
+    </MSG>
+  </MESSAGE>
+    <MESSAGE>
+        <ID>
+            1072
+        </ID>
+        <MSG>
+            Unable to write port to %1. Make sure you have write permissions.
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             1071
@@ -1724,7 +2906,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       Unable to cache FlexNet licenses from %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
     <MESSAGE>
         <ID>
             1067
@@ -1917,31 +3099,31 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       License file %1 has changed. Please do a reread to update the server.
     </MSG>
+  </MESSAGE>  
+  <MESSAGE>
+    <ID>
+      1043
+    </ID>
+    <MSG>
+      Unable to write server port to %1.
+    </MSG>
   </MESSAGE>
-	<MESSAGE>
-		<ID>
-			1043
-		</ID>
-		<MSG>
-			Unable to write server port to %1.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			1042
-		</ID>
-		<MSG>
-			Memory allocation error, unable to allocate memory for operation.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
+  <MESSAGE>
+    <ID>
+      1042
+    </ID>
+    <MSG>
+      Memory allocation error, unable to allocate memory for operation.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
     <ID>
       1041
     </ID>
     <MSG>
         FLEXlm is down. Trying to restart it.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1040
@@ -1949,7 +3131,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Monitor started for '%1' with pid = %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1039
@@ -1957,7 +3139,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Unable to determine if license server is running.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1038
@@ -1965,7 +3147,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1037
@@ -1973,7 +3155,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Failed to start the FLEXlm license manager. Please check the FLEXlm log file %1 for more information (errno = %2).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1036
@@ -1981,7 +3163,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Failed to start the FLEXlm license manager. Please check the FLEXlm log file %1 for more information.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1035
@@ -1989,7 +3171,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        "%1" does not exist.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1034
@@ -1997,7 +3179,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         There was the problem parsing the file %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1033
@@ -2005,7 +3187,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        There was the problem decrypting the file %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1032
@@ -2013,7 +3195,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Products definitions is empty.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1031
@@ -2021,7 +3203,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        There was a problem reading product definitions.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1030
@@ -2029,7 +3211,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        FLEXlm is down and it could not be restarted. Please check the FLEXlm log file. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1029
@@ -2037,7 +3219,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Could not determine if FLEXlm server is running.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1028
@@ -2045,7 +3227,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Unable to determine borrow status.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1027
@@ -2053,7 +3235,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not stop FLEXlm server. Please check the FLEXlm log file. %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1026
@@ -2061,15 +3243,15 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Failed to bind socket to port %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1025
     </ID>
     <MSG>
-       Still trying ...
+       Still trying ... 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1024
@@ -2077,7 +3259,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Retrying for %1 minutes ...
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1023
@@ -2091,7 +3273,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
        1) Wait for OS to clear this port.
        2) Stop the process using this port number. Use "netstat" command to find which process.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1022
@@ -2105,7 +3287,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
        1) Wait for OS to clear this port.
        2) Stop the process using this port number. Use "netstat -ab -p TCP" to find which process.
      </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1021
@@ -2113,7 +3295,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not bind socket on port range %1 - %2. %3. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1020
@@ -2121,7 +3303,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not create socket %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1019
@@ -2129,7 +3311,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not start ansly_monitor. %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1018
@@ -2137,7 +3319,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not start FLEXlm server. Please check the FLEXlm log file. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1017
@@ -2145,7 +3327,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Invalid FLEXlm option file %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1016
@@ -2153,7 +3335,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid FLEXlm license file %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1015
@@ -2161,7 +3343,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid license file %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1014
@@ -2169,7 +3351,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not open write to report directory %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1013
@@ -2177,7 +3359,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
         Invalid debug log file: %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1012
@@ -2185,7 +3367,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid initialization file %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1011
@@ -2193,7 +3375,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not start ansly_monitor. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1010
@@ -2201,7 +3383,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not open log file %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1009
@@ -2209,7 +3391,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        %1 or another version of it is already running. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1008
@@ -2217,7 +3399,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid %1 option combination. One or more client startup options were specified. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1007
@@ -2225,7 +3407,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid %1 option combination. One or more client startup options must be specified. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1006
@@ -2233,7 +3415,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid %1 option combination. You cannot combine -noflex with FLEXlm startup options.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1005
@@ -2241,7 +3423,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid FLEXlm log file specified: %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1004
@@ -2249,7 +3431,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid FLEXlm license file specified: %1. Exiting.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1003
@@ -2257,7 +3439,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid version option specified %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1002
@@ -2265,15 +3447,15 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Invalid product order directory specified: %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1001
     </ID>
     <MSG>
-       Invalid debug log type specified: %1. Exiting
+       Invalid debug log type specified: %1. Exiting       
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       1000
@@ -2281,7 +3463,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Unable to determine if Monitor process is running.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Log messages: ERROR -->
   <!-- Begin Lic Exception Messages [950 - 999] -->
   <MESSAGE>
@@ -2291,7 +3473,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
       Could not allocate a new file description.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       952
@@ -2299,7 +3481,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        %1 is invalid.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       951
@@ -2307,15 +3489,15 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MSG>
        Could not read option file %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       950
     </ID>
     <MSG>
-       Invalid syntax for keyword:
+       Invalid syntax for keyword: 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Lic Exception Messages [950 - 999] -->
   <!-- Begin Socket Exception Messages [900 - 949] -->
     <MESSAGE>
@@ -2407,9 +3589,9 @@ The license server may be experiencing a high demand or a temporary outage. Try 
       921
     </ID>
     <MSG>
-       SSL accept did not complete. %1.
+       SSL accept did not complete. %1.        
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       920
@@ -2418,7 +3600,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
        Could not select on license sockets.
        System error: %1 "%2".
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       919
@@ -2426,7 +3608,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Connection timed out.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       918
@@ -2434,7 +3616,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Wrong SSL client certificate.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       917
@@ -2442,7 +3624,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Wrong SSL client issuer.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       916
@@ -2450,7 +3632,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Wrong SSL client subject.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       915
@@ -2458,7 +3640,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Private key does not match the certificate public key.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       914
@@ -2466,7 +3648,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not read server key file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       913
@@ -2474,7 +3656,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not read SERVER_private_key.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       912
@@ -2482,7 +3664,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Wrong SSL server issuer.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       911
@@ -2490,7 +3672,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Wrong SSL server certificate.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       910
@@ -2498,7 +3680,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Wrong SSL server subject.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       909
@@ -2508,7 +3690,7 @@ The license server is taking too long to respond.
 The application has stopped waiting for a reply.
 The license server may be experiencing a high demand or a temporary outage. Try again later.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       908
@@ -2516,7 +3698,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not read CA_certificate.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       907
@@ -2524,7 +3706,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not read client key file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       906
@@ -2532,7 +3714,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not read CLIENT_private file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       905
@@ -2540,7 +3722,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not read certificate file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       904
@@ -2548,7 +3730,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not create CLIENT_certificate.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       903
@@ -2556,7 +3738,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Could not create new SSL context.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       902
@@ -2564,7 +3746,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        No connection.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       901
@@ -2572,7 +3754,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        System error: %1 "%2".
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       900
@@ -2580,9 +3762,50 @@ The license server may be experiencing a high demand or a temporary outage. Try 
     <MSG>
        Connection to the license server closed unexpectedly.
     </MSG>
-  </MESSAGE>
-  <!-- End Socket Exception Messages -->
-  <!-- Begin Message Messages [800 - 849] -->
+  </MESSAGE> 
+  <!-- End Socket Exception Messages --> 
+  <!-- Begin Message Messages [800 - 899] -->
+    <MESSAGE>
+        <ID>
+            851
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) server action has timed out after %1 seconds.
+            FNP license path: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            850
+        </ID>
+        <MSG>
+            No licensed features that enable '%1' are available to Elastic Cloud License Server %2.
+        </MSG>
+      </MESSAGE>
+      <MESSAGE>
+        <ID>
+            849
+        </ID>
+        <MSG>
+            No products that enable %1 are defined in this Ansys Common License Server.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            848
+        </ID>
+        <MSG>
+            Internal %1 use has been exhausted or is not enabled by the currently checked out increments.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            847
+        </ID>
+        <MSG>
+            Capability %1 is not supported by any of the known features.
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             846
@@ -2607,20 +3830,20 @@ The license server may be experiencing a high demand or a temporary outage. Try 
             Warning
         </MSG>
     </MESSAGE>
-    <MESSAGE>
+    <MESSAGE> 
         <ID>
             843
         </ID>
         <MSG>
             Information
         </MSG>
-    </MESSAGE>
+    </MESSAGE> 
     <MESSAGE>
         <ID>
             842
         </ID>
         <MSG>
-            ANSYS Licensing %1
+            Ansys Licensing %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2628,7 +3851,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
             841
         </ID>
         <MSG>
-            No licenses that enable capability %1 match available products in the ANSYS subscription pool.
+            No licenses that enable capability %1 match available products in the Ansys subscription pool.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2636,7 +3859,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
             840
         </ID>
         <MSG>
-            No user license preference that enable capability %1 match available products in the ANSYS subscription pool.
+            No user license preference that enable capability %1 match available products in the Ansys subscription pool.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2644,7 +3867,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
             839
         </ID>
         <MSG>
-            No site license preference for capability %1 match available products in the ANSYS subscription pool.
+            No site license preference for capability %1 match available products in the Ansys subscription pool.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2652,7 +3875,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
             838
         </ID>
         <MSG>
-            No user license preference for capability %1 match available products in the ANSYS subscription pool.
+            No user license preference for capability %1 match available products in the Ansys subscription pool.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2660,7 +3883,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
             837
         </ID>
         <MSG>
-            There are no current ANSYS subscriptions that enable capability %1.
+            There are no current Ansys subscriptions that enable capability %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2718,8 +3941,7 @@ The license server may be experiencing a high demand or a temporary outage. Try 
       <MSG>
 License server lost for more than %1 %2.
 Please save your work.
-   ANSYSLI_SERVERS: %3
-   FLEXlm Servers: %4
+   FLEXlm Servers: %3
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -2735,30 +3957,28 @@ Please save your work.
       828
     </ID>
     <MSG>
-		Unable to create heartbeat to monitor %1 license connection, thread creation failed.
+    Unable to create heartbeat to monitor %1 license connection, thread creation failed.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       827
     </ID>
     <MSG>
 The specified license path:
-      ANSYSLI_SERVERS: %1
-      FLEXlm Servers: %2
+      FLEXlm Servers: %1
 does not have any licenses for any product. Please make sure
 the license server has been started correctly.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       826
     </ID>
     <MSG>
-Capability %1 does not exist in the ANSYS licensing pool.
+Capability %1 does not exist in the Ansys licensing pool.
 No specified user or site license preferences match products that enable this capability in the specified license path:
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2766,21 +3986,19 @@ No specified user or site license preferences match products that enable this ca
       825
     </ID>
     <MSG>
-Capability %1 does not exist in the ANSYS licensing pool.
+Capability %1 does not exist in the Ansys licensing pool.
 No specified user license preferences match products that enable this capability in the specified license path:
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       824
     </ID>
     <MSG>
-Capability %1 does not exist in the ANSYS licensing pool.
+Capability %1 does not exist in the Ansys licensing pool.
 No specified user or site license preferences match available products in the specified license path:
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2788,10 +4006,9 @@ No specified user or site license preferences match available products in the sp
       823
     </ID>
     <MSG>
-Capability %1 does not exist in the ANSYS licensing pool.
+Capability %1 does not exist in the Ansys licensing pool.
 No specified user license preferences match available products in the specified license path:
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2799,10 +4016,9 @@ No specified user license preferences match available products in the specified 
       822
     </ID>
     <MSG>
-Capability %1 does not exist in the ANSYS licensing pool.
+Capability %1 does not exist in the Ansys licensing pool.
 None of the products enabling this capability are available in the specified license path:
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2810,10 +4026,9 @@ None of the products enabling this capability are available in the specified lic
       821
     </ID>
     <MSG>
-Capability %1 does not exist in the ANSYS licensing pool.
+Capability %1 does not exist in the Ansys licensing pool.
 The specified license path:
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
 does not have any licenses for any product. Please make sure
 the license server has been started correctly.
     </MSG>
@@ -2824,8 +4039,7 @@ the license server has been started correctly.
     </ID>
     <MSG>
 FLEXlm server is not responding. Resource temporarily not available.
-    ANSYSLI_SERVERS: %1
-    FLEXlm Servers: %2
+    FLEXlm Servers: %1
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2845,69 +4059,66 @@ FLEXlm server is not responding. Resource temporarily not available.
     </MSG>
   </MESSAGE>
   <MESSAGE>
-		<ID>
-			817
-		</ID>
-		<MSG>
-			ANSYS LICENSE MANAGER ERROR
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			816
-		</ID>
-		<MSG>
-			ANSYS LICENSE MANAGER WARNING
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
+    <ID>
+      817
+    </ID>
+    <MSG>
+      ANSYS LICENSE MANAGER ERROR
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      816
+    </ID>
+    <MSG>
+      ANSYS LICENSE MANAGER WARNING
+    </MSG>
+  </MESSAGE>
+  <MESSAGE> 
     <ID>
       815
     </ID>
     <MSG>
-		 ANSYS LICENSE MANAGER MESSAGE
-	 </MSG>
-  </MESSAGE>
-  <MESSAGE>
+     ANSYS LICENSE MANAGER MESSAGE
+   </MSG>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       814
     </ID>
     <MSG>
 Licensing path:
-        ANSYSLI_SERVERS: %1
-        FLEXlm Servers: %2
+        FLEXlm Servers: %1
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       813
     </ID>
     <MSG>
 License server connection restored.
 Connected to server %1.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       812
     </ID>
     <MSG>
-Connected to license server: %1@%2.
-    ANSYSLI_SERVERS: %3
-    FLEXlm Servers: %4
+Connected to license server: %1@%2. 
+    FLEXlm Servers: %3
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       811
     </ID>
     <MSG>
        Connected to local server: %1@%2.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       810
     </ID>
@@ -2915,24 +4126,24 @@ Connected to license server: %1@%2.
 Could not make an SSL handshake with server %1@%2.
 %3
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       809
     </ID>
     <MSG>
        Not connected to a local port.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       808
     </ID>
     <MSG>
        Connected to client: %1@%2.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       807
     </ID>
@@ -2940,79 +4151,100 @@ Could not make an SSL handshake with server %1@%2.
 Could not make an SSL handshake with client %1@%2.
 %3.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       806
     </ID>
     <MSG>
        Could not connect to client: %1@%2. %3.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       805
     </ID>
     <MSG>
        Could not create a license socket %1.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       804
     </ID>
     <MSG>
 License server lost for %1 second.
-Please save your work.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+Please save your work. 
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       803
     </ID>
     <MSG>
 License server lost for %1 seconds.
-Please save your work.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+Please save your work. 
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       802
     </ID>
     <MSG>
 License server lost for more than %1 minute.
-Please save your work.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+Please save your work. 
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       801
     </ID>
     <MSG>
 License server lost for more than %1 minutes.
-Please save your work.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+Please save your work. 
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       800
     </ID>
     <MSG>
-Feature %1 timed out.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+Feature %1 timed out. 
+    FLEXlm Servers: %2
+    </MSG>
+  </MESSAGE> 
+  <!-- End Message Messages [800 - 849] -->
+  <!-- Begin Ansys License Interconnect Messages [700 - 799] -->
+  <MESSAGE>
+    <ID>
+      751
+    </ID>
+    <MSG>
+      Queuing for license %1 has been initiated.
+      The application will resume once the license is granted.
+      Please use the lmutil lmstat utility to see who is currently using the license.
     </MSG>
   </MESSAGE>
-  <!-- End Message Messages [800 - 849] -->
-  <!-- Begin ANSYS License Interconnect Messages [700 - 749] -->
+    <MESSAGE>
+        <ID>
+            750
+        </ID>
+        <MSG>
+            ERROR: User preferences missing category %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            749
+        </ID>
+        <MSG>
+            Student License
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             748
@@ -3213,38 +4445,38 @@ Feature %1 timed out.
       Attempting to check out queued requests:
     </MSG>
   </MESSAGE>
-  <MESSAGE>
+  <MESSAGE>  
   <ID>
       723
     </ID>
     <MSG>
-		 ERROR:  Unable to write %1 to file '%2'.
-	 </MSG>
-  </MESSAGE>
+     ERROR:  Unable to write %1 to file '%2'.
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       722
     </ID>
     <MSG>
-		 ERROR:  Unable to retrieve user preferences.
-	 </MSG>
-  </MESSAGE>
+     ERROR:  Unable to retrieve user preferences.
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       721
     </ID>
     <MSG>
-		 ERROR:  Unable to write user preferences to file '%1.'
-	 </MSG>
-  </MESSAGE>
+     ERROR:  Unable to write user preferences to file '%1.'
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       720
     </ID>
     <MSG>
-		 licensed site preference
-	 </MSG>
-  </MESSAGE>
+     licensed site preference
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       719
@@ -3252,7 +4484,7 @@ Feature %1 timed out.
     <MSG>
        site order preference
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       718
@@ -3261,7 +4493,7 @@ Feature %1 timed out.
        ERROR: Unable to retrieve %1 information.
 %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       717
@@ -3269,7 +4501,7 @@ Feature %1 timed out.
     <MSG>
        ERROR: Invalid version option specified.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       716
@@ -3277,7 +4509,7 @@ Feature %1 timed out.
     <MSG>
        Unable to parse file %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       715
@@ -3285,7 +4517,7 @@ Feature %1 timed out.
     <MSG>
        Revision needed for %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       714
@@ -3293,7 +4525,7 @@ Feature %1 timed out.
     <MSG>
        Invalid file name '%1' specified for %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       713
@@ -3301,7 +4533,7 @@ Feature %1 timed out.
     <MSG>
        Unable to parse updated site preference file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       712
@@ -3309,7 +4541,7 @@ Feature %1 timed out.
     <MSG>
        Unable to write modified site preferences to %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       711
@@ -3317,7 +4549,7 @@ Feature %1 timed out.
     <MSG>
        Unable to retrieve license path information.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       710
@@ -3325,7 +4557,7 @@ Feature %1 timed out.
     <MSG>
        Unable to parse license file information.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       709
@@ -3333,7 +4565,7 @@ Feature %1 timed out.
     <MSG>
        Unable to write license path to '%1'.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       708
@@ -3341,7 +4573,7 @@ Feature %1 timed out.
     <MSG>
        Invalid input file '%1' passed to %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       707
@@ -3349,7 +4581,7 @@ Feature %1 timed out.
     <MSG>
        Unable to delete active site preference file '%1'!
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       706
@@ -3357,7 +4589,7 @@ Feature %1 timed out.
     <MSG>
        Unable to find site preference file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       705
@@ -3365,7 +4597,7 @@ Feature %1 timed out.
     <MSG>
        Unable to parse site preference file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       704
@@ -3373,40 +4605,40 @@ Feature %1 timed out.
     <MSG>
        Unable to write site preferences to '%1'.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       703
     </ID>
     <MSG>
-       ANSYS Licensing Interconnect shut down cancelled.
+       Ansys Licensing Interconnect shut down cancelled.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       702
     </ID>
     <MSG>
-       Unable to shut down ANSYS Licensing Interconnect.
+       Unable to shut down Ansys Licensing Interconnect.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       701
     </ID>
     <MSG>
-       ANSYS Licensing Interconnect is shut down.
+       Ansys Licensing Interconnect is shut down.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       700
     </ID>
     <MSG>
-       Shutdown ANSYS Licensing Interconnect on %1? [n]
+       Shutdown Ansys Licensing Interconnect on %1? [n]
     </MSG>
-  </MESSAGE>
-  <!-- End ANSYS License Interconnect Messages [700 - 749] -->
+  </MESSAGE> 
+  <!-- End Ansys License Interconnect Messages [700 - 749] -->
   <!-- Begin lspool Messages [300 - 349] -->
     <MESSAGE>
         <ID>
@@ -3454,7 +4686,7 @@ Feature %1 timed out.
          318
       </ID>
       <MSG>
-Reserve ID passed for checkout of capability %1 was not reserved from server %2.
+Reserve ID passed for checkout of capability %1 was not reserved from server %2.  
 Please verify that all reserve checkouts use the same license server.
 Reserve ID: %3.
       </MSG>
@@ -3481,7 +4713,7 @@ Reserve ID: %2.
       315
     </ID>
     <MSG>
-      Active ANSYS Licensing Interconnect options:
+      Active Ansys Licensing Interconnect options:
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -3505,7 +4737,7 @@ Reserve ID: %2.
       312
     </ID>
     <MSG>
-      No active ANSYS Licensing Interconnect options.
+      No active Ansys Licensing Interconnect options.
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -3515,13 +4747,13 @@ Reserve ID: %2.
     <MSG>
       No active FLEXlm options.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       310
     </ID>
     <MSG>
-      Active ANSYS Licensing Interconnect options from file %1:
+      Active Ansys Licensing Interconnect options from file %1:
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -3539,7 +4771,7 @@ Reserve ID: %2.
     <MSG>
        Available licenses from file %1:
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       307
@@ -3547,7 +4779,7 @@ Reserve ID: %2.
     <MSG>
        Products order file %1 does not exist.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       306
@@ -3555,15 +4787,15 @@ Reserve ID: %2.
     <MSG>
        Products order file location could not be determined relative to %1.
     </MSG>
-  </MESSAGE>
-  <MESSAGE>
+  </MESSAGE> 
+  <MESSAGE> 
     <ID>
       305
     </ID>
     <MSG>
        Request name %1 does not exist in the licensing pool.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       304
@@ -3571,7 +4803,7 @@ Reserve ID: %2.
     <MSG>
        Invalid App id format is specified - %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       303
@@ -3579,7 +4811,7 @@ Reserve ID: %2.
     <MSG>
        Unable to retrieve App id - %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       302
@@ -3587,7 +4819,7 @@ Reserve ID: %2.
     <MSG>
        Invalid App id is specified - %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       301
@@ -3595,7 +4827,7 @@ Reserve ID: %2.
     <MSG>
        Returned to the pool because its client has been disconnected for %1 seconds.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       300
@@ -3603,15 +4835,223 @@ Reserve ID: %2.
     <MSG>
        Client has been disconnected for %1 seconds. The feature will be returned to the pool in %2 seconds if no reconnection is made before.
     </MSG>
+  </MESSAGE> 
+  <!-- End pool Error Messages --> 
+  <!-- Begin Server/Client Reply Messages [250 - 299] [1400 - 1449] -->
+  <MESSAGE>
+    <ID>
+      285
+    </ID>
+    <MSG>
+      Unable to borrow feature: %1 for over %2 hours.
+    </MSG>
   </MESSAGE>
-  <!-- End pool Error Messages -->
-  <!-- Begin Server/Client Reply Messages [250 - 299] -->
+  <MESSAGE>
+    <ID>
+      284
+    </ID>
+    <MSG>
+      Server : %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        283
+      </ID>
+      <MSG>
+        Feature : %1        Expiration date and time : %2.
+      </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        282
+      </ID>
+      <MSG>
+        Couldn't create output file.
+      </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        281
+      </ID>
+      <MSG>
+        Input XML has no features listed.
+      </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        280
+      </ID>
+      <MSG>
+        Unknown issue when trying to check for borrowed license(s).
+      </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        279
+      </ID>
+      <MSG>
+        No Borrowed Licenses available.
+      </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        278
+      </ID>
+      <MSG>
+        Return
+      </MSG>
+  </MESSAGE>
+  <MESSAGE>
+      <ID>
+        277
+      </ID>
+      <MSG>
+        Borrow
+      </MSG>
+  </MESSAGE> 
+  <MESSAGE>
+      <ID>
+        276
+      </ID>
+      <MSG>
+        returned
+      </MSG>
+   </MESSAGE> 
+   <MESSAGE>
+      <ID>
+        275
+      </ID>
+      <MSG>
+        borrowed
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         274
+      </ID>
+      <MSG>
+         No Borrowable Licenses available.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         273
+      </ID>
+      <MSG>
+        Borrowable License available.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         272
+      </ID>
+      <MSG>
+        ERROR: Unknown issue when trying to %1 license(s).
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         271
+      </ID>
+      <MSG>
+         Unable to %1 license.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         270
+      </ID>
+      <MSG>
+        (Error : %1)
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         269
+      </ID>
+      <MSG>
+        Feature %1 - not %2.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         268
+      </ID>
+      <MSG>
+        Feature %1 - %2.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         267
+      </ID>
+      <MSG>
+          Unknown issue when trying to check if there are licenses to borrow.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         266
+      </ID>
+      <MSG>
+        The feature %1 is already found in the list and %2.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         265
+      </ID>
+      <MSG>
+        Input Error - Please check the feature name ( %1 ) and expiration date provided ( %2 ).
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         264
+      </ID>
+      <MSG>
+        Invalid Return date and time set - Supported formats : DD-MON-YYYY and DD-MON-YYYY:HH:MM.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         263
+      </ID>
+      <MSG>
+        Input Error - Feature name is not provided.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         262
+      </ID>
+      <MSG>
+        Return date and time should be greater than the current date and time.
+      </MSG>
+   </MESSAGE> 
+   <MESSAGE>
+      <ID>
+         261
+      </ID>
+      <MSG>
+        Bad Input file.
+      </MSG>
+   </MESSAGE>
+   <MESSAGE>
+      <ID>
+         260
+      </ID>
+      <MSG>
+         Invalid Operation requested.
+      </MSG>
+   </MESSAGE>
    <MESSAGE>
       <ID>
          259
       </ID>
       <MSG>
-         Your version of the ANSYS license client software is out of date. Please refer to Licensing Error Messages in the Troubleshooting section of the ANSYS, Inc. Licensing Guide.
+         Your version of the Ansys license client software is out of date. Please refer to Licensing Error Messages in the Troubleshooting section of the ANSYS, Inc. Licensing Guide. 
          The version of the license client %1 [%2] must be greater or equal to the client %3 version [%4].
       </MSG>
    </MESSAGE>
@@ -3622,7 +5062,7 @@ Reserve ID: %2.
     <MSG>
       Unable to queue license at this time.  The maximum number of queued requests has already been reached: %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       257
@@ -3637,10 +5077,9 @@ Reserve ID: %2.
     </ID>
     <MSG>
 License server %1 has disconnected unexpectedly.
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       255
@@ -3648,7 +5087,7 @@ License server %1 has disconnected unexpectedly.
     <MSG>
        In queue.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       254
@@ -3656,18 +5095,17 @@ License server %1 has disconnected unexpectedly.
     <MSG>
        An unknown operation requested.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       253
     </ID>
     <MSG>
 The license server %1 has reached the maximum allowed connected clients [%2].
-    ANSYSLI_SERVERS: %3
-    FLEXlm Servers: %4
+    FLEXlm Servers: %3
 Please use a different license server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       252
@@ -3676,7 +5114,7 @@ Please use a different license server.
 A member of group %1 is not allowed to shutdown the license server.
 Only a member of the group %2 can.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       251
@@ -3685,34 +5123,64 @@ Only a member of the group %2 can.
 User %1 is not allowed to shutdown the license server.
 Only user %2 can.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       250
     </ID>
     <MSG>
-Your version of the ANSYS license manager software is out of date. Please download and install the current ANSYS license manager from the ANSYS Customer Portal.
+Your version of the Ansys license manager software is out of date. Please download and install the current Ansys license manager from the Ansys Customer Portal.
 The version of the license server %1 [%2] must be greater or equal to the client %3 version [%4].
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Server/Client Reply Messages -->
     <!-- Begin Request Messages [200 - 249] -->
     <MESSAGE>
         <ID>
-            226
+          229
         </ID>
         <MSG>
-            Start in ANSYS Common Licensing mode for passed session id.
+          %1: The license for one or more borrowed Ansys products
+          will expire in %2 day(s)!
+          Please contact your Ansys Sales Representative
+          or ANSYS, Inc.
         </MSG>
     </MESSAGE>
     <MESSAGE>
+        <ID>
+          228
+        </ID>
+        <MSG>
+          %1: The license for one or more borrowed Ansys products
+          will expire tonight!
+          Please contact your Ansys Sales Representative
+          or ANSYS, Inc.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            227
+        </ID>
+        <MSG>
+             Failover feature '%1' is not available.
+        </MSG>
+    </MESSAGE>
+  <MESSAGE>
+        <ID>
+             226
+        </ID>
+        <MSG>
+              Start in Ansys Common Licensing mode for passed session id.
+        </MSG>
+  </MESSAGE>
+  <MESSAGE>
         <ID>
             225
         </ID>
         <MSG>
             Unable to process request due to privacy setting on server %1.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
     <MESSAGE>
         <ID>
             224
@@ -3720,7 +5188,7 @@ The version of the license server %1 [%2] must be greater or equal to the client
         <MSG>
             Cache of server %1 blocked when running with borrowed licenses.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
   <MESSAGE>
     <ID>
       223
@@ -3728,7 +5196,7 @@ The version of the license server %1 [%2] must be greater or equal to the client
     <MSG>
       A WB child application needs to wait for WB to recheckout its licenses.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       222
@@ -3736,13 +5204,13 @@ The version of the license server %1 [%2] must be greater or equal to the client
     <MSG>
       Specify the port number for the LCP server
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>
          221
       </ID>
       <MSG>
-         %1 is not licensed for use in your time zone. Please contact your ANSYS Account Manager regarding adding your time zone.
+         %1 is not licensed for use in your time zone. Please contact your Ansys Account Manager regarding adding your time zone.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -3750,7 +5218,7 @@ The version of the license server %1 [%2] must be greater or equal to the client
          220
       </ID>
       <MSG>
-         The ANSYS LM service and the Licensing Interconnect reference different exes in different paths.
+         The Ansys LM service and the Licensing Interconnect reference different exes in different paths.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -3758,7 +5226,7 @@ The version of the license server %1 [%2] must be greater or equal to the client
          219
       </ID>
       <MSG>
-         The ANSYS LM service and the Licensing Interconnect reference different exes from the same path.
+         The Ansys LM service and the Licensing Interconnect reference different exes from the same path.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -3766,7 +5234,7 @@ The version of the license server %1 [%2] must be greater or equal to the client
          218
       </ID>
       <MSG>
-         The ANSYS LM service and the Licensing Interconnect reference the same exe name but different paths.
+         The Ansys LM service and the Licensing Interconnect reference the same exe name but different paths.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -3774,100 +5242,100 @@ The version of the license server %1 [%2] must be greater or equal to the client
          217
       </ID>
       <MSG>
-         The ANSYS LM service and the Licensing Interconnect are using the same exe.
+         The Ansys LM service and the Licensing Interconnect are using the same exe.
       </MSG>
    </MESSAGE>
-	<MESSAGE>
-		<ID>
-			216
-		</ID>
-		<MSG>
-			The revision of the requested license %1 [%2] is greater than the last supported revision [%3] for %4.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			215
-		</ID>
-		<MSG>
-			The revision of the requested license %1 [%2] is less than the first supported revision [%3] for %4.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			214
-		</ID>
-		<MSG>
-			Unable to grant %1 licenses of %2.  Please note that the maximum number of %3 that can be requested is %4.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			213
-		</ID>
-		<MSG>
-			%1 license already in use by another mutually exclusive application.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			212
-		</ID>
-		<MSG>
-			%1: Currently using overdraft license for feature '%2'.
+  <MESSAGE>
+    <ID>
+      216
+    </ID>
+    <MSG>
+      The revision of the requested license %1 [%2] is greater than the last supported revision [%3] for %4.
+    </MSG>
+  </MESSAGE>    
+  <MESSAGE>
+    <ID>
+      215
+    </ID>
+    <MSG>
+      The revision of the requested license %1 [%2] is less than the first supported revision [%3] for %4.
+    </MSG>
+  </MESSAGE>    
+  <MESSAGE>
+    <ID>
+      214
+    </ID>
+    <MSG>
+      Unable to grant %1 licenses of %2.  Please note that the maximum number of %3 that can be requested is %4.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      213
+    </ID>
+    <MSG>
+      %1 license already in use by another mutually exclusive application.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      212
+    </ID>
+    <MSG>
+      %1: Currently using overdraft license for feature '%2'.
 (Number of overdraft licenses currently in use for this feature: %3)
       </MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			211
-		</ID>
-		<MSG>
-			%1: Your ANSYS Technical Enhancements &amp; Customer
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      211
+    </ID>
+    <MSG>
+      %1: Your Ansys Technical Enhancements &amp; Customer
 Support (TECS) agreement will expire on %2 for one
-or more ANSYS products.
-Please contact your ANSYS Sales Representative
+or more Ansys products.
+Please contact your Ansys Sales Representative
 or ANSYS, Inc. to renew this agreement.
       </MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			210
-		</ID>
-		<MSG>
-			%1: The license for one or more ANSYS products
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      210
+    </ID>
+    <MSG>
+      %1: The license for one or more Ansys products
 will expire in %2 day(s)!
-Please contact your ANSYS Sales Representative
+Please contact your Ansys Sales Representative
 or ANSYS, Inc.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			209
-		</ID>
-		<MSG>
-			%1: The license for one or more ANSYS products
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      209
+    </ID>
+    <MSG>
+      %1: The license for one or more Ansys products
 will expire tonight!
-Please contact your ANSYS Sales Representative
+Please contact your Ansys Sales Representative
 or ANSYS, Inc.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
-		<ID>
-			208
-		</ID>
-		<MSG>
-			Shared license does not enable requested capabilities.
-		</MSG>
-	</MESSAGE>
-	<MESSAGE>
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      208
+    </ID>
+    <MSG>
+      Shared license does not enable requested capabilities.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
     <ID>
       207
     </ID>
     <MSG>
        Failover feature '%1' specified in license preferences is not available.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       206
@@ -3875,7 +5343,7 @@ or ANSYS, Inc.
     <MSG>
        Dependent feature %1 in AND keyword is not available.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       205
@@ -3883,7 +5351,7 @@ or ANSYS, Inc.
     <MSG>
        Time zone %1 is not licensed.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       204
@@ -3891,7 +5359,7 @@ or ANSYS, Inc.
     <MSG>
        The license %1 expired on %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       203
@@ -3899,7 +5367,7 @@ or ANSYS, Inc.
     <MSG>
        The IP address of your machine has been excluded by the license server administrator.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       202
@@ -3907,7 +5375,7 @@ or ANSYS, Inc.
     <MSG>
        License %1 reserved for group %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       201
@@ -3915,7 +5383,7 @@ or ANSYS, Inc.
     <MSG>
        License %1 reserved for user %2.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       200
@@ -3923,9 +5391,25 @@ or ANSYS, Inc.
     <MSG>
        Already checked out
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Request Messages -->
     <!-- Begin pool Messages [151 - 199] -->
+    <MESSAGE>
+        <ID>
+            182
+        </ID>
+        <MSG>
+            Maximum licensed number of nodelocked users already reached..
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            181
+        </ID>
+        <MSG>
+            Maximum licensed number of demo users already reached.
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             180
@@ -3939,7 +5423,7 @@ or ANSYS, Inc.
             179
         </ID>
         <MSG>
-            Indicate if the ANSYS Licensing Interconnect should run in private mode where requests for license usage from client systems do not return user or host information.  Private mode is "off" by default.
+            Indicate if the Ansys Licensing Interconnect should run in private mode where requests for license usage from client systems do not return user or host information.  Private mode is "off" by default.
         </MSG>
     </MESSAGE>
   <MESSAGE>
@@ -3949,7 +5433,7 @@ or ANSYS, Inc.
     <MSG>
       Set the FLEXLM_TIMEOUT value for all FlexNet connection attempts.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>
          177
@@ -4066,7 +5550,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        Server has been running for %1 days, %2 hours, %3 minutes, and %4 seconds.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       163
@@ -4074,7 +5558,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        SEPARATE MODE
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       162
@@ -4082,7 +5566,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        SHARED MODE
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       161
@@ -4090,7 +5574,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        Could not create temporary borrow file tmp.lic.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       160
@@ -4098,7 +5582,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        Not enough %1 licenses %2/%3.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       159
@@ -4106,7 +5590,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        No BORROWS attribute found in a borrow request.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       158
@@ -4114,7 +5598,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        Feature %1 to be borrowed is not available.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       157
@@ -4122,7 +5606,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        No borrowed features found to return.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       156
@@ -4130,7 +5614,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        Could not encrypt borrowed features.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       155
@@ -4138,23 +5622,23 @@ Valid FLEXlm Servers: %2
     <MSG>
        Could not decrypt borrowed features.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       154
     </ID>
     <MSG>
-        Capability %1 is not defined in the current version [ %2 ] of the License Manager. You may need to upgrade to the latest available ANSYS License Manager.
+        Capability %1 is not defined in the current version [ %2 ] of the License Manager. You may need to upgrade to the latest available Ansys License Manager.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       153
     </ID>
     <MSG>
-		 The request for %1 tasks of feature %2 cannot be granted.  Only %3 tasks are available.
-	 </MSG>
-  </MESSAGE>
+     The request for %1 tasks of feature %2 cannot be granted.  Only %3 tasks are available.
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       152
@@ -4162,7 +5646,7 @@ Valid FLEXlm Servers: %2
     <MSG>
        Not enough %1 licenses.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       151
@@ -4170,9 +5654,25 @@ Valid FLEXlm Servers: %2
     <MSG>
        Licensed number of borrowed users already reached.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Pool Messages -->
     <!-- Begin Client Messages [101 - 149] -->
+    <MESSAGE>
+        <ID>
+            149
+        </ID>
+        <MSG>
+            Unable to access %1. %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            148
+        </ID>
+        <MSG>
+            Please refer %1 for more information.
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             147
@@ -4292,7 +5792,7 @@ Valid FLEXlm Servers: %2
         <MSG>
             Not connected to a license server for licensing actions.
         </MSG>
-    </MESSAGE>
+    </MESSAGE>  
     <MESSAGE>
         <ID>
             132
@@ -4452,8 +5952,7 @@ Valid FLEXlm Servers: %2
     <MSG>
 Could not connect to any license server.
 The license server has reached the maximum allowed connected clients.
-ANSYSLI_SERVERS: %1
-FLEXlm Servers: %2
+FLEXlm Servers: %1
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -4463,76 +5962,71 @@ FLEXlm Servers: %2
     <MSG>
        Could not connect to license server: %1@%2. %3
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       111
     </ID>
     <MSG>
-       Could not connect to local server: %1@localhost %2.
+       Could not connect to local server: %1@localhost %2. 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       110
     </ID>
     <MSG>
-       Could not connect to license server: %1@localhost %2.
+       Could not connect to license server: %1@localhost %2. 
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       109
     </ID>
     <MSG>
-Could not connect to any license server.
-Please use ANSLIC_ADMIN to setup your license server.
-    ANSYSLI_SERVERS: %1
-    FLEXlm Servers: %2
+Could not connect to any license server. 
+Please use ANSLIC_ADMIN to setup your license server. 
+    FLEXlm Servers: %1
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       108
     </ID>
     <MSG>
-Could not connect to any license server.
-The server is down or is not responsive.
-    ANSYSLI_SERVERS: %1
-    FLEXlm Servers: %2
+Could not connect to any license server. 
+The server is down or is not responsive. 
+    FLEXlm Servers: %1
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       107
     </ID>
     <MSG>
 Could not connect to license server: %1@%2. %3
-The server is down or is not responsive.
-    ANSYSLI_SERVERS: %4
-    FLEXlm Servers: %5
+The server is down or is not responsive. 
+    FLEXlm Servers: %4
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       106
     </ID>
     <MSG>
-Could not create a license socket. %1
-    ANSYSLI_SERVERS: %2
-    FLEXlm Servers: %3
+Could not create a license socket. %1 
+    FLEXlm Servers: %2
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       105
     </ID>
     <MSG>
 No servers provided.
-    ANSYSLI_SERVERS: %1
-    FLEXlm Servers: %2
+    FLEXlm Servers: %1
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       104
@@ -4540,7 +6034,7 @@ No servers provided.
     <MSG>
        Local server exited or could not read local server port %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       103
@@ -4548,7 +6042,7 @@ No servers provided.
     <MSG>
        ANSYSLI exited or could not read server port %1.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       102
@@ -4556,7 +6050,7 @@ No servers provided.
     <MSG>
        Not connected to peer.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       101
@@ -4564,14 +6058,21 @@ No servers provided.
     <MSG>
        Not connected to a local license server for ACLE actions.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <!-- End Client Messages -->
   <MESSAGE>
+    <ID>
+      99
+    </ID>
+    <MSG>
+      FLEXlm support removed for this feature.
+    </MSG>
+  </MESSAGE><MESSAGE>
     <ID>
       98
     </ID>
     <MSG>
-      Specify the TLS version to be used by ANSYS Licensing Interconnect for communication. Example 1.2.
+      Specify the TLS version to be used by Ansys Licensing Interconnect for communication. Example 1.2.
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -4581,15 +6082,15 @@ No servers provided.
     <MSG>
       Start FlexNet Embedded mode
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       96
     </ID>
     <MSG>
-      Indicate if the ANSYS Licensing Interconnect should use allow Checkout Retry attempts.  It is "on" by default.
+      Indicate if the Ansys Licensing Interconnect should use allow Checkout Retry attempts.  It is "on" by default.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       95
@@ -4611,7 +6112,7 @@ No servers provided.
       93
     </ID>
     <MSG>
-      Stop the server running at port@host(*) and its associated triad servers.
+      Stop the server running at port@host(*) and its associated triad servers. 
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -4619,9 +6120,9 @@ No servers provided.
       92
     </ID>
     <MSG>
-      Specify the number of times the ANSYS Licensing Interconnect should attempt to restart the FlexNet server.
+      Specify the number of times the Ansys Licensing Interconnect should attempt to restart the FlexNet server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       91
@@ -4629,7 +6130,7 @@ No servers provided.
     <MSG>
       Bypass hostname resolution during the checkout call.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       90
@@ -4651,7 +6152,7 @@ No servers provided.
             88
         </ID>
         <MSG>
-            Indicate if the ANSYS Licensing Interconnect should override the IP passed to FLEXlm.  Default is to override.
+            Indicate if the Ansys Licensing Interconnect should override the IP passed to FLEXlm.  Default is to override.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -4667,7 +6168,7 @@ No servers provided.
             86
         </ID>
         <MSG>
-            Indicate if the ANSYS Licensing Interconnect should use the new heartbeat interval. Should be between 60 to 360 seconds.
+            Indicate if the Ansys Licensing Interconnect should use the new heartbeat interval. Should be between 60 to 360 seconds.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -4675,9 +6176,9 @@ No servers provided.
       85
     </ID>
     <MSG>
-      Indicate if the ANSYS Licensing Interconnect should use the default split check logic.  It is "on" by default.
+      Indicate if the Ansys Licensing Interconnect should use the default split check logic.  It is "on" by default.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
     <ID>
       84
@@ -4685,13 +6186,13 @@ No servers provided.
     <MSG>
       Identifies the host name, ip, or comma separated list of FLEXlm server or servers that should be ignored for all FLEXlm operations.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>
          82
       </ID>
       <MSG>
-         Indicate if the ANSYS Licensing Interconnect should allow the DesignPoint Reserve or not. It is "on" by default.
+         Indicate if the Ansys Licensing Interconnect should allow the DesignPoint Reserve or not. It is "on" by default.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -4701,7 +6202,7 @@ No servers provided.
     <MSG>
       Specify whether or not WB license usage tracking is supported, default is to support it.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       81
@@ -4709,7 +6210,7 @@ No servers provided.
     <MSG>
       Specify the number of days to keep archived WB license usage tracking information before purging it, defaults to %1 days.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       80
@@ -4717,7 +6218,7 @@ No servers provided.
     <MSG>
       Specify the number of minutes before archiving WB license usage tracking information, defaults to %1 minutes.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       79
@@ -4725,7 +6226,7 @@ No servers provided.
     <MSG>
       number
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       78
@@ -4750,13 +6251,13 @@ No servers provided.
       To use LM_PROJECT you must start the server with "-UseLmProject on" option
       or set ANSYSLI_USE_LMPROJECT to on in your ansyslmd.ini file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
       <ID>
          75
       </ID>
       <MSG>
-         Indicate if the ANSYS Licensing Interconnect should use the LM_PROJECT passed by the first client when checking out licenses.
+         Indicate if the Ansys Licensing Interconnect should use the LM_PROJECT passed by the first client when checking out licenses.
       </MSG>
    </MESSAGE>
   <MESSAGE>
@@ -4766,7 +6267,7 @@ No servers provided.
     <MSG>
       Specify the number of maximum queued requests.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       73
@@ -4774,7 +6275,7 @@ No servers provided.
     <MSG>
       seconds
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       72
@@ -4782,7 +6283,7 @@ No servers provided.
     <MSG>
       Specify the queuing interval when checkout attempts are performed on queued requests.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       71
@@ -4790,7 +6291,7 @@ No servers provided.
     <MSG>
       group list
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       70
@@ -4798,7 +6299,7 @@ No servers provided.
     <MSG>
       Identify the group or (comma separated list of) groups that are allowed to return reserved licenses for all users.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       69
@@ -4806,7 +6307,7 @@ No servers provided.
     <MSG>
       user list
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       68
@@ -4814,13 +6315,13 @@ No servers provided.
     <MSG>
       Identify the user or (comma separated list of) users that are allowed to return reserved licenses for all users.
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
    <MESSAGE>
       <ID>
          64
       </ID>
       <MSG>
-         Indicate if the ANSYS Licensing Interconnect should use the IP address passed by the client when handling FLEXlm options file entries.
+         Indicate if the Ansys Licensing Interconnect should use the IP address passed by the client when handling FLEXlm options file entries.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -4828,50 +6329,58 @@ No servers provided.
          63
       </ID>
       <MSG>
-         Indicate if the ANSYS Licensing Interconnect should process the FLEXlm options file entries.
+         Indicate if the Ansys Licensing Interconnect should process the FLEXlm options file entries.
       </MSG>
    </MESSAGE>
+  <MESSAGE>
+    <ID>
+      38
+    </ID>
+    <MSG>
+      Invalid ACLE Locking Cap ID passed: %1
+    </MSG>
+  </MESSAGE>
   <MESSAGE>
     <ID>
       37
     </ID>
     <MSG>
-		 Checkout Filter Error: %1
+     Checkout Filter Error: %1
 FLEXlm Error: %2
-	 </MSG>
-  </MESSAGE>
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       36
     </ID>
     <MSG>
-		 Designates the FLEXlm license file to cache.  This option is valid only when used with -noflex option.
-	 </MSG>
-  </MESSAGE>
+     Designates the FLEXlm license file to cache.  This option is valid only when used with -noflex option.
+   </MSG>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       35
     </ID>
     <MSG>
-		 Capability not for preferred feature (%1).
+     Capability not for preferred feature (%1).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       34
     </ID>
     <MSG>
-		 Shared license %1 currently in use by another process.
+     Shared license %1 currently in use by another process.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       33
     </ID>
     <MSG>
-		 Insufficient %1 licenses available.
+     Insufficient %1 licenses available.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       32
@@ -4879,7 +6388,7 @@ FLEXlm Error: %2
     <MSG>
      a running server on the localhost automatically.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       31
@@ -4887,7 +6396,7 @@ FLEXlm Error: %2
     <MSG>
      If port@host is not given, tries to detect
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       30
@@ -4895,7 +6404,7 @@ FLEXlm Error: %2
     <MSG>
      Stop the server running at port@host(*)
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       29
@@ -4903,7 +6412,7 @@ FLEXlm Error: %2
     <MSG>
      Reread information for the server running at port@host(*).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       28
@@ -4911,7 +6420,7 @@ FLEXlm Error: %2
     <MSG>
      Return information on the server running at port@host(*)
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       27
@@ -4919,7 +6428,7 @@ FLEXlm Error: %2
     <MSG>
      Starts Windows service.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       26
@@ -4927,7 +6436,7 @@ FLEXlm Error: %2
     <MSG>
      Uninstalls Windows service.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       25
@@ -4935,15 +6444,15 @@ FLEXlm Error: %2
     <MSG>
      Install Windows service to start with designated options.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       24
     </ID>
     <MSG>
-     Forwarded to FLEXlm lmgrd: See FLEXlm End User's Guide for description.
+     Forwarded to FLEXlm lmgrd: See FLEXlm End User's Guide for description.     
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       23
@@ -4951,7 +6460,7 @@ FLEXlm Error: %2
     <MSG>
      Forwarded to FLEXlm lmgrd: Designates the FLEXlm debug log file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       22
@@ -4959,7 +6468,7 @@ FLEXlm Error: %2
     <MSG>
      Forwarded to FLEXlm lmgrd: Designates the FLEXlm license file.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       21
@@ -4967,7 +6476,7 @@ FLEXlm Error: %2
     <MSG>
       Only a member of the given group can shutdown the server.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       20
@@ -4975,7 +6484,7 @@ FLEXlm Error: %2
     <MSG>
       Only the user who started the server can shut it down.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       19
@@ -4983,7 +6492,7 @@ FLEXlm Error: %2
     <MSG>
       Display the ansysli version information (long, short, build, ali, or revn).
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       18
@@ -4991,7 +6500,7 @@ FLEXlm Error: %2
     <MSG>
       Log usage information to the designated directory.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       17
@@ -4999,7 +6508,7 @@ FLEXlm Error: %2
     <MSG>
       Obsolete option use -ini.
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       16
@@ -5007,7 +6516,7 @@ FLEXlm Error: %2
     <MSG>
       Read the startup options from the designated ansysli initialization (ansyslmd.ini) file
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       15
@@ -5015,7 +6524,7 @@ FLEXlm Error: %2
     <MSG>
       The ansysli_server is started by the monitor
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       14
@@ -5039,7 +6548,7 @@ FLEXlm Error: %2
     <MSG>
       Forces ansysli_server to NOT start FLEXlm, the default is to start it
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       11
@@ -5047,7 +6556,7 @@ FLEXlm Error: %2
     <MSG>
       Do not daemonize the server
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       10
@@ -5055,7 +6564,7 @@ FLEXlm Error: %2
     <MSG>
       Indicates the level of debug (either STANDARD [default] or CONNECTIONS or VERBOSE) that should be logged
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       9
@@ -5063,7 +6572,7 @@ FLEXlm Error: %2
     <MSG>
       Indicates that the debug log (see -log) should be appended to
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       8
@@ -5079,7 +6588,7 @@ FLEXlm Error: %2
     <MSG>
       Read the ansysli_server license file
     </MSG>
-  </MESSAGE>
+  </MESSAGE>  
   <MESSAGE>
     <ID>
       6
@@ -5095,7 +6604,7 @@ FLEXlm Error: %2
     <MSG>
       Product order directory (containing the 'prodord' XML file(s))
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
 
   <MESSAGE>
     <ID>
@@ -5104,7 +6613,7 @@ FLEXlm Error: %2
     <MSG>
       Started for local licensing
     </MSG>
-  </MESSAGE>
+  </MESSAGE> 
   <MESSAGE>
     <ID>
       3
