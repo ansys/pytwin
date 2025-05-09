@@ -20,9 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# (c) 2020-2024 ANSYS, Inc. All rights reserved.
-# ------------------------------------------------------------------------------
 from enum import Enum
 
 

@@ -20,9 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# (c) 2020-2024 ANSYS, Inc. All rights reserved.
-# ------------------------------------------------------------------------------
 from ctypes import (
     POINTER,
     byref,
@@ -266,7 +263,7 @@ class TwinRuntime:
         Returns
         -------
         int
-            Number of expected number of deployments for the TWIN model.
+            Number of expected deployments for the TWIN model.
         """
         runtime_library = TwinRuntime.load_dll()
         TwinNumberOfDeployments = runtime_library.TwinGetNumberOfDeployments
@@ -282,7 +279,7 @@ class TwinRuntime:
     def get_model_fmi_type(file_path: str) -> Set[str]:
         """
         Searches the description file of the source model to discover if it
-        contains Model Exchange and CoSimulation types of model.
+        contains Model Exchange and/or CoSimulation types of model.
 
         Parameters
         ----------
@@ -1882,16 +1879,22 @@ class TwinRuntime:
         str
             Information about TBROM models visualization resources included
             in the TWIN. Example of output:
-            {'myTBROM_1': {
-              'type': 'image,3D',
-              'modelname': 'myTBROM',
-              'views': {'View1': 'View1'},
-              'trigger': {
-                'field_data_storage': 'field_data_storage'
-               }
-              }
-            }
 
+            .. code-block:: python
+
+                {
+                    'myTBROM_1': {
+                        'type': 'image,3D',
+                        'modelname': 'myTBROM',
+                        'views': {
+                            'View1': 'View1'
+                            },
+                        'trigger': {
+                            'field_data_storage': 'field_data_storage'
+                            }
+                        'inputfields': ['inputPressure', 'inputTemperature']
+                    }
+                }
         """
         visualization_info = c_char_p()
         self._twin_status = self._TwinGetVisualizationResources(self._modelPointer, byref(visualization_info))
@@ -2043,8 +2046,12 @@ class TwinRuntime:
 
         Returns
         -------
-        list
-            A list representing the basis (numpy array), the number of modes (int) and the field size (int)
+        basis : np.ndarray
+            SVD basis
+        modes : int
+            number of modes
+        size : int
+            field size
         """
         if type(model_name) != bytes:
             model_name = model_name.encode()
@@ -2081,8 +2088,12 @@ class TwinRuntime:
 
         Returns
         -------
-        list
-            A list representing the basis (numpy array), the number of modes (int) and the field size (int)
+        basis : np.ndarray
+            SVD basis
+        modes : int
+            number of modes
+        size : int
+            field size
         """
         if type(model_name) != bytes:
             model_name = model_name.encode()
