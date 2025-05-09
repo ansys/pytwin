@@ -1,3 +1,4 @@
+exclude: "pytwin/twin_runtime/licensingclient/language/"
 repos:
 
 - repo: https://github.com/psf/black
