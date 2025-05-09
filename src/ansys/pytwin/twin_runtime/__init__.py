@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-__version__ = "1.15.6"
+__version__ = "1.15.7"
 __anssversion__ = "2025.2"
 
 

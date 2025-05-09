@@ -19,7 +19,7 @@ from ctypes import (
 )
 from enum import Enum
 from pathlib import Path
-from typing import Set
+from typing import Set, Tuple
 
 import numpy as np
 import pandas as pd
@@ -359,6 +359,74 @@ class TwinRuntime:
                 "Unsupported file extension: " f"{file_path.suffix}"
             )
         return model_name
+
+    @staticmethod
+    def get_fmi_version(file_path: str) -> str:
+        """
+        Returns the FMI version described in the given model or XML file.
+
+        Parameters
+        ----------
+        file_path : str
+            File path to the model description XML file for the twin model.
+
+        Returns
+        -------
+        str
+            FMI version of the model
+        """
+
+        def _parse_xml(model_description) -> str:
+            tree = ET.parse(model_description)
+            root = tree.getroot()
+            version = root.get('fmiVersion')
+            if version is None:
+                raise TwinRuntimeError("Failed to find model version!")
+            return version
+
+
+        file_path = Path(file_path)
+        if file_path.suffix in [".fmu"]:
+            with zipfile.ZipFile(file_path) as zip_handler:
+                with zip_handler.open("modelDescription.xml") as xml_file:
+                    model_fmi_version = _parse_xml(xml_file)
+
+        elif file_path.suffix == ".xml":
+            model_fmi_version = _parse_xml(str(file_path))
+        elif file_path.suffix in [".tbrom", ".twin"]:
+            raise TwinRuntimeError(
+                "Cannot read encrypted description XML files from .tbrom or .twin models"
+            )
+        else:
+            raise TwinRuntimeError(
+                "Unsupported file extension: " f"{file_path.suffix}"
+            )
+        return model_fmi_version
+
+
+    @staticmethod
+    def is_fmu_supported(file_path) -> Tuple[bool, str]:
+        """
+        Returns whether the given FMI-based model is supported by the Twin SDK.
+
+        Twin SDK currently only supports FMI 2.0 models
+
+        Parameters
+        ----------
+        file_path : str
+            File path to the model or model description XML file.
+
+        Returns
+        -------
+        Tuple[bool, str]
+            True if the FMU model is supported
+            False with a message if the FMU model is not supported
+        """
+
+        version = TwinRuntime.get_fmi_version(file_path)
+        if version == "2.0":
+            return True, ""
+        return False, f"FMI {version} models are not supported"
 
     @staticmethod
     def twin_platform_support(file_path):
