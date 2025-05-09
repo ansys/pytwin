@@ -52,8 +52,6 @@ import pandas as pd
 if platform.system() == "Windows":
     import win32api
 
-import inspect
-
 from .log_level import LogLevel
 from .twin_runtime_error import (
     PropertyError,
@@ -2071,7 +2069,8 @@ class TwinRuntime:
     def twin_get_rom_input_basis(self, model_name, field_name):
         """
         Retrieve the input field basis for the given TBROM model name and field name.
-        This method is only supported for Twin models created from one or more TBROM components, and having input fields.
+        This method is only supported for Twin models created from one or more TBROM components,
+        and having input fields.
 
         Parameters
         ----------
