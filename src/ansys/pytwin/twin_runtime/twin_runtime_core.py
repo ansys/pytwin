@@ -1880,6 +1880,8 @@ class TwinRuntime:
             Information about TBROM models visualization resources included
             in the TWIN. Example of output:
 
+            .. code-block:: python
+
                 {
                     'myTBROM_1': {
                         'type': 'image,3D',
