@@ -1888,7 +1888,7 @@ class TwinRuntime:
                         "modelname": "myTBROM",
                         "views": {"View1": "View1"},
                         "trigger": {"field_data_storage": "field_data_storage"},
-                        "inputfields": ["inputPressure","inputTemperature"],
+                        "inputfields": ["inputPressure", "inputTemperature"],
                     }
                 }
         """
