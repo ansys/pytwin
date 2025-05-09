@@ -304,7 +304,7 @@
     <MESSAGE>
         <ID>16008</ID>
         <MSG>
-            Impossible de vérifier la fonction d&apos;échelle %1 :
+            Impossible de vérifier la function d&apos;échelle %1 :
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -351,7 +351,7 @@
     </MESSAGE><!-- End ACL Messages [16001 - 17000] --> <!-- Begin Debug Messages [15001 - 16000] --><MESSAGE>
         <ID>15006</ID>
         <MSG>
-            La limite %1 de l&apos;arbre PPID a été atteinte, les PPIDs restants ont été tronqués.
+            La limit %1 de l&apos;arbre PPID a été atteinte, les PPIDs restants ont été tronqués.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -363,7 +363,7 @@
     <MESSAGE>
         <ID>15004</ID>
         <MSG>
-            Chemin du répertoire de licence invalide à partir de %1, le répertoire n&apos;a pas pu être trouvé.
+            Chemin du répertoire de licence invalid à partir de %1, le répertoire n&apos;a pas pu être trouvé.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -375,18 +375,18 @@
     <MESSAGE>
         <ID>15002</ID>
         <MSG>
-            Invalide %1 la valeur de la variable d&apos;environnement %2, impossible de trouver le fichier correspondant %3.
+            Invalid %1 la valeur de la variable d&apos;environment %2, impossible de trouver le fichier correspondent %3.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>15001</ID>
         <MSG>
-            Invalide %1 la valeur de la variable d&apos;environnement %2, le répertoire n&apos;a pas pu être trouvé.
+            Invalid %1 la valeur de la variable d&apos;environment %2, le répertoire n&apos;a pas pu être trouvé.
         </MSG>
     </MESSAGE><!-- End Debug Messages [15001 - 16000] --> <!-- Begin License Context specific Messages [14001 - 15000] --><MESSAGE>
         <ID>14054</ID>
         <MSG>
-            Impossible de créer le contexte %1 avec l&apos;identifiant %2 à partir des détails de restauration.
+            Impossible de créer le contexte %1 avec l&apos;identifiant %2 à partir des détails de restoration.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -398,7 +398,7 @@
     <MESSAGE>
         <ID>14052</ID>
         <MSG>
-          Réinitialisation %1 contexte %2 déclenchée par des fonctions perdues.
+          Réinitialisation %1 contexte %2 déclenchée par des functions perdues.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -452,7 +452,7 @@
     <MESSAGE>
         <ID>14043</ID>
         <MSG>
-            Rétablissez la connexion du client au contexte %1 déjà recréé avec l&apos;ID %2.
+            Rétablissez la connection du client au contexte %1 déjà recréé avec l&apos;ID %2.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -488,13 +488,13 @@
     <MESSAGE>
         <ID>14037</ID>
         <MSG>
-            Impossible de régler l&apos;attribut %1, l&apos;attribut et la valeur à rentrer n&apos;ont pas été fournis par la requête entrante.
+            Impossible de régler l&apos;attribute %1, l&apos;attribute et la valeur à rentrer n&apos;ont pas été fournis par la requête entrante.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>14036</ID>
         <MSG>
-            Impossible de mettre à jour l&apos;attribut du contexte, le contexte d&apos;id &apos;%1&apos; n&apos;a pas été trouvé.
+            Impossible de mettre à jour l&apos;attribute du contexte, le contexte d&apos;id &apos;%1&apos; n&apos;a pas été trouvé.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -548,7 +548,7 @@
     <MESSAGE>
         <ID>14027</ID>
         <MSG>
-            Contexte %1 existant mis à jour avec l&apos;id %2.
+            Contexte %1 existent mis à jour avec l&apos;id %2.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -632,25 +632,25 @@
     <MESSAGE>
         <ID>14013</ID>
         <MSG>
-            Demande de validation EBU paramétrique non valide. La fonctionnalité requise %1 ne prend pas en charge les demandes %2.
+            Demande de validation EBU paramétrique non valid. La fonctionnalité requise %1 ne prend pas en charge les demandes %2.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>14012</ID>
         <MSG>
-            Demande de validation EBU paramétrique non valide, la fonctionnalité parallèle préférée %1 ne prend pas en charge les demandes %2.
+            Demande de validation EBU paramétrique non valid, la fonctionnalité parallèle préférée %1 ne prend pas en charge les demandes %2.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>14011</ID>
         <MSG>
-            Demande de validation EBU en bloc non valide, %1 fonctionnalités préférées multiples spécifiées (%2). Une seule fonctionnalité préférée peut être spécifiée.
+            Demande de validation EBU en block non valid, %1 fonctionnalités préférées multiples spécifiées (%2). Une seule fonctionnalité préférée peut être spécifiée.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>14010</ID>
         <MSG>
-            Argument non valide passé à la validation en bloc.
+            Argument non valid passé à la validation en block.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -835,7 +835,7 @@
     <MESSAGE>
         <ID>13023</ID>
         <MSG>
-            Support LaaS supprimé pour cette fonction.
+            Support LaaS supprimé pour cette function.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -847,7 +847,7 @@
     <MESSAGE>
         <ID>13021</ID>
         <MSG>
-            Votre adresse IP externe n&apos;a pas été autorisée pour le serveur de licence sur le Cloud %1, veuillez contacter votre administrateur pour ajouter votre adresse IP externe à la liste autorisée.
+            Votre address IP externe n&apos;a pas été autorisée pour le serveur de licence sur le Cloud %1, veuillez contacter votre administrateur pour ajouter votre address IP externe à la liste autorisée.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -871,7 +871,7 @@
     <MESSAGE>
         <ID>13017</ID>
         <MSG>
-            Erreur d&apos;autorisation LaaS inconnue : %1
+            Erreur d&apos;authorisation LaaS inconnue : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -889,7 +889,7 @@
     <MESSAGE>
         <ID>13014</ID>
         <MSG>
-            PIN transmis pour le serveur de licence sur le cloud %1 non valide, impossible de terminer l&apos;action %2 requise.
+            PIN transmis pour le serveur de licence sur le cloud %1 non valid, impossible de terminer l&apos;action %2 requise.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -990,26 +990,26 @@
     <MESSAGE>
         <ID>12059</ID>
         <MSG>
-            L&apos;identifiant de souscription &apos;%1&apos; utilisé pour activer la souscription de licence en cours n&apos;est plus valide pour ce système.
+            L&apos;identifiant de souscription &apos;%1&apos; utilisé pour activer la souscription de licence en cours n&apos;est plus valid pour ce système.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>12058</ID>
         <MSG>
-            Liste des adresses MAC FNE :
+            Liste des addresses MAC FNE :
             %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>12057</ID>
         <MSG>
-            Liste des adresses MAC des systèmes FNE reconnus.
+            Liste des addresses MAC des systèmes FNE reconnus.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>12056</ID>
         <MSG>
-            Un fichier binaire non valide de réponse pour la souscription a été transmis pour l&apos;activation depuis la demande de fichier : %1
+            Un fichier binaire non valid de réponse pour la souscription a été transmis pour l&apos;activation depuis la demande de fichier : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1045,7 +1045,7 @@
     <MESSAGE>
         <ID>12050</ID>
         <MSG>
-            Impossible d&apos;initialiser l&apos;objet de licence FNE pour l&apos;activation.
+            Impossible d&apos;initialiser l&apos;object de licence FNE pour l&apos;activation.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1081,7 +1081,7 @@
     <MESSAGE>
         <ID>12044</ID>
         <MSG>
-            Adresse MAC du système pour l&apos;option -RemoteActivateLicenseEntitlement
+            Address MAC du système pour l&apos;option -RemoteActivateLicenseEntitlement
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1105,7 +1105,7 @@
     <MESSAGE>
         <ID>12040</ID>
         <MSG>
-            Adresse de système MAC distant
+            Address de système MAC distant
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1129,13 +1129,13 @@
     <MESSAGE>
         <ID>12036</ID>
         <MSG>
-            Connexion à la souscription de licences restaurée. Connecté au gestionnaire local de souscription : %1
+            Connection à la souscription de licences restaurée. Connecté au gestionnaire local de souscription : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>12035</ID>
         <MSG>
-            La fonction %1 a expirée. Les droits de souscription étaient désactivés ou pas rafraichis à temps.
+            La function %1 a expirée. Les droits de souscription étaient désactivés ou pas rafraichis à temps.
         </MSG>
     </MESSAGE> 
     <MESSAGE>
@@ -1345,7 +1345,7 @@ Veuillez sauvegarder votre travail.
     </MESSAGE><!-- Begin Socket Error Messages [10000 - 12000] --><MESSAGE>
     <ID>11004</ID>
     <MSG>
-      Nom valide, pas d&apos;enregistrement de données du type demandé
+      Nom valid, pas d&apos;enregistrement de données du type demandé
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1417,13 +1417,13 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>10061</ID>
     <MSG>
-       La connexion est refusée.
+       La connection est refusée.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10060</ID>
     <MSG>
-       Durée maximale de la connexion au serveur de licence dépassée.
+       Durée maximale de la connection au serveur de licence dépassée.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1447,25 +1447,25 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>10055</ID>
     <MSG>
-       Aucun espace tampon disponible.
+       Aucun escape tampon disponible.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10054</ID>
     <MSG>
-       Connexion réinitialisée par le serveur le licence.
+       Connection réinitialisée par le serveur le licence.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10053</ID>
     <MSG>
-       Abandon de la connexion due au logiciel.
+       Abandon de la connection due au logiciel.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10052</ID>
     <MSG>
-       Connexion laissée par le réseau en cours de réinitialisation.
+       Connection laissée par le réseau en cours de réinitialisation.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1483,19 +1483,19 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>10049</ID>
     <MSG>
-       Impossible d&apos;assigner l&apos;adresse requise.
+       Impossible d&apos;assigner l&apos;address requise.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10048</ID>
     <MSG>
-       Adresse déjà en cours d&apos;utilisation.
+       Address déjà en cours d&apos;utilisation.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10047</ID>
     <MSG>
-       Famille d&apos;adresses non pris en charge par la famille de protocole.
+       Famille d&apos;addresses non pris en charge par la famille de protocole.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1543,7 +1543,7 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>10039</ID>
     <MSG>
-       Adresse de destination requise.
+       Address de destination requise.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1567,7 +1567,7 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>10035</ID>
     <MSG>
-       Ressource temporairement indisponible.
+       Resource temporairement indisponible.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1585,19 +1585,19 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>10014</ID>
     <MSG>
-       Mauvaise adresse.
+       Mauvaise address.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10013</ID>
     <MSG>
-       Autorisation refusée.
+       Authorisation refusée.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>10004</ID>
     <MSG>
-       Interrompre l&apos;appel de la fonction.
+       Interrompre l&apos;appel de la function.
     </MSG>
   </MESSAGE><!-- End Socket Error Messages --> <!-- Begin Log messages: WARNING 1350 - 1399 --><MESSAGE>
         <ID>1353</ID>
@@ -1625,7 +1625,7 @@ Veuillez sauvegarder votre travail.
   </MESSAGE><!-- End Log messages: WARNING 1350 - 1399 --> <!-- Begin Log messages: CACHE_SERVER 1300 - 1349 --><MESSAGE>
         <ID>1318</ID>
         <MSG>
-            Ajout des informations du cache depuis le serveur redondant : %1@%2 IP=%3
+            Ajout des information du cache depuis le serveur redondant : %1@%2 IP=%3
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1637,7 +1637,7 @@ Veuillez sauvegarder votre travail.
     <MESSAGE>
         <ID>1316</ID>
         <MSG>
-            Récupération d&apos;informations FlexNet intégré. Veuillez patienter...
+            Récupération d&apos;information FlexNet intégré. Veuillez patienter...
         </MSG>
     </MESSAGE> 
     <MESSAGE>
@@ -1673,7 +1673,7 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>1310</ID>
     <MSG>
-      Impossible de récupérer l&apos;adresse IP du serveur %1.
+      Impossible de récupérer l&apos;address IP du serveur %1.
     </MSG>
   </MESSAGE>  
   <MESSAGE>
@@ -1709,7 +1709,7 @@ Veuillez sauvegarder votre travail.
   <MESSAGE>
     <ID>1304</ID>
     <MSG>
-       Récupération des informations d&apos;emprunt. Veuillez patienter...
+       Récupération des information d&apos;emprunt. Veuillez patienter...
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -1780,7 +1780,7 @@ Veuillez sauvegarder votre travail.
     <MESSAGE>
         <ID>1259</ID>
         <MSG>
-            Remplacement du comptage des requêtes non-valides de %1 par %2 pour les requêtes de sortie %3.
+            Replacement du comptage des requêtes non-valides de %1 par %2 pour les requêtes de sortie %3.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2089,7 +2089,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   <MESSAGE>
     <ID>1208</ID>
     <MSG>
-        L&apos;arrêt du serveur de licence est complet. Merci.
+        L&apos;arrêt du serveur de licence est complete. Merci.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2149,7 +2149,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   <MESSAGE>
     <ID>1075</ID>
     <MSG>
-      Échec de la connexion à l&apos;intervalle de port fourni. %1
+      Échec de la connection à l&apos;intervalle de port fourni. %1
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2173,7 +2173,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MESSAGE>
         <ID>1071</ID>
         <MSG>
-            Le compteur de tâche non valide %1 est requis pour la sortie de %2.
+            Le compteur de tâche non valid %1 est requis pour la sortie de %2.
         </MSG>
     </MESSAGE>
   <MESSAGE>
@@ -2288,7 +2288,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
    <MESSAGE>
       <ID>1052</ID>
       <MSG>
-         Impossible de créer un suivi de connexion FLEXlm. %1
+         Impossible de créer un suivi de connection FLEXlm. %1
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -2564,19 +2564,19 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   <MESSAGE>
     <ID>1008</ID>
     <MSG>
-       Combinaison d&apos;option %1 non valable. Un ou davantage options de démarrage client a été spécifiée. Sortie.
+       Combination d&apos;option %1 non valable. Un ou davantage options de démarrage client a été spécifiée. Sortie.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>1007</ID>
     <MSG>
-       Combinaison d&apos;option %1 non valable. Un ou davantage options de démarrage client doit être spécifié. Sortie.
+       Combination d&apos;option %1 non valable. Un ou davantage options de démarrage client doit être spécifié. Sortie.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>1006</ID>
     <MSG>
-       Combinaison d&apos;option %1 non valable. Vous ne pouvez pas combiner -noflex avec les options de démarrage de FLEXlm.
+       Combination d&apos;option %1 non valable. Vous ne pouvez pas combiner -noflex avec les options de démarrage de FLEXlm.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2623,7 +2623,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   <MESSAGE>
     <ID>952</ID>
     <MSG>
-       %1 n&apos;est pas valide.
+       %1 n&apos;est pas valid.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2635,7 +2635,7 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   <MESSAGE>
     <ID>950</ID>
     <MSG>
-       Syntaxe non valable pour le mot-clé : 
+       Syntax non valable pour le mot-clé : 
     </MSG>
   </MESSAGE><!-- End Lic Exception Messages [950 - 999] --> <!-- Begin Socket Exception Messages [900 - 949] --><MESSAGE>
     <ID>932</ID>
@@ -2652,19 +2652,19 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
     <MESSAGE>
     <ID>930</ID>
     <MSG>
-      La connexion a été interrompue de manière inattendue pendant la liaison avec le client.
+      La connection a été interrompue de manière inattendue pendant la liaison avec le client.
     </MSG>
   </MESSAGE>
   <MESSAGE>
     <ID>929</ID>
     <MSG>
-      La connexion a été interrompue de manière inattendue pendant la liaison avec le serveur.
+      La connection a été interrompue de manière inattendue pendant la liaison avec le serveur.
     </MSG>
   </MESSAGE>
   <MESSAGE>
     <ID>928</ID>
     <MSG>
-La connexion a expiré lors de l&apos;écriture des données.
+La connection a expiré lors de l&apos;écriture des données.
 L&apos;application a cessé d&apos;attendre une réponse.
 Le serveur de licences peut subir une forte demande ou une panne temporaire. Réessayez plus tard.
     </MSG>
@@ -2672,7 +2672,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>927</ID>
     <MSG>
-La connexion a expiré lors de la lecture des données.
+La connection a expiré lors de la lecture des données.
 L&apos;application a cessé d&apos;attendre une réponse.
 Le serveur de licences peut subir une forte demande ou une panne temporaire. Réessayez plus tard.
     </MSG>
@@ -2680,31 +2680,31 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>926</ID>
     <MSG>
-      Connexion fermée de manière inattendue lors de la réception des données.
+      Connection fermée de manière inattendue lors de la réception des données.
     </MSG>
   </MESSAGE>
   <MESSAGE>
     <ID>925</ID>
     <MSG>
-      Connexion fermée de manière inattendue lors de l&apos;envoi des données.
+      Connection fermée de manière inattendue lors de l&apos;envoi des données.
     </MSG>
   </MESSAGE>
   <MESSAGE>
     <ID>924</ID>
     <MSG>
-       Durée maximale de connexion dépassée lors de la liaison avec le client.
+       Durée maximale de connection dépassée lors de la liaison avec le client.
     </MSG>
   </MESSAGE>
   <MESSAGE>
     <ID>923</ID>
     <MSG>
-       Durée maximale de connexion dépassée lors de la connexion avec le serveur.
+       Durée maximale de connection dépassée lors de la connection avec le serveur.
     </MSG>
   </MESSAGE>
   <MESSAGE>
     <ID>922</ID>
     <MSG>
-       Durée maximale de connexion dépassée lors e la connexion au serveur.
+       Durée maximale de connection dépassée lors e la connection au serveur.
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -2723,13 +2723,13 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>919</ID>
     <MSG>
-       Durée maximale de connexion dépassée.
+       Durée maximale de connection dépassée.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>918</ID>
     <MSG>
-       Certificat de client SSL non approprié.
+       Certificate de client SSL non approprié.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2747,7 +2747,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>915</ID>
     <MSG>
-       La clé privée ne correspond pas à la clé public du certificat.
+       La clé privée ne correspond pas à la clé public du certificate.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2771,7 +2771,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>911</ID>
     <MSG>
-       Certificat de serveur SSL non approprié.
+       Certificate de serveur SSL non approprié.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2809,7 +2809,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>905</ID>
     <MSG>
-       Impossible de lire le fichier certificat.
+       Impossible de lire le fichier certificate.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2827,7 +2827,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>902</ID>
     <MSG>
-       Aucune connexion
+       Aucune connection
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2839,7 +2839,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
   <MESSAGE>
     <ID>900</ID>
     <MSG>
-       La connexion au serveur de licence a été fermée de manière inattendue.
+       La connection au serveur de licence a été fermée de manière inattendue.
     </MSG>
   </MESSAGE><!-- End Socket Exception Messages --> <!-- Begin Message Messages [800 - 899] --><MESSAGE>
         <ID>851</ID>
@@ -2875,7 +2875,7 @@ Le serveur de licences peut subir une forte demande ou une panne temporaire. Ré
     <MESSAGE>
         <ID>846</ID>
         <MSG>
-            En mode LCP, une fonction préférée doit être spécifiée pour la fonctionnalité %1.
+            En mode LCP, une function préférée doit être spécifiée pour la fonctionnalité %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2985,7 +2985,7 @@ Veuillez sauvegarder votre travail.
    <MESSAGE>
     <ID>828</ID>
     <MSG>
-    Impossible de créer un heartbeat pour le suivi de la connexion de la licence %1, échec de la création du thread.
+    Impossible de créer un heartbeat pour le suivi de la connection de la licence %1, échec de la création du thread.
     </MSG>
   </MESSAGE>  
   <MESSAGE>
@@ -3050,7 +3050,7 @@ le serveur de licences a été démarré correctement.
   <MESSAGE>
     <ID>820</ID>
     <MSG>
-Le serveur FLEXlm ne répond pas. La ressource est temporairement indisponible.
+Le serveur FLEXlm ne répond pas. La resource est temporairement indisponible.
     Serveurs FLEXlm : %1
     </MSG>
   </MESSAGE>
@@ -3094,7 +3094,7 @@ Chemin de licence :
   <MESSAGE> 
     <ID>813</ID>
     <MSG>
-Connexion au serveur de licences restaurée.
+Connection au serveur de licences restaurée.
 Connecté au serveur %1.
     Serveurs FLEXlm : %2
     </MSG>
@@ -3277,7 +3277,7 @@ La fonctionnalité %1 a expiré.
   <MESSAGE>
     <ID>737</ID>
     <MSG>
-      Impossible de formater les préférences de site pour l&apos;enregistrement.
+      Impossible de formatter les préférences de site pour l&apos;enregistrement.
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -3434,13 +3434,13 @@ La fonctionnalité %1 a expiré.
   <MESSAGE>
     <ID>711</ID>
     <MSG>
-       Impossible de récupérer les informations de chemin de licence.
+       Impossible de récupérer les information de chemin de licence.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
     <ID>710</ID>
     <MSG>
-       Impossible d&apos;analyser les informations du fichier de licence.
+       Impossible d&apos;analyser les information du fichier de licence.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -3779,7 +3779,7 @@ Date et heure d&apos;expiration : %2.
    <MESSAGE>
       <ID>264</ID>
       <MSG>
-        Invalide date et heure retournées.
+        Invalid date et heure retournées.
 Formats supportés : DD-MON-YYYY et DD-MON-YYYY:HH:MM
       </MSG>
    </MESSAGE>
@@ -3798,13 +3798,13 @@ Formats supportés : DD-MON-YYYY et DD-MON-YYYY:HH:MM
    <MESSAGE>
       <ID>261</ID>
       <MSG>
-        Fichier d&apos;entrée non valide.
+        Fichier d&apos;entrée non valid.
       </MSG>
    </MESSAGE>
    <MESSAGE>
       <ID>260</ID>
       <MSG>
-         Opération demandée invalide.
+         Opération demandée invalid.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -3972,7 +3972,7 @@ La version du serveur de licences %1 [%2] doit être supérieure ou égale à la
   <MESSAGE>
     <ID>214</ID>
     <MSG>
-      Impossible de garantir %1 licences de %2. Veuillez noter que la limite de demandes de %3 est %4.
+      Impossible de garantir %1 licences de %2. Veuillez noter que la limit de demandes de %3 est %4.
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -4049,7 +4049,7 @@ ou ANSYS, Inc
   <MESSAGE>
     <ID>203</ID>
     <MSG>
-       L&apos;adresse IP de votre machine a été exclue par l&apos;administrateur du serveur de licences.
+       L&apos;address IP de votre machine a été exclude par l&apos;administrateur du serveur de licences.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -4096,7 +4096,7 @@ ou ANSYS, Inc
   <MESSAGE>
     <ID>178</ID>
     <MSG>
-      Régler la valeur de FLEXLM_TIMEOUT pour toutes les tentatives de connexion FlexNet
+      Régler la valeur de FLEXLM_TIMEOUT pour toutes les tentatives de connection FlexNet
     </MSG>
   </MESSAGE>  
    <MESSAGE>
@@ -4215,7 +4215,7 @@ Serveurs FLEXlm valides : %2
   <MESSAGE>
     <ID>159</ID>
     <MSG>
-       Aucun attribut BORROWS trouvé dans une requête d&apos;emprunt.
+       Aucun attribute BORROWS trouvé dans une requête d&apos;emprunt.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -4251,7 +4251,7 @@ Serveurs FLEXlm valides : %2
   <MESSAGE>
     <ID>153</ID>
     <MSG>
-     La requête des tâches %1 de la propriété %2 ne peut pas être garantie. Seules les tâches %3 sont disponibles.
+     La requête des tâches %1 de la propriété %2 ne peut pas être guarantee. Seules les tâches %3 sont disponibles.
    </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -4334,7 +4334,7 @@ Serveurs FLEXlm valides : %2
     <MESSAGE>
         <ID>138</ID>
         <MSG>
-            Réglage de la variable d&apos;environnement %1 au fichier : %2
+            Réglage de la variable d&apos;environment %1 au fichier : %2
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -4571,12 +4571,12 @@ Aucun serveur fourni.
   </MESSAGE><!-- End Client Messages --><MESSAGE>
     <ID>99</ID>
     <MSG>
-      Support FLEXlm supprimé pour cette fonction.
+      Support FLEXlm supprimé pour cette function.
     </MSG>
   </MESSAGE><MESSAGE>
     <ID>98</ID>
     <MSG>
-      Spécifier la version de TLS à utiliser par Ansys Licensing Interconnect pour la communication. Par exemple 1.2.
+      Spécifier la version de TLS à utiliser par Ansys Licensing Interconnect pour la communication. Par example 1.2.
     </MSG>
   </MESSAGE>
   <MESSAGE>
@@ -4763,7 +4763,7 @@ Aucun serveur fourni.
    <MESSAGE>
       <ID>64</ID>
       <MSG>
-         Indique si l&apos;interconnexion de licence Ansys doit utiliser l&apos;adresse IP passée par le client lors du traitement des entrées de fichier d&apos;options FLEXlm.
+         Indique si l&apos;interconnexion de licence Ansys doit utiliser l&apos;address IP passée par le client lors du traitement des entrées de fichier d&apos;options FLEXlm.
       </MSG>
    </MESSAGE>
    <MESSAGE>
@@ -4775,7 +4775,7 @@ Aucun serveur fourni.
   <MESSAGE>
     <ID>38</ID>
     <MSG>
-      ID du bouchon de fermeture ACLE non valide transmis : %1
+      ID du bouchon de fermeture ACLE non valid transmis : %1
     </MSG>
   </MESSAGE>
   <MESSAGE>
