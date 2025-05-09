@@ -1883,15 +1883,11 @@ class TwinRuntime:
             .. code-block:: python
 
                 {
-                    'myTBROM_1': {
-                        'type': 'image,3D',
-                        'modelname': 'myTBROM',
-                        'views': {
-                            'View1': 'View1'
-                            },
-                        'trigger': {
-                            'field_data_storage': 'field_data_storage'
-                            }
+                    "myTBROM_1": {
+                        "type": "image,3D",
+                        "modelname": "myTBROM",
+                        "views": {"View1": "View1"},
+                        "trigger": {"field_data_storage": "field_data_storage"},
                     }
                 }
         """
