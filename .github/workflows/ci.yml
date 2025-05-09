@@ -101,11 +101,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
        matrix:
-           os: [windows-latest, ubuntu-20.04]
+           os: [windows-latest, ubuntu-22.04]
            python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Install Ubuntu dependencies for RomViewerSharedLib.so
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install libosmesa6
