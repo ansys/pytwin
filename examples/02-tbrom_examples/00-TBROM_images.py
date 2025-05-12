@@ -169,7 +169,7 @@ graphics = Graphics(session=solver)
 temperature_contour = graphics.Contours["contour-temperature"]
 temperature_contour.field = "temperature"
 temperature_contour.show_edges = True
-temperature_contour.surfaces_list = [
+temperature_contour.surfaces = [
     "convection",
     "interface-side1-wall-interface_fluid_side",
     "interface-side2-wall-interface_solid_side",
