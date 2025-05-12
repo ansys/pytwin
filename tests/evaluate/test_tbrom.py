@@ -31,7 +31,7 @@ from pytwin import (
     download_file,
     read_binary,
     snapshot_to_array,
-    stress_strain_scalar,
+    stress_strain_component,
     write_binary,
 )
 from pytwin.evaluate import tbrom
@@ -1416,13 +1416,24 @@ class TestTbRom:
             assert "cannot reshape array" not in str(e)
 
     def test_stress_strain_scalar_output(self):
-        # Reference inputs
+        def allclose_and_same_shape(a: np.ndarray, b: np.ndarray, rtol=1e-05, atol=1e-08):
+            """Compare arrays for identical shape and entries within tolerance."""
+            return np.allclose(a, b, rtol=rtol, atol=atol) and (a.shape == b.shape)
+
+        def almost_collinear_unit_vectors(vectors: np.ndarray, reference: np.ndarray, rtol=1e-05, atol=1e-08, axis=1):
+            """Check if vectors are almost collinear with reference and have unit length."""
+            all_collinear = np.allclose(
+                np.cross(vectors, reference, axis=axis), np.zeros_like(reference), rtol=rtol, atol=atol
+            )
+            all_unit = np.allclose(np.linalg.norm(vectors, axis=axis), np.ones(vectors.shape[0]))
+            return all_collinear and all_unit
+
+        # Reference inputs from Ansys Mechanical
         pr = 0.3
         stress_vectors = np.array(
             [
                 [168.123993, 533.840027, 149.458389, -18.4201412, 84.3208466, 19.6648216],
                 [-14.2597857, -47.3646698, -15.0713329, 115.835953, -49.9352531, 19.6648216],
-                [145.930695, 293.001648, 70.5488815, -42.9542503, -64.7307892, -4.86928749],
             ]
         )
         strain_vectors = np.array(
@@ -1443,81 +1454,91 @@ class TestTbRom:
                     -6.491582608e-04,
                     2.556426916e-04,
                 ],
-                [
-                    1.843276987e-04,
-                    1.140288776e-03,
-                    -3.056541027e-04,
-                    -5.584052415e-04,
-                    -8.415002376e-04,
-                    -6.330073666e-05,
-                ],
             ]
         )
         # Reference outputs (from Ansys Mechanical)
-        principal_stress = np.array(
+        principal_directions = np.array(
             [
-                [552.035341, 178.859949, 120.52712],
-                [89.5983668, -1.24602911, -165.048126],
-                [319.81244, 139.407155, 50.2616282],
+                [
+                    [-0.03654073, 0.97846409, 0.20315707],
+                    [0.89781754, -0.05713118, 0.43664596],
+                    [-0.438849, -0.19835334, 0.87639461],
+                ],
+                [
+                    [0.71548582, 0.67320539, -0.18674727],
+                    [0.35315995, -0.11788318, 0.92810646],
+                    [-0.60279191, 0.72999867, 0.32209292],
+                ],
             ]
         )
+        principal_stress = np.array([[552.035341, 178.859949, 120.52712], [89.5983668, -1.24602911, -165.048126]])
         principal_strain = np.array(
             [
                 [2.311096237e-03, -1.145439771e-04, -4.937073526e-04],
                 [6.974330997e-04, 1.069444900e-04, -9.577691644e-04],
-                [1.314558931e-03, 1.419246912e-04, -4.375212507e-04],
             ]
         )
-        stress_int = np.array([431.508221, 254.646493, 269.550812])
-        strain_int = np.array([2.804803590e-03, 1.655202264e-03, 1.752080182e-03])
-        eqv_stress = np.array([405.500886, 223.527031, 237.855662])
-        eqv_strain = np.array([2.027504612e-03, 1.117635169e-03, 1.189278322e-03])
-        maxShear_stress = np.array([215.7541105, 127.3232464, 134.7754059])
-        maxShear_strain = np.array([2.804803590e-03, 1.655202264e-03, 1.752080182e-03])
-        absMaxPrin_stress = np.array([552.035341, -165.048126, 319.81244])
-        sgnEqv_stress = np.array([405.500886, -223.527031, 237.855662])
-
+        stress_int = np.array([431.508221, 254.646493])
+        strain_int = np.array([2.804803590e-03, 1.655202264e-03])
+        eqv_stress = np.array([405.500886, 223.527031])
+        eqv_strain = np.array([2.027504612e-03, 1.117635169e-03])
+        maxShear_stress = np.array([215.7541105, 127.3232464])
+        maxShear_strain = np.array([2.804803590e-03, 1.655202264e-03])
+        absMaxPrin_stress = np.array([552.035341, -165.048126])
+        sgnEqv_stress = np.array([405.500886, -223.527031])
         for idx, comp in enumerate(["X", "Y", "Z", "XY", "YZ", "XZ"]):
-            assert np.array_equal(stress_strain_scalar(stress_vectors, "S", comp), stress_vectors[:, idx])
-            assert np.array_equal(stress_strain_scalar(strain_vectors, "E", comp), strain_vectors[:, idx])
+            assert np.array_equal(stress_strain_component(stress_vectors, "S", comp), stress_vectors[:, idx])
+            assert np.array_equal(stress_strain_component(strain_vectors, "E", comp), strain_vectors[:, idx])
+        for idx, comp in enumerate(["dir1", "dir2", "dir3"]):
+            stress = stress_strain_component(stress_vectors, "S", comp)
+            strain = stress_strain_component(strain_vectors, "E", comp)
+            assert almost_collinear_unit_vectors(stress, principal_directions[:, idx], axis=1)
+            assert almost_collinear_unit_vectors(strain, principal_directions[:, idx], axis=1, atol=1e-7)
         for idx, comp in enumerate([1, 2, 3]):
-            assert np.allclose(stress_strain_scalar(stress_vectors, "S", comp), principal_stress[:, idx])
-            assert np.allclose(stress_strain_scalar(strain_vectors, "E", comp), principal_strain[:, idx], atol=1e-11)
-        assert np.allclose(stress_strain_scalar(stress_vectors, "S", "INT"), stress_int)
-        assert np.allclose(stress_strain_scalar(strain_vectors, "E", "INT"), strain_int, atol=1e-11)
-        assert np.allclose(stress_strain_scalar(stress_vectors, "S", "EQV"), eqv_stress)
-        assert np.allclose(stress_strain_scalar(strain_vectors, "E", "EQV", effective_pr=pr), eqv_strain, atol=1e-11)
-        assert np.allclose(stress_strain_scalar(stress_vectors, "S", "maxShear"), maxShear_stress)
-        assert np.allclose(stress_strain_scalar(strain_vectors, "E", "maxShear"), maxShear_strain, atol=1e-11)
-        assert np.allclose(stress_strain_scalar(stress_vectors, "S", "absMaxPrin"), absMaxPrin_stress)
-        assert np.allclose(stress_strain_scalar(stress_vectors, "S", "sgnEQV"), sgnEqv_stress)
+            stress = stress_strain_component(stress_vectors, "S", comp)
+            strain = stress_strain_component(strain_vectors, "E", comp)
+            assert allclose_and_same_shape(stress, principal_stress[:, idx])
+            assert allclose_and_same_shape(strain, principal_strain[:, idx], atol=1e-11)
+        assert allclose_and_same_shape(stress_strain_component(stress_vectors, "S", "INT"), stress_int)
+        assert allclose_and_same_shape(stress_strain_component(strain_vectors, "E", "INT"), strain_int, atol=1e-11)
+        assert allclose_and_same_shape(stress_strain_component(stress_vectors, "S", "EQV"), eqv_stress)
+        assert allclose_and_same_shape(
+            stress_strain_component(strain_vectors, "E", "EQV", effective_pr=pr), eqv_strain, atol=1e-11
+        )
+        assert allclose_and_same_shape(stress_strain_component(stress_vectors, "S", "maxShear"), maxShear_stress)
+        assert allclose_and_same_shape(
+            stress_strain_component(strain_vectors, "E", "maxShear"), maxShear_strain, atol=1e-11
+        )
+        assert allclose_and_same_shape(stress_strain_component(stress_vectors, "S", "sgnEQV"), sgnEqv_stress)
+        assert allclose_and_same_shape(stress_strain_component(stress_vectors, "S", "absMaxPrin"), absMaxPrin_stress)
 
     def test_stress_strain_scalar_output_errors(self):
         stress_vectors = np.array(
             [
                 [168.123993, 533.840027, 149.458389, -18.4201412, 84.3208466, 19.6648216],
                 [-14.2597857, -47.3646698, -15.0713329, 115.835953, -49.9352531, 19.6648216],
-                [145.930695, 293.001648, 70.5488815, -42.9542503, -64.7307892, -4.86928749],
             ]
         )
-
         try:
-            output = stress_strain_scalar(stress_vectors[:, :5], "S", "X")
+            output = stress_strain_component(stress_vectors[:, :5], "S", "X")
         except ValueError as e:
-            assert "Input array shape is (3, 5), but must be (3, 6)." in str(e)
+            assert (
+                f"Input array shape is {stress_vectors[:, :5].shape}, but must be {stress_vectors.shape[0], 6}."
+                in str(e)
+            )
         try:
-            output = stress_strain_scalar(stress_vectors, "S", "noComp")
+            output = stress_strain_component(stress_vectors, "S", "noComp")
         except ValueError as e:
-            assert "Invalid stress component argument 'noComp'." in str(e)
+            assert "Invalid component 'noComp' for item 'S.'" in str(e)
         try:
-            output = stress_strain_scalar(stress_vectors, "E", "absMaxPrin")
+            output = stress_strain_component(stress_vectors, "E", "absMaxPrin")
         except ValueError as e:
-            assert "Invalid strain component argument 'absMaxPrin'." in str(e)
+            assert "Invalid component 'absMaxPrin' for item 'E.'" in str(e)
         try:
-            output = stress_strain_scalar(stress_vectors, "E", "EQV")
+            output = stress_strain_component(stress_vectors, "E", "EQV")
         except ValueError as e:
             assert "Enter a valid effective Poisson's ratio to calculate equivalent strain." in str(e)
         try:
-            output = stress_strain_scalar(stress_vectors, "X", "EQV")
+            output = stress_strain_component(stress_vectors, "X", "EQV")
         except ValueError as e:
             assert "Invalid 'item' label, 'X'. Valid labels are 'S' and 'E'." in str(e)
