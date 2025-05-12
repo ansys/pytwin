@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: "3.10"
+  MAIN_PYTHON_VERSION: "3.13"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
 
 concurrency:
@@ -40,7 +40,7 @@ jobs:
         uses: ansys/actions/_setup-python@v9
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          use-cache: true
+          use-cache: false
 
       - name: "Copy source files for DPF server installation"
         shell: bash
@@ -100,11 +100,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
        matrix:
-           os: [windows-latest, ubuntu-20.04]
-           python-version: ["3.10", "3.11", "3.12"]
+           os: [windows-latest, ubuntu-22.04]
+           python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Install Ubuntu dependencies for RomViewerSharedLib.so
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install libosmesa6
