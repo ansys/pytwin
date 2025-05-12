@@ -57,7 +57,7 @@ import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, download_file
+from pytwin import TwinModel, download_file, stress_strain_component
 import pyvista as pv
 from scipy.optimize import minimize
 
@@ -160,13 +160,23 @@ target_mesh = whole_mesh.grid
 ###############################################################################
 # Project the deformation field ROM onto the targeted mesh, and visualize
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Projection is performed using nodal values since ROM is build from nodal deformation values. The default plotting
+# method calculates the magnitude (norm) of the components for display.
+
 def_romname = twin_model.tbrom_names[0]  # 0 = Deformation ROM, 1 = Stress ROM
-# field_data = twin_model.get_tbrom_output_field(romname) # point cloud results
-def_field_data = twin_model.project_tbrom_on_mesh(def_romname, target_mesh, True)  # mesh based results
+# field_data = twin_model.get_tbrom_output_field(romname)  # point cloud results
+def_field_data = twin_model.project_tbrom_on_mesh(
+    def_romname, target_mesh, True, nodal_values=True
+)  # mesh based results
 def_plotter = pv.Plotter()
 def_plotter.set_background("white")
 def_plotter.add_axes()
 def_plotter.add_mesh(def_field_data, scalar_bar_args={"color": "black"})
+def_plotter.camera_position = [
+    (-0.04, 0.04, -0.04),
+    (0.0, 0, 0),
+    (0, 1, 0),
+]
 def_plotter.show()
 
 ###############################################################################
@@ -174,12 +184,31 @@ def_plotter.show()
 #   :width: 400pt
 #   :align: center
 
+###############################################################################
+# Project the stress field ROM onto the targeted mesh, and visualize
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Projection is performed using nodal values since ROM is build from nodal-averaged stress values.
+# :func:`stress_strain_component`, is used to calculate the von Mises stress from the ROM stress tensor and this value
+# is plotted.
+
 stress_romname = twin_model.tbrom_names[1]  # 0 = Deformation ROM, 1 = Stress ROM
-stress_field_data = twin_model.project_tbrom_on_mesh(stress_romname, target_mesh, True)  # mesh based results
+stress_field_data = twin_model.project_tbrom_on_mesh(stress_romname, target_mesh, True, nodal_values=True)
+
+# Calculate von Mises equivalent stress and add it to the stress field data
+vonMises_MPa = stress_strain_component(stress_field_data.active_scalars, "S", "EQV") / 1e6
+fname = "von Mises Stress\n[MPa]"
+stress_field_data.point_data[fname] = vonMises_MPa
+stress_field_data.set_active_scalars(fname, preference="point")
+
 stress_plotter = pv.Plotter()
 stress_plotter.set_background("white")
 stress_plotter.add_axes()
 stress_plotter.add_mesh(stress_field_data, scalar_bar_args={"color": "black"})
+stress_plotter.camera_position = [
+    (-0.04, 0.04, -0.04),
+    (0.0, 0, 0),
+    (0, 1, 0),
+]
 stress_plotter.show()
 
 ###############################################################################
