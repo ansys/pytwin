@@ -173,6 +173,7 @@ def stress_strain_component(
 
     The function applies transformations to return the following outputs at each input location from an input snapshot
     stress or strain vector:
+
     - Individual stress or strain normal or shear components.
     - Individual stress or strain principal components.
     - Stress or strain intensity.
@@ -203,8 +204,8 @@ def stress_strain_component(
 
     Returns
     -------
-    (n,) array | (n, 3) array
-        ``(n,)`` array of the requested scalar stress or strain values, or `(n, 3)`` array of principal component
+    (n,) array | (n,3) array
+        ``(n,)`` array of the requested scalar stress or strain values, or ``(n, 3)`` array of principal component
         direction vectors when ``dir1, dir2, dir3`` are selected as the output component.
 
     Raises
@@ -255,9 +256,12 @@ def stress_strain_component(
     Outputs are calculated as described in `2.4. Combined Stresses and Strains`_ and `19.5.2.3. Maximum Shear`_ in the
     Ansys Mechanical APDL and Ansys Mechanical help.
 
-    .. _2.1.1. Stress-Strain Relationships: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/ans_thry/thy_str1.html%23strucstressstrain
-    .. _2.4. Combined Stresses and Strains: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/ans_thry/thy_str4.html%23struccombstrain
-    .. _19.5.2.3. Maximum Shear: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v251/en/wb_sim/ds_Maximum_Stress.html
+    .. _2.1.1. Stress-Strain Relationships: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/\
+        Secured/corp/v251/en/ans_thry/thy_str1.html%23strucstressstrain
+    .. _2.4. Combined Stresses and Strains: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/\
+        Secured/corp/v251/en/ans_thry/thy_str4.html%23struccombstrain
+    .. _19.5.2.3. Maximum Shear: https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/\
+        v251/en/wb_sim/ds_Maximum_Stress.html
 
     Examples
     --------
@@ -270,13 +274,14 @@ def stress_strain_component(
 
     Calculate equivalent strain for a material with Poisson's ratio of 0.3 (e.g. steel). Input strains lie in the XZ
     plane.
+
     >>> strain_vectors = np.array([[-2.1e-4, 0.0, 5.0e-5, 0.0, 0.0, 1.5e-6]])
     >>> E_vonMises = stress_strain_component(strain_vectors, 'E', 'EQV', effective_pr=0.3)
     >>> E_vonMises
     array([0.00018382])
 
 
-    """  # noqa: E501
+    """
     if str_vectors.shape != (str_vectors.shape[0], 6):
         raise ValueError(f"Input array shape is {str_vectors.shape}, but must be {(str_vectors.shape[0], 6)}.")
 

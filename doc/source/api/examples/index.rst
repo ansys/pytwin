@@ -15,4 +15,5 @@ Other PyTwin functions are available and used in :ref:`ref_example_gallery`.
    read_binary
    read_snapshot_size
    snapshot_to_array
+   stress_strain_component
    write_binary
