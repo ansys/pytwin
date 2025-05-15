@@ -136,8 +136,8 @@ def stress_strain_component(
     >>> S_absMaxPrin
     array([70., 60.])
 
-    Calculate equivalent strain for a material with Poisson's ratio of 0.3 (e.g. steel). Input strains lie in the XZ
-    plane.
+    Calculate equivalent strain for a material with Poisson's ratio of 0.3 (for example steel). Input strains lie in the
+    XZ plane.
 
     >>> strain_vectors = np.array([[-2.1e-4, 0.0, 5.0e-5, 0.0, 0.0, 1.5e-6]])
     >>> E_vonMises = stress_strain_component(strain_vectors, 'E', 'EQV', effective_pr=0.3)
