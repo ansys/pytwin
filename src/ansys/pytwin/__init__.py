@@ -72,7 +72,13 @@ PYTWIN_LOGGING_OPT_NOLOGGING = PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
 """
 PUBLIC API TO PYTWIN EVALUATE
 """
-from pytwin.evaluate.tbrom import read_binary, read_snapshot_size, snapshot_to_array, write_binary
+from pytwin.evaluate.tbrom import (
+    read_binary,
+    read_snapshot_size,
+    snapshot_to_array,
+    stress_strain_component,
+    write_binary,
+)
 from pytwin.evaluate.twin_model import TwinModel, TwinModelError
 
 """
