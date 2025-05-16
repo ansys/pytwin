@@ -10,10 +10,10 @@ PyTwin provides global settings for configuring and changing both logging and di
 .. autosummary::
    :toctree: _autosummary
 
-   pytwin.PyTwinLogLevel
-   pytwin.PyTwinLogOption
-   pytwin.modify_pytwin_working_dir
-   pytwin.modify_pytwin_logging
+   PyTwinLogLevel
+   PyTwinLogOption
+   modify_pytwin_working_dir
+   modify_pytwin_logging
 
 Workflow example
 ----------------

@@ -72,10 +72,14 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
+# Sphinx documentation build
 doc/_build/
 doc/build_errors.txt
-doc/source/api/*
+
+# Sphinx documentation autosummaries
+doc/source/**/_autosummary
+
+# Sphinx documentation gallery
 doc/source/examples/*
 
 # PyBuilder

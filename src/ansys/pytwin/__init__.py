@@ -76,10 +76,16 @@ from pytwin.evaluate.tbrom import (
     read_binary,
     read_snapshot_size,
     snapshot_to_array,
-    stress_strain_component,
     write_binary,
 )
 from pytwin.evaluate.twin_model import TwinModel, TwinModelError
+
+"""
+PUBLIC API TO PYTWIN POSTPROCESSING
+"""
+from pytwin.postprocessing.postprocessing import (
+    stress_strain_component,
+)
 
 """
 PUBLIC API TO PYTWIN RUNTIME
