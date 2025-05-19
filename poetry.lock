@@ -357,14 +357,14 @@ pyvistaqt = ">=0.11.1,<0.12.0"
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.70.0"
+version = "0.70.1"
 description = "A Python client library for Ansys MAPDL."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_mapdl_core-0.70.0-py3-none-any.whl", hash = "sha256:1b6e14aa2c9f2b5f9f39f6ca3da36d75ab129a57b1d2de332a6dfcee01ba72c0"},
-    {file = "ansys_mapdl_core-0.70.0.tar.gz", hash = "sha256:2226146c8ac2d3e5a76197653843765a08245fa4794375c438a01359b586a2db"},
+    {file = "ansys_mapdl_core-0.70.1-py3-none-any.whl", hash = "sha256:3c62d7480f6dbf00ad9c40f137015357e88e8b6b254675a4006a28aca4b5b268"},
+    {file = "ansys_mapdl_core-0.70.1.tar.gz", hash = "sha256:634b5625851a09465f692161dafa93e3efed0e4d22fa19828925fb3c5e3d787b"},
 ]
 
 [package.dependencies]
@@ -391,10 +391,10 @@ vtk = ">=9.0.0"
 
 [package.extras]
 all = ["ansys-tools-visualization-interface (>=0.9.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
-doc = ["ansys-dpf-core (==0.13.6)", "ansys-mapdl-reader (==0.55.0)", "ansys-sphinx-theme (==1.4.4)", "ansys-tools-visualization-interface (==0.9.1)", "grpcio (==1.70.0)", "imageio (==2.37.0)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.10.1)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==6.0.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.15)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.4.2)"]
+doc = ["ansys-dpf-core (==0.13.6)", "ansys-mapdl-reader (==0.55.0)", "ansys-sphinx-theme (==1.4.4)", "ansys-tools-visualization-interface (==0.9.1)", "grpcio (==1.70.0)", "imageio (==2.37.0)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.10.3)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==6.0.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.15)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.4.2)"]
 graphics = ["ansys-tools-visualization-interface (>=0.2.6)", "matplotlib (>=3.0.0)"]
 jupyter = ["ipywidgets", "jupyterlab (>=3)"]
-tests = ["ansys-dpf-core (==0.13.6)", "ansys-tools-visualization-interface (==0.9.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.1)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.2)", "pyfakefs (==5.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.1.9)", "pytest-random-order (==1.1.1)", "pytest-reportlog (==0.4.0)", "pytest-rerunfailures (==15.0)", "pytest-timeout (==2.3.1)", "scipy (==1.15.2)", "vtk (==9.4.2)"]
+tests = ["ansys-dpf-core (==0.13.6)", "ansys-tools-visualization-interface (==0.9.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.3)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.2)", "pyfakefs (==5.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.1.9)", "pytest-random-order (==1.1.1)", "pytest-reportlog (==0.4.0)", "pytest-rerunfailures (==15.1)", "pytest-timeout (==2.4.0)", "scipy (==1.15.3)", "vtk (==9.4.2)"]
 
 [[package]]
 name = "ansys-mapdl-reader"
