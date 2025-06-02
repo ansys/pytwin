@@ -29,6 +29,12 @@ pandas = ">=1.3.2"
 tqdm = ">=4.45.0"
 pywin32 = { version = ">=304", markers = "platform_system == 'Windows'" }
 
+# Optional dependencies which are included in the 'extras' section.
+pyvista = { version = ">=0.38.6", optional = true }
+
+[tool.poetry.extras]
+graphics = ["pyvista"]
+
 [tool.poetry.group.graphics]
 optional = true
 
