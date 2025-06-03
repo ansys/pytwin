@@ -57,7 +57,7 @@ jobs:
       - name: "Install documentation dependencies, including DPF server"
         run: |
           .venv\Scripts\Activate.ps1
-          poetry install --extras graphics --with doc
+          poetry install --with doc,graphics
           cd ansys_dpf_server_win_v2024.1.pre0
           pip install -e .
           cd ..
