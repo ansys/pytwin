@@ -57,12 +57,6 @@ with this command:
 
    pip install pytwin
 
-For PyTwin workflows evaluating and post processing field results from TBROM included in a TWIN file (:ref:`ref_example_gallery`),
-you will need to install additional dependencies with :
-
-.. code::
-
-   pip install pytwin[graphics]
 
 If you plan on doing local *development* of PyTwin with Git, install
 the latest release with this code:
