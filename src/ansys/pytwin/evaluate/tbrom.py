@@ -27,6 +27,8 @@ import struct
 from typing import TYPE_CHECKING, Union
 
 import numpy as np
+from pyvista.examples import default_user_data_path
+
 from pytwin import _HAS_TQDM
 from pytwin.decorators import needs_graphics
 
@@ -221,8 +223,12 @@ def _read_properties(filepath):
 
     nb_points = out_field["nbDof"]
     nb_modes = out_field["nbModes"]
+    transformation = out_field["transformation"]
 
-    return [nb_points, nb_modes]
+    if transformation["function"] == "":
+        return [nb_points, nb_modes, None]
+    else:
+        return [nb_points, nb_modes, transformation]
 
 
 class TbRom:
@@ -284,7 +290,7 @@ class TbRom:
         self._outputfilespath = None
 
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
-        [nbpoints, nbmodes] = _read_properties(propertiespath)
+        [nbpoints, nbmodes, transformation] = _read_properties(propertiespath)
         # bug 1168769 (fixed in 2025R2)
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         if os.path.exists(pointpath):
@@ -292,6 +298,7 @@ class TbRom:
         else:
             self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
+        self._transformation = transformation
 
         self._has_point_file = self._read_points(pointpath)
 
@@ -509,6 +516,9 @@ class TbRom:
             self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
             self._meshdata.set_active_scalars(self.field_output_name)
 
+        if self._transformation is not None:
+            self._reverseConstraints()
+
     def _named_selection_indexes(self, nsname: str):
         return self._nsidslist[nsname]
 
@@ -541,6 +551,50 @@ class TbRom:
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
+
+    def _reverseConstraints(self):
+        """
+        Compute the output field results with constraints applied during build
+        """
+        if self._transformation["function"] == "min":
+            minValue = self._transformation["minValue"]
+            self._pointsdata[self._pointsdata.get_active_scalars] = (
+                    np.power(self._pointsdata[self._pointsdata.get_active_scalars],2) + minValue)
+
+            if self._meshdata is not None:
+                self._meshdata[self._meshdata.get_active_scalars] = (
+                        np.power(self._meshdata[self._meshdata.get_active_scalars], 2) + minValue)
+
+
+        elif self._transformation["function"] == "max":
+            maxValue = self._transformation["maxValue"]
+            self._pointsdata[self._pointsdata.get_active_scalars] = (
+                    maxValue - np.power(self._pointsdata[self._pointsdata.get_active_scalars],2))
+
+            if self._meshdata is not None:
+                self._meshdata[self._meshdata.get_active_scalars] = (
+                        maxValue - np.power(self._meshdata[self._meshdata.get_active_scalars], 2))
+
+
+        elif self._transformation["function"] == "minMax":
+            minValue = self._transformation["minValue"]
+            maxValue = self._transformation["maxValue"]
+            if (maxValue - minValue) > 1.0:
+                eps2 = (maxValue-minValue) * 1e-08
+                eps1 = 1e-08 / (maxValue-minValue)
+            else:
+                eps1 = (maxValue-minValue) * 1e-08
+                eps2 = (maxValue-minValue) * (maxValue-minValue) * (maxValue-minValue) * 1e-08
+            alpha = 1.0 / (maxValue - minValue + eps1 + eps2)
+            beta = minValue - eps1
+            self._pointsdata[self._pointsdata.get_active_scalars] = (
+                max(minValue, min(maxValue, 1 /
+                                  (np.exp(self._pointsdata[self._pointsdata.get_active_scalars]) + alpha) + beta)))
+
+            if self._meshdata is not None:
+                self._meshdata[self._meshdata.get_active_scalars] = (
+                    max(minValue, min(maxValue, 1 /
+                                      (np.exp(self._meshdata[self._meshdata.get_active_scalars]) + alpha) + beta)))
 
     @property
     def has_point_file(self):
