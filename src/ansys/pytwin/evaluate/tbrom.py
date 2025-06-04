@@ -27,10 +27,9 @@ import struct
 from typing import TYPE_CHECKING, Union
 
 import numpy as np
-from pyvista.examples import default_user_data_path
-
 from pytwin import _HAS_TQDM
 from pytwin.decorators import needs_graphics
+from pyvista.examples import default_user_data_path
 
 if TYPE_CHECKING:  # pragma: no cover
     import pyvista as pv
@@ -558,41 +557,37 @@ class TbRom:
         """
         if self._transformation["function"] == "min":
             minValue = self._transformation["minValue"]
-            self._pointsdata[self.field_output_name] = (
-                    np.power(self._pointsdata[self.field_output_name],2) + minValue)
+            self._pointsdata[self.field_output_name] = np.power(self._pointsdata[self.field_output_name], 2) + minValue
 
             if self._meshdata is not None:
-                self._meshdata[self.field_output_name] = (
-                        np.power(self._meshdata[self.field_output_name], 2) + minValue)
-
+                self._meshdata[self.field_output_name] = np.power(self._meshdata[self.field_output_name], 2) + minValue
 
         elif self._transformation["function"] == "max":
             maxValue = self._transformation["maxValue"]
-            self._pointsdata[self.field_output_name] = (
-                    maxValue - np.power(self._pointsdata[self.field_output_name],2))
+            self._pointsdata[self.field_output_name] = maxValue - np.power(self._pointsdata[self.field_output_name], 2)
 
             if self._meshdata is not None:
-                self._meshdata[self.field_output_name] = (
-                        maxValue - np.power(self._meshdata[self.field_output_name], 2))
-
+                self._meshdata[self.field_output_name] = maxValue - np.power(self._meshdata[self.field_output_name], 2)
 
         elif self._transformation["function"] == "minMax":
             minValue = self._transformation["minValue"]
             maxValue = self._transformation["maxValue"]
             if (maxValue - minValue) > 1.0:
-                eps2 = (maxValue-minValue) * 1e-08
-                eps1 = 1e-08 / (maxValue-minValue)
+                eps2 = (maxValue - minValue) * 1e-08
+                eps1 = 1e-08 / (maxValue - minValue)
             else:
-                eps1 = (maxValue-minValue) * 1e-08
-                eps2 = (maxValue-minValue) * (maxValue-minValue) * (maxValue-minValue) * 1e-08
+                eps1 = (maxValue - minValue) * 1e-08
+                eps2 = (maxValue - minValue) * (maxValue - minValue) * (maxValue - minValue) * 1e-08
             alpha = 1.0 / (maxValue - minValue + eps1 + eps2)
             beta = minValue - eps1
-            self._pointsdata[self.field_output_name] = np.clip(np.power(
-                        np.exp(self._pointsdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue)
+            self._pointsdata[self.field_output_name] = np.clip(
+                np.power(np.exp(self._pointsdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+            )
 
             if self._meshdata is not None:
-                self._meshdata[self.field_output_name] = np.clip(np.power(
-                        np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue)
+                self._meshdata[self.field_output_name] = np.clip(
+                    np.power(np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+                )
 
     @property
     def has_point_file(self):
