@@ -558,22 +558,22 @@ class TbRom:
         """
         if self._transformation["function"] == "min":
             minValue = self._transformation["minValue"]
-            self._pointsdata[self._pointsdata.get_active_scalars] = (
-                    np.power(self._pointsdata[self._pointsdata.get_active_scalars],2) + minValue)
+            self._pointsdata[self.field_output_name] = (
+                    np.power(self._pointsdata[self.field_output_name],2) + minValue)
 
             if self._meshdata is not None:
-                self._meshdata[self._meshdata.get_active_scalars] = (
-                        np.power(self._meshdata[self._meshdata.get_active_scalars], 2) + minValue)
+                self._meshdata[self.field_output_name] = (
+                        np.power(self._meshdata[self.field_output_name], 2) + minValue)
 
 
         elif self._transformation["function"] == "max":
             maxValue = self._transformation["maxValue"]
-            self._pointsdata[self._pointsdata.get_active_scalars] = (
-                    maxValue - np.power(self._pointsdata[self._pointsdata.get_active_scalars],2))
+            self._pointsdata[self.field_output_name] = (
+                    maxValue - np.power(self._pointsdata[self.field_output_name],2))
 
             if self._meshdata is not None:
-                self._meshdata[self._meshdata.get_active_scalars] = (
-                        maxValue - np.power(self._meshdata[self._meshdata.get_active_scalars], 2))
+                self._meshdata[self.field_output_name] = (
+                        maxValue - np.power(self._meshdata[self.field_output_name], 2))
 
 
         elif self._transformation["function"] == "minMax":
@@ -587,14 +587,12 @@ class TbRom:
                 eps2 = (maxValue-minValue) * (maxValue-minValue) * (maxValue-minValue) * 1e-08
             alpha = 1.0 / (maxValue - minValue + eps1 + eps2)
             beta = minValue - eps1
-            self._pointsdata[self._pointsdata.get_active_scalars] = (
-                max(minValue, min(maxValue, 1 /
-                                  (np.exp(self._pointsdata[self._pointsdata.get_active_scalars]) + alpha) + beta)))
+            self._pointsdata[self.field_output_name] = np.clip(np.power(
+                        np.exp(self._pointsdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue)
 
             if self._meshdata is not None:
-                self._meshdata[self._meshdata.get_active_scalars] = (
-                    max(minValue, min(maxValue, 1 /
-                                      (np.exp(self._meshdata[self._meshdata.get_active_scalars]) + alpha) + beta)))
+                self._meshdata[self.field_output_name] = np.clip(np.power(
+                        np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue)
 
     @property
     def has_point_file(self):
