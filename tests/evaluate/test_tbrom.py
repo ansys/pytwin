@@ -1432,7 +1432,7 @@ class TestTbRom:
         max_snp2 = max(norm_vector_field(eval_snapshot))
         assert np.isclose(max_snp1, max_snp2) == True
 
-        twinmodel._tbroms[romname]._transformation = None # manually transform the TBROM to remove its transformation
+        twinmodel._tbroms[romname]._transformation = None # manually change the TBROM to remove its transformation
         twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
         model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
         eval_snapshot = twinmodel.generate_snapshot(romname, False)
