@@ -1,0 +1,6 @@
+get\_image\_filepath
+====================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_image_filepath

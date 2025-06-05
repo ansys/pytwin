@@ -1,0 +1,6 @@
+﻿modify\_pytwin\_working\_dir
+============================
+
+.. currentmodule:: pytwin
+
+.. autofunction:: modify_pytwin_working_dir

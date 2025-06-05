@@ -1,0 +1,6 @@
+initialize\_evaluation
+======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.initialize_evaluation
