@@ -29,7 +29,6 @@ from typing import TYPE_CHECKING, Union
 import numpy as np
 from pytwin import _HAS_TQDM
 from pytwin.decorators import needs_graphics
-from pyvista.examples import default_user_data_path
 
 if TYPE_CHECKING:  # pragma: no cover
     import pyvista as pv
