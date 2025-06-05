@@ -79,7 +79,7 @@ jobs:
 
       - name: "Check for error during documentation build"
         run: |
-          if (Select-String -Path "doc/build_log.txt" -Pattern "Traceback|ERROR|Error|error|Exception") {
+          if (Select-String -Path "doc/build_errors.txt" -Pattern "Traceback|ERROR|Error|error|Exception") {
             Write-Error "Documentation build failed due to detected errors in build_log.txt"
             exit 1
           }
