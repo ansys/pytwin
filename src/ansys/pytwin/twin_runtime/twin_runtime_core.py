@@ -211,12 +211,12 @@ class TwinRuntime:
         depending on how the model archive was created. For example,
         FMUs and Twin models return the following list. Note that there
         are entries for binaries/linux64/ and binaries/win64/ folders.
-          [
-          'binaries/', 'documentation/', 'resources/', 'modelDescription.xml',
-          'binaries/linux64/', 'binaries/win64/',
-          'binaries/linux64/ModelWith_Min50_Max150.so',
-          'binaries/win64/ModelWith_Min50_Max150.dll'
-          ]
+        [
+        'binaries/', 'documentation/', 'resources/', 'modelDescription.xml',
+        'binaries/linux64/', 'binaries/win64/',
+        'binaries/linux64/ModelWith_Min50_Max150.so',
+        'binaries/win64/ModelWith_Min50_Max150.dll'
+        ]
 
         For a .tbrom model, the following list is returned. Note the absence
         of binaries/linux64/ and binaries/win64/ folders.
@@ -229,7 +229,7 @@ class TwinRuntime:
         'resources/binaryOutputField/settings.json',
         'resources/binaryOutputField/views.json',
         'resources/binaryOutputField/operationsDefinition.json',
-        'resources/model.coreRom', 'modelDescription.xml']
+        'resources/model.coreRom', 'modelDescription.xml'
         ]
 
         Parameters
@@ -434,12 +434,12 @@ class TwinRuntime:
         depending on how the model archive was created. For example,
         FMUs and Twin models return the following list. Note that there
         are entries for binaries/linux64/ and binaries/win64/ folders.
-          [
-          'binaries/', 'documentation/', 'resources/', 'modelDescription.xml',
-          'binaries/linux64/', 'binaries/win64/',
-          'binaries/linux64/ModelWith_Min50_Max150.so',
-          'binaries/win64/ModelWith_Min50_Max150.dll'
-          ]
+        [
+        'binaries/', 'documentation/', 'resources/', 'modelDescription.xml',
+        'binaries/linux64/', 'binaries/win64/',
+        'binaries/linux64/ModelWith_Min50_Max150.so',
+        'binaries/win64/ModelWith_Min50_Max150.dll'
+        ]
 
         For a .tbrom model, the following list is returned. Note the absence
         of binaries/linux64/ and binaries/win64/ folders.
@@ -452,7 +452,7 @@ class TwinRuntime:
         'resources/binaryOutputField/settings.json',
         'resources/binaryOutputField/views.json',
         'resources/binaryOutputField/operationsDefinition.json',
-        'resources/model.coreRom', 'modelDescription.xml']
+        'resources/model.coreRom', 'modelDescription.xml'
         ]
 
         Parameters
@@ -954,8 +954,8 @@ class TwinRuntime:
         log_level : LogLevel
             Log level selected for the log file
             (LogLevel.TWIN_LOG_ALL, LogLevel.TWIN_LOG_WARNING,
-             LogLevel.TWIN_LOG_ERROR, LogLevel.TWIN_LOG_FATAL,
-             LogLevel.TWIN_NO_LOG).
+            LogLevel.TWIN_LOG_ERROR, LogLevel.TWIN_LOG_FATAL,
+            LogLevel.TWIN_NO_LOG).
 
         fmi_type : FmiType
             FMI type of the model (FmiType.CS, FmiType.ME, FmiType.UNDEFINED).

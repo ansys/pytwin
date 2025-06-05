@@ -159,6 +159,12 @@ Twin with Dynamic ROM and NDOF not properly defined (bug 1168769 fixed in 2025R2
 """
 TEST_TB_ROM_NDOF = os.path.join(os.path.dirname(__file__), "data", "twin_ndof.twin")
 
+"""
+TEST_TB_ROM_CONSTRAINTS
+Twin with 1 TBROM from SRB with constraints enabled (min/max = -0.00055/0.00044), deformation vector field
+"""
+TEST_TB_ROM_CONSTRAINTS = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_constraints.twin")
+
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -1413,3 +1419,24 @@ class TestTbRom:
             twinmodel = TwinModel(model_filepath=model_filepath)
         except TwinModelError as e:
             assert "cannot reshape array" not in str(e)
+
+    def test_tbrom_srb_constraints(self):
+        model_filepath = TEST_TB_ROM_CONSTRAINTS
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
+        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
+        eval_snapshot = twinmodel.generate_snapshot(romname, False)
+
+        max_snp1 = max(norm_vector_field(model_snapshot))
+        max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp1, max_snp2) == True
+
+        twinmodel._tbroms[romname]._transformation = None  # manually change the TBROM to remove its transformation
+        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
+        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
+        eval_snapshot = twinmodel.generate_snapshot(romname, False)
+
+        max_snp1 = max(norm_vector_field(model_snapshot))
+        max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp1, max_snp2) == False
