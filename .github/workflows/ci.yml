@@ -74,16 +74,12 @@ jobs:
         run: |
           .venv\Scripts\Activate.ps1
           doc/make.bat html
-        env:
-          ANSYS_DPF_ACCEPT_LA: Y
-
-      - name: "Check for error during documentation build"
-        run: |
           if (Select-String -Path "doc/build_errors.txt" -Pattern "Traceback|ERROR|Error|error|Exception") {
             Write-Error "Documentation build failed due to detected errors in doc/build_errors.txt"
-            Get-Content "doc/build_errors.txt"
             exit 1
           }
+        env:
+          ANSYS_DPF_ACCEPT_LA: Y
 
       - name: "Upload HTML documentation artifact"
         uses: actions/upload-artifact@v4
