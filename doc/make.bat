@@ -28,6 +28,18 @@ if errorlevel 9009 (
 )
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+
+REM Check if build_errors.txt has actual errors (not just warnings)
+if exist build_errors.txt (
+    findstr /i "error" build_errors.txt >nul
+    if %errorlevel% equ 0 (
+        echo.
+        echo "ERROR detected in build_errors.txt. Failing the documentation build:"
+        type build_errors.txt
+        exit /b 1
+    )
+)
+
 goto end
 
 :clean
