@@ -452,7 +452,7 @@ class TwinRuntime:
         'resources/binaryOutputField/settings.json',
         'resources/binaryOutputField/views.json',
         'resources/binaryOutputField/operationsDefinition.json',
-        'resources/model.coreRom', 'modelDescription.xml']
+        'resources/model.coreRom', 'modelDescription.xml'
         ]
 
         Parameters
