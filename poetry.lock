@@ -3276,14 +3276,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.17.0"
+version = "0.17.1"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.8"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.17.0-py3-none-any.whl", hash = "sha256:06dcf023933a1098e5626be2aa8ed063ac65590feccf4923583ac28df02c9044"},
-    {file = "pyaedt-0.17.0.tar.gz", hash = "sha256:488f467270e4fcc0fbf6e935675bbdd1171f46beac6c8636be8140c99403884e"},
+    {file = "pyaedt-0.17.1-py3-none-any.whl", hash = "sha256:a43c2b337b120800e84deb69818a1070459fd44f644024d6b30be445b0dc1837"},
+    {file = "pyaedt-0.17.1.tar.gz", hash = "sha256:60ea6d3801e3fd7a0bd846a39195482a7809be04a91befdc55948050dc69c34b"},
 ]
 
 [package.dependencies]
@@ -3306,7 +3306,7 @@ examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0,<2.38)", "joblib
 graphics = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.45)", "vtk (>=9.0,<9.4)"]
 integration-tests = ["matplotlib (>=3.5.0,<3.11)", "numpy (>=1.20.0,<2.3)", "pandas (>=1.1.0,<2.3)", "pyaedt[unit-tests]"]
 jupyter = ["ipython (>=7.30.0,<9.1)", "ipyvtklink (>=0.2.0,<0.2.4)", "jupyterlab (>=3.6.0,<4.5)"]
-tests = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.7)", "pyvista[io] (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
+tests = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.8)", "pyvista[io] (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
 unit-tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.4)", "pytest-cov (>=4.0.0,<6.2)"]
 
 [[package]]
