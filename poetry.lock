@@ -3276,14 +3276,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.17.1"
+version = "0.17.2"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.8"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.17.1-py3-none-any.whl", hash = "sha256:a43c2b337b120800e84deb69818a1070459fd44f644024d6b30be445b0dc1837"},
-    {file = "pyaedt-0.17.1.tar.gz", hash = "sha256:60ea6d3801e3fd7a0bd846a39195482a7809be04a91befdc55948050dc69c34b"},
+    {file = "pyaedt-0.17.2-py3-none-any.whl", hash = "sha256:ef36a26f6720f446e5ad298d28eddcd2248287049cf41c2187e71700a3b3f56a"},
+    {file = "pyaedt-0.17.2.tar.gz", hash = "sha256:77eb1b843b9d802e5e1130c470f6032ad8c765a64256552529da61a9ad289650"},
 ]
 
 [package.dependencies]
@@ -3299,14 +3299,14 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 tomli-w = "*"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0,<3.11)", "numpy (>=1.20.0,<2.3)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.3)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.45)", "requests", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
-doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.5)", "ansys-tools-visualization-interface ; python_version >= \"3.10\"", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.45)", "recommonmark", "sphinx-autobuild (==2021.3.14) ; python_version == \"3.8\"", "sphinx-autobuild (==2024.10.3) ; python_version > \"3.8\"", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
+all = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0,<3.11)", "numpy (>=1.20.0,<2.3)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.3)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.46)", "requests", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
+doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.5)", "ansys-tools-visualization-interface ; python_version >= \"3.10\"", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.46)", "recommonmark", "sphinx-autobuild (==2021.3.14) ; python_version == \"3.8\"", "sphinx-autobuild (==2024.10.3) ; python_version > \"3.8\"", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
 dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (==1.17.1) ; platform_system == \"Linux\" and python_version == \"3.7\"", "cffi (>=1.16.0,<1.18) ; platform_system == \"Linux\" and python_version > \"3.7\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
 examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "numpy (>=1.20.0,<2.3)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.3)", "plotly (>=6.0,<6.1)", "pyvista (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.8)"]
 graphics = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.45)", "vtk (>=9.0,<9.4)"]
 integration-tests = ["matplotlib (>=3.5.0,<3.11)", "numpy (>=1.20.0,<2.3)", "pandas (>=1.1.0,<2.3)", "pyaedt[unit-tests]"]
 jupyter = ["ipython (>=7.30.0,<9.1)", "ipyvtklink (>=0.2.0,<0.2.4)", "jupyterlab (>=3.6.0,<4.5)"]
-tests = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.8)", "pyvista[io] (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
+tests = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.8)", "pyvista[io] (>=0.38.0,<0.46)", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
 unit-tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.4)", "pytest-cov (>=4.0.0,<6.2)"]
 
 [[package]]
