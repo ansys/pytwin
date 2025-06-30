@@ -40,7 +40,7 @@ from pathlib import Path
 import platform
 import sys
 from typing import Set, Tuple
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree  as ET
 import zipfile
 
 import numpy as np
