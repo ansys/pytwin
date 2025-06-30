@@ -358,14 +358,14 @@ pyvistaqt = ">=0.11.1,<0.12.0"
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.70.1"
+version = "0.70.2"
 description = "A Python client library for Ansys MAPDL."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_mapdl_core-0.70.1-py3-none-any.whl", hash = "sha256:3c62d7480f6dbf00ad9c40f137015357e88e8b6b254675a4006a28aca4b5b268"},
-    {file = "ansys_mapdl_core-0.70.1.tar.gz", hash = "sha256:634b5625851a09465f692161dafa93e3efed0e4d22fa19828925fb3c5e3d787b"},
+    {file = "ansys_mapdl_core-0.70.2-py3-none-any.whl", hash = "sha256:688d41b7e3a004a8bcf0bc2f94173ef36f906ce4d37a0d582ad9bd9edb202566"},
+    {file = "ansys_mapdl_core-0.70.2.tar.gz", hash = "sha256:403ebe47bd33da211e52170d388b37af3e8795891e857a5cbdc6a78a6afbf22f"},
 ]
 
 [package.dependencies]
@@ -374,7 +374,7 @@ ansys-mapdl-reader = ">=0.51.7"
 ansys-math-core = ">=0.1.2"
 ansys-platform-instancemanagement = ">=1.0,<2.0"
 ansys-tools-path = ">=0.3.1"
-ansys-tools-visualization-interface = {version = ">=0.2.6", optional = true, markers = "extra == \"graphics\""}
+ansys-tools-visualization-interface = {version = ">=0.2.6,<0.10.0", optional = true, markers = "extra == \"graphics\""}
 click = ">=8.1.3"
 grpcio = ">=1.30.0"
 matplotlib = {version = ">=3.0.0", optional = true, markers = "extra == \"graphics\""}
@@ -391,9 +391,9 @@ tqdm = ">=4.45.0"
 vtk = ">=9.0.0"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface (>=0.9.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
+all = ["ansys-tools-visualization-interface (>=0.9.0,<0.10.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
 doc = ["ansys-dpf-core (==0.13.6)", "ansys-mapdl-reader (==0.55.0)", "ansys-sphinx-theme (==1.4.4)", "ansys-tools-visualization-interface (==0.9.1)", "grpcio (==1.70.0)", "imageio (==2.37.0)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.10.3)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==6.0.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.15)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.4.2)"]
-graphics = ["ansys-tools-visualization-interface (>=0.2.6)", "matplotlib (>=3.0.0)"]
+graphics = ["ansys-tools-visualization-interface (>=0.2.6,<0.10.0)", "matplotlib (>=3.0.0)"]
 jupyter = ["ipywidgets", "jupyterlab (>=3)"]
 tests = ["ansys-dpf-core (==0.13.6)", "ansys-tools-visualization-interface (==0.9.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.3)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.2)", "pyfakefs (==5.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.1.9)", "pytest-random-order (==1.1.1)", "pytest-reportlog (==0.4.0)", "pytest-rerunfailures (==15.1)", "pytest-timeout (==2.4.0)", "scipy (==1.15.3)", "vtk (==9.4.2)"]
 
@@ -2723,25 +2723,19 @@ files = [
 
 [[package]]
 name = "numpydoc"
-version = "1.8.0"
+version = "1.9.0"
 description = "Sphinx extension to support docstrings in Numpy format"
 optional = false
 python-versions = ">=3.9"
 groups = ["doc"]
 files = [
-    {file = "numpydoc-1.8.0-py3-none-any.whl", hash = "sha256:72024c7fd5e17375dec3608a27c03303e8ad00c81292667955c6fea7a3ccf541"},
-    {file = "numpydoc-1.8.0.tar.gz", hash = "sha256:022390ab7464a44f8737f79f8b31ce1d3cfa4b4af79ccaa1aac5e8368db587fb"},
+    {file = "numpydoc-1.9.0-py3-none-any.whl", hash = "sha256:8a2983b2d62bfd0a8c470c7caa25e7e0c3d163875cdec12a8a1034020a9d1135"},
+    {file = "numpydoc-1.9.0.tar.gz", hash = "sha256:5fec64908fe041acc4b3afc2a32c49aab1540cf581876f5563d68bb129e27c5b"},
 ]
 
 [package.dependencies]
 sphinx = ">=6"
-tabulate = ">=0.8.10"
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
-
-[package.extras]
-developer = ["pre-commit (>=3.3)", "tomli ; python_version < \"3.11\""]
-doc = ["intersphinx-registry", "matplotlib (>=3.5)", "numpy (>=1.22)", "pydata-sphinx-theme (>=0.13.3)", "sphinx (>=7)"]
-test = ["matplotlib", "pytest", "pytest-cov"]
 
 [[package]]
 name = "packaging"
@@ -3275,20 +3269,20 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.17.3"
+version = "0.17.4"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.8"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.17.3-py3-none-any.whl", hash = "sha256:6fda547e49b757c6e4ba3d10c8534bfa3c979c60bf7380f73115c21631665a5a"},
-    {file = "pyaedt-0.17.3.tar.gz", hash = "sha256:fb724e6f12a8a44905079052e3fa1ca80596157277783ccc6e0c51a3cfcefa7f"},
+    {file = "pyaedt-0.17.4-py3-none-any.whl", hash = "sha256:987bbdb345fb8f74d2a3e147901caa6fc115d6f6011f354ab8fc54092a1f6dc9"},
+    {file = "pyaedt-0.17.4.tar.gz", hash = "sha256:7dd02c41c64a624463ffb4db0933ccc52d8a502f77454728234e95c8502ecaa5"},
 ]
 
 [package.dependencies]
 defusedxml = ">=0.7,<8.0"
 fpdf2 = "*"
-grpcio = ">=1.50.0,<1.73"
+grpcio = ">=1.50.0,<1.74"
 jsonschema = "*"
 numpy = ">=1.20.0,<2.3"
 psutil = "*"
