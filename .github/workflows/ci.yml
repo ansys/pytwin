@@ -19,6 +19,19 @@ concurrency:
 
 jobs:
 
+  check-vulnerabilities:
+    name: "Check library vulnerabilities"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@v10.0.11
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          python-package-name: ${{ env.PACKAGE_NAME }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+          upload-reports: True
+          hide-log: false
+
   doc-style:
     name: "Running documentation style checks"
     runs-on: ubuntu-latest
