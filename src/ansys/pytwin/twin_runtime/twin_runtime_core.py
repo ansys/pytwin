@@ -40,9 +40,9 @@ from pathlib import Path
 import platform
 import sys
 from typing import Set, Tuple
-import defusedxml.ElementTree  as ET
 import zipfile
 
+import defusedxml.ElementTree as ET
 import numpy as np
 import pandas as pd
 
