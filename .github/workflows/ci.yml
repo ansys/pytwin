@@ -11,7 +11,7 @@ on:
 env:
   MAIN_PYTHON_VERSION: "3.13"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
-  PACKAGE_NAME: 'pytwin'
+  LIBRARY_NAME: 'pytwin'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,22 +28,29 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-          python-package-name: ${{ env.PACKAGE_NAME }}
+          python-package-name: ${{ env.LIBRARY_NAME }}
           dev-mode: ${{ github.ref != 'refs/heads/main' }}
           upload-reports: True
           hide-log: false
 
-  doc-style:
-    name: "Running documentation style checks"
+  code-style:
+    name: "Code style"
     runs-on: ubuntu-latest
+    needs: check-vulnerabilities
     steps:
-      - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v10
+      - uses: ansys/actions/code-style@v10
+
+  doc-style:
+    name: "Documentation style"
+    runs-on: ubuntu-latest
+    needs: check-vulnerabilities
+    steps:
+      - uses: ansys/actions/doc-style@v10
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   doc-build:
-    name: "Building library documentation"
+    name: "Build documentation"
     runs-on: pytwin-win10
     needs: doc-style
     steps:
@@ -102,15 +109,19 @@ jobs:
           path: doc/_build/html
           retention-days: 7
 
-  build-library:
-    name: "Smoke test and building"
-    runs-on: ubuntu-latest
+  build-wheelhouse:
+    name: "Build wheelhouse for latest Python versions"
+    runs-on: ${{ matrix.os }}
+    strategy:
+       matrix:
+           os: [ubuntu-latest, windows-latest]
+           python-version: ['3.10', '3.11', '3.12', '3.13']
     steps:
-      - name: "Build library source and wheel artifacts"
-        uses: ansys/actions/build-library@v10
+      - uses: ansys/actions/build-wheelhouse@v10.0
         with:
-          library-name: "pytwin"
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          library-name: ${{ env.LIBRARY_NAME }}
+          operating-system: ${{ matrix.os }}
+          python-version: ${{ matrix.python-version }}
 
   tests:
     name: Test library
@@ -150,14 +161,16 @@ jobs:
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v5
 
-  check-licenses:
-    name: "Check library dependencies ship with valid licenses"
+  build-library:
+    name: "Smoke test and building"
     runs-on: ubuntu-latest
     steps:
-      - name: "Validate third party licenses"
-        uses: ansys/actions/check-licenses@v10
+      - name: "Build library source and wheel artifacts"
+        uses: ansys/actions/build-library@v10
         with:
+          library-name: "pytwin"
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
 
   release-pypi-public:
     name: "Release to public PyPI"
