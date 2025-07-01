@@ -339,18 +339,18 @@ tests = ["pyfakefs (==5.8.0)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pyte
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.19.2"
+version = "0.20.0"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_visualization-0.19.2-py3-none-any.whl", hash = "sha256:a5592cf2bafd77bb5d01ade6f14ca022e319b204f6bb43ee0e01adc82096c716"},
-    {file = "ansys_fluent_visualization-0.19.2.tar.gz", hash = "sha256:274fc17a717ed8dceb47a15258accb3ce29c41c0b092393f41bbde73c3b29e2f"},
+    {file = "ansys_fluent_visualization-0.20.0-py3-none-any.whl", hash = "sha256:0dbf3e5216b33bc4ce4fb48b9b477afaf9f52384018a42c253decd2944e55c0f"},
+    {file = "ansys_fluent_visualization-0.20.0.tar.gz", hash = "sha256:9b19fefc32a2c8480cba3fc6dc4843dcdbce60306d4bb46c8a9b49d4f1f7378c"},
 ]
 
 [package.dependencies]
-ansys-fluent-core = ">=0.30.0"
+ansys-fluent-core = ">=0.32.0"
 imageio = ">=2.36.1"
 matplotlib = ">=3.6.0"
 pyside6 = ">=6.8.1,<6.9.0"
@@ -5589,4 +5589,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "133981760931ca9b486db74cbc28260358c0ad8311ece9c3718e3e67a0161c9e"
+content-hash = "246b98bb73550e32100fab3ab35d5e371aab7acae65de8d43ab63c71bbb66f93"
