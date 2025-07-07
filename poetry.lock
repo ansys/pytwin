@@ -338,18 +338,18 @@ tests = ["pytest (==8.3.4)", "pytest-cov (==6.0.0)", "pytest-mock (==3.14.0)", "
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.20.0"
+version = "0.19.2"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_visualization-0.20.0-py3-none-any.whl", hash = "sha256:0dbf3e5216b33bc4ce4fb48b9b477afaf9f52384018a42c253decd2944e55c0f"},
-    {file = "ansys_fluent_visualization-0.20.0.tar.gz", hash = "sha256:9b19fefc32a2c8480cba3fc6dc4843dcdbce60306d4bb46c8a9b49d4f1f7378c"},
+    {file = "ansys_fluent_visualization-0.19.2-py3-none-any.whl", hash = "sha256:a5592cf2bafd77bb5d01ade6f14ca022e319b204f6bb43ee0e01adc82096c716"},
+    {file = "ansys_fluent_visualization-0.19.2.tar.gz", hash = "sha256:274fc17a717ed8dceb47a15258accb3ce29c41c0b092393f41bbde73c3b29e2f"},
 ]
 
 [package.dependencies]
-ansys-fluent-core = ">=0.32.0"
+ansys-fluent-core = ">=0.30.0"
 imageio = ">=2.36.1"
 matplotlib = ">=3.6.0"
 pyside6 = ">=6.8.1,<6.9.0"
