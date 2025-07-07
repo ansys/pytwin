@@ -284,12 +284,6 @@ class TbRom:
             [name, nbpoints, nbmodes, transformation, inFields, productVersion] = _read_properties(propertiespath)
         else:
             raise ValueError("Properties file {} does not exist.".format(propertiespath))
-        # bug 1168769 (fixed in 2025R2)
-        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
-        if os.path.exists(pointpath):
-            self._nbpoints = read_snapshot_size(pointpath) // 3
-        else:
-            self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
         self._transformation = transformation
         self._productVersion = productVersion
@@ -315,6 +309,13 @@ class TbRom:
         self._outname = outputname
         self._outunit = unit
         self._outputfilespath = None
+
+        # bug 1168769 (fixed in 2025R2)
+        pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
+        if os.path.exists(pointpath):
+            self._nbpoints = read_snapshot_size(pointpath) // 3
+        else:
+            self._nbpoints = int(nbpoints / self._outdim)
 
         self._has_point_file = self._read_points(pointpath)
 
