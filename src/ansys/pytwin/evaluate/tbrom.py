@@ -84,7 +84,7 @@ def write_binary(filepath: str, vec: np.ndarray):
     """
     vec = vec.reshape(
         -1,
-    )
+    ).astype(np.float64)
     if os.path.exists(filepath):
         os.remove(filepath)
     with open(filepath, "xb") as f:
