@@ -1349,6 +1349,13 @@ class TestTbRom:
         assert len(scalar_field_read) is 4
         assert len(vector_field_read) is 3 * 4
 
+    def test_read_write_api_dtype(self):
+        # Test for issue #321
+        scalar_field = np.array([1.0, 2.0, 3.0, 5.0], dtype=np.int64)
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
+        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
+        assert np.all(np.equal(scalar_field, scalar_field_read))
+
     def test_snapshot_to_array_api(self):
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
         tensor_field = np.array(
