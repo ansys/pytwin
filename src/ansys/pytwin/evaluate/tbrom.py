@@ -239,6 +239,7 @@ def _read_properties(filepath):
 
     return [name, nb_points, nb_modes, transformation, inFields, productVersion]
 
+
 class TbRom:
     """
     Instantiates a TBROM that is part of a TWIN file created by Ansys Twin Builder.
@@ -296,7 +297,7 @@ class TbRom:
         infdata = dict()
 
         for fname in inFields:
-            inpath = os.path.join(tbrom_path, TbRom.IN_F_KEY + '_' + fname, TbRom.TBROM_BASIS)
+            inpath = os.path.join(tbrom_path, TbRom.IN_F_KEY + "_" + fname, TbRom.TBROM_BASIS)
             if os.path.exists(inpath):
                 inbasis = _read_basis(inpath)
                 infdata.update({fname: inbasis})

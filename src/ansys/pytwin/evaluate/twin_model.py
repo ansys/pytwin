@@ -714,11 +714,11 @@ class TwinModel(Model):
                 return field + "_mode_" + str(mode_idx) + "_" + rom_name
             else:
                 return field + "_mode_" + str(mode_idx)
-        else: # nouveau format TwinAI
+        else:  # nouveau format TwinAI
             if self.tbrom_count > 1:
-                return field + "_mode" + str(mode_idx+1) + "_" + rom_name
+                return field + "_mode" + str(mode_idx + 1) + "_" + rom_name
             else:
-                return field + "_mode" + str(mode_idx+1)
+                return field + "_mode" + str(mode_idx + 1)
 
     def _field_output_port_name(self, mode_idx: int, rom_name: str = None):
         productVersion = self._tbroms[rom_name].product_version
