@@ -673,5 +673,5 @@ class TbRom:
 
     @property
     def product_version(self):
-        """Return the number of modes of this TBROM output field."""
+        """Return the product version related information used to generate the TBROM."""
         return self._productVersion
