@@ -731,7 +731,7 @@ class TwinModel(Model):
             else:
                 return outField + "_mode_" + str(mode_idx)
         else:  # nouveau format TwinAI
-            outField = self.get_field_output_name(rom_name)
+            outField = tbrom.field_output_name
             if self.tbrom_count > 1:
                 return outField + "_mode" + str(mode_idx) + "_" + rom_name
             else:
