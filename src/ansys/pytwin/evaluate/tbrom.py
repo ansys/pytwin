@@ -217,17 +217,27 @@ def _read_properties(filepath):
     fields = {}
     if "fields" in data:
         fields = data["fields"]
-    out_field = fields["outField"]
 
-    nb_points = out_field["nbDof"]
-    nb_modes = out_field["nbModes"]
-    transformation = out_field["transformation"]
+    # assumption a single output field per TBROM
+    inFields = []
+    name = ""
+    nb_points = 0
+    nb_modes = 0
+    transformation = None
+    for fieldName, fieldData in fields.items():
+        if fieldData["fieldType"] == "binaryOutputField":
+            name = fieldName
+            nb_points = fieldData["nbDof"]
+            nb_modes = fieldData["nbModes"]
+            transformation = fieldData["transformation"]
+            if transformation["function"] == "" or transformation["function"] == "neutral":
+                transformation = None
+        if fieldData["fieldType"] == "binaryInputField":
+            inFields.append(fieldName)
 
-    if transformation["function"] == "":
-        return [nb_points, nb_modes, None]
-    else:
-        return [nb_points, nb_modes, transformation]
+    productVersion = data["productVersion"]
 
+    return [name, nb_points, nb_modes, transformation, inFields, productVersion]
 
 class TbRom:
     """
@@ -266,29 +276,13 @@ class TbRom:
         self._outmeshbasis = None
         self._hasinfmcs = None
         self._hasoutmcs = False
-
-        files = os.listdir(tbrom_path)
-        infdata = dict()
-
-        for file in files:
-            if TbRom.IN_F_KEY in file:
-                folder = file.split("_")
-                fname = folder[1]
-                inpath = os.path.join(tbrom_path, file, TbRom.TBROM_BASIS)
-                inbasis = _read_basis(inpath)
-                infdata.update({fname: inbasis})
-        self._infbasis = infdata
-
-        settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
-        [nsidslist, dimensionality, outputname, unit] = _read_settings(settingspath)
-        self._nsidslist = nsidslist
-        self._outdim = int(dimensionality[0])
-        self._outname = outputname
-        self._outunit = unit
-        self._outputfilespath = None
+        self._productVersion = None
 
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
-        [nbpoints, nbmodes, transformation] = _read_properties(propertiespath)
+        if os.path.exists(propertiespath):
+            [name, nbpoints, nbmodes, transformation, inFields, productVersion] = _read_properties(propertiespath)
+        else:
+            raise ValueError("Properties file {} does not exist.".format(propertiespath))
         # bug 1168769 (fixed in 2025R2)
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         if os.path.exists(pointpath):
@@ -297,6 +291,29 @@ class TbRom:
             self._nbpoints = int(nbpoints / self._outdim)
         self._nbmodes = nbmodes
         self._transformation = transformation
+        self._productVersion = productVersion
+
+        infdata = dict()
+
+        for fname in inFields:
+            inpath = os.path.join(tbrom_path, TbRom.IN_F_KEY + '_' + fname, TbRom.TBROM_BASIS)
+            if os.path.exists(inpath):
+                inbasis = _read_basis(inpath)
+                infdata.update({fname: inbasis})
+            else:
+                raise ValueError("SVD basis file {} does not exist.".format(inpath))
+        self._infbasis = infdata
+
+        settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
+        if os.path.exists(settingspath):
+            [nsidslist, dimensionality, outputname, unit] = _read_settings(settingspath)
+        else:
+            raise ValueError("Settings file {} does not exist.".format(settingspath))
+        self._nsidslist = nsidslist
+        self._outdim = int(dimensionality[0])
+        self._outname = outputname
+        self._outunit = unit
+        self._outputfilespath = None
 
         self._has_point_file = self._read_points(pointpath)
 
@@ -545,7 +562,10 @@ class TbRom:
         return has_point_file
 
     def _init_pointsdata(self, filepath):
-        self._outbasis = _read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+        if os.path.exists(filepath):
+            self._outbasis = _read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+        else:
+            raise ValueError("SVD basis file {} does not exist.".format(filepath))
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
@@ -648,3 +668,8 @@ class TbRom:
     def nb_modes(self):
         """Return the number of modes of this TBROM output field."""
         return self._nbmodes
+
+    @property
+    def product_version(self):
+        """Return the number of modes of this TBROM output field."""
+        return self._productVersion

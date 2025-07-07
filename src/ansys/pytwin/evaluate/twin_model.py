@@ -708,14 +708,32 @@ class TwinModel(Model):
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
     def _field_input_port_name(self, field: str, mode_idx: int, rom_name: str = None):
-        if self.tbrom_count > 1:
-            return field + "_mode_" + str(mode_idx) + "_" + rom_name
-        return field + "_mode_" + str(mode_idx)
+        productVersion = self._tbroms[rom_name].product_version
+        if "SVDTools" in productVersion:
+            if self.tbrom_count > 1:
+                return field + "_mode_" + str(mode_idx) + "_" + rom_name
+            else:
+                return field + "_mode_" + str(mode_idx)
+        else: # nouveau format TwinAI
+            if self.tbrom_count > 1:
+                return field + "_mode" + str(mode_idx+1) + "_" + rom_name
+            else:
+                return field + "_mode" + str(mode_idx+1)
 
     def _field_output_port_name(self, mode_idx: int, rom_name: str = None):
-        if self.tbrom_count > 1:
-            return "outField" + "_mode_" + str(mode_idx) + "_" + rom_name
-        return "outField" + "_mode_" + str(mode_idx)
+        productVersion = self._tbroms[rom_name].product_version
+        if "SVDTools" in productVersion:
+            outField = "outField"
+            if self.tbrom_count > 1:
+                return outField + "_mode_" + str(mode_idx) + "_" + rom_name
+            else:
+                return outField + "_mode_" + str(mode_idx)
+        else:  # nouveau format TwinAI
+            outField = self.get_field_output_name(rom_name)
+            if self.tbrom_count > 1:
+                return outField + "_mode" + str(mode_idx) + "_" + rom_name
+            else:
+                return outField + "_mode" + str(mode_idx)
 
     def _snapshot_filename(self, rom_name: str, named_selection: str = None):
         if named_selection is not None:
