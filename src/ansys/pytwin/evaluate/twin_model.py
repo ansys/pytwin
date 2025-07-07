@@ -707,8 +707,9 @@ class TwinModel(Model):
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
-    def _field_input_port_name(self, field: str, mode_idx: int, rom_name: str = None):
-        productVersion = self._tbroms[rom_name].product_version
+    def _field_input_port_name(self, field: str, mode_idx: int, tbrom: TbRom):
+        productVersion = tbrom.product_version
+        rom_name = tbrom.name
         if "SVDTools" in productVersion:
             if self.tbrom_count > 1:
                 return field + "_mode_" + str(mode_idx) + "_" + rom_name
@@ -720,8 +721,9 @@ class TwinModel(Model):
             else:
                 return field + "_mode" + str(mode_idx + 1)
 
-    def _field_output_port_name(self, mode_idx: int, rom_name: str = None):
-        productVersion = self._tbroms[rom_name].product_version
+    def _field_output_port_name(self, mode_idx: int, tbrom: TbRom):
+        productVersion = tbrom.product_version
+        rom_name = tbrom.name
         if "SVDTools" in productVersion:
             outField = "outField"
             if self.tbrom_count > 1:
@@ -773,7 +775,7 @@ class TwinModel(Model):
             for field in tbrom.field_input_names:
                 inmcs = dict()
                 for i in range(0, len(tbrom._infbasis[field])):
-                    input_port_name = self._field_input_port_name(field, i, tbrom.name)
+                    input_port_name = self._field_input_port_name(field, i, tbrom)
                     for key, item in self.inputs.items():
                         if input_port_name in key:
                             inmcs.update({key: item})
@@ -789,7 +791,7 @@ class TwinModel(Model):
 
         outmcs = dict()
         for i in range(1, tbrom.nb_modes + 1):
-            output_port_name = self._field_output_port_name(i, tbrom.name)
+            output_port_name = self._field_output_port_name(i, tbrom)
             for key, item in self.outputs.items():
                 if output_port_name in key:
                     outmcs.update({key: item})
@@ -1211,7 +1213,7 @@ class TwinModel(Model):
                             )
                             mc_idx = 0
                             for mc_name, mc_value in infmcs.items():
-                                header_name = self._field_input_port_name(field_name, mc_idx, tbrom_name)
+                                header_name = self._field_input_port_name(field_name, mc_idx, self._tbroms[tbrom_name])
                                 if i == 0:
                                     _inputs_df[header_name] = [0.0] * t_count
                                 _inputs_df.at[i, header_name] = mc_value
