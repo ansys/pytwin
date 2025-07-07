@@ -53,7 +53,7 @@ pytest-cov = ">=4.0.0"
 optional = true
 
 [tool.poetry.group.doc.dependencies]
-ansys-fluent-core = ">=0.30,<0.34"
+ansys-fluent-core = ">=0.30,<0.32"
 ansys-dpf-core = "^0.13.0"
 ansys-fluent-visualization = ">=0.20,<0.21"
 ansys-mapdl-core = {version = ">=0.68.5,<0.71.0", extras = ["graphics"]}
