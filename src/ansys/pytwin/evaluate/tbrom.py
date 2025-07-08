@@ -76,15 +76,16 @@ def write_binary(filepath: str, vec: np.ndarray):
 
     Examples
     --------
+    >>> import numpy as np
     >>> from pytwin import write_binary
-    >>> scalar_field = np.ndarray([1.0, 2.0, 3.0, 5.0])
+    >>> scalar_field = np.array([1.0, 2.0, 3.0, 5.0])
     >>> write_binary('snapshot_scalar.bin', scalar_field)
-    >>> vector_field = np.ndarray([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
+    >>> vector_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
     >>> write_binary('snapshot_vector.bin', vector_field)
     """
     vec = vec.reshape(
         -1,
-    )
+    ).astype(np.float64)
     if os.path.exists(filepath):
         os.remove(filepath)
     with open(filepath, "xb") as f:
