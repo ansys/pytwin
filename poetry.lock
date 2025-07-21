@@ -746,7 +746,7 @@ description = "Foreign Function Interface for Python calling C code."
 optional = false
 python-versions = ">=3.8"
 groups = ["doc"]
-markers = "platform_system == \"Linux\" or implementation_name == \"pypy\""
+markers = "implementation_name == \"pypy\" or platform_system == \"Linux\""
 files = [
     {file = "cffi-1.17.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:df8b1c11f177bc2313ec4b2d46baec87a5f3e71fc8b45dab2ee7cae86d9aba14"},
     {file = "cffi-1.17.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:8f2cdc858323644ab277e9bb925ad72ae0e67f69e804f4898c070998d50b1a67"},
@@ -3270,14 +3270,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.17.5"
+version = "0.18.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
-python-versions = "<4,>=3.8"
+python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.17.5-py3-none-any.whl", hash = "sha256:fbe277eccf3eb9614c1228fa59f8f45680ffac34a5f00f9ac70909d2661d6a7e"},
-    {file = "pyaedt-0.17.5.tar.gz", hash = "sha256:8d3ba2c6108439bd8aa48bb3f720e4edb9531cb5a8bac04decc934d2eccdc597"},
+    {file = "pyaedt-0.18.0-py3-none-any.whl", hash = "sha256:0e6e10dfc3298ba42b5c0446e7672f19f5a74fa13d64ef2eb59c36e2edddc430"},
+    {file = "pyaedt-0.18.0.tar.gz", hash = "sha256:30b6d5a6332b87af9fc878e4655e0d812b334f69d8c39221a4e0cc776823e9f3"},
 ]
 
 [package.dependencies]
@@ -3287,22 +3287,23 @@ grpcio = ">=1.50.0,<1.74"
 jsonschema = "*"
 numpy = ">=1.20.0,<2.3"
 psutil = "*"
-pyedb = {version = ">=0.24.0,<0.28.0 || >0.28.0", markers = "python_version > \"3.7\""}
+pydantic = ">=2.6.4,<2.12"
+pyedb = ">=0.24.0,<0.28.0 || >0.28.0"
 pyyaml = "*"
 rpyc = ">=6.0.0,<6.1"
 tomli = {version = "*", markers = "python_version < \"3.11\""}
 tomli-w = "*"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.46)", "requests", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
-doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.5)", "ansys-tools-visualization-interface ; python_version >= \"3.10\"", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.46)", "recommonmark", "sphinx-autobuild (==2021.3.14) ; python_version == \"3.8\"", "sphinx-autobuild (==2024.10.3) ; python_version > \"3.8\"", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (==1.17.1) ; platform_system == \"Linux\" and python_version == \"3.7\"", "cffi (>=1.16.0,<1.18) ; platform_system == \"Linux\" and python_version > \"3.7\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
-examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.2)", "pyvista (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.8)"]
-graphics = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.45)", "vtk (>=9.0,<9.4)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.46)", "requests", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
+doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.5)", "ansys-tools-visualization-interface", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.46)", "recommonmark", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
+dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0,<1.18) ; platform_system == \"Linux\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
+examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.3)", "pyvista (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.8)"]
+graphics = ["ansys-tools-visualization-interface", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.45)", "vtk (>=9.0,<9.4)"]
 integration-tests = ["matplotlib (>=3.5.0,<3.11)", "pandas (>=1.1.0,<2.4)", "pyaedt[unit-tests]"]
-jupyter = ["ipython (>=7.30.0,<9.1)", "ipyvtklink (>=0.2.0,<0.2.4)", "jupyterlab (>=3.6.0,<4.5)"]
-tests = ["ansys-tools-visualization-interface ; python_version >= \"3.10\"", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.8)", "pyvista[io] (>=0.38.0,<0.46)", "scikit-rf (>=0.30.0,<1.8)", "tables ; python_version >= \"3.10\""]
-unit-tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<6.2)"]
+jupyter = ["ipython (>=7.30.0,<9.1)", "jupyterlab (>=3.6.0,<4.5)"]
+tests = ["ansys-tools-visualization-interface", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.46)", "scikit-rf (>=0.30.0,<1.8)", "tables"]
+unit-tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<6.3)"]
 
 [[package]]
 name = "pyansys-tools-report"
@@ -3347,7 +3348,7 @@ description = "C parser in Python"
 optional = false
 python-versions = ">=3.8"
 groups = ["doc"]
-markers = "platform_system == \"Linux\" or implementation_name == \"pypy\""
+markers = "implementation_name == \"pypy\" or platform_system == \"Linux\""
 files = [
     {file = "pycparser-2.22-py3-none-any.whl", hash = "sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc"},
     {file = "pycparser-2.22.tar.gz", hash = "sha256:491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6"},
@@ -5483,4 +5484,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "0e672083af67e92ad71d4c98105539a13b2da06f5ddc8b2f1936ce5d811acd87"
+content-hash = "303909d2f874eb7146a2cb84311b480e6bd5163840c084b6f51d6bd9bf1bcad1"
