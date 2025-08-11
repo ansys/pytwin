@@ -1,0 +1,52 @@
+
+:orphan:
+
+.. _sphx_glr_examples_02-tbrom_examples_sg_execution_times:
+
+
+Computation times
+=================
+**03:44.109** total execution time for 6 files **from examples\02-tbrom_examples**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_04-TBROM_CFD_mesh_based_visualization.py` (``04-TBROM_CFD_mesh_based_visualization.py``)
+     - 01:33.040
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_00-TBROM_images.py` (``00-TBROM_images.py``)
+     - 01:27.818
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_01-TBROM_dataTransfer_pyMAPDL.py` (``01-TBROM_dataTransfer_pyMAPDL.py``)
+     - 00:35.303
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_02-TBROM_input_field.py` (``02-TBROM_input_field.py``)
+     - 00:04.374
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_05-TBROM_FEA_mesh_based_visualization.py` (``05-TBROM_FEA_mesh_based_visualization.py``)
+     - 00:02.602
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_03-TBROM_input_numpy_field.py` (``03-TBROM_input_numpy_field.py``)
+     - 00:00.973
+     - 0.0
