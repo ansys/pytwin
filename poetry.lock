@@ -255,16 +255,16 @@ protobuf = ">=3.19,<6"
 
 [[package]]
 name = "ansys-dpf-core"
-version = "0.13.8"
+version = "0.14.1"
 description = "Data Processing Framework - Python Core"
 optional = false
 python-versions = "<4,>=3.9"
 groups = ["doc"]
 files = [
-    {file = "ansys_dpf_core-0.13.8-py3-none-any.whl", hash = "sha256:94ffee67a9fe47a09f25de6652106f9dfbe6c43e098ae6cf8190b0948a4fe7e5"},
-    {file = "ansys_dpf_core-0.13.8-py3-none-manylinux1_x86_64.whl", hash = "sha256:37eb44e87618c60f128838e115d3db72b27c82e61a434bfb31adf2a5e5921aa6"},
-    {file = "ansys_dpf_core-0.13.8-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:28134eaaa10a2bdf1a86103682832ebe9781be80ec5b0432f6345d59fd38f874"},
-    {file = "ansys_dpf_core-0.13.8-py3-none-win_amd64.whl", hash = "sha256:7fad41a7102abcef02c9a865591b07581f2328ea2cdbb45db05490eac435786c"},
+    {file = "ansys_dpf_core-0.14.1-py3-none-any.whl", hash = "sha256:be188b8a476bc7cd3129ec13c028e996483803d4a15ad3d7e65b4f613c73f840"},
+    {file = "ansys_dpf_core-0.14.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:0e8614acd69f91ea7ff200d0d151364c7698e7250c38be06c98f7bbfc7e2dbae"},
+    {file = "ansys_dpf_core-0.14.1-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:965aba04f3971de3228cd3dea1dd814b4084adb070790ace6da0523ff9a04d91"},
+    {file = "ansys_dpf_core-0.14.1-py3-none-win_amd64.whl", hash = "sha256:4b58efab6b508e417aa482f06be3670fcce5e416ecde1c8667fe977de53e3d09"},
 ]
 
 [package.dependencies]
@@ -278,8 +278,8 @@ setuptools = "*"
 tqdm = "*"
 
 [package.extras]
-graphics = ["imageio (<2.28.1)", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)", "vtk (!=9.4.0)"]
-plotting = ["imageio (<2.28.1)", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)", "vtk"]
+graphics = ["imageio", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)", "vtk (!=9.4.0)"]
+plotting = ["imageio", "imageio-ffmpeg", "matplotlib (>=3.2)", "pyvista (>=0.32.0)", "vtk"]
 
 [[package]]
 name = "ansys-edb-core"
@@ -5509,4 +5509,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "303909d2f874eb7146a2cb84311b480e6bd5163840c084b6f51d6bd9bf1bcad1"
+content-hash = "c922c76c02b9c724e797097a7e8ad802f22744333216b776a788fa5fe90d9a64"
