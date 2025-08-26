@@ -55,7 +55,7 @@ jobs:
     needs: doc-style
     steps:
       - name: "Install Git and clone project"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Set up Python"
         uses: ansys/actions/_setup-python@v10
