@@ -305,14 +305,14 @@ tests = ["pytest (==7.4.3)", "pytest-cov (==4.1.0)", "pytest-mock (==3.11.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.34.0"
+version = "0.34.2"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.34.0-py3-none-any.whl", hash = "sha256:82d4ea7594e4b47d8da18df189507d283a84c9e2b220ab2dffcb1de9e30f644f"},
-    {file = "ansys_fluent_core-0.34.0.tar.gz", hash = "sha256:b1174b3885becf06bd026d4b4eabc2a7abe86c6266438858e52256f746ece3ab"},
+    {file = "ansys_fluent_core-0.34.2-py3-none-any.whl", hash = "sha256:d147cf909f851f6c2ad1e69474b5296b90aaba4827466e0f786d7b35b6910f98"},
+    {file = "ansys_fluent_core-0.34.2.tar.gz", hash = "sha256:794c18182845342c6fad5f0d1831ed94394032db5888029a80bcf1c79aaba697"},
 ]
 
 [package.dependencies]
@@ -339,18 +339,18 @@ tests = ["pyfakefs (==5.9.1)", "pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pyte
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.21.0"
+version = "0.21.1"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_visualization-0.21.0-py3-none-any.whl", hash = "sha256:a7a0d3bc002d1fc60991e74e42dae32a94ff43015a8e1d50ddac190d0535262a"},
-    {file = "ansys_fluent_visualization-0.21.0.tar.gz", hash = "sha256:8285f9696b8fe76042c045e9914f19129bcc89bef74dd6f1efe53391f7547850"},
+    {file = "ansys_fluent_visualization-0.21.1-py3-none-any.whl", hash = "sha256:8c9b6bd70ab05f7de0cbb30e5f30fed435f044a41563a7ce8578585758ec6c85"},
+    {file = "ansys_fluent_visualization-0.21.1.tar.gz", hash = "sha256:5e0586d810b6b139391b587bf102beeca72fa075250a60652c193db257181de4"},
 ]
 
 [package.dependencies]
-ansys-fluent-core = ">=0.34.0,<0.35.0"
+ansys-fluent-core = ">=0.34.1,<0.35.0"
 matplotlib = ">=3.6.0"
 pyvista = ">=0.44.0"
 
@@ -5459,4 +5459,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "ded5b2b3ac7adea7842f82c3820c28016c6ecac09c19efcf7cda4f80b19d5720"
+content-hash = "103f54876983fd352b662ff0841a05e27c9bab3d27ac580d046d794788c962db"
