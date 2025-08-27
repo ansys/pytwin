@@ -223,6 +223,4 @@ epub_title = project
 epub_exclude_files = ["search.html"]
 
 # PyAnsys tags configuration
-html_context = {
-    "pyansys_tags": ['Digital Twin']
-}
+html_context = {"pyansys_tags": ["Digital Twin"]}
