@@ -119,7 +119,7 @@ minfo = model.metadata.mesh_info
 zone_names_vec = minfo.get_property("zone_names")
 zone_ids = zone_names_vec.scoping.ids
 zone_names = list(zone_names_vec.data)
-ids = [zone_ids[zone_names.index(name)] for name in named_selections if name in zone_names]
+ids = [int(zone_ids[zone_names.index(name)]) for name in named_selections if name in zone_names]
 # extracting the individual grid associated to each named selection and merging all of them in 1 single grid
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=ids).eval()
 target_mesh = whole_mesh[-1].grid
