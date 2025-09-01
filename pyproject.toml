@@ -54,7 +54,7 @@ optional = true
 
 [tool.poetry.group.doc.dependencies]
 ansys-fluent-core = ">=0.30,<0.32"
-ansys-dpf-core = "^0.13.0"
+ansys-dpf-core = ">=0.13,<0.15"
 ansys-fluent-visualization = "^0.19"
 ansys-mapdl-core = {version = ">=0.68.5,<0.72.0", extras = ["graphics"]}
 ansys-sphinx-theme = "^1.4.4"
