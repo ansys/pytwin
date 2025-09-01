@@ -165,7 +165,7 @@ plotter.show()
 # Creation of the scene and results to display (e.g. velocity magnitude on a given boundary on top of geometry)
 print("Post processing (part 2)")
 namedselection = "outlet"
-nsid = [zone_ids[zone_names.index(namedselection)]]
+nsid = [int(zone_ids[zone_names.index(namedselection)])]
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=nsid).eval()
 target_mesh = whole_mesh[0].grid
 # The projection is performed with interpolation (point cloud data interpolated onto target mesh)
