@@ -20,18 +20,18 @@ concurrency:
 
 jobs:
 
-  #check-vulnerabilities:
-  #  name: "Check library vulnerabilities"
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - uses: ansys/actions/check-vulnerabilities@v10.0.15
-  #      with:
-  #        python-version: ${{ env.MAIN_PYTHON_VERSION }}
-  #        token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-  #        python-package-name: ${{ env.LIBRARY_NAME }}
-  #        dev-mode: ${{ github.ref != 'refs/heads/main' }}
-  #        upload-reports: True
-  #        hide-log: false
+  check-vulnerabilities:
+    name: "Check library vulnerabilities"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@v10.0.16
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          python-package-name: ${{ env.LIBRARY_NAME }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+          upload-reports: True
+          hide-log: false
 
   code-style:
     name: "Code style"
