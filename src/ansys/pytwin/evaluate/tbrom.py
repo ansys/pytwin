@@ -194,6 +194,11 @@ def _read_settings(filepath):
     if "unit" in data:
         unit = data["unit"]
 
+    if "timeSeries" in data:
+        timegrid = data["timeSeries"]["timeStepsValues"]
+    else:
+        timegrid = None
+
     tbromns = dict()
 
     # Create list of name selections indexes
@@ -208,7 +213,7 @@ def _read_settings(filepath):
             i = i + 1
         tbromns.update({name: idsListNp})
 
-    return [tbromns, dimensionality, outputname, unit]
+    return [tbromns, dimensionality, outputname, unit, timegrid]
 
 
 def _read_properties(filepath):
@@ -271,6 +276,7 @@ class TbRom:
         self._name = tbrom_name
         self._infmcs = None
         self._outmcs = None
+        self._outmcs_pfh = None # use to store mc for parametric field history case
         self._infbasis = None
         self._pointsdata = None
         self._meshdata = None
@@ -279,6 +285,17 @@ class TbRom:
         self._hasinfmcs = None
         self._hasoutmcs = False
         self._productVersion = None
+        self._paramFieldHist = False
+
+        settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
+        if os.path.exists(settingspath):
+            [nsidslist, dimensionality, outputname, unit, timegrid] = _read_settings(settingspath)
+        else:
+            raise ValueError("Settings file {} does not exist.".format(settingspath))
+
+        if timegrid is not None:
+            self._paramFieldHist = True
+            self._timegrid = timegrid
 
         propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
         if os.path.exists(propertiespath):
@@ -300,11 +317,7 @@ class TbRom:
                 raise ValueError("SVD basis file {} does not exist.".format(inpath))
         self._infbasis = infdata
 
-        settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
-        if os.path.exists(settingspath):
-            [nsidslist, dimensionality, outputname, unit] = _read_settings(settingspath)
-        else:
-            raise ValueError("Settings file {} does not exist.".format(settingspath))
+
         self._nsidslist = nsidslist
         self._outdim = int(dimensionality[0])
         self._outname = outputname
@@ -316,7 +329,10 @@ class TbRom:
         if os.path.exists(pointpath):
             self._nbpoints = read_snapshot_size(pointpath) // 3
         else:
-            self._nbpoints = int(nbpoints / self._outdim)
+            if self.isparamfieldhist:
+                self._nbpoints = int(nbpoints / self._outdim / len(self.timegrid))
+            else:
+                self._nbpoints = int(nbpoints / self._outdim)
 
         self._has_point_file = self._read_points(pointpath)
 
@@ -521,17 +537,26 @@ class TbRom:
 
         self._meshdata = mesh_data
 
-    def _update_output_field(self):
+    def _update_output_field(self, time=None):
         """
         Compute the output field results with current mode coefficients.
         """
         mc = np.asarray(list(self._outmcs.values()))
+        if self._outmcs_pfh is None:
+            self._outmcs_pfh = mc
 
-        self._pointsdata[self.field_output_name] = np.tensordot(mc, self._outbasis, axes=1)
+        if not self.isparamfieldhist:
+            self._pointsdata[self.field_output_name] = np.tensordot(mc, self._outbasis, axes=1)
+        else:
+            outbasis, outmeshbasis = self._timegridBasis(time)
+            self._pointsdata[self.field_output_name] = np.tensordot(self._outmcs_pfh, outbasis, axes=1)
         self._pointsdata.set_active_scalars(self.field_output_name)
 
         if self._meshdata is not None:
-            self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
+            if not self.isparamfieldhist:
+                self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
+            else:
+                self._pointsdata[self.field_output_name] = np.tensordot(self._outmcs_pfh, outmeshbasis, axes=1)
             self._meshdata.set_active_scalars(self.field_output_name)
 
         if self._transformation is not None:
@@ -551,6 +576,30 @@ class TbRom:
         else:
             return data
 
+    def _timegridBasis(self, time: float):
+        timegrid = self.timegrid
+        meshgrid = None
+        if time<=timegrid[0]:
+            index = 0
+            outgrid = self._outbasis[index]
+        elif time>=timegrid[-1]:
+            index = len(timegrid)-1
+            outgrid = self._outbasis[index]
+        else: # linear interpolation
+            index = 0
+            while time>timegrid[index] and index < len(timegrid)-1:
+                index = index+1
+            outgrid = self._outbasis[index-1] + (time-timegrid[index-1])/(timegrid[index]-timegrid[index-1]) * (self._outbasis[index]-self._outbasis[index-1])
+
+
+        if self._meshdata is not None:
+            if time<=timegrid[0] or time>=timegrid[-1]:
+                meshgrid = self._meshdata[index]
+            else:
+                meshgrid = self._meshdata[index-1] + (time-timegrid[index-1])/(timegrid[index]-timegrid[index-1]) * (self._meshdata[index]-self._meshdata[index-1])
+
+        return outgrid, meshgrid
+
     @needs_graphics
     def _read_points(self, filepath):
         import pyvista as pv
@@ -566,7 +615,11 @@ class TbRom:
 
     def _init_pointsdata(self, filepath):
         if os.path.exists(filepath):
-            self._outbasis = _read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+            self._outbasis = _read_basis(filepath)
+            if not self.isparamfieldhist:
+                self._outbasis = self._outbasis.reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+            else:
+                self._outbasis = self._outbasis.reshape(len(self.timegrid), self.nb_modes, self.nb_points, self.field_output_dim)
         else:
             raise ValueError("SVD basis file {} does not exist.".format(filepath))
         # initialize output field data
@@ -676,3 +729,13 @@ class TbRom:
     def product_version(self):
         """Return the product version related information used to generate the TBROM."""
         return self._productVersion
+
+    @property
+    def isparamfieldhist(self):
+        """Return True if the TBROM is a parametric field history ROM."""
+        return self._paramFieldHist
+
+    @property
+    def timegrid(self):
+        """Return the time grid associated to TBROM in case of parametric field history ROM."""
+        return self._timegrid

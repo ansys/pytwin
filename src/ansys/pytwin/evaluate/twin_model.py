@@ -809,7 +809,7 @@ class TwinModel(Model):
         """
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
-        tbrom._update_output_field()
+        tbrom._update_output_field(time=self.evaluation_time)
 
     def _update_field_inputs(self, field_inputs: dict):
         for tbrom_name, field_inputs in field_inputs.items():
