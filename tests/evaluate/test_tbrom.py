@@ -165,6 +165,11 @@ Twin with 1 TBROM from SRB with constraints enabled (min/max = -0.00055/0.00044)
 """
 TEST_TB_ROM_CONSTRAINTS = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_constraints.twin")
 
+"""
+TEST_TB_PFIELD_HISTORY
+Twin with 1 TBROM of type parametric field history
+"""
+TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "TwinPFieldHistory_wGeo.twin")
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -1447,3 +1452,50 @@ class TestTbRom:
         max_snp1 = max(norm_vector_field(model_snapshot))
         max_snp2 = max(norm_vector_field(eval_snapshot))
         assert np.isclose(max_snp1, max_snp2) == False
+
+    def test_tbrom_parametric_field_history(self):
+        model_filepath = TEST_TB_PFIELD_HISTORY
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        assert twinmodel._tbroms[romname].isparamfieldhist == True
+
+        twinmodel.initialize_evaluation()
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        plotter = pv.Plotter()
+        plotter.set_background("white")
+        plotter.add_axes()
+        plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
+        maxt0 = max(field_data.active_scalars)
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        plotter = pv.Plotter()
+        plotter.set_background("white")
+        plotter.add_axes()
+        plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
+        maxt100 = max(field_data.active_scalars)
+
+        twinmodel.evaluate_step_by_step(150.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        plotter = pv.Plotter()
+        plotter.set_background("white")
+        plotter.add_axes()
+        plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
+        maxt250 = max(field_data.active_scalars)
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        plotter = pv.Plotter()
+        plotter.set_background("white")
+        plotter.add_axes()
+        plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
+        maxt300 = max(field_data.active_scalars)
+
+        assert np.isclose(maxt0, 0.8973744667566537)
+        assert np.isclose(maxt100, 1.685669230751107)
+        assert np.isclose(maxt250, 5.635884051349383)
+        assert np.isclose(maxt250, maxt300)
+
+
+
