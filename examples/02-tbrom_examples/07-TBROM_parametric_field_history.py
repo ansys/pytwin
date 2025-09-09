@@ -78,6 +78,8 @@ time points.
 # Perform required imports, which include downloading and importing the input files.
 
 from pytwin import TwinModel, download_file
+import matplotlib.pyplot as plt
+import numpy as np
 import pyvista as pv
 
 twin_file = download_file("TwinPFieldHistory_wGeo_25R2.twin", "twin_files", force_download=True)
@@ -155,8 +157,30 @@ print(max(field_data.active_scalars))
 #   :width: 400pt
 #   :align: center
 
-print(twin_model.get_tbrom_time_grid(romname))
-
 # If we continue simulating the Twin over time, the field results won't change
 # anymore since we have reached the end time of the field history. To evaluate the ROM
 # again, it needs to be re-initialized, with the possibility to change input parameters values.
+
+timegrid = twin_model.get_tbrom_time_grid(romname)
+print(timegrid)
+
+fieldName = twin_model.get_field_output_name(romname)+'-normed'
+
+point = np.array([0.0, 0.0, 0.0])
+idx = field_data.find_closest_point(point)
+outputValues = []
+
+closest_pt = field_data.points[idx]
+print(closest_pt)
+
+twin_model.initialize_evaluation(parameters=rom_inputs)
+outputValues.append(field_data.point_data[fieldName][idx])
+
+for i in range(1, len(timegrid)):
+    step = timegrid[i]-timegrid[i-1]
+    twin_model.evaluate_step_by_step(step)
+    outputValues.append(field_data.point_data[fieldName][idx])
+
+plt.plot(timegrid, outputValues)
+plt.title("Displacement vs Time for point {}".format(np.round(closest_pt, 3)))
+plt.show()
