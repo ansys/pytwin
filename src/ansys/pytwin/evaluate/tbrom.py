@@ -245,9 +245,11 @@ def _read_properties(filepath):
 
     return [name, nb_points, nb_modes, transformation, inFields, productVersion]
 
+
 def update_vector_norm(mesh, name):
     vec = mesh[name]
     mesh[f"{name}-normed"] = np.linalg.norm(vec, axis=1)
+
 
 class TbRom:
     """
@@ -318,7 +320,6 @@ class TbRom:
             else:
                 raise ValueError("SVD basis file {} does not exist.".format(inpath))
         self._infbasis = infdata
-
 
         self._nsidslist = nsidslist
         self._outdim = int(dimensionality[0])
@@ -581,24 +582,27 @@ class TbRom:
     def _timegridBasis(self, time: float):
         timegrid = self.timegrid
         meshgrid = None
-        if time<=timegrid[0]:
+        if time <= timegrid[0]:
             index = 0
-            outgrid = self._outbasis[:,index,:,:]
-        elif time>=timegrid[-1]:
-            index = len(timegrid)-1
-            outgrid = self._outbasis[:,index,:,:]
-        else: # linear interpolation
+            outgrid = self._outbasis[:, index, :, :]
+        elif time >= timegrid[-1]:
+            index = len(timegrid) - 1
+            outgrid = self._outbasis[:, index, :, :]
+        else:  # linear interpolation
             index = 0
-            while time>timegrid[index] and index < len(timegrid)-1:
-                index = index+1
-            outgrid = self._outbasis[:,index-1,:,:] + (time-timegrid[index-1])/(timegrid[index]-timegrid[index-1]) * (self._outbasis[:,index,:,:]-self._outbasis[:,index-1,:,:])
-
+            while time > timegrid[index] and index < len(timegrid) - 1:
+                index = index + 1
+            outgrid = self._outbasis[:, index - 1, :, :] + (time - timegrid[index - 1]) / (
+                timegrid[index] - timegrid[index - 1]
+            ) * (self._outbasis[:, index, :, :] - self._outbasis[:, index - 1, :, :])
 
         if self._meshdata is not None:
-            if time<=timegrid[0] or time>=timegrid[-1]:
+            if time <= timegrid[0] or time >= timegrid[-1]:
                 meshgrid = self._meshdata[index]
             else:
-                meshgrid = self._meshdata[:,index-1,:,:] + (time-timegrid[index-1])/(timegrid[index]-timegrid[index-1]) * (self._meshdata[:,index,:,:]-self._meshdata[:,index-1,:,:])
+                meshgrid = self._meshdata[:, index - 1, :, :] + (time - timegrid[index - 1]) / (
+                    timegrid[index] - timegrid[index - 1]
+                ) * (self._meshdata[:, index, :, :] - self._meshdata[:, index - 1, :, :])
 
         return outgrid, meshgrid
 
@@ -621,7 +625,9 @@ class TbRom:
             if not self.isparamfieldhist:
                 self._outbasis = self._outbasis.reshape(self.nb_modes, self.nb_points, self.field_output_dim)
             else:
-                self._outbasis = self._outbasis.reshape(self.nb_modes, len(self.timegrid), self.nb_points, self.field_output_dim)
+                self._outbasis = self._outbasis.reshape(
+                    self.nb_modes, len(self.timegrid), self.nb_points, self.field_output_dim
+                )
         else:
             raise ValueError("SVD basis file {} does not exist.".format(filepath))
         # initialize output field data

@@ -87,7 +87,7 @@ twin_file = download_file("TwinPFieldHistory_wGeo_25R2.twin", "twin_files", forc
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the ROM scalar inputs.
 
-rom_inputs = {'testROM_25r2_1_force_1_Magnitude':9500,'testROM_25r2_1_force_2_Magnitude':16500}
+rom_inputs = {"testROM_25r2_1_force_1_Magnitude": 9500, "testROM_25r2_1_force_2_Magnitude": 16500}
 
 ###############################################################################
 # Load the twin runtime and generate displacement results
