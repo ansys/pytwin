@@ -161,4 +161,5 @@ print(max(field_data.active_scalars))
 print(twin_model.get_tbrom_time_grid(romname))
 
 # If we continue simulating the Twin over time, the field results won't change
-# anymore since we have reached the end time of the field history.
+# anymore since we have reached the end time of the field history. To evaluate the ROM
+# again, it needs to be re-initialized, with the possibility to change input parameters values.
