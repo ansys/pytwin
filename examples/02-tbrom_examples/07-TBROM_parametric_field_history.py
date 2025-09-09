@@ -83,8 +83,7 @@ import pandas as pd
 from pytwin import TwinModel, download_file
 import pyvista as pv
 
-twin_file = r"C:\Users\cpetre\Downloads\TwinPFieldHistory_wGeo.twin"
-#twin_file = download_file("twin_tbrom_pfieldhistory.twin", "twin_files", force_download=True)
+twin_file = download_file("TwinPFieldHistory_wGeo_25R2.twin", "twin_files", force_download=True)
 
 ###############################################################################
 # Define ROM scalar inputs
