@@ -27,7 +27,7 @@
 
 This example shows how to use PyTwin to load and evaluate a twin model built upon a
 parametric field history ROM. Such ROM, created with Static ROM Builder, has parameters
-that can be changed from 1 evaluation to another, and will output field predictions over
+that can be changed from one evaluation to another, and will output field predictions over
 a time grid. The example shows how to evaluate and post process the results at different
 time points.
 """
@@ -37,7 +37,7 @@ time points.
 #   :width: 400pt
 #   :align: center
 
-# sphinx_gallery_thumbnail_path = '_static/TBROM_input_field.png'
+# sphinx_gallery_thumbnail_path = '_static/TBROM_pfieldhistory_t250.png'
 
 ###############################################################################
 # The example model is a simplified 3D mechanical frame tightened by two bolts.
@@ -46,12 +46,12 @@ time points.
 # parameters. Additionally, this component is made of a material that exhibits
 # time-dependent behavior, allowing the structure to undergo a mechanical
 # phenomenon known as “creep”. Essentially, the deformation of the structure
-# changes over time, even under constant applied forces, which the problem
-# a suitable candidate for parametric field history ROM.
+# changes over time, even under constant applied forces, which makes the problem
+# suitable for parametric field history ROM.
 
 ###############################################################################
 # .. note::
-#   To be able to use the functionalities to generate an output field snapshot on demand, you
+#   To be able to use the functionalities illustrated in this example, you
 #   must have a twin with one or more TBROMs. The output mode coefficients for the TBROMs
 #   must be enabled when exporting the TBROMs and connected to twin outputs following
 #   these conventions:
@@ -115,13 +115,13 @@ print(max(field_data.active_scalars))
 #   :align: center
 
 ###############################################################################
-# Evaluate the twin at different time points
+# Evaluate the twin at different time points (3D field visualization)
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Because the twin is based on a parametric field history ROM, the entire field
 # history has been computed during the Twin initialization. In order to visualize
-# the results at different time points, we are going to advance and simulate the
-# Twin over time. A linear interpolation is performed in case the time selected
-# is between 2 time steps of the field history.
+# the results at different time points, the Twin can be advanced and simulated
+# over time. A linear interpolation is performed in case the time selected
+# is between two time steps of the field history.
 
 # After 100 seconds
 twin_model.evaluate_step_by_step(100.0)
@@ -157,9 +157,14 @@ print(max(field_data.active_scalars))
 #   :width: 400pt
 #   :align: center
 
+###############################################################################
+# Evaluate the twin at different time points (time series)
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # If we continue simulating the Twin over time, the field results won't change
 # anymore since we have reached the end time of the field history. To evaluate the ROM
 # again, it needs to be re-initialized, with the possibility to change input parameters values.
+# In this section, we will see how to build and visualize a transient prediction
+# at a given location.
 
 timegrid = twin_model.get_tbrom_time_grid(romname)
 print(timegrid)
