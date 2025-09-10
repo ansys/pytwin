@@ -1470,6 +1470,8 @@ class TestTbRom:
 
         timegrid = twinmodel.get_tbrom_time_grid(romname)
 
+        assert len(timegrid) == 17
+
         assert twinmodel._tbroms[romname].isparamfieldhist == True
 
         twinmodel.initialize_evaluation()
@@ -1503,6 +1505,12 @@ class TestTbRom:
         plotter.add_axes()
         plotter.add_mesh(field_data, scalar_bar_args={"color": "black"})
         maxt300 = max(field_data.active_scalars)
+
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        msg = "is larger than last time point"
+        assert "".join(lines).count(msg) == 1
 
         assert np.isclose(maxt0, 0.8973744667566537)
         assert np.isclose(maxt100, 1.685669230751107)

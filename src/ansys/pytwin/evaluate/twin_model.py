@@ -815,6 +815,9 @@ class TwinModel(Model):
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
         tbrom._update_output_field(time=self.evaluation_time)
+        if tbrom._logLevel is not None:
+            self._log_message(tbrom._logMessage, tbrom._logLevel)
+            tbrom._clean_log()
 
     def _update_field_inputs(self, field_inputs: dict):
         for tbrom_name, field_inputs in field_inputs.items():

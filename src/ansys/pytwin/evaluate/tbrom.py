@@ -29,6 +29,7 @@ from typing import TYPE_CHECKING, Union
 import numpy as np
 from pytwin import _HAS_TQDM
 from pytwin.decorators import needs_graphics
+from pytwin.settings import PyTwinLogLevel
 
 if TYPE_CHECKING:  # pragma: no cover
     import pyvista as pv
@@ -290,6 +291,8 @@ class TbRom:
         self._hasoutmcs = False
         self._productVersion = None
         self._paramFieldHist = False
+        self._logLevel = None
+        self._logMessage = ""
 
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
         if os.path.exists(settingspath):
@@ -582,12 +585,20 @@ class TbRom:
     def _timegridBasis(self, time: float):
         timegrid = self.timegrid
         meshgrid = None
-        if time <= timegrid[0]:
+        if time < timegrid[0]:
             index = 0
             outgrid = self._outbasis[:, index, :, :]
-        elif time >= timegrid[-1]:
+            self._logMessage += (("Evaluation time {} is smaller than first time point {} for the parametric "
+                                  "field history TBROM {}, using first time point for field prediction")
+                                 .format(time, timegrid[0],self.name))
+            self._logLevel = PyTwinLogLevel.PYTWIN_LOG_WARNING
+        elif time > timegrid[-1]:
             index = len(timegrid) - 1
             outgrid = self._outbasis[:, index, :, :]
+            self._logMessage += (("Evaluation time {} is larger than last time point {} for the parametric "
+                                  "field history TBROM {}, using last time point for field prediction")
+                                 .format(time, timegrid[-1],self.name))
+            self._logLevel = PyTwinLogLevel.PYTWIN_LOG_WARNING
         else:  # linear interpolation
             index = 0
             while time > timegrid[index] and index < len(timegrid) - 1:
@@ -671,6 +682,10 @@ class TbRom:
                 self._meshdata[self.field_output_name] = np.clip(
                     np.power(np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
                 )
+
+    def _clean_log(self):
+        self._logLevel = None
+        self._logMessage = ""
 
     @property
     def has_point_file(self):
