@@ -45,7 +45,7 @@ time points.
 # The magnitude of the deformation is dependent on the magnitude of both force
 # parameters. Additionally, this component is made of a material that exhibits
 # time-dependent behavior, allowing the structure to undergo a mechanical
-# phenomenon known as “creep”. Essentially, the deformation of the structure
+# phenomenon known as creep. Essentially, the deformation of the structure
 # changes over time, even under constant applied forces, which makes the problem
 # suitable for parametric field history ROM.
 
