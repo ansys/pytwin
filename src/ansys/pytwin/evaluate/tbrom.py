@@ -588,16 +588,18 @@ class TbRom:
         if time < timegrid[0]:
             index = 0
             outgrid = self._outbasis[:, index, :, :]
-            self._logMessage += (("Evaluation time {} is smaller than first time point {} for the parametric "
-                                  "field history TBROM {}, using first time point for field prediction")
-                                 .format(time, timegrid[0],self.name))
+            self._logMessage += (
+                "Evaluation time {} is smaller than first time point {} for the parametric "
+                "field history TBROM {}, using first time point for field prediction"
+            ).format(time, timegrid[0], self.name)
             self._logLevel = PyTwinLogLevel.PYTWIN_LOG_WARNING
         elif time > timegrid[-1]:
             index = len(timegrid) - 1
             outgrid = self._outbasis[:, index, :, :]
-            self._logMessage += (("Evaluation time {} is larger than last time point {} for the parametric "
-                                  "field history TBROM {}, using last time point for field prediction")
-                                 .format(time, timegrid[-1],self.name))
+            self._logMessage += (
+                "Evaluation time {} is larger than last time point {} for the parametric "
+                "field history TBROM {}, using last time point for field prediction"
+            ).format(time, timegrid[-1], self.name)
             self._logLevel = PyTwinLogLevel.PYTWIN_LOG_WARNING
         else:  # linear interpolation
             index = 0
