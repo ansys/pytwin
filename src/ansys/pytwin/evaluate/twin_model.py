@@ -2102,7 +2102,7 @@ class TwinModel(Model):
         >>> from pytwin import TwinModel
         >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
         >>> romname = model.tbrom_names[0]
-        >>> time_grid = model.et_tbrom_time_grid(romname)
+        >>> time_grid = model.get_tbrom_time_grid(romname)
         >>> model.initialize_evaluation()
         """
         self._log_key = "GetTimeGrid"
