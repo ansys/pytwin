@@ -715,7 +715,7 @@ class TwinModel(Model):
     def _field_input_port_name(self, field: str, mode_idx: int, tbrom: TbRom):
         productVersion = tbrom.product_version
         rom_name = tbrom.name
-        if "SVDTools" in productVersion:
+        if "SVDTools" or "dynaROM" in productVersion:
             if self.tbrom_count > 1:
                 return field + "_mode_" + str(mode_idx) + "_" + rom_name
             else:
