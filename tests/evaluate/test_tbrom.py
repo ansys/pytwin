@@ -1475,8 +1475,9 @@ class TestTbRom:
         assert twinmodel._tbroms[romname].isparamfieldhist == True
 
         twinmodel.initialize_evaluation()
-        field_data = twinmodel.get_tbrom_output_field(romname)
+
         assert np.isclose(twinmodel.outputs["outField_mode_1"], 955.1432930241692)
+        field_data = twinmodel.get_tbrom_output_field(romname)
         assert np.isclose(field_data.active_scalars[0][0], 0.04801500027118713)
         maxt0 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
 
