@@ -554,7 +554,8 @@ class TbRom:
         else:
             outbasis, outmeshbasis = self._timegridBasis(time)
             self._pointsdata[self.field_output_name] = np.tensordot(mc, outbasis, axes=1)
-        update_vector_norm(self._pointsdata, self.field_output_name)
+        if self.field_output_dim > 1:
+            update_vector_norm(self._pointsdata, self.field_output_name)
         self._pointsdata.set_active_scalars(self.field_output_name)
 
         if self._meshdata is not None:
@@ -562,7 +563,8 @@ class TbRom:
                 self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
             else:
                 self._pointsdata[self.field_output_name] = np.tensordot(mc, outmeshbasis, axes=1)
-            update_vector_norm(self._meshdata, self.field_output_name)
+            if self.field_output_dim > 1:
+                update_vector_norm(self._meshdata, self.field_output_name)
             self._meshdata.set_active_scalars(self.field_output_name)
 
         if self._transformation is not None:
