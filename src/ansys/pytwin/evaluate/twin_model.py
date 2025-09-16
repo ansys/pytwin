@@ -441,7 +441,7 @@ class TwinModel(Model):
         return msg
 
     def _error_msg_no_timegrid(self, rom_name):
-        msg = "[ParametricFieldHistory]The given ROM name ({rom_name}) is "
+        msg = f"[ParametricFieldHistory]The given ROM name ({rom_name}) is "
         msg += f"not a parametric field history ROM."
         return msg
 
