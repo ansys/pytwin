@@ -1452,6 +1452,7 @@ class TestTbRom:
 
         max_snp1 = max(norm_vector_field(model_snapshot))
         max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp2, 12.091451713161185) == True
         assert np.isclose(max_snp1, max_snp2) == False
 
     def test_tbrom_parametric_field_history(self):
