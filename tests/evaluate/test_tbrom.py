@@ -180,48 +180,6 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
-    def test_generate_snapshot_with_tbrom_is_ok(self):
-        model_filepath = TEST_TB_ROM9
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[1]
-
-        # Generate snapshot on disk
-        snp_filepath = twinmodel.generate_snapshot(romname, True)
-        snp_vec_on_disk = read_binary(snp_filepath)
-        assert snp_vec_on_disk.shape[0] == 313266
-        assert np.isclose(snp_vec_on_disk[0], 1.7188266861184398e-05)
-        assert np.isclose(snp_vec_on_disk[-1], -1.3100502753567515e-05)
-
-        # Generate snapshot in memory
-        snp_vec_in_memory = twinmodel.generate_snapshot(romname, False)
-        # snapshot in memory is ndarray with (number of points, field dimensionality)
-        assert (
-            snp_vec_in_memory.reshape(
-                -1,
-            ).shape[0]
-            == snp_vec_on_disk.shape[0]
-        )
-        assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0, 0])
-        assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1, -1])
-
-        # Generate snapshot gives same results as twin_model probe
-        max_snp = max(norm_vector_field(snp_vec_in_memory))
-        assert np.isclose(max_snp, twinmodel.outputs["MaxDef"])
-
-        # Generate snapshot on named selection
-        # TODO LUCAS - Use another twin model with named selection smaller than whole model
-        ns = twinmodel.get_named_selections(romname)
-        snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert (
-            snp_vec_ns.reshape(
-                -1,
-            ).shape[0]
-            == 313266
-        )
-        assert np.isclose(snp_vec_ns[0, 0], 1.7188266861184398e-05)
-        assert np.isclose(snp_vec_ns[-1, -1], -1.3100502753567515e-05)
-
     def test_generate_snapshot_on_named_selection_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM12
         twinmodel = TwinModel(model_filepath=model_filepath)
