@@ -369,7 +369,7 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[GeometryFile]" in str(e)
 
-    #def test_tbrom_image_generation_at_initialization(self):
+    # def test_tbrom_image_generation_at_initialization(self):
     #    reinit_settings()
     #    model_filepath = download_file("ThermalTBROM_23R2.twin", "twin_files")
     #    twin = TwinModel(model_filepath=model_filepath)
