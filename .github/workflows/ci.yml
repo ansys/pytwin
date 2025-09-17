@@ -34,7 +34,7 @@ jobs:
       ##  env:
       ##    DEBIAN_FRONTEND: noninteractive
       - name: Run pytest
-        uses: ansys/actions/tests-pytest@v10
+        uses: ansys/actions/tests-pytest@v10.1
         with:
           optional-dependencies-name: "tests,graphics"
           python-version: ${{ matrix.python-version }}
