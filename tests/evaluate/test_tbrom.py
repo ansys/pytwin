@@ -180,6 +180,40 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
+    def test_generate_snapshot_batch_with_tbrom_is_ok(self):
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        fieldname = "inputPressure"
+
+        # Batch Evaluation
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        batch_results = twinmodel.evaluate_batch(
+            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
+            field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT, INPUT_SNAPSHOT]}},
+        )
+
+        # Generate snapshot from batch results
+        snapshot_paths = twinmodel.generate_snapshot_batch(batch_results, romname)
+        assert len(snapshot_paths) == 3
+
+        snp0 = read_binary(snapshot_paths[0])
+        snp1 = read_binary(snapshot_paths[1])
+        snp2 = read_binary(snapshot_paths[2])
+
+        assert np.isclose(max(snp0), 4.4525419095601117e-05)
+        assert np.isclose(max(snp1), 4.452541222688557e-05)
+        assert np.isclose(max(snp2), 4.452541222688557e-05)
+
+        max_snp0 = max(norm_vector_field(snp0))
+        max_snp1 = max(norm_vector_field(snp1))
+        max_snp2 = max(norm_vector_field(snp2))
+
+        assert np.isclose(max_snp0, batch_results["MaxDef"][0])
+        assert np.isclose(max_snp1, batch_results["MaxDef"][1])
+        assert np.isclose(max_snp2, batch_results["MaxDef"][2])
+
     def test_generate_points_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM12
         twinmodel = TwinModel(model_filepath=model_filepath)
