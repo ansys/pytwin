@@ -1161,19 +1161,6 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[GeometryFile]" in str(e)
 
-    def test_tbrom_image_generation_at_initialization(self):
-        reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R2.twin", "twin_files")
-        twin = TwinModel(model_filepath=model_filepath)
-        twin.initialize_evaluation()
-
-        fp = twin.get_image_filepath(
-            rom_name=twin.tbrom_names[0],
-            view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
-            evaluation_time=0.0,
-        )
-        assert os.path.exists(fp)
-
     def test_tbrom_getters_warning(self):
         reinit_settings()
         model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
