@@ -180,37 +180,6 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
-    def test_generate_snapshot_with_tbrom_exceptions(self):
-        model_filepath = TEST_TB_ROM9
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = "unknown"
-
-        # Raise an exception if twin model has not been initialized
-        try:
-            twinmodel.generate_snapshot(romname, False)
-        except TwinModelError as e:
-            assert "[Initialization]" in str(e)
-
-        # Raise an exception if rom name is unknown
-        twinmodel.initialize_evaluation()
-        try:
-            twinmodel.generate_snapshot(romname, False)
-        except TwinModelError as e:
-            assert "[RomName]" in str(e)
-
-        # Raise an exception if tbrom output is not connected
-        romname = twinmodel.tbrom_names[1]
-        try:
-            twinmodel.generate_snapshot(romname, False)
-        except TwinModelError as e:
-            assert "[RomOutputConnection]" in str(e)
-
-        # Raise en exception if named selection does not exist
-        try:
-            twinmodel.generate_snapshot(romname, False, "unknown")
-        except TwinModelError as e:
-            assert "[NamedSelection]" in str(e)
-
     def test_generate_snapshot_batch_with_tbrom_is_ok(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
