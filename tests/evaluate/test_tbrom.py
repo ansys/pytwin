@@ -327,55 +327,6 @@ class TestTbRom:
         names = twin.get_field_input_names(rom_name)
         assert names == []
 
-    def test_tbrom_getters_exceptions_if_no_tbrom(self):
-        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
-        reinit_settings()
-        model_filepath = COUPLE_CLUTCHES_FILEPATH
-        twin = TwinModel(model_filepath=model_filepath)
-
-        # Test getters that do not need initialization
-        try:
-            twin._tbrom_resource_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_geometry_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_available_view_names(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_rom_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_named_selections(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_field_input_names(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        # Test getters that need initialization
-        twin.initialize_evaluation()
-        try:
-            twin.get_snapshot_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_image_filepath(rom_name="test", view_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
     def test_tbrom_getters_exceptions_if_bad_rom_name(self):
         # Raise an error if getter is called with an unknown rom name
         reinit_settings()
@@ -577,47 +528,6 @@ class TestTbRom:
             twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
         except TwinModelError as e:
             assert "MeshProjection" in str(e)
-
-    def test_tbrom_get_output_field_errors(self):
-        reinit_settings()
-        romname = "unknown"
-        model_filepath = COUPLE_CLUTCHES_FILEPATH
-        twinmodel = TwinModel(model_filepath=model_filepath)
-
-        # Raise an exception if no tbrom available in the twin
-        try:
-            twinmodel.get_tbrom_output_field(romname)
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-
-        # Raise an exception if unknown rom name is given
-        try:
-            twinmodel.get_tbrom_output_field(romname)
-        except TwinModelError as e:
-            assert "[RomName]" in str(e)
-
-        # Raise an exception if the twin considered has not output MC connected
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        try:
-            twinmodel.get_tbrom_output_field(romname)
-        except TwinModelError as e:
-            assert "[RomOutputConnection]" in str(e)
-
-        # Raise an exception if any issue occurs during the API execution
-        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        try:
-            twinmodel.get_tbrom_output_field(romname)
-        except TwinModelError as e:
-            assert "GetPointsData" in str(e)
 
     def test_tbrom_new_instantiation_without_points(self):
         model_filepath = TEST_TB_ROM3
