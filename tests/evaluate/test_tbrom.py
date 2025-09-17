@@ -1162,6 +1162,19 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[GeometryFile]" in str(e)
 
+    #def test_tbrom_image_generation_at_initialization(self):
+    #    reinit_settings()
+    #    model_filepath = download_file("ThermalTBROM_23R2.twin", "twin_files")
+    #    twin = TwinModel(model_filepath=model_filepath)
+    #    twin.initialize_evaluation()
+
+    #    fp = twin.get_image_filepath(
+    #        rom_name=twin.tbrom_names[0],
+    #        view_name=twin.get_available_view_names(twin.tbrom_names[0])[0],
+    #        evaluation_time=0.0,
+    #    )
+    #    assert os.path.exists(fp)
+
     def test_tbrom_getters_warning(self):
         reinit_settings()
         model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
@@ -1423,3 +1436,71 @@ class TestTbRom:
     def test_tbrom_srb_constraints(self):
         model_filepath = TEST_TB_ROM_CONSTRAINTS
         twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
+        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
+        eval_snapshot = twinmodel.generate_snapshot(romname, False)
+
+        max_snp1 = max(norm_vector_field(model_snapshot))
+        max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp1, max_snp2) == True
+
+        twinmodel._tbroms[romname]._transformation = None  # manually change the TBROM to remove its transformation
+        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
+        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
+        eval_snapshot = twinmodel.generate_snapshot(romname, False)
+
+        max_snp1 = max(norm_vector_field(model_snapshot))
+        max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp2, 12.091451713161185) == True
+        assert np.isclose(max_snp1, max_snp2) == False
+
+    def test_tbrom_parametric_field_history(self):
+        model_filepath = TEST_TB_ROM_CONSTRAINTS
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        try:
+            timegrid = twinmodel.get_tbrom_time_grid(romname)
+        except TwinModelError as e:
+            assert "not a parametric field history ROM" in str(e)
+
+        model_filepath = TEST_TB_PFIELD_HISTORY
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        timegrid = twinmodel.get_tbrom_time_grid(romname)
+
+        assert len(timegrid) == 17
+
+        assert twinmodel._tbroms[romname].isparamfieldhist == True
+
+        twinmodel.initialize_evaluation()
+
+        assert np.isclose(twinmodel.outputs["outField_mode_1"], 955.1432930241692)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        assert np.isclose(field_data.active_scalars[0][0], 0.04801500027118713)
+        maxt0 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt100 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(150.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt250 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt300 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        msg = "is larger than last time point"
+        assert "".join(lines).count(msg) == 1
+
+        assert np.isclose(maxt0, 0.8973744667566537)
+        assert np.isclose(maxt100, 1.685669230751107)
+        assert np.isclose(maxt250, 5.635884051349383)
+        assert np.isclose(maxt250, maxt300)
