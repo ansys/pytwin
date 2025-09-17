@@ -180,6 +180,187 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
+    def test_tbrom_projection_errors(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        mesh = pv.PolyData()
+        romname = "unknown"
+
+        # Raise an exception if twin model not initialized
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[Initialization]" in str(e)
+
+        twinmodel.initialize_evaluation()
+
+        # Raise an exception if unknown rom name is given
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise an exception as the twin considered has not output MC connected
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
+
+        # Raise an exception if mesh provided is not consistent
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[PyVistaMesh]" in str(e)
+
+        mesh = pv.read(MESH_FILE)
+
+        # Raise an exception if unknown named selection is given
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, "unknown")
+        except TwinModelError as e:
+            assert "[NamedSelection]" in str(e)
+
+        # Raise an exception if interpolate is True and no points file is available
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        filepath = twinmodel.get_geometry_filepath(rom_name=romname)
+        os.remove(filepath)
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, True, nslist[0])
+        except TwinModelError as e:
+            assert "[GeometryFile]" in str(e)
+
+        # Raise a warning if interpolation flag set to False and target mesh has not same size as point cloud
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "Switching interpolate flag from False to True" in "".join(log_str)
+
+        # Raise an exception if projection with masking removes all points
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        max_coord = twinmodel.generate_points(romname, on_disk=False).max()
+        radius = max_coord / 10
+        mesh = pv.Sphere(radius, (max_coord, max_coord, max_coord))
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0], radius=radius, strategy="mask_points")
+        except TwinModelError as e:
+            assert "[TbRomInterpolation]" in str(e)
+
+        # Raise an exception if any issue occurs during projection
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        nslist = twinmodel.get_named_selections(romname)
+        try:
+            twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+        except TwinModelError as e:
+            assert "MeshProjection" in str(e)
+
+    def test_tbrom_get_output_field_errors(self):
+        reinit_settings()
+        romname = "unknown"
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twinmodel = TwinModel(model_filepath=model_filepath)
+
+        # Raise an exception if no tbrom available in the twin
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+
+        # Raise an exception if unknown rom name is given
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise an exception if the twin considered has not output MC connected
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
+
+        # Raise an exception if any issue occurs during the API execution
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.get_tbrom_output_field(romname)
+        except TwinModelError as e:
+            assert "GetPointsData" in str(e)
+
+    def test_tbrom_new_instantiation_without_points(self):
+        model_filepath = TEST_TB_ROM3
+        try:
+            twinmodel = TwinModel(model_filepath=model_filepath)  # instantiation should be fine without points
+            romname = twinmodel.tbrom_names[0]
+            twinmodel.get_tbrom_output_field(romname)  # retrieving the output field pyvista object should raise an
+            # error since there is no point file
+        except TwinModelError as e:
+            assert "GeometryFile" in str(e)
+
+    def test_read_write_api(self):
+        scalar_field = np.array([1.0, 2.0, 3.0, 5.0])
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
+        vector_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"), vector_field)
+        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
+        vector_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"))
+        assert len(scalar_field_read) is 4
+        assert len(vector_field_read) is 3 * 4
+
+    def test_read_write_api_dtype(self):
+        # Test for issue #321
+        scalar_field = np.array([1.0, 2.0, 3.0, 5.0], dtype=np.int64)
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
+        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
+        assert np.all(np.equal(scalar_field, scalar_field_read))
+
+    def test_snapshot_to_array_api(self):
+        tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
+        tensor_field = np.array(
+            [
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+            ]
+        )
+        write_binary(tensor_path, tensor_field)
+        geometry_path = os.path.join(os.path.dirname(__file__), "data", "geometry_vector.bin")
+        geometry_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
+        write_binary(geometry_path, geometry_field)
+        vector_field_read = snapshot_to_array(tensor_path, geometry_path)
+        assert vector_field_read.shape[0] == 4
+        assert vector_field_read.shape[1] == 9
+
     def test_snapshot_to_array_api_mismatch(self):
         # Snapshot of length 24
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
