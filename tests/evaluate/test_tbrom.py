@@ -180,6 +180,59 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
+    def test_snapshot_to_array_api_mismatch(self):
+        # Snapshot of length 24
+        tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
+        tensor_field = np.array(
+            [
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
+            ]
+        )
+        write_binary(tensor_path, tensor_field)
+
+        # Snapshot of length 18 is not divisible by 4 points
+        wrong_size_tensor = os.path.join(os.path.dirname(__file__), "data", "snapshot_wrong.bin")
+        tensor_field = np.array(
+            [[1.0, 2.0, 3.0, 5.0, 7.0, 11.0], [1.0, 2.0, 3.0, 5.0, 7.0, 11.0], [1.0, 2.0, 3.0, 5.0, 7.0, 11.0]]
+        )
+        write_binary(wrong_size_tensor, tensor_field)
+
+        # Snapshot of length 12
+        geometry_path = os.path.join(os.path.dirname(__file__), "data", "geometry_vector.bin")
+        geometry_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
+        write_binary(geometry_path, geometry_field)
+
+        # Snapshot of length 8 is not divisible by 3
+        wrong_geometry = os.path.join(os.path.dirname(__file__), "data", "geometry_wrong.bin")
+        geometry_field = np.array([[1.0, 1.0], [1.0, 2.0], [5.0, 3.0], [5.0, 5.0]])
+        write_binary(wrong_geometry, geometry_field)
+
+        try:
+            vector_field_read = snapshot_to_array(wrong_size_tensor, geometry_path)
+        except ValueError as e:
+            assert "Field snapshot length 18 must be divisible by the number of points 4." in str(e)
+        try:
+            vector_field_read = snapshot_to_array(tensor_field, wrong_geometry)
+        except ValueError as e:
+            assert "Geometry snapshot length must be divisible by 3." in str(e)
+
+    def test_tbrom_tensor_field(self):
+        model_filepath = TEST_TB_ROM_TENSOR
+        [nsidslist, dimensionality, outputname, unit, timegrid] = tbrom._read_settings(
+            model_filepath
+        )  # instantiation should be fine without points
+        assert int(dimensionality[0]) is 6
+
+    def test_tbrom_fix_bug_1168769(self):
+        model_filepath = TEST_TB_ROM_NDOF
+        try:
+            twinmodel = TwinModel(model_filepath=model_filepath)
+        except TwinModelError as e:
+            assert "cannot reshape array" not in str(e)
+
     def test_tbrom_srb_constraints(self):
         model_filepath = TEST_TB_ROM_CONSTRAINTS
         twinmodel = TwinModel(model_filepath=model_filepath)
