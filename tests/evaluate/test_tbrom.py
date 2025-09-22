@@ -355,29 +355,6 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputTemperature"] is True
         assert twinmodel.get_named_selections(twinmodel.tbrom_names[0]) == ["Group_1", "Group_2"]
 
-    def test_initialize_evaluation_with_input_field_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-        twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": INPUT_SNAPSHOT}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-
-    def test_initialize_evaluation_with_numpy_input_field_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-        memory_snp = read_binary(INPUT_SNAPSHOT)
-        twinmodel.initialize_evaluation(field_inputs={romname: {"inputPressure": memory_snp}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-
     def test_initialize_evaluation_with_input_field_exceptions(self):
         """
         Test with TEST_TB_ROM3
@@ -457,72 +434,6 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[RomInputConnection]" in str(e)
 
-    def test_evaluate_step_by_step_with_input_field_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-        fieldname = "inputPressure"
-
-        # Step t=0.0s
-        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-        # Step t=0.1s
-        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-        # Step t=0.2s
-        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-    def test_evaluate_step_by_step_with_numpy_input_field_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-        fieldname = "inputPressure"
-        memory_snp = read_binary(INPUT_SNAPSHOT)
-        # Step t=0.0s
-        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-        # Step t=0.1s
-        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-        # Step t=0.2s
-        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: memory_snp}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
     def test_evaluate_step_by_step_with_input_field_exceptions(self):
         model_filepath = TEST_TB_ROM3
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -593,81 +504,6 @@ class TestTbRom:
             twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
         except TwinModelError as e:
             assert "[RomInputConnection]" in str(e)
-
-    def test_evaluate_batch_with_input_field_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        fieldname = "inputPressure"
-
-        # Step t=0.0s
-        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-        batch_results = twinmodel.evaluate_batch(
-            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
-            field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT, INPUT_SNAPSHOT]}},
-        )
-
-        assert np.isclose(batch_results["outField_mode_1"][0], -0.007815295084108557)
-        assert np.isclose(batch_results["outField_mode_1"][1], -0.007815295084108557)
-        assert np.isclose(batch_results["outField_mode_1"][2], -0.007815295084108557)
-
-        assert np.isclose(batch_results["outField_mode_2"][0], -0.0019136501347937662)
-        assert np.isclose(batch_results["outField_mode_2"][1], -0.0019136563369488168)
-        assert np.isclose(batch_results["outField_mode_2"][2], -0.0019136563369488168)
-
-        assert np.isclose(batch_results["outField_mode_3"][0], 0.0007345769427744131)
-        assert np.isclose(batch_results["outField_mode_3"][1], 0.0007345833149719503)
-        assert np.isclose(batch_results["outField_mode_3"][2], 0.0007345833149719503)
-
-        assert np.isclose(batch_results["MaxDef"][0], 5.0352056308720146e-05)
-        assert np.isclose(batch_results["MaxDef"][1], 5.035206128408094e-05)
-        assert np.isclose(batch_results["MaxDef"][2], 5.035206128408094e-05)
-
-    def test_evaluate_batch_with_numpy_input_field_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        fieldname = "inputPressure"
-        memory_snp = read_binary(INPUT_SNAPSHOT)
-
-        # Step t=0.0s
-        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: memory_snp}})
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_0"], 18922.18290547577)
-        assert np.isclose(twinmodel.inputs["inputPressure_mode_1"], -1303.3367783414574)
-        assert np.isclose(twinmodel.outputs["outField_mode_1"], -0.007815295084108557)
-        assert np.isclose(twinmodel.outputs["outField_mode_2"], -0.0019136501347937662)
-        assert np.isclose(twinmodel.outputs["outField_mode_3"], 0.0007345769427744131)
-        assert np.isclose(twinmodel.outputs["MaxDef"], 5.0352056308720146e-05)
-
-        batch_results = twinmodel.evaluate_batch(
-            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
-            field_inputs={romname: {fieldname: [memory_snp, memory_snp, memory_snp]}},
-        )
-
-        assert np.isclose(batch_results["outField_mode_1"][0], -0.007815295084108557)
-        assert np.isclose(batch_results["outField_mode_1"][1], -0.007815295084108557)
-        assert np.isclose(batch_results["outField_mode_1"][2], -0.007815295084108557)
-
-        assert np.isclose(batch_results["outField_mode_2"][0], -0.0019136501347937662)
-        assert np.isclose(batch_results["outField_mode_2"][1], -0.0019136563369488168)
-        assert np.isclose(batch_results["outField_mode_2"][2], -0.0019136563369488168)
-
-        assert np.isclose(batch_results["outField_mode_3"][0], 0.0007345769427744131)
-        assert np.isclose(batch_results["outField_mode_3"][1], 0.0007345833149719503)
-        assert np.isclose(batch_results["outField_mode_3"][2], 0.0007345833149719503)
-
-        assert np.isclose(batch_results["MaxDef"][0], 5.0352056308720146e-05)
-        assert np.isclose(batch_results["MaxDef"][1], 5.035206128408094e-05)
-        assert np.isclose(batch_results["MaxDef"][2], 5.035206128408094e-05)
 
     def test_evaluate_batch_with_input_field_exceptions(self):
         model_filepath = TEST_TB_ROM3
@@ -797,68 +633,6 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[RomInputConnection]" in str(e)
 
-    def test_generate_snapshot_with_tbrom_is_ok(self):
-        model_filepath = TEST_TB_ROM9
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[1]
-
-        # Generate snapshot on disk
-        snp_filepath = twinmodel.generate_snapshot(romname, True)
-        snp_vec_on_disk = read_binary(snp_filepath)
-        assert snp_vec_on_disk.shape[0] == 313266
-        assert np.isclose(snp_vec_on_disk[0], 1.7188266861184398e-05)
-        assert np.isclose(snp_vec_on_disk[-1], -1.3100502753567515e-05)
-
-        # Generate snapshot in memory
-        snp_vec_in_memory = twinmodel.generate_snapshot(romname, False)
-        # snapshot in memory is ndarray with (number of points, field dimensionality)
-        assert (
-            snp_vec_in_memory.reshape(
-                -1,
-            ).shape[0]
-            == snp_vec_on_disk.shape[0]
-        )
-        assert np.isclose(snp_vec_on_disk[0], snp_vec_in_memory[0, 0])
-        assert np.isclose(snp_vec_on_disk[-1], snp_vec_in_memory[-1, -1])
-
-        # Generate snapshot gives same results as twin_model probe
-        max_snp = max(norm_vector_field(snp_vec_in_memory))
-        assert np.isclose(max_snp, twinmodel.outputs["MaxDef"])
-
-        # Generate snapshot on named selection
-        # TODO LUCAS - Use another twin model with named selection smaller than whole model
-        ns = twinmodel.get_named_selections(romname)
-        snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert (
-            snp_vec_ns.reshape(
-                -1,
-            ).shape[0]
-            == 313266
-        )
-        assert np.isclose(snp_vec_ns[0, 0], 1.7188266861184398e-05)
-        assert np.isclose(snp_vec_ns[-1, -1], -1.3100502753567515e-05)
-
-    def test_generate_snapshot_on_named_selection_with_tbrom_is_ok(self):
-        model_filepath = TEST_TB_ROM12
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-
-        # Generate snapshot on named selection
-        ns = twinmodel.get_named_selections(romname)
-        snp_vec_ns = twinmodel.generate_snapshot(romname, False, named_selection=ns[0])
-        assert (
-            snp_vec_ns.reshape(
-                -1,
-            ).shape[0]
-            == 78594
-        )
-        if sys.platform != "linux":
-            # TODO - Fix BUG881733
-            assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
-            assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
-
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
         twinmodel = TwinModel(model_filepath=model_filepath)
@@ -889,83 +663,6 @@ class TestTbRom:
             twinmodel.generate_snapshot(romname, False, "unknown")
         except TwinModelError as e:
             assert "[NamedSelection]" in str(e)
-
-    def test_generate_snapshot_batch_with_tbrom_is_ok(self):
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-        fieldname = "inputPressure"
-
-        # Batch Evaluation
-        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
-        batch_results = twinmodel.evaluate_batch(
-            inputs_df=pd.DataFrame({"Time": [0.0, 0.1, 0.2]}),
-            field_inputs={romname: {fieldname: [INPUT_SNAPSHOT, INPUT_SNAPSHOT, INPUT_SNAPSHOT]}},
-        )
-
-        # Generate snapshot from batch results
-        snapshot_paths = twinmodel.generate_snapshot_batch(batch_results, romname)
-        assert len(snapshot_paths) == 3
-
-        snp0 = read_binary(snapshot_paths[0])
-        snp1 = read_binary(snapshot_paths[1])
-        snp2 = read_binary(snapshot_paths[2])
-
-        assert np.isclose(max(snp0), 4.4525419095601117e-05)
-        assert np.isclose(max(snp1), 4.452541222688557e-05)
-        assert np.isclose(max(snp2), 4.452541222688557e-05)
-
-        max_snp0 = max(norm_vector_field(snp0))
-        max_snp1 = max(norm_vector_field(snp1))
-        max_snp2 = max(norm_vector_field(snp2))
-
-        assert np.isclose(max_snp0, batch_results["MaxDef"][0])
-        assert np.isclose(max_snp1, batch_results["MaxDef"][1])
-        assert np.isclose(max_snp2, batch_results["MaxDef"][2])
-
-    def test_generate_points_with_tbrom_is_ok(self):
-        model_filepath = TEST_TB_ROM12
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        twinmodel.initialize_evaluation()
-        romname = twinmodel.tbrom_names[0]
-
-        # Generate points on disk
-        points_filepath = twinmodel.generate_points(romname, True)
-        points_vec = read_binary(points_filepath)
-        assert points_vec.shape[0] == 313266
-        assert np.isclose(points_vec[0], 0.0)
-        assert np.isclose(points_vec[-1], 38.919245779058635)
-
-        # Generate points in memory
-        points_vec2 = twinmodel.generate_points(romname, False)
-        assert (
-            points_vec.shape[0]
-            == points_vec2.reshape(
-                -1,
-            ).shape[0]
-        )
-        assert np.isclose(points_vec[0], points_vec2[0, 0])
-        assert np.isclose(points_vec[-1], points_vec2[-1, -1])
-
-        # Generate points on named selection on disk
-        ns = twinmodel.get_named_selections(romname)
-        points_filepath_ns = twinmodel.generate_points(romname, True, named_selection=ns[0])
-        points_vec_ns = read_binary(points_filepath_ns)
-        assert points_vec_ns.shape[0] == 78594
-        assert np.isclose(points_vec_ns[0], 0.0)
-        assert np.isclose(points_vec_ns[-1], 68.18921187292435)
-
-        # Generate points on named selection in memory
-        points_vec_ns2 = twinmodel.generate_points(romname, False, named_selection=ns[0])
-        assert (
-            points_vec_ns.shape[0]
-            == points_vec_ns2.reshape(
-                -1,
-            ).shape[0]
-        )
-        assert np.isclose(points_vec_ns[0], points_vec_ns2[0, 0])
-        assert np.isclose(points_vec_ns[-1], points_vec_ns2[-1, -1])
 
     def test_generate_points_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
@@ -1426,24 +1123,3 @@ class TestTbRom:
             twinmodel = TwinModel(model_filepath=model_filepath)
         except TwinModelError as e:
             assert "cannot reshape array" not in str(e)
-
-    def test_tbrom_srb_constraints(self):
-        model_filepath = TEST_TB_ROM_CONSTRAINTS
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
-        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
-        eval_snapshot = twinmodel.generate_snapshot(romname, False)
-
-        max_snp1 = max(norm_vector_field(model_snapshot))
-        max_snp2 = max(norm_vector_field(eval_snapshot))
-        assert np.isclose(max_snp1, max_snp2) == True
-
-        twinmodel._tbroms[romname]._transformation = None  # manually change the TBROM to remove its transformation
-        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
-        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
-        eval_snapshot = twinmodel.generate_snapshot(romname, False)
-
-        max_snp1 = max(norm_vector_field(model_snapshot))
-        max_snp2 = max(norm_vector_field(eval_snapshot))
-        assert np.isclose(max_snp1, max_snp2) == False
