@@ -165,6 +165,12 @@ Twin with 1 TBROM from SRB with constraints enabled (min/max = -0.00055/0.00044)
 """
 TEST_TB_ROM_CONSTRAINTS = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_constraints.twin")
 
+"""
+TEST_TB_PFIELD_HISTORY
+Twin with 1 TBROM of type parametric field history
+"""
+TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_pfieldhistory.twin")
+
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -1415,7 +1421,7 @@ class TestTbRom:
 
     def test_tbrom_tensor_field(self):
         model_filepath = TEST_TB_ROM_TENSOR
-        [nsidslist, dimensionality, outputname, unit] = tbrom._read_settings(
+        [nsidslist, dimensionality, outputname, unit, timegrid] = tbrom._read_settings(
             model_filepath
         )  # instantiation should be fine without points
         assert int(dimensionality[0]) is 6
@@ -1447,3 +1453,52 @@ class TestTbRom:
         max_snp1 = max(norm_vector_field(model_snapshot))
         max_snp2 = max(norm_vector_field(eval_snapshot))
         assert np.isclose(max_snp1, max_snp2) == False
+
+    def test_tbrom_parametric_field_history(self):
+        model_filepath = TEST_TB_ROM_CONSTRAINTS
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        try:
+            timegrid = twinmodel.get_tbrom_time_grid(romname)
+        except TwinModelError as e:
+            assert "not a parametric field history ROM" in str(e)
+
+        model_filepath = TEST_TB_PFIELD_HISTORY
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        timegrid = twinmodel.get_tbrom_time_grid(romname)
+
+        assert len(timegrid) == 17
+
+        assert twinmodel._tbroms[romname].isparamfieldhist == True
+
+        twinmodel.initialize_evaluation()
+
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt0 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt100 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(150.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt250 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt300 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        msg = "is larger than last time point"
+        assert "".join(lines).count(msg) == 1
+
+        if sys.platform != "linux":
+            assert np.isclose(maxt0, 0.8973744667566537)
+            assert np.isclose(maxt100, 1.685669230751107)
+            assert np.isclose(maxt250, 5.635884051349383)
+        assert np.isclose(maxt250, maxt300)
