@@ -1581,23 +1581,6 @@ unicode = ["unicodedata2 (>=15.1.0) ; python_version <= \"3.12\""]
 woff = ["brotli (>=1.0.1) ; platform_python_implementation == \"CPython\"", "brotlicffi (>=0.8.0) ; platform_python_implementation != \"CPython\"", "zopfli (>=0.1.4)"]
 
 [[package]]
-name = "fpdf2"
-version = "2.8.4"
-description = "Simple & fast PDF generation for Python"
-optional = false
-python-versions = ">=3.9"
-groups = ["doc"]
-files = [
-    {file = "fpdf2-2.8.4-py2.py3-none-any.whl", hash = "sha256:bce1afc437107906dcdb0b95c300c7501002fe412c2ed36fa33c8f0a2f87ef3e"},
-    {file = "fpdf2-2.8.4.tar.gz", hash = "sha256:12b1f1dd35d0c2f35284bcfe10b153d6ca4baf29377379843e73d3f971eab6b7"},
-]
-
-[package.dependencies]
-defusedxml = "*"
-fonttools = ">=4.34.0"
-Pillow = ">=8.0.0,<9.2.dev0 || >=9.3.dev0"
-
-[[package]]
 name = "frozenlist"
 version = "1.7.0"
 description = "A list-like structure which implements collections.abc.MutableSequence"
@@ -3243,27 +3226,6 @@ dev = ["pre-commit", "tox"]
 testing = ["coverage", "pytest", "pytest-benchmark"]
 
 [[package]]
-name = "plumbum"
-version = "1.9.0"
-description = "Plumbum: shell combinators library"
-optional = false
-python-versions = ">=3.8"
-groups = ["doc"]
-files = [
-    {file = "plumbum-1.9.0-py3-none-any.whl", hash = "sha256:9fd0d3b0e8d86e4b581af36edf3f3bbe9d1ae15b45b8caab28de1bcb27aaa7f5"},
-    {file = "plumbum-1.9.0.tar.gz", hash = "sha256:e640062b72642c3873bd5bdc3effed75ba4d3c70ef6b6a7b907357a84d909219"},
-]
-
-[package.dependencies]
-pywin32 = {version = "*", markers = "platform_system == \"Windows\" and platform_python_implementation != \"PyPy\""}
-
-[package.extras]
-dev = ["coverage[toml]", "paramiko", "psutil", "pytest (>=6.0)", "pytest-cov", "pytest-mock", "pytest-timeout"]
-docs = ["sphinx (>=4.0.0)", "sphinx-rtd-theme (>=1.0.0)"]
-ssh = ["paramiko"]
-test = ["coverage[toml]", "paramiko", "psutil", "pytest (>=6.0)", "pytest-cov", "pytest-mock", "pytest-timeout"]
-
-[[package]]
 name = "pooch"
 version = "1.8.2"
 description = "A friend to fetch your data files"
@@ -3483,19 +3445,18 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.19.0"
+version = "0.20.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.19.0-py3-none-any.whl", hash = "sha256:81f65e7371a9829818e8af60bcea063378e5e2f750b5f2c7ed0908a640967a73"},
-    {file = "pyaedt-0.19.0.tar.gz", hash = "sha256:c2eb2bfc5667dcfd1cdfd2ae219fa7bf91fd069ad217826e3ad929bbaf0683ae"},
+    {file = "pyaedt-0.20.0-py3-none-any.whl", hash = "sha256:72d1c7cb93492d3b783a7c52075a754685f58f5c69ca3917d0a0c2e99c9f7190"},
+    {file = "pyaedt-0.20.0.tar.gz", hash = "sha256:e09b5704c211c514607bcf04b77900e8bc56c4e70329234ff2b2455865caf90a"},
 ]
 
 [package.dependencies]
 defusedxml = ">=0.7,<8.0"
-fpdf2 = "*"
 grpcio = ">=1.50.0,<1.75"
 jsonschema = "*"
 numpy = ">=1.20.0,<2.3"
@@ -3503,20 +3464,19 @@ psutil = "*"
 pydantic = ">=2.6.4,<2.12"
 pyedb = ">=0.24.0,<0.28.0 || >0.28.0"
 pyyaml = "*"
-rpyc = ">=6.0.0,<6.1"
 tomli = {version = "*", markers = "python_version < \"3.11\""}
 tomli-w = "*"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.46)", "requests", "scikit-rf (>=0.30.0,<1.9)", "tables ; python_version >= \"3.10\""]
-doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.7)", "ansys-tools-visualization-interface", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.46)", "recommonmark", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0,<1.18) ; platform_system == \"Linux\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
-examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.4)", "pyvista (>=0.38.0,<0.45)", "scikit-rf (>=0.30.0,<1.9)"]
-graphics = ["ansys-tools-visualization-interface", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.45)", "vtk (>=9.0,<9.6)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.47)", "requests", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)", "tables ; python_version >= \"3.10\"", "uv (>=0.8.17)"]
+doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.7)", "ansys-tools-visualization-interface", "fpdf2", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.47)", "recommonmark", "rpyc (>=6.0.0,<6.1)", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
+dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0,<2.1) ; platform_system == \"Linux\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
+examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.4)", "pyvista (>=0.38.0,<0.47)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)"]
+graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.47)", "vtk (>=9.0,<9.6)"]
 integration-tests = ["matplotlib (>=3.5.0,<3.11)", "pandas (>=1.1.0,<2.4)", "pyaedt[unit-tests]"]
 jupyter = ["ipython (>=7.30.0,<9.1)", "jupyterlab (>=3.6.0,<4.5)"]
-tests = ["ansys-tools-visualization-interface", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.46)", "scikit-rf (>=0.30.0,<1.9)", "tables"]
-unit-tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<6.3)"]
+tests = ["ansys-tools-visualization-interface", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.47)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)", "tables"]
+unit-tests = ["fpdf2", "mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<7.1)", "requests"]
 
 [[package]]
 name = "pyansys-tools-report"
@@ -4427,21 +4387,6 @@ files = [
     {file = "rpds_py-0.27.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:4fc9b7fe29478824361ead6e14e4f5aed570d477e06088826537e202d25fe859"},
     {file = "rpds_py-0.27.1.tar.gz", hash = "sha256:26a1c73171d10b7acccbded82bf6a586ab8203601e565badc74bbbf8bc5a10f8"},
 ]
-
-[[package]]
-name = "rpyc"
-version = "6.0.2"
-description = "Remote Python Call (RPyC) is a transparent and symmetric distributed computing library"
-optional = false
-python-versions = ">=3.8"
-groups = ["doc"]
-files = [
-    {file = "rpyc-6.0.2-py3-none-any.whl", hash = "sha256:8072308ad30725bc281c42c011fc8c922be15f3eeda6eafb2917cafe1b6f00ec"},
-    {file = "rpyc-6.0.2.tar.gz", hash = "sha256:8e780a6a71b842128a80a337c64adfb6f919014e069951832161c9efc630c93b"},
-]
-
-[package.dependencies]
-plumbum = "*"
 
 [[package]]
 name = "rtree"
@@ -5829,4 +5774,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "2af20da2d6b84388873b6b3f219245d08f92d604ced754e587ccfc5784705c06"
+content-hash = "69dff296afc1a14af2991c662e18926b083e55f68235e843e4400bd5e22aab5f"
