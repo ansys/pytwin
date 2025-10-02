@@ -79,6 +79,7 @@ jobs:
         github_token: "${{ secrets.GITHUB_TOKEN }}"
 
   commenter:
+    name: Commenter
     permissions:
       contents: read
       pull-requests: write
