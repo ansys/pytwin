@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read   # default for all jobs unless overridden
+
 env:
   MAIN_PYTHON_VERSION: "3.13"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
