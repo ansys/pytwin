@@ -44,6 +44,7 @@ jobs:
         startsWith(github.event.pull_request.head.ref, 'docs')
       with:
         labels: documentation
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
 
     - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8 # v1.1.0
       if: |
@@ -52,12 +53,14 @@ jobs:
         startsWith(github.event.pull_request.head.ref, 'ci')
       with:
         labels: maintenance
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
 
     - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8 # v1.1.0
       if: startsWith(github.event.pull_request.head.ref, 'feat')
       with:
         labels: |
           enhancement
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
 
     - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8 # v1.1.0
       if: |
@@ -65,6 +68,7 @@ jobs:
         startsWith(github.event.pull_request.head.ref, 'patch')
       with:
         labels: bug
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
 
   commenter:
     runs-on: ubuntu-latest
