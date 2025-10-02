@@ -33,6 +33,17 @@ jobs:
           upload-reports: True
           hide-log: false
 
+  actions-security:
+    name: "Check actions security"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/check-actions-security@v10.1
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
+          trust-ansys-actions: true
+
   code-style:
     name: "Code style"
     runs-on: ubuntu-latest
