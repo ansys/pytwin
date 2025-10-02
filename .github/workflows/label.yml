@@ -6,6 +6,9 @@ on:
     paths:
       - '../labels.yml'
 
+permissions:
+  contents: read  # default minimal permission
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -14,6 +17,9 @@ jobs:
 
   label-syncer:
     name: Syncer
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -73,6 +79,9 @@ jobs:
         github_token: "${{ secrets.GITHUB_TOKEN }}"
 
   commenter:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
     - name: Suggest to add labels
