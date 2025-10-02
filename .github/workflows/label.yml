@@ -61,7 +61,7 @@ jobs:
         startsWith(github.event.pull_request.head.ref, 'ci')
       with:
         labels: maintenance
-        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        github_token: "${{ secrets.GITHUB_TOKEN }}" 
 
     - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8 # v1.1.0
       if: startsWith(github.event.pull_request.head.ref, 'feat')
