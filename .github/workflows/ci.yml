@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read   # default for all jobs unless overridden
+
 env:
   MAIN_PYTHON_VERSION: "3.13"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
@@ -33,6 +36,17 @@ jobs:
           upload-reports: True
           hide-log: false
 
+  actions-security:
+    name: "Check actions security"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/check-actions-security@v10.1
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
+          trust-ansys-actions: true
+
   code-style:
     name: "Code style"
     runs-on: ubuntu-latest
@@ -55,7 +69,9 @@ jobs:
     needs: doc-style
     steps:
       - name: "Install Git and clone project"
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: "Set up Python"
         uses: ansys/actions/_setup-python@v10.1
@@ -84,7 +100,7 @@ jobs:
           cd ..
 
       - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v4
+        uses: pyvista/setup-headless-display-action@7d84ae825e6d9297a8e99bdbbae20d1b919a0b19 # v4.2
 
       - name: "Clean documentation build folder"
         run: |
@@ -103,7 +119,7 @@ jobs:
           ANSYS_DPF_ACCEPT_LA: Y
 
       - name: "Upload HTML documentation artifact"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: documentation-html
           path: doc/_build/html
@@ -141,7 +157,7 @@ jobs:
 
       - name: Setup headless display
         if: matrix.os == 'windows-latest'
-        uses: pyvista/setup-headless-display-action@v4
+        uses: pyvista/setup-headless-display-action@7d84ae825e6d9297a8e99bdbbae20d1b919a0b19 # v4.2
 
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v10.1
@@ -153,14 +169,14 @@ jobs:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
       - name: Upload coverage artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.python-version }}_${{ matrix.os }}_pytest.html
           path: .cov/html
           retention-days: 7
 
       - name: "Upload coverage to Codecov"
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
 
   build-library:
     name: "Smoke test and building"
