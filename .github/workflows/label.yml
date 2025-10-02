@@ -16,7 +16,7 @@ jobs:
     name: Syncer
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5.0.0
       - uses: micnncim/action-label-syncer@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -32,20 +32,20 @@ jobs:
 
     # Label based on modified files
     - name: Label based on changed files
-      uses: actions/labeler@v6
+      uses: actions/labeler@v6.0.1
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         sync-labels: true
 
     # Label based on branch name
-    - uses: actions-ecosystem/action-add-labels@v1
+    - uses: actions-ecosystem/action-add-labels@v1.1.0
       if: |
         startsWith(github.event.pull_request.head.ref, 'doc') || 
         startsWith(github.event.pull_request.head.ref, 'docs')
       with:
         labels: documentation
 
-    - uses: actions-ecosystem/action-add-labels@v1
+    - uses: actions-ecosystem/action-add-labels@v1.1.0
       if: |
         startsWith(github.event.pull_request.head.ref, 'maint') ||
         startsWith(github.event.pull_request.head.ref, 'no-ci') ||
@@ -53,13 +53,13 @@ jobs:
       with:
         labels: maintenance
 
-    - uses: actions-ecosystem/action-add-labels@v1
+    - uses: actions-ecosystem/action-add-labels@v1.1.0
       if: startsWith(github.event.pull_request.head.ref, 'feat')
       with:
         labels: |
           enhancement
 
-    - uses: actions-ecosystem/action-add-labels@v1
+    - uses: actions-ecosystem/action-add-labels@v1.1.0
       if: |
         startsWith(github.event.pull_request.head.ref, 'fix') ||
         startsWith(github.event.pull_request.head.ref, 'patch')
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Suggest to add labels
-      uses: peter-evans/create-or-update-comment@v4
+      uses: peter-evans/create-or-update-comment@v4.0.0
       # Execute only when no labels have been applied to the pull request
       if: toJSON(github.event.pull_request.labels.*.name) == '{}'
       with:
