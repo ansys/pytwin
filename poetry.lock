@@ -3458,19 +3458,19 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.20.0"
+version = "0.20.1"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.20.0-py3-none-any.whl", hash = "sha256:72d1c7cb93492d3b783a7c52075a754685f58f5c69ca3917d0a0c2e99c9f7190"},
-    {file = "pyaedt-0.20.0.tar.gz", hash = "sha256:e09b5704c211c514607bcf04b77900e8bc56c4e70329234ff2b2455865caf90a"},
+    {file = "pyaedt-0.20.1-py3-none-any.whl", hash = "sha256:29ef26fb7c8478bd8ea779f7ab83657454286d7fc9b060c283f76d37bdb3f823"},
+    {file = "pyaedt-0.20.1.tar.gz", hash = "sha256:b4749d5764c7a95b91a7060a4969ce951a20150b1e4d6248a27ba8b3e83ce24b"},
 ]
 
 [package.dependencies]
 defusedxml = ">=0.7,<8.0"
-grpcio = ">=1.50.0,<1.75"
+grpcio = ">=1.50.0,<1.76"
 jsonschema = "*"
 numpy = ">=1.20.0,<2.3"
 psutil = "*"
