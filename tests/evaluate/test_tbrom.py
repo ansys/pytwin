@@ -25,7 +25,14 @@ import sys
 
 import numpy as np
 import pandas as pd
-from pytwin import TwinModel, TwinModelError, download_file, read_binary, snapshot_to_array, write_binary
+from pytwin import (
+    TwinModel,
+    TwinModelError,
+    download_file,
+    read_binary,
+    snapshot_to_array,
+    write_binary,
+)
 from pytwin.evaluate import tbrom
 from pytwin.settings import get_pytwin_log_file
 import pyvista as pv
@@ -151,6 +158,18 @@ TEST_TB_ROM_NDOF
 Twin with Dynamic ROM and NDOF not properly defined (bug 1168769 fixed in 2025R2)
 """
 TEST_TB_ROM_NDOF = os.path.join(os.path.dirname(__file__), "data", "twin_ndof.twin")
+
+"""
+TEST_TB_ROM_CONSTRAINTS
+Twin with 1 TBROM from SRB with constraints enabled (min/max = -0.00055/0.00044), deformation vector field
+"""
+TEST_TB_ROM_CONSTRAINTS = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_constraints.twin")
+
+"""
+TEST_TB_PFIELD_HISTORY
+Twin with 1 TBROM of type parametric field history
+"""
+TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_pfieldhistory.twin")
 
 
 def norm_vector_field(field: list):
@@ -1336,6 +1355,13 @@ class TestTbRom:
         assert len(scalar_field_read) is 4
         assert len(vector_field_read) is 3 * 4
 
+    def test_read_write_api_dtype(self):
+        # Test for issue #321
+        scalar_field = np.array([1.0, 2.0, 3.0, 5.0], dtype=np.int64)
+        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
+        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
+        assert np.all(np.equal(scalar_field, scalar_field_read))
+
     def test_snapshot_to_array_api(self):
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
         tensor_field = np.array(
@@ -1395,7 +1421,7 @@ class TestTbRom:
 
     def test_tbrom_tensor_field(self):
         model_filepath = TEST_TB_ROM_TENSOR
-        [nsidslist, dimensionality, outputname, unit] = tbrom._read_settings(
+        [nsidslist, dimensionality, outputname, unit, timegrid] = tbrom._read_settings(
             model_filepath
         )  # instantiation should be fine without points
         assert int(dimensionality[0]) is 6
@@ -1406,3 +1432,73 @@ class TestTbRom:
             twinmodel = TwinModel(model_filepath=model_filepath)
         except TwinModelError as e:
             assert "cannot reshape array" not in str(e)
+
+    def test_tbrom_srb_constraints(self):
+        model_filepath = TEST_TB_ROM_CONSTRAINTS
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
+        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
+        eval_snapshot = twinmodel.generate_snapshot(romname, False)
+
+        max_snp1 = max(norm_vector_field(model_snapshot))
+        max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp1, max_snp2) == True
+
+        twinmodel._tbroms[romname]._transformation = None  # manually change the TBROM to remove its transformation
+        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
+        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
+        eval_snapshot = twinmodel.generate_snapshot(romname, False)
+
+        max_snp1 = max(norm_vector_field(model_snapshot))
+        max_snp2 = max(norm_vector_field(eval_snapshot))
+        assert np.isclose(max_snp1, max_snp2) == False
+
+    def test_tbrom_parametric_field_history(self):
+        model_filepath = TEST_TB_ROM_CONSTRAINTS
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        try:
+            timegrid = twinmodel.get_tbrom_time_grid(romname)
+        except TwinModelError as e:
+            assert "not a parametric field history ROM" in str(e)
+
+        model_filepath = TEST_TB_PFIELD_HISTORY
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+
+        timegrid = twinmodel.get_tbrom_time_grid(romname)
+
+        assert len(timegrid) == 17
+
+        assert twinmodel._tbroms[romname].isparamfieldhist == True
+
+        twinmodel.initialize_evaluation()
+
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt0 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt100 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(150.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt250 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        twinmodel.evaluate_step_by_step(100.0)
+        field_data = twinmodel.get_tbrom_output_field(romname)
+        maxt300 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as f:
+            lines = f.readlines()
+        msg = "is larger than last time point"
+        assert "".join(lines).count(msg) == 1
+
+        if sys.platform != "linux":
+            assert np.isclose(maxt0, 0.8973744667566537)
+            assert np.isclose(maxt100, 1.685669230751107)
+            assert np.isclose(maxt250, 5.635884051349383)
+        assert np.isclose(maxt250, maxt300)

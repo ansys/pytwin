@@ -29,6 +29,7 @@ from typing import TYPE_CHECKING, Union
 import numpy as np
 from pytwin import _HAS_TQDM
 from pytwin.decorators import needs_graphics
+from pytwin.settings import PyTwinLogLevel
 
 if TYPE_CHECKING:  # pragma: no cover
     import pyvista as pv
@@ -76,15 +77,16 @@ def write_binary(filepath: str, vec: np.ndarray):
 
     Examples
     --------
+    >>> import numpy as np
     >>> from pytwin import write_binary
-    >>> scalar_field = np.ndarray([1.0, 2.0, 3.0, 5.0])
+    >>> scalar_field = np.array([1.0, 2.0, 3.0, 5.0])
     >>> write_binary('snapshot_scalar.bin', scalar_field)
-    >>> vector_field = np.ndarray([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
+    >>> vector_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
     >>> write_binary('snapshot_vector.bin', vector_field)
     """
     vec = vec.reshape(
         -1,
-    )
+    ).astype(np.float64)
     if os.path.exists(filepath):
         os.remove(filepath)
     with open(filepath, "xb") as f:
@@ -193,6 +195,11 @@ def _read_settings(filepath):
     if "unit" in data:
         unit = data["unit"]
 
+    if "timeSeries" in data:
+        timegrid = data["timeSeries"]["timeStepsValues"]
+    else:
+        timegrid = None
+
     tbromns = dict()
 
     # Create list of name selections indexes
@@ -207,7 +214,7 @@ def _read_settings(filepath):
             i = i + 1
         tbromns.update({name: idsListNp})
 
-    return [tbromns, dimensionality, outputname, unit]
+    return [tbromns, dimensionality, outputname, unit, timegrid]
 
 
 def _read_properties(filepath):
@@ -217,12 +224,32 @@ def _read_properties(filepath):
     fields = {}
     if "fields" in data:
         fields = data["fields"]
-    out_field = fields["outField"]
 
-    nb_points = out_field["nbDof"]
-    nb_modes = out_field["nbModes"]
+    # assumption a single output field per TBROM
+    inFields = []
+    name = ""
+    nb_points = 0
+    nb_modes = 0
+    transformation = None
+    for fieldName, fieldData in fields.items():
+        if fieldData["fieldType"] == "binaryOutputField":
+            name = fieldName
+            nb_points = fieldData["nbDof"]
+            nb_modes = fieldData["nbModes"]
+            transformation = fieldData["transformation"]
+            if transformation["function"] == "" or transformation["function"] == "neutral":
+                transformation = None
+        if fieldData["fieldType"] == "binaryInputField":
+            inFields.append(fieldName)
 
-    return [nb_points, nb_modes]
+    productVersion = data["productVersion"]
+
+    return [name, nb_points, nb_modes, transformation, inFields, productVersion]
+
+
+def update_vector_norm(mesh, name):
+    vec = mesh[name]
+    mesh[f"{name}-normed"] = np.linalg.norm(vec, axis=1)
 
 
 class TbRom:
@@ -262,36 +289,56 @@ class TbRom:
         self._outmeshbasis = None
         self._hasinfmcs = None
         self._hasoutmcs = False
-
-        files = os.listdir(tbrom_path)
-        infdata = dict()
-
-        for file in files:
-            if TbRom.IN_F_KEY in file:
-                folder = file.split("_")
-                fname = folder[1]
-                inpath = os.path.join(tbrom_path, file, TbRom.TBROM_BASIS)
-                inbasis = _read_basis(inpath)
-                infdata.update({fname: inbasis})
-        self._infbasis = infdata
+        self._productVersion = None
+        self._paramFieldHist = False
+        self._logLevel = None
+        self._logMessage = ""
 
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
-        [nsidslist, dimensionality, outputname, unit] = _read_settings(settingspath)
+        if os.path.exists(settingspath):
+            [nsidslist, dimensionality, outputname, unit, timegrid] = _read_settings(settingspath)
+        else:
+            raise ValueError("Settings file {} does not exist.".format(settingspath))
+
+        if timegrid is not None:
+            self._paramFieldHist = True
+            self._timegrid = timegrid
+
+        propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
+        if os.path.exists(propertiespath):
+            [name, nbpoints, nbmodes, transformation, inFields, productVersion] = _read_properties(propertiespath)
+        else:
+            raise ValueError("Properties file {} does not exist.".format(propertiespath))
+        self._nbmodes = nbmodes
+        self._transformation = transformation
+        self._productVersion = productVersion
+
+        infdata = dict()
+
+        for fname in inFields:
+            inpath = os.path.join(tbrom_path, TbRom.IN_F_KEY + "_" + fname, TbRom.TBROM_BASIS)
+            if os.path.exists(inpath):
+                inbasis = _read_basis(inpath)
+                infdata.update({fname: inbasis})
+            else:
+                raise ValueError("SVD basis file {} does not exist.".format(inpath))
+        self._infbasis = infdata
+
         self._nsidslist = nsidslist
         self._outdim = int(dimensionality[0])
         self._outname = outputname
         self._outunit = unit
         self._outputfilespath = None
 
-        propertiespath = os.path.join(tbrom_path, TbRom.TBROM_PROP)
-        [nbpoints, nbmodes] = _read_properties(propertiespath)
         # bug 1168769 (fixed in 2025R2)
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
         if os.path.exists(pointpath):
             self._nbpoints = read_snapshot_size(pointpath) // 3
         else:
-            self._nbpoints = int(nbpoints / self._outdim)
-        self._nbmodes = nbmodes
+            if self.isparamfieldhist:
+                self._nbpoints = int(nbpoints / self._outdim / len(self.timegrid))
+            else:
+                self._nbpoints = int(nbpoints / self._outdim)
 
         self._has_point_file = self._read_points(pointpath)
 
@@ -496,18 +543,32 @@ class TbRom:
 
         self._meshdata = mesh_data
 
-    def _update_output_field(self):
+    def _update_output_field(self, time=None):
         """
         Compute the output field results with current mode coefficients.
         """
         mc = np.asarray(list(self._outmcs.values()))
 
-        self._pointsdata[self.field_output_name] = np.tensordot(mc, self._outbasis, axes=1)
+        if not self.isparamfieldhist:
+            self._pointsdata[self.field_output_name] = np.tensordot(mc, self._outbasis, axes=1)
+        else:
+            outbasis, outmeshbasis = self._timegridBasis(time)
+            self._pointsdata[self.field_output_name] = np.tensordot(mc, outbasis, axes=1)
+        if self.field_output_dim > 1:
+            update_vector_norm(self._pointsdata, self.field_output_name)
         self._pointsdata.set_active_scalars(self.field_output_name)
 
         if self._meshdata is not None:
-            self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
+            if not self.isparamfieldhist:
+                self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
+            else:
+                self._pointsdata[self.field_output_name] = np.tensordot(mc, outmeshbasis, axes=1)
+            if self.field_output_dim > 1:
+                update_vector_norm(self._meshdata, self.field_output_name)
             self._meshdata.set_active_scalars(self.field_output_name)
+
+        if self._transformation is not None:
+            self._reverseConstraints()
 
     def _named_selection_indexes(self, nsname: str):
         return self._nsidslist[nsname]
@@ -523,6 +584,43 @@ class TbRom:
         else:
             return data
 
+    def _timegridBasis(self, time: float):
+        timegrid = self.timegrid
+        meshgrid = None
+        if time < timegrid[0]:
+            index = 0
+            outgrid = self._outbasis[:, index, :, :]
+            self._logMessage += (
+                "Evaluation time {} is smaller than first time point {} for the parametric "
+                "field history TBROM {}, using first time point for field prediction"
+            ).format(time, timegrid[0], self.name)
+            self._logLevel = PyTwinLogLevel.PYTWIN_LOG_WARNING
+        elif time > timegrid[-1]:
+            index = len(timegrid) - 1
+            outgrid = self._outbasis[:, index, :, :]
+            self._logMessage += (
+                "Evaluation time {} is larger than last time point {} for the parametric "
+                "field history TBROM {}, using last time point for field prediction"
+            ).format(time, timegrid[-1], self.name)
+            self._logLevel = PyTwinLogLevel.PYTWIN_LOG_WARNING
+        else:  # linear interpolation
+            index = 0
+            while time > timegrid[index] and index < len(timegrid) - 1:
+                index = index + 1
+            outgrid = self._outbasis[:, index - 1, :, :] + (time - timegrid[index - 1]) / (
+                timegrid[index] - timegrid[index - 1]
+            ) * (self._outbasis[:, index, :, :] - self._outbasis[:, index - 1, :, :])
+
+        if self._meshdata is not None:
+            if time <= timegrid[0] or time >= timegrid[-1]:
+                meshgrid = self._meshdata[index]
+            else:
+                meshgrid = self._meshdata[:, index - 1, :, :] + (time - timegrid[index - 1]) / (
+                    timegrid[index] - timegrid[index - 1]
+                ) * (self._meshdata[:, index, :, :] - self._meshdata[:, index - 1, :, :])
+
+        return outgrid, meshgrid
+
     @needs_graphics
     def _read_points(self, filepath):
         import pyvista as pv
@@ -537,10 +635,61 @@ class TbRom:
         return has_point_file
 
     def _init_pointsdata(self, filepath):
-        self._outbasis = _read_basis(filepath).reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+        if os.path.exists(filepath):
+            self._outbasis = _read_basis(filepath)
+            if not self.isparamfieldhist:
+                self._outbasis = self._outbasis.reshape(self.nb_modes, self.nb_points, self.field_output_dim)
+            else:
+                self._outbasis = self._outbasis.reshape(
+                    self.nb_modes, len(self.timegrid), self.nb_points, self.field_output_dim
+                )
+        else:
+            raise ValueError("SVD basis file {} does not exist.".format(filepath))
         # initialize output field data
         if self._hasoutmcs:
             self._pointsdata[self.field_output_name] = np.zeros((self.nb_points, self.field_output_dim))
+
+    def _reverseConstraints(self):
+        """
+        Compute the output field results with constraints applied during build
+        """
+        if self._transformation["function"] == "min":
+            minValue = self._transformation["minValue"]
+            self._pointsdata[self.field_output_name] = np.power(self._pointsdata[self.field_output_name], 2) + minValue
+
+            if self._meshdata is not None:
+                self._meshdata[self.field_output_name] = np.power(self._meshdata[self.field_output_name], 2) + minValue
+
+        elif self._transformation["function"] == "max":
+            maxValue = self._transformation["maxValue"]
+            self._pointsdata[self.field_output_name] = maxValue - np.power(self._pointsdata[self.field_output_name], 2)
+
+            if self._meshdata is not None:
+                self._meshdata[self.field_output_name] = maxValue - np.power(self._meshdata[self.field_output_name], 2)
+
+        elif self._transformation["function"] == "minMax":
+            minValue = self._transformation["minValue"]
+            maxValue = self._transformation["maxValue"]
+            if (maxValue - minValue) > 1.0:
+                eps2 = (maxValue - minValue) * 1e-08
+                eps1 = 1e-08 / (maxValue - minValue)
+            else:
+                eps1 = (maxValue - minValue) * 1e-08
+                eps2 = (maxValue - minValue) * (maxValue - minValue) * (maxValue - minValue) * 1e-08
+            alpha = 1.0 / (maxValue - minValue + eps1 + eps2)
+            beta = minValue - eps1
+            self._pointsdata[self.field_output_name] = np.clip(
+                np.power(np.exp(self._pointsdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+            )
+
+            if self._meshdata is not None:
+                self._meshdata[self.field_output_name] = np.clip(
+                    np.power(np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+                )
+
+    def _clean_log(self):
+        self._logLevel = None
+        self._logMessage = ""
 
     @property
     def has_point_file(self):
@@ -602,3 +751,18 @@ class TbRom:
     def nb_modes(self):
         """Return the number of modes of this TBROM output field."""
         return self._nbmodes
+
+    @property
+    def product_version(self):
+        """Return the product version related information used to generate the TBROM."""
+        return self._productVersion
+
+    @property
+    def isparamfieldhist(self):
+        """Return True if the TBROM is a parametric field history ROM."""
+        return self._paramFieldHist
+
+    @property
+    def timegrid(self):
+        """Return the time grid associated to TBROM in case of parametric field history ROM."""
+        return self._timegrid

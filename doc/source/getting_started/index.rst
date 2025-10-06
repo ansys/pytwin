@@ -48,7 +48,7 @@ and made available in that environment.
 Install the package
 -------------------
 
-The ``pytwin`` package supports Python 3.10 through Python 3.12 on Windows and Linux.
+The ``pytwin`` package supports Python 3.10 through Python 3.13 on Windows and Linux.
 
 Install the latest release from `PyPi <https://pypi.org/project/pytwin/>`_
 with this command:
@@ -57,6 +57,12 @@ with this command:
 
    pip install pytwin
 
+For PyTwin workflows evaluating and post processing field results from TBROM included in a TWIN file
+(see :ref:`ref_example_gallery`), you need to install additional dependencies with :
+
+.. code::
+
+   pip install pytwin[graphics]
 
 If you plan on doing local *development* of PyTwin with Git, install
 the latest release with this code:

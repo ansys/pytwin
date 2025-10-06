@@ -1,13 +1,25 @@
-#------------------------------------------------------------------------------
-# (c) 2020-2024 ANSYS, Inc. All rights reserved.
-#------------------------------------------------------------------------------
-import json
-import math
-import os
-import platform
-import sys
-import xml.etree.ElementTree as ET
-import zipfile
+# Copyright (C) 2022 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from ctypes import (
     POINTER,
     byref,
@@ -21,8 +33,16 @@ from ctypes import (
     create_string_buffer,
 )
 from enum import Enum
+import json
+import math
+import os
 from pathlib import Path
+import platform
+import sys
+from typing import Set, Tuple
+import zipfile
 
+import defusedxml.ElementTree as ET
 import numpy as np
 import pandas as pd
 
@@ -39,7 +59,6 @@ from .twin_runtime_error import (
 )
 
 CUR_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
-os.environ["TWIN_RUNTIME_SDK"] = CUR_DIR
 default_log_name = "model.log"
 
 
@@ -48,6 +67,12 @@ class TwinStatus(Enum):
     TWIN_STATUS_WARNING = 1
     TWIN_STATUS_ERROR = 2
     TWIN_STATUS_FATAL = 3
+
+
+class FmiType(Enum):
+    CS = 0
+    ME = 1
+    UNDEFINED = 2
 
 
 class TwinRuntime:
@@ -74,7 +99,7 @@ class TwinRuntime:
     log_level : LogLevel (optional)
         Level option associated to the TWIN Runtime logging. By default, it is
         set to LogLevel.TWIN_LOG_WARNING.
-    load_model : bool (optinal)
+    load_model : bool (optional)
         Whether the TWIN model is loaded (True) or not (False) during the
         TwinRuntime object instantiation. Default value is True.
 
@@ -120,6 +145,18 @@ class TwinRuntime:
     else:
         _twin_runtime_library = "libTwinRuntimeSDK.so"
 
+    # def __getattribute__(self, name):
+    #     attr = super().__getattribute__(name)
+    #     if inspect.ismethod(attr):
+    #         def hooked(*args, **kwargs):
+    #             print(f"Calling method: {name}")
+    #             result = attr(*args, **kwargs)
+    #             print(f"Method {name} returned")
+    #             return result
+    #
+    #         return hooked
+    #     return attr
+
     @staticmethod
     def load_dll(twin_runtime_library_path=None):
         """
@@ -145,15 +182,11 @@ class TwinRuntime:
             else:
                 sep = ":"
             if sdk_folder_path not in os.environ["PATH"]:
-                os.environ["PATH"] = "{}{}{}".format(
-                    sdk_folder_path, sep, os.environ["PATH"]
-                )
+                os.environ["PATH"] = "{}{}{}".format(sdk_folder_path, sep, os.environ["PATH"])
 
         if twin_runtime_library_path is None:
             _setup_env(str(CUR_DIR))
-            return cdll.LoadLibrary(
-                os.path.join(str(CUR_DIR), TwinRuntime._twin_runtime_library)
-            )
+            return cdll.LoadLibrary(os.path.join(str(CUR_DIR), TwinRuntime._twin_runtime_library))
         else:
             _setup_env(os.path.dirname(twin_runtime_library_path))
             return cdll.LoadLibrary(twin_runtime_library_path)
@@ -174,6 +207,31 @@ class TwinRuntime:
         Returns whether the loaded TWIN model is cross-platform
         (Windows and Linux) compiled or not.
 
+        Note that "zip_handler.namelist()" might return different contents
+        depending on how the model archive was created. For example,
+        FMUs and Twin models return the following list. Note that there
+        are entries for binaries/linux64/ and binaries/win64/ folders.
+        [
+        'binaries/', 'documentation/', 'resources/', 'modelDescription.xml',
+        'binaries/linux64/', 'binaries/win64/',
+        'binaries/linux64/ModelWith_Min50_Max150.so',
+        'binaries/win64/ModelWith_Min50_Max150.dll'
+        ]
+
+        For a .tbrom model, the following list is returned. Note the absence
+        of binaries/linux64/ and binaries/win64/ folders.
+        [
+        'model.png', 'binaries/win64/rom24LP.dll',
+        'binaries/win64/RomViewerSharedLib.dll', 'binaries/linux64/rom24LP.so',
+        'binaries/linux64/RomViewerSharedLib.so', 'resources/properties.json',
+        'resources/binaryOutputField/basis.svd',
+        'resources/binaryOutputField/points.bin',
+        'resources/binaryOutputField/settings.json',
+        'resources/binaryOutputField/views.json',
+        'resources/binaryOutputField/operationsDefinition.json',
+        'resources/model.coreRom', 'modelDescription.xml'
+        ]
+
         Parameters
         ----------
         file_path : str
@@ -186,8 +244,8 @@ class TwinRuntime:
         """
         with zipfile.ZipFile(file_path) as zip_handler:
             zip_contents = zip_handler.namelist()
-            has_windows = "binaries/win64/" in zip_contents
-            has_linux = "binaries/linux64/" in zip_contents
+            has_windows = any([name.startswith("binaries/win64/") for name in zip_contents])
+            has_linux = any([name.startswith("binaries/linux64/") for name in zip_contents])
 
         return has_windows and has_linux
 
@@ -205,7 +263,7 @@ class TwinRuntime:
         Returns
         -------
         int
-            Expected number of deployments for the TWIN model.
+            Number of expected deployments for the TWIN model.
         """
         runtime_library = TwinRuntime.load_dll()
         TwinNumberOfDeployments = runtime_library.TwinGetNumberOfDeployments
@@ -214,16 +272,14 @@ class TwinRuntime:
             file_path = file_path.encode()
 
         number_of_deployments = c_size_t()
-        TwinNumberOfDeployments(
-            c_char_p(file_path), byref(number_of_deployments)
-        )
+        TwinNumberOfDeployments(c_char_p(file_path), byref(number_of_deployments))
         return number_of_deployments.value
 
     @staticmethod
-    def get_model_fmi_type(file_path: str):
+    def get_model_fmi_type(file_path: str) -> Set[str]:
         """
         Searches the description file of the source model to discover if it
-        is a Model Exchange or CoSimulation type of model.
+        contains Model Exchange and/or CoSimulation types of model.
 
         Parameters
         ----------
@@ -233,45 +289,171 @@ class TwinRuntime:
 
         Returns
         -------
-        str
-            me (Model Exchange) or cs (Co Simulation) model.
+        Set[str]
+            'me' (Model Exchange) or 'cs' (Co Simulation) model or both.
         """
 
-        def _parse_xml(model_description) -> str:
+        def _parse_xml(model_description) -> Set[str]:
             tree = ET.parse(model_description)
             root = tree.getroot()
 
+            available_fmi_types = set()
             co_simulation_tag = root.find("CoSimulation")
-            if co_simulation_tag is None:
-                return "me"
-            else:
-                return "cs"
+            if co_simulation_tag is not None:
+                available_fmi_types.add("cs")
+            model_exchange_tag = root.find("ModelExchange")
+            if model_exchange_tag is not None:
+                available_fmi_types.add("me")
+            return available_fmi_types
 
         file_path = Path(file_path)
         if file_path.suffix in [".twin", ".fmu"]:
             with zipfile.ZipFile(file_path) as zip_handler:
                 if "TwinDescription.xml" in zip_handler.namelist():
-                    fmi_type = "cs"  # Twin models are all CS
+                    fmi_types = {"cs"}  # Twin models are all CS
                 else:
                     with zip_handler.open("modelDescription.xml") as xml_file:
-                        fmi_type = _parse_xml(xml_file)
+                        fmi_types = _parse_xml(xml_file)
 
         elif file_path.suffix == ".xml":
-            fmi_type = _parse_xml(str(file_path))
+            fmi_types = _parse_xml(str(file_path))
         elif file_path.suffix == ".tbrom":
-            raise TwinRuntimeError(
-                "Cannot read encrypted modelDescription.xml from .tbrom models"
-            )
+            raise TwinRuntimeError("Cannot read encrypted modelDescription.xml from .tbrom models")
         else:
-            raise TwinRuntimeError(
-                "Unsupported file extension: " f"{file_path.suffix}"
-            )
-        return fmi_type
+            raise TwinRuntimeError("Unsupported file extension: " f"{file_path.suffix}")
+        return fmi_types
+
+    @staticmethod
+    def get_model_name(file_path: str) -> str:
+        """
+        Reads the description file of the source model to discover
+        the model name.
+
+        Parameters
+        ----------
+        file_path : str
+            File path to the source model file (it could be a .fmu
+            or modelDescription.xml).
+
+        Returns
+        -------
+        str
+            Name of the model.
+        """
+
+        def _parse_xml(model_description) -> str:
+            tree = ET.parse(model_description)
+            root = tree.getroot()
+            name = root.get("modelName")
+            if name is None:
+                raise TwinRuntimeError("Failed to find model name!")
+            return name
+
+        file_path = Path(file_path)
+        if file_path.suffix in [".fmu"]:
+            with zipfile.ZipFile(file_path) as zip_handler:
+                with zip_handler.open("modelDescription.xml") as xml_file:
+                    model_name = _parse_xml(xml_file)
+
+        elif file_path.suffix == ".xml":
+            model_name = _parse_xml(str(file_path))
+        elif file_path.suffix in [".tbrom", ".twin"]:
+            raise TwinRuntimeError("Cannot read encrypted description XML files from .tbrom or .twin models")
+        else:
+            raise TwinRuntimeError("Unsupported file extension: " f"{file_path.suffix}")
+        return model_name
+
+    @staticmethod
+    def get_fmi_version(file_path: str) -> str:
+        """
+        Returns the FMI version described in the given model or XML file.
+
+        Parameters
+        ----------
+        file_path : str
+            File path to the model description XML file for the twin model.
+
+        Returns
+        -------
+        str
+            FMI version of the model
+        """
+
+        def _parse_xml(model_description) -> str:
+            tree = ET.parse(model_description)
+            root = tree.getroot()
+            version = root.get("fmiVersion")
+            if version is None:
+                raise TwinRuntimeError("Failed to find model version!")
+            return version
+
+        file_path = Path(file_path)
+        if file_path.suffix in [".fmu"]:
+            with zipfile.ZipFile(file_path) as zip_handler:
+                with zip_handler.open("modelDescription.xml") as xml_file:
+                    model_fmi_version = _parse_xml(xml_file)
+
+        elif file_path.suffix == ".xml":
+            model_fmi_version = _parse_xml(str(file_path))
+        elif file_path.suffix in [".tbrom", ".twin"]:
+            raise TwinRuntimeError("Cannot read encrypted description XML files from .tbrom or .twin models")
+        else:
+            raise TwinRuntimeError("Unsupported file extension: " f"{file_path.suffix}")
+        return model_fmi_version
+
+    @staticmethod
+    def is_fmu_supported(file_path) -> Tuple[bool, str]:
+        """
+        Returns whether the given FMI-based model is supported by the Twin SDK.
+
+        Twin SDK currently only supports FMI 2.0 models
+
+        Parameters
+        ----------
+        file_path : str
+            File path to the model or model description XML file.
+
+        Returns
+        -------
+        Tuple[bool, str]
+            True if the FMU model is supported
+            False with a message if the FMU model is not supported
+        """
+
+        version = TwinRuntime.get_fmi_version(file_path)
+        if version == "2.0":
+            return True, ""
+        return False, f"FMI {version} models are not supported"
 
     @staticmethod
     def twin_platform_support(file_path):
         """
         Determines whether the TWIN model has Windows and/or Linux binaries.
+
+        Note that "zip_handler.namelist()" might return different contents
+        depending on how the model archive was created. For example,
+        FMUs and Twin models return the following list. Note that there
+        are entries for binaries/linux64/ and binaries/win64/ folders.
+        [
+        'binaries/', 'documentation/', 'resources/', 'modelDescription.xml',
+        'binaries/linux64/', 'binaries/win64/',
+        'binaries/linux64/ModelWith_Min50_Max150.so',
+        'binaries/win64/ModelWith_Min50_Max150.dll'
+        ]
+
+        For a .tbrom model, the following list is returned. Note the absence
+        of binaries/linux64/ and binaries/win64/ folders.
+        [
+        'model.png', 'binaries/win64/rom24LP.dll',
+        'binaries/win64/RomViewerSharedLib.dll', 'binaries/linux64/rom24LP.so',
+        'binaries/linux64/RomViewerSharedLib.so', 'resources/properties.json',
+        'resources/binaryOutputField/basis.svd',
+        'resources/binaryOutputField/points.bin',
+        'resources/binaryOutputField/settings.json',
+        'resources/binaryOutputField/views.json',
+        'resources/binaryOutputField/operationsDefinition.json',
+        'resources/model.coreRom', 'modelDescription.xml'
+        ]
 
         Parameters
         ----------
@@ -286,8 +468,8 @@ class TwinRuntime:
         """
         with zipfile.ZipFile(file_path) as zip_handler:
             zip_contents = zip_handler.namelist()
-            has_windows = "binaries/win64/" in zip_contents
-            has_linux = "binaries/linux64/" in zip_contents
+            has_windows = any([name.startswith("binaries/win64/") for name in zip_contents])
+            has_linux = any([name.startswith("binaries/linux64/") for name in zip_contents])
 
         return {"has_windows": has_windows, "has_linux": has_linux}
 
@@ -316,9 +498,7 @@ class TwinRuntime:
 
         valid_model = c_bool()
         twin_version = c_char_p()
-        TwinGetVersion(
-            c_char_p(file_path), byref(valid_model), byref(twin_version)
-        )
+        TwinGetVersion(c_char_p(file_path), byref(valid_model), byref(twin_version))
         return valid_model.value, twin_version.value.decode()
 
     @staticmethod
@@ -369,26 +549,17 @@ class TwinRuntime:
         """
         if twin_status == 1:
             message = "The method " + method_name + " caused a warning! \n"
-            message += (
-                "TwinRuntime error message :"
-                + twin_runtime.twin_get_status_string()
-            )
+            message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             print(message)
 
         elif twin_status == 2:
             message = "The method " + method_name + " caused a error!\n"
-            message += (
-                "TwinRuntime error message: "
-                + twin_runtime.twin_get_status_string()
-            )
+            message += "TwinRuntime error message: " + twin_runtime.twin_get_status_string()
             raise TwinRuntimeError(message, twin_runtime)
 
         elif twin_status == 3:
             message = "The method " + method_name + " caused a fatal error!\n"
-            message += (
-                "TwinRuntime error message :"
-                + twin_runtime.twin_get_status_string()
-            )
+            message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise TwinRuntimeError(message, twin_runtime)
 
     @staticmethod
@@ -410,15 +581,8 @@ class TwinRuntime:
             TWIN model's variable name.
         """
         if prop_status == 4:
-            message = (
-                f"The method {method_name.encode()}"
-                f"with the variable {var} "
-                "caused an error!\n"
-            )
-            message += (
-                "TwinRuntime error message :"
-                + twin_runtime.twin_get_status_string()
-            )
+            message = f"The method {method_name.encode()}" f"with the variable {var} " "caused an error!\n"
+            message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyError(message, twin_runtime, prop_status)
 
         elif prop_status == 3:
@@ -427,35 +591,17 @@ class TwinRuntime:
                 f"with the variable {var} "
                 "is invalid (i.e., variable does not exist)!\n"
             )
-            message += (
-                "TwinRuntime error message: "
-                + twin_runtime.twin_get_status_string()
-            )
+            message += "TwinRuntime error message: " + twin_runtime.twin_get_status_string()
             raise PropertyInvalidError(message, twin_runtime, prop_status)
 
         elif prop_status == 2:
-            message = (
-                f"The method {method_name.encode()} "
-                f"with the variable {var} is not applicable!\n"
-            )
-            message += (
-                "TwinRuntime error message :"
-                + twin_runtime.twin_get_status_string()
-            )
-            raise PropertyNotApplicableError(
-                message, twin_runtime, prop_status
-            )
+            message = f"The method {method_name.encode()} " f"with the variable {var} is not applicable!\n"
+            message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
+            raise PropertyNotApplicableError(message, twin_runtime, prop_status)
 
         elif prop_status == 1:
-            message = (
-                "The method {} with the variable {} is not defined!\n".format(
-                    method_name, var
-                )
-            )
-            message += (
-                "TwinRuntime error message :"
-                + twin_runtime.twin_get_status_string()
-            )
+            message = "The method {} with the variable {} is not defined!\n".format(method_name, var)
+            message += "TwinRuntime error message :" + twin_runtime.twin_get_status_string()
             raise PropertyNotDefinedError(message, twin_runtime, prop_status)
 
     def __init__(
@@ -465,18 +611,15 @@ class TwinRuntime:
         twin_runtime_library_path=None,
         log_level=LogLevel.TWIN_LOG_WARNING,
         load_model=True,
+        fmi_type=FmiType.UNDEFINED,
     ):
         model_path = Path(model_path)
         self.log_level = log_level
 
-        if model_path.is_file() is False:
-            raise FileNotFoundError(
-                "File is not found at {}".format(model_path.absolute())
-            )
+        # if model_path.is_file() is False:
+        #     raise FileNotFoundError("File is not found at {}".format(model_path.absolute()))
 
-        self._twin_runtime_library = TwinRuntime.load_dll(
-            twin_runtime_library_path
-        )
+        self._twin_runtime_library = TwinRuntime.load_dll(twin_runtime_library_path)
 
         if log_path is None:
             # Getting parent directory
@@ -490,47 +633,55 @@ class TwinRuntime:
         self._modelPointer = c_void_p()
 
         self._TwinOpen = self._twin_runtime_library.TwinOpen
+        self._TwinOpen.argtypes = [c_char_p, c_void_p, c_char_p, c_int]
         self._TwinOpen.restype = c_int
 
+        self._TwinOpenWithFmiType = self._twin_runtime_library.TwinOpenWithFmiType
+        self._TwinOpenWithFmiType.argtypes = [c_char_p, c_void_p, c_char_p, c_int, c_int]
+        self._TwinOpenWithFmiType.restype = c_int
+
         self._TwinClose = self._twin_runtime_library.TwinClose
+        self._TwinClose.argtypes = [c_void_p]
+        self._TwinClose.restype = None
 
         self._TwinReset = self._twin_runtime_library.TwinReset
+        self._TwinReset.argtypes = [c_void_p]
         self._TwinReset.restype = c_int
 
-        self.TwinGetStatusString = (
-            self._twin_runtime_library.TwinGetStatusString
-        )
+        self.TwinGetStatusString = self._twin_runtime_library.TwinGetStatusString
         self.TwinGetStatusString.argtypes = [c_void_p]
         self.TwinGetStatusString.restype = c_char_p
 
         self._TwinGetModelName = self._twin_runtime_library.TwinGetModelName
+        self._TwinGetModelName.argtypes = [c_void_p]
         self._TwinGetModelName.restype = c_char_p
 
-        self._TwinGetNumParameters = (
-            self._twin_runtime_library.TwinGetNumParameters
-        )
+        self._TwinGetNumParameters = self._twin_runtime_library.TwinGetNumParameters
+        self._TwinGetNumParameters.argtypes = [c_void_p, POINTER(c_size_t)]
         self._TwinGetNumParameters.restype = c_int
 
         self._TwinGetNumInputs = self._twin_runtime_library.TwinGetNumInputs
+        self._TwinGetNumInputs.argtypes = [c_void_p, POINTER(c_size_t)]
         self._TwinGetNumInputs.restype = c_int
 
         self._TwinGetNumOutputs = self._twin_runtime_library.TwinGetNumOutputs
+        self._TwinGetNumOutputs.argtypes = [c_void_p, POINTER(c_size_t)]
         self._TwinGetNumOutputs.restype = c_int
 
         self._TwinGetParamNames = self._twin_runtime_library.TwinGetParamNames
+        self._TwinGetParamNames.argtypes = [c_void_p, POINTER(c_char_p), c_size_t]
         self._TwinGetParamNames.restype = c_int
 
         self._TwinGetInputNames = self._twin_runtime_library.TwinGetInputNames
+        self._TwinGetInputNames.argtypes = [c_void_p, POINTER(c_char_p), c_size_t]
         self._TwinGetInputNames.restype = c_int
 
-        self._TwinGetOutputNames = (
-            self._twin_runtime_library.TwinGetOutputNames
-        )
+        self._TwinGetOutputNames = self._twin_runtime_library.TwinGetOutputNames
+        self._TwinGetOutputNames.argtypes = [c_void_p, POINTER(c_char_p), c_size_t]
         self._TwinGetOutputNames.restype = c_int
 
-        self._TwinGetNumberOfDeployments = (
-            self._twin_runtime_library.TwinGetNumberOfDeploymentsFromInstance
-        )
+        self._TwinGetNumberOfDeployments = self._twin_runtime_library.TwinGetNumberOfDeploymentsFromInstance
+        self._TwinGetNumberOfDeployments.argtypes = [c_void_p, POINTER(c_size_t)]
         self._TwinGetNumberOfDeployments.restype = c_int
 
         self._TwinInstantiate = self._twin_runtime_library.TwinInstantiate
@@ -541,163 +692,168 @@ class TwinRuntime:
         self._TwinInitialize.argtypes = [c_void_p]
         self._TwinInitialize.restype = c_int
 
-        self._TwinSetParamByName = (
-            self._twin_runtime_library.TwinSetParamByName
-        )
+        self._TwinSetParamByName = self._twin_runtime_library.TwinSetParamByName
         self._TwinSetParamByName.argtypes = [c_void_p, c_char_p, c_double]
         self._TwinSetParamByName.restype = c_int
 
-        self._TwinSetStrParamByName = (
-            self._twin_runtime_library.TwinSetStrParamByName
-        )
+        self._TwinSetStrParamByName = self._twin_runtime_library.TwinSetStrParamByName
         self._TwinSetStrParamByName.argtypes = [c_void_p, c_char_p, c_char_p]
         self._TwinSetStrParamByName.restype = c_int
 
-        self._TwinSetParamByIndex = (
-            self._twin_runtime_library.TwinSetParamByIndex
-        )
+        self._TwinSetParamByIndex = self._twin_runtime_library.TwinSetParamByIndex
         self._TwinSetParamByIndex.argtypes = [c_void_p, c_int, c_double]
         self._TwinSetParamByIndex.restype = c_int
 
         self._TwinGetOutputs = self._twin_runtime_library.TwinGetOutputs
+        self._TwinGetOutputs.argtypes = [c_void_p, POINTER(c_double), c_size_t]
         self._TwinGetOutputs.restype = c_int
 
         self._TwinSimulate = self._twin_runtime_library.TwinSimulate
+        self._TwinSimulate.argtypes = [c_void_p, c_double, c_double]
         self._TwinSimulate.restype = c_int
 
-        self._TwinSimulateBatchMode = (
-            self._twin_runtime_library.TwinSimulateBatchMode
-        )
+        self._TwinSimulateBatchMode = self._twin_runtime_library.TwinSimulateBatchMode
+        self._TwinSimulateBatchMode.argtypes = [
+            c_void_p,
+            POINTER(POINTER(c_double)),
+            c_size_t,
+            POINTER(POINTER(c_double)),
+            c_size_t,
+            c_double,
+            c_int,
+        ]
         self._TwinSimulateBatchMode.restype = c_int
 
-        self._TwinSimulateBatchModeCSV = (
-            self._twin_runtime_library.TwinSimulateBatchModeCSV
-        )
+        self._TwinSimulateBatchModeCSV = self._twin_runtime_library.TwinSimulateBatchModeCSV
+        self._TwinSimulateBatchModeCSV.argtypes = [c_void_p, c_char_p, c_char_p, c_double, c_int]
         self._TwinSimulateBatchModeCSV.restype = c_int
 
         self._TwinSetInputs = self._twin_runtime_library.TwinSetInputs
+        self._TwinSetInputs.argtypes = [c_void_p, POINTER(c_double), c_size_t]
         self._TwinSetInputs.restype = c_int
 
-        self._TwinSetInputByName = (
-            self._twin_runtime_library.TwinSetInputByName
-        )
+        self._TwinSetInputByName = self._twin_runtime_library.TwinSetInputByName
         self._TwinSetInputByName.argtypes = [c_void_p, c_char_p, c_double]
         self._TwinSetInputByName.restype = c_int
 
-        self._TwinSetInputByIndex = (
-            self._twin_runtime_library.TwinSetInputByIndex
-        )
+        self._TwinSetInputByIndex = self._twin_runtime_library.TwinSetInputByIndex
         self._TwinSetInputByIndex.argtypes = [c_void_p, c_int, c_double]
         self._TwinSetInputByIndex.restype = c_int
 
-        self._TwinGetOutputByName = (
-            self._twin_runtime_library.TwinGetOutputByName
-        )
+        self._TwinGetOutputByName = self._twin_runtime_library.TwinGetOutputByName
+        self._TwinGetOutputByName.argtypes = [c_void_p, c_char_p, POINTER(c_double)]
         self._TwinGetOutputByName.restype = c_int
 
-        self._TwinGetOutputByIndex = (
-            self._twin_runtime_library.TwinGetOutputByIndex
-        )
+        self._TwinGetOutputByIndex = self._twin_runtime_library.TwinGetOutputByIndex
+        self._TwinGetOutputByIndex.argtypes = [c_void_p, c_size_t, POINTER(c_double)]
         self._TwinGetOutputByIndex.restype = c_int
 
-        self._TwinGetDefaultSimulationSettings = (
-            self._twin_runtime_library.TwinGetDefaultSimulationSettings
-        )
+        self._TwinGetDefaultSimulationSettings = self._twin_runtime_library.TwinGetDefaultSimulationSettings
+        self._TwinGetDefaultSimulationSettings.argtypes = [
+            c_void_p,
+            POINTER(c_double),
+            POINTER(c_double),
+            POINTER(c_double),
+        ]
         self._TwinGetDefaultSimulationSettings.restype = c_int
 
-        self._TwinGetVarDataType = (
-            self._twin_runtime_library.TwinGetVarDataType
-        )
+        self._TwinGetVarDataType = self._twin_runtime_library.TwinGetVarDataType
+        self._TwinGetVarDataType.argtypes = [c_void_p, c_char_p, POINTER(c_char_p)]
         self._TwinGetVarDataType.restype = c_int
 
         self._TwinGetVarUnit = self._twin_runtime_library.TwinGetVarUnit
+        self._TwinGetVarUnit.argtypes = [c_void_p, c_char_p, POINTER(c_char_p)]
         self._TwinGetVarUnit.restype = c_int
 
         self._TwinGetVarStart = self._twin_runtime_library.TwinGetVarStart
+        self._TwinGetVarStart.argtypes = [c_void_p, c_char_p, POINTER(c_double)]
         self._TwinGetVarStart.restype = c_int
 
-        self._TwinGetStrVarStart = (
-            self._twin_runtime_library.TwinGetStrVarStart
-        )
+        self._TwinGetStrVarStart = self._twin_runtime_library.TwinGetStrVarStart
+        self._TwinGetStrVarStart.argtypes = [c_void_p, c_char_p, POINTER(c_char_p)]
         self._TwinGetStrVarStart.restype = c_int
 
         self._TwinGetVarMin = self._twin_runtime_library.TwinGetVarMin
+        self._TwinGetVarMin.argtypes = [c_void_p, c_char_p, POINTER(c_double)]
         self._TwinGetVarMin.restype = c_int
 
         self._TwinGetVarMax = self._twin_runtime_library.TwinGetVarMax
+        self._TwinGetVarMax.argtypes = [c_void_p, c_char_p, POINTER(c_double)]
         self._TwinGetVarMax.restype = c_int
 
         self._TwinGetVarNominal = self._twin_runtime_library.TwinGetVarNominal
+        self._TwinGetVarNominal.argtypes = [c_void_p, c_char_p, POINTER(c_double)]
         self._TwinGetVarNominal.restype = c_int
 
-        self._TwinGetVarQuantityType = (
-            self._twin_runtime_library.TwinGetVarQuantityType
-        )
+        self._TwinGetVarQuantityType = self._twin_runtime_library.TwinGetVarQuantityType
+        self._TwinGetVarQuantityType.argtypes = [c_void_p, c_char_p, POINTER(c_char_p)]
         self._TwinGetVarQuantityType.restype = c_int
 
-        self._TwinGetVarDescription = (
-            self._twin_runtime_library.TwinGetVarDescription
-        )
+        self._TwinGetVarDescription = self._twin_runtime_library.TwinGetVarDescription
+        self._TwinGetVarDescription.argtypes = [c_void_p, c_char_p, POINTER(c_char_p)]
         self._TwinGetVarDescription.restype = c_int
 
-        self._TwinGetVisualizationResources = (
-            self._twin_runtime_library.TwinGetVisualizationResources
-        )
+        self._TwinGetVisualizationResources = self._twin_runtime_library.TwinGetVisualizationResources
+        self._TwinGetVisualizationResources.argtypes = [c_void_p, POINTER(c_char_p)]
         self._TwinGetVisualizationResources.restype = c_int
 
-        self._TwinEnableROMImages = (
-            self._twin_runtime_library.TwinEnableROMImages
-        )
+        self._TwinEnableROMImages = self._twin_runtime_library.TwinEnableROMImages
+        self._TwinEnableROMImages.argtypes = [c_void_p, c_char_p, POINTER(c_char_p), c_size_t]
         self._TwinEnableROMImages.restype = c_int
 
-        self._TwinDisableROMImages = (
-            self._twin_runtime_library.TwinDisableROMImages
-        )
+        self._TwinDisableROMImages = self._twin_runtime_library.TwinDisableROMImages
+        self._TwinDisableROMImages.argtypes = [c_void_p, c_char_p, POINTER(c_char_p), c_size_t]
         self._TwinDisableROMImages.restype = c_int
 
-        self._TwinEnable3DROMData = (
-            self._twin_runtime_library.TwinEnable3DROMData
-        )
+        self._TwinEnable3DROMData = self._twin_runtime_library.TwinEnable3DROMData
+        self._TwinEnable3DROMData.argtypes = [c_void_p, c_char_p]
         self._TwinEnable3DROMData.restype = c_int
 
-        self._TwinDisable3DROMData = (
-            self._twin_runtime_library.TwinDisable3DROMData
-        )
+        self._TwinDisable3DROMData = self._twin_runtime_library.TwinDisable3DROMData
+        self._TwinDisable3DROMData.argtypes = [c_void_p, c_char_p]
         self._TwinDisable3DROMData.restype = c_int
 
-        self._TwinGetRomImageFiles = (
-            self._twin_runtime_library.TwinGetRomImageFiles
-        )
+        self._TwinGetRomImageFiles = self._twin_runtime_library.TwinGetRomImageFiles
+        self._TwinGetRomImageFiles.argtypes = [
+            c_void_p,
+            c_char_p,
+            POINTER(c_char_p),
+            c_size_t,
+            POINTER(c_char_p),
+            c_double,
+            c_double,
+        ]
         self._TwinGetRomImageFiles.restype = c_int
 
-        self._TwinGetNumRomImageFiles = (
-            self._twin_runtime_library.TwinGetNumRomImageFiles
-        )
+        self._TwinGetNumRomImageFiles = self._twin_runtime_library.TwinGetNumRomImageFiles
+        self._TwinGetNumRomImageFiles.argtypes = [
+            c_void_p,
+            c_char_p,
+            POINTER(c_char_p),
+            c_size_t,
+            POINTER(c_size_t),
+            c_double,
+            c_double,
+        ]
         self._TwinGetNumRomImageFiles.restype = c_int
 
-        self._TwinGetRomModeCoefFiles = (
-            self._twin_runtime_library.TwinGetRomModeCoefFiles
-        )
+        self._TwinGetRomModeCoefFiles = self._twin_runtime_library.TwinGetRomModeCoefFiles
+        self._TwinGetRomModeCoefFiles.argtypes = [c_void_p, c_char_p, POINTER(c_char_p), c_double, c_double]
         self._TwinGetRomModeCoefFiles.restype = c_int
 
-        self._TwinGetNumRomModeCoefFiles = (
-            self._twin_runtime_library.TwinGetNumRomModeCoefFiles
-        )
+        self._TwinGetNumRomModeCoefFiles = self._twin_runtime_library.TwinGetNumRomModeCoefFiles
+        self._TwinGetNumRomModeCoefFiles.argtypes = [c_void_p, c_char_p, POINTER(c_size_t), c_double, c_double]
         self._TwinGetNumRomModeCoefFiles.restype = c_int
 
-        self._TwinGetRomSnapshotFiles = (
-            self._twin_runtime_library.TwinGetRomSnapshotFiles
-        )
+        self._TwinGetRomSnapshotFiles = self._twin_runtime_library.TwinGetRomSnapshotFiles
+        self._TwinGetRomSnapshotFiles.argtypes = [c_void_p, c_char_p, POINTER(c_char_p), c_double, c_double]
         self._TwinGetRomSnapshotFiles.restype = c_int
 
-        self._TwinGetNumRomSnapshotFiles = (
-            self._twin_runtime_library.TwinGetNumRomSnapshotFiles
-        )
+        self._TwinGetNumRomSnapshotFiles = self._twin_runtime_library.TwinGetNumRomSnapshotFiles
+        self._TwinGetNumRomSnapshotFiles.argtypes = [c_void_p, c_char_p, POINTER(c_size_t), c_double, c_double]
         self._TwinGetNumRomSnapshotFiles.restype = c_int
 
-        self._TwinGetDefaultROMImageDirectory = (
-            self._twin_runtime_library.TwinGetDefaultROMImageDirectory
-        )
+        self._TwinGetDefaultROMImageDirectory = self._twin_runtime_library.TwinGetDefaultROMImageDirectory
         self._TwinGetDefaultROMImageDirectory.argtypes = [
             c_void_p,
             c_char_p,
@@ -705,9 +861,7 @@ class TwinRuntime:
         ]
         self._TwinGetDefaultROMImageDirectory.restype = c_int
 
-        self._TwinGetRomResourcePath = (
-            self._twin_runtime_library.TwinGetRomResourcePath
-        )
+        self._TwinGetRomResourcePath = self._twin_runtime_library.TwinGetRomResourcePath
         self._TwinGetRomResourcePath.argtypes = [
             c_void_p,
             c_char_p,
@@ -715,9 +869,45 @@ class TwinRuntime:
         ]
         self._TwinGetRomResourcePath.restype = c_int
 
-        self._TwinSetROMImageDirectory = (
-            self._twin_runtime_library.TwinSetROMImageDirectory
-        )
+        self._TwinGetRomOutputBasisSize = self._twin_runtime_library.TwinGetRomOutputBasisSize
+        self._TwinGetRomOutputBasisSize.argtypes = [
+            c_void_p,
+            c_char_p,
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomOutputBasisSize.restype = c_int
+
+        self._TwinGetRomOutputBasis = self._twin_runtime_library.TwinGetRomOutputBasis
+        self._TwinGetRomOutputBasis.argtypes = [
+            c_void_p,
+            c_char_p,
+            POINTER(c_double),
+            POINTER(c_size_t),
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomOutputBasis.restype = c_int
+
+        self._TwinGetRomInputBasisSize = self._twin_runtime_library.TwinGetRomInputBasisSize
+        self._TwinGetRomInputBasisSize.argtypes = [
+            c_void_p,
+            c_char_p,
+            c_char_p,
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomInputBasisSize.restype = c_int
+
+        self._TwinGetRomInputBasis = self._twin_runtime_library.TwinGetRomInputBasis
+        self._TwinGetRomInputBasis.argtypes = [
+            c_void_p,
+            c_char_p,
+            c_char_p,
+            POINTER(c_double),
+            POINTER(c_size_t),
+            POINTER(c_size_t),
+        ]
+        self._TwinGetRomInputBasis.restype = c_int
+
+        self._TwinSetROMImageDirectory = self._twin_runtime_library.TwinSetROMImageDirectory
         self._TwinSetROMImageDirectory.argtypes = [
             c_void_p,
             c_char_p,
@@ -726,18 +916,16 @@ class TwinRuntime:
         self._TwinSetROMImageDirectory.restype = c_int
 
         self._TwinSaveState = self._twin_runtime_library.TwinSaveState
-        self._TwinSaveState.argtypes = [c_void_p]
+        self._TwinSaveState.argtypes = [c_void_p, c_char_p]
         self._TwinSaveState.restype = c_int
 
         self._TwinLoadState = self._twin_runtime_library.TwinLoadState
-        self._TwinLoadState.argtypes = [c_void_p]
+        self._TwinLoadState.argtypes = [c_void_p, c_char_p, c_bool]
         self._TwinLoadState.restype = c_int
 
         self.model_path = Path(model_path).resolve()
-        if self.model_path.is_file() is False:
-            raise FileNotFoundError(
-                "File is not found at {}".format(model_path.absolute())
-            )
+        # if model_path.is_file() is False:
+        #     raise FileNotFoundError("File is not found at {}".format(model_path.absolute()))
 
         if log_path is None:
             # Getting parent directory
@@ -747,7 +935,7 @@ class TwinRuntime:
         self.log_path = Path(log_path).resolve()
 
         if load_model:
-            self.twin_load(log_level)
+            self.twin_load(log_level, fmi_type)
 
     """
     Model opening/closing
@@ -755,18 +943,22 @@ class TwinRuntime:
     within the constructor.
     """
 
-    def twin_load(self, log_level):
+    def twin_load(self, log_level, fmi_type: FmiType = FmiType.UNDEFINED):
         """
         Opens and loads a TWIN model, with a given log level for the log file.
+        Client code can also specify the FMI type of the model. If the loaded
+        model does not support the specified FMI type, an error is raised.
 
         Parameters
         ----------
         log_level : LogLevel
             Log level selected for the log file
+            (LogLevel.TWIN_LOG_ALL, LogLevel.TWIN_LOG_WARNING,
+            LogLevel.TWIN_LOG_ERROR, LogLevel.TWIN_LOG_FATAL,
+            LogLevel.TWIN_NO_LOG).
 
-                LogLevel.TWIN_LOG_ALL, LogLevel.TWIN_LOG_WARNING,
-                LogLevel.TWIN_LOG_ERROR, LogLevel.TWIN_LOG_FATAL,
-                LogLevel.TWIN_NO_LOG
+        fmi_type : FmiType
+            FMI type of the model (FmiType.CS, FmiType.ME, FmiType.UNDEFINED).
         """
         # This ensures that DLL loading mechanism gets reset to its default
         # behavior, which is altered when the SDK launches in Twin Deployer.
@@ -776,12 +968,8 @@ class TwinRuntime:
             win32api.SetDllDirectory(None)
         file_buf = create_string_buffer(str(self.model_path).encode())
         log_buf = create_string_buffer(str(self.log_path).encode())
-
-        self._twin_status = self._TwinOpen(
-            file_buf,
-            byref(self._modelPointer),
-            log_buf,
-            c_int(log_level.value),
+        self._twin_status = self._TwinOpenWithFmiType(
+            file_buf, byref(self._modelPointer), log_buf, c_int(log_level.value), c_int(fmi_type.value)
         )
 
         self.evaluate_twin_status(self._twin_status, self, "twin_load")
@@ -805,10 +993,7 @@ class TwinRuntime:
         created before using other function calls.
         """
         if not self._is_model_opened:
-            print(
-                "[Warning]: twin_close() will not execute since model is not"
-                "loaded. Maybe it was already closed?"
-            )
+            print("[Warning]: twin_close() will not execute since model is not" "loaded. Maybe it was already closed?")
             return
         self._TwinClose(self._modelPointer)
         self._is_model_opened = False
@@ -839,24 +1024,17 @@ class TwinRuntime:
         """
         Returns the expected number of deployments for the current TWIN model
         instance as defined at the export time.
-        
+
         Returns
         -------
         int
-            Expected number of deployments for the TWIN model instance.
+            Number of expected number of deployments for the TWIN model.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "The model has to be opened before returning "
-                "the number of deployments!"
-            )
-        c_number_deployments = c_int(0)
-        self.twin_status = self._TwinGetNumberOfDeployments(
-            self._modelPointer, byref(c_number_deployments)
-        )
-        self.evaluate_twin_status(
-            self.twin_status, self, "twin_get_number_of_deployments"
-        )
+            raise TwinRuntimeError("The model has to be opened before returning " "the number of deployments!")
+        c_number_deployments = c_size_t(0)
+        self.twin_status = self._TwinGetNumberOfDeployments(self._modelPointer, byref(c_number_deployments))
+        self.evaluate_twin_status(self.twin_status, self, "twin_get_number_of_deployments")
         self.number_outputs = c_number_deployments.value
         return c_number_deployments.value
 
@@ -870,9 +1048,7 @@ class TwinRuntime:
             Name of the TWIN model
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning its name"
-            )
+            raise TwinRuntimeError("Model must be opened before returning its name")
 
         return self._TwinGetModelName(self._modelPointer).decode()
 
@@ -886,19 +1062,12 @@ class TwinRuntime:
             Number of parameters of the TWIN model
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning "
-                "the number of parameters!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning " "the number of parameters!")
 
         if self._number_parameters is None:
-            c_number_params = c_int(0)
-            self._twin_status = self._TwinGetNumParameters(
-                self._modelPointer, byref(c_number_params)
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_get_number_params"
-            )
+            c_number_params = c_size_t(0)
+            self._twin_status = self._TwinGetNumParameters(self._modelPointer, byref(c_number_params))
+            self.evaluate_twin_status(self._twin_status, self, "twin_get_number_params")
             self._number_parameters = c_number_params.value
             return self._number_parameters
         else:
@@ -914,19 +1083,12 @@ class TwinRuntime:
             Number of inputs of the TWIN model
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning "
-                "the number of inputs!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning " "the number of inputs!")
 
         if self._number_inputs is None:
-            c_number_inputs = c_int(0)
-            self._twin_status = self._TwinGetNumInputs(
-                self._modelPointer, byref(c_number_inputs)
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_get_number_inputs"
-            )
+            c_number_inputs = c_size_t(0)
+            self._twin_status = self._TwinGetNumInputs(self._modelPointer, byref(c_number_inputs))
+            self.evaluate_twin_status(self._twin_status, self, "twin_get_number_inputs")
             self._number_inputs = c_number_inputs.value
             return self._number_inputs
         else:
@@ -942,19 +1104,12 @@ class TwinRuntime:
             Number of outputs of the TWIN model
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning "
-                "the number of outputs!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning " "the number of outputs!")
 
         if self._number_outputs is None:
-            c_number_outputs = c_int(0)
-            self._twin_status = self._TwinGetNumOutputs(
-                self._modelPointer, byref(c_number_outputs)
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_get_number_outputs"
-            )
+            c_number_outputs = c_size_t(0)
+            self._twin_status = self._TwinGetNumOutputs(self._modelPointer, byref(c_number_outputs))
+            self.evaluate_twin_status(self._twin_status, self, "twin_get_number_outputs")
             self._number_outputs = c_number_outputs.value
             return self._number_outputs
         else:
@@ -970,9 +1125,7 @@ class TwinRuntime:
             List of names of TWIN parameters
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning parameter names!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning parameter names!")
 
         if self._parameter_names is None:
             self._TwinGetParamNames.argtypes = [
@@ -983,12 +1136,8 @@ class TwinRuntime:
 
             parameter_names_c = (c_char_p * self._number_parameters)()
 
-            self._twin_status = self._TwinGetParamNames(
-                self._modelPointer, parameter_names_c, self._number_parameters
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_get_param_names"
-            )
+            self._twin_status = self._TwinGetParamNames(self._modelPointer, parameter_names_c, self._number_parameters)
+            self.evaluate_twin_status(self._twin_status, self, "twin_get_param_names")
 
             self._parameter_names = to_np_array(parameter_names_c)
 
@@ -1006,9 +1155,7 @@ class TwinRuntime:
             List of names of TWIN inputs
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning input names!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning input names!")
 
         if self._input_names is None:
             self._TwinGetInputNames.argtypes = [
@@ -1019,12 +1166,8 @@ class TwinRuntime:
 
             input_names_c = (c_char_p * self._number_inputs)()
 
-            self._twin_status = self._TwinGetInputNames(
-                self._modelPointer, input_names_c, self._number_inputs
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_get_input_names"
-            )
+            self._twin_status = self._TwinGetInputNames(self._modelPointer, input_names_c, self._number_inputs)
+            self.evaluate_twin_status(self._twin_status, self, "twin_get_input_names")
 
             self._input_names = to_np_array(input_names_c)
 
@@ -1042,9 +1185,7 @@ class TwinRuntime:
             List of names of TWIN outputs
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning output names!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning output names!")
 
         if self._output_names is None:
             self._TwinGetInputNames.argtypes = [
@@ -1055,12 +1196,8 @@ class TwinRuntime:
 
             output_names_c = (c_char_p * self._number_outputs)()
 
-            self._twin_status = self._TwinGetOutputNames(
-                self._modelPointer, output_names_c, self._number_outputs
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_get_output_names"
-            )
+            self._twin_status = self._TwinGetOutputNames(self._modelPointer, output_names_c, self._number_outputs)
+            self.evaluate_twin_status(self._twin_status, self, "twin_get_output_names")
 
             self._output_names = to_np_array(output_names_c)
 
@@ -1080,9 +1217,7 @@ class TwinRuntime:
             and tolerance values
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning default settings!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning default settings!")
 
         c_end_time = c_double(0)
         c_step_size = c_double(0)
@@ -1094,9 +1229,7 @@ class TwinRuntime:
             byref(c_step_size),
             byref(c_tolerance),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_default_sim_settings"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_default_sim_settings")
 
         return c_end_time.value, c_step_size.value, c_tolerance.value
 
@@ -1108,7 +1241,7 @@ class TwinRuntime:
     def twin_get_var_data_type(self, var_name):
         """
         Retrieves the data type of a given variable
-        ("Real", "Integer", "Boolean", or "Enumeration") by name.
+        ("Real", "Integer", "Boolean", "Enumeration", or String) by name.
 
         Parameters
         ----------
@@ -1121,21 +1254,15 @@ class TwinRuntime:
             Data type of the given variable returned as string.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable data type!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable data type!")
 
         var_type = c_char_p()
 
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarDataType(
-            self._modelPointer, c_char_p(var_name), byref(var_type)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_type", var_name
-        )
+        property_status = self._TwinGetVarDataType(self._modelPointer, c_char_p(var_name), byref(var_type))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_type", var_name)
 
         if var_type.value is None:
             return None
@@ -1158,21 +1285,15 @@ class TwinRuntime:
             Physical quantity of the given variable returned as string.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable quantity type!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable quantity type!")
 
         quantity_type = c_char_p()
 
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarQuantityType(
-            self._modelPointer, c_char_p(var_name), byref(quantity_type)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_quantity_type", var_name
-        )
+        property_status = self._TwinGetVarQuantityType(self._modelPointer, c_char_p(var_name), byref(quantity_type))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_quantity_type", var_name)
 
         if quantity_type.value is None:
             return None
@@ -1194,21 +1315,15 @@ class TwinRuntime:
             Description of the given variable returned as string.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable description!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable description!")
 
         var_description = c_char_p()
 
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarDescription(
-            self._modelPointer, c_char_p(var_name), byref(var_description)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_description", var_name
-        )
+        property_status = self._TwinGetVarDescription(self._modelPointer, c_char_p(var_name), byref(var_description))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_description", var_name)
 
         if var_description.value is None:
             return None
@@ -1230,21 +1345,15 @@ class TwinRuntime:
             Unit of the given variable returned as string.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable unit type!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable unit type!")
 
         var_unit = c_char_p()
 
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarUnit(
-            self._modelPointer, c_char_p(var_name), byref(var_unit)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_unit", var_name
-        )
+        property_status = self._TwinGetVarUnit(self._modelPointer, c_char_p(var_name), byref(var_unit))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_unit", var_name)
 
         if var_unit.value is None:
             return None
@@ -1266,20 +1375,14 @@ class TwinRuntime:
             Start value of the given variable.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable start value!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable start value!")
 
         start_value = c_double()
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarStart(
-            self._modelPointer, c_char_p(var_name), byref(start_value)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_start", var_name
-        )
+        property_status = self._TwinGetVarStart(self._modelPointer, c_char_p(var_name), byref(start_value))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_start", var_name)
 
         return start_value.value
 
@@ -1298,20 +1401,14 @@ class TwinRuntime:
             Start value of the given variable returned as string.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable start value!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable start value!")
 
         start_value = c_char_p()
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetStrVarStart(
-            self._modelPointer, c_char_p(var_name), byref(start_value)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_str_var_start", var_name
-        )
+        property_status = self._TwinGetStrVarStart(self._modelPointer, c_char_p(var_name), byref(start_value))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_str_var_start", var_name)
 
         return start_value.value.decode()
 
@@ -1330,20 +1427,14 @@ class TwinRuntime:
             Minimum value of the given variable.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable minimum value!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable minimum value!")
 
         min_value = c_double()
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarMin(
-            self._modelPointer, c_char_p(var_name), byref(min_value)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_min", var_name
-        )
+        property_status = self._TwinGetVarMin(self._modelPointer, c_char_p(var_name), byref(min_value))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_min", var_name)
 
         return min_value.value
 
@@ -1362,20 +1453,14 @@ class TwinRuntime:
             Maximum value of the given variable.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable maximum value!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable maximum value!")
 
         max_value = c_double()
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarMax(
-            self._modelPointer, c_char_p(var_name), byref(max_value)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_max", var_name
-        )
+        property_status = self._TwinGetVarMax(self._modelPointer, c_char_p(var_name), byref(max_value))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_max", var_name)
 
         return max_value.value
 
@@ -1394,20 +1479,14 @@ class TwinRuntime:
             Nominal value of the given variable.
         """
         if self._is_model_opened is False:
-            raise TwinRuntimeError(
-                "Model must be opened before returning variable nominal value!"
-            )
+            raise TwinRuntimeError("Model must be opened before returning variable nominal value!")
 
         nominal_value = c_double()
         if type(var_name) is not bytes:
             var_name = var_name.encode()
 
-        property_status = self._TwinGetVarNominal(
-            self._modelPointer, c_char_p(var_name), byref(nominal_value)
-        )
-        self.evaluate_twin_prop_status(
-            property_status, self, "twin_get_var_nominal", var_name
-        )
+        property_status = self._TwinGetVarNominal(self._modelPointer, c_char_p(var_name), byref(nominal_value))
+        self.evaluate_twin_prop_status(property_status, self, "twin_get_var_nominal", var_name)
 
         return nominal_value.value
 
@@ -1431,16 +1510,13 @@ class TwinRuntime:
 
         """
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before initialization!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before initialization!")
 
         try:
             self._twin_status = self._TwinInitialize(self._modelPointer)
         except OSError:
             message = (
-                "Error while initializing the model. "
-                "This model may need start values or has other dependencies."
+                "Error while initializing the model. " "This model may need start values or has other dependencies."
             )
             raise TwinRuntimeError(message)
 
@@ -1465,13 +1541,9 @@ class TwinRuntime:
             Default is 0.
         """
         if self._is_model_initialized is False:
-            raise TwinRuntimeError(
-                "Model must be initialized before simulation!"
-            )
+            raise TwinRuntimeError("Model must be initialized before simulation!")
 
-        self._twin_status = self._TwinSimulate(
-            self._modelPointer, c_double(time_stop), c_double(time_step)
-        )
+        self._twin_status = self._TwinSimulate(self._modelPointer, c_double(time_stop), c_double(time_step))
         self.evaluate_twin_status(self._twin_status, self, "twin_simulate")
 
     def twin_simulate_batch_mode(
@@ -1512,9 +1584,7 @@ class TwinRuntime:
         output_number_of_columns = self._number_outputs + 1
 
         if self._is_model_initialized is False:
-            raise TwinRuntimeError(
-                "Model must be initialized before simulation!"
-            )
+            raise TwinRuntimeError("Model must be initialized before simulation!")
 
         # Creates a local copy so that the source DF does not
         # get modified outside this scope
@@ -1528,9 +1598,7 @@ class TwinRuntime:
             max_output_rows = int(math.ceil(end_time / step_size) + 1)
         else:
             if local_df.iloc[0, 0] > 0:
-                max_output_rows = (
-                    num_input_rows + 1
-                )  # + 1 to account for t=0 that's not on the input DF
+                max_output_rows = num_input_rows + 1  # + 1 to account for t=0 that's not on the input DF
             else:
                 max_output_rows = num_input_rows
 
@@ -1539,40 +1607,29 @@ class TwinRuntime:
         input_data = build_ctype_2d_array(num_input_rows, local_df)
 
         # Pandas float to Python equivalent
-        out_data = build_empty_ctype_2d_array(
-            max_output_rows, output_number_of_columns
-        )
+        out_data = build_empty_ctype_2d_array(max_output_rows, output_number_of_columns)
 
         self._twin_status = self._TwinSimulateBatchMode(
             self._modelPointer,
-            byref(input_data),
-            c_int(num_input_rows),
-            byref(out_data),
-            c_int(max_output_rows),
+            input_data,
+            c_size_t(num_input_rows),
+            out_data,
+            c_size_t(max_output_rows),
             c_double(step_size),
             c_int(interpolate),
         )
-        data = [
-            np.ctypeslib.as_array(
-                out_data[i], shape=(output_number_of_columns,)
-            )
-            for i in range(max_output_rows)
-        ]
+        data = [np.ctypeslib.as_array(out_data[i], shape=(output_number_of_columns,)) for i in range(max_output_rows)]
         output_df = pd.DataFrame(
             data=data,
             index=np.arange(0, max_output_rows),
             columns=output_column_names,
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_simulate_batch_mode"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_simulate_batch_mode")
 
         return output_df
 
     # This method will generate the response also as a csv
-    def twin_simulate_batch_mode_csv(
-        self, input_csv, output_csv, step_size=0, interpolate=0
-    ):
+    def twin_simulate_batch_mode_csv(self, input_csv, output_csv, step_size=0, interpolate=0):
         """
         Simulates the TWIN model in batch mode using given input CSV file and
         write the results in the output CSV file.
@@ -1594,9 +1651,7 @@ class TwinRuntime:
 
         """
         if self._is_model_initialized is False:
-            raise TwinRuntimeError(
-                "Model must be initialized before simulation!"
-            )
+            raise TwinRuntimeError("Model must be initialized before simulation!")
 
         if type(input_csv) is not bytes:
             input_csv = input_csv.encode()
@@ -1614,9 +1669,7 @@ class TwinRuntime:
             c_int(interpolate),
         )
 
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_simulate_batch_mode_csv"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_simulate_batch_mode_csv")
 
     def twin_reset(self):
         """
@@ -1641,28 +1694,20 @@ class TwinRuntime:
             List of inputs value.
         """
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before setting inputs!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before setting inputs!")
 
         if len(input_array) != self._number_inputs:
-            raise TwinRuntimeError(
-                "Input array size must match the the models number of inputs!"
-            )
+            raise TwinRuntimeError("Input array size must match the the models number of inputs!")
 
         array_np = np.array(input_array, dtype=float)
-        array_ctypes = array_np.ctypes.data_as(
-            POINTER(c_double * self._number_inputs)
-        )
+        array_ctypes = array_np.ctypes.data_as(POINTER(c_double * self._number_inputs))
 
         self._TwinSetInputs.argtypes = [
             c_void_p,
             POINTER(c_double * self._number_inputs),
             c_int,
         ]
-        self._twin_status = self._TwinSetInputs(
-            self._modelPointer, array_ctypes, self._number_inputs
-        )
+        self._twin_status = self._TwinSetInputs(self._modelPointer, array_ctypes, self._number_inputs)
         self.evaluate_twin_status(self._twin_status, self, "twin_get_outputs")
 
     def twin_get_outputs(self):
@@ -1675,9 +1720,7 @@ class TwinRuntime:
             List of outputs value.
         """
         if self._is_model_initialized is False:
-            raise TwinRuntimeError(
-                "Model must be initialized before it can return outputs!"
-            )
+            raise TwinRuntimeError("Model must be initialized before it can return outputs!")
 
         self._TwinGetOutputs.argtypes = [
             c_void_p,
@@ -1686,9 +1729,7 @@ class TwinRuntime:
         ]
         outputs = (c_double * self._number_outputs)()
 
-        self._twin_status = self._TwinGetOutputs(
-            self._modelPointer, outputs, self._number_outputs
-        )
+        self._twin_status = self._TwinGetOutputs(self._modelPointer, outputs, self._number_outputs)
         self.evaluate_twin_status(self._twin_status, self, "twin_get_outputs")
 
         outputs_list = np.array(outputs).tolist()
@@ -1706,19 +1747,13 @@ class TwinRuntime:
             Parameter value.
         """
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before setting parameters!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before setting parameters!")
 
         if isinstance(param_name, str):
             param_name = param_name.encode()
 
-        self._twin_status = self._TwinSetParamByName(
-            self._modelPointer, c_char_p(param_name), c_double(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_set_param_by_name"
-        )
+        self._twin_status = self._TwinSetParamByName(self._modelPointer, c_char_p(param_name), c_double(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_set_param_by_name")
 
     def twin_set_str_param_by_name(self, param_name, value):
         """
@@ -1732,9 +1767,7 @@ class TwinRuntime:
             Parameter value.
         """
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before setting parameters!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before setting parameters!")
 
         if isinstance(param_name, str):
             param_name = param_name.encode()
@@ -1742,12 +1775,8 @@ class TwinRuntime:
         if isinstance(value, str):
             value = value.encode()
 
-        self._twin_status = self._TwinSetStrParamByName(
-            self._modelPointer, c_char_p(param_name), c_char_p(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_set_str_param_by_name"
-        )
+        self._twin_status = self._TwinSetStrParamByName(self._modelPointer, c_char_p(param_name), c_char_p(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_set_str_param_by_name")
 
     def twin_set_param_by_index(self, index, value):
         """
@@ -1762,16 +1791,10 @@ class TwinRuntime:
         """
 
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before setting parameters!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before setting parameters!")
 
-        self._twin_status = self._TwinSetParamByIndex(
-            self._modelPointer, c_int(index), c_double(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_set_param_by_index"
-        )
+        self._twin_status = self._TwinSetParamByIndex(self._modelPointer, c_int(index), c_double(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_set_param_by_index")
 
     def twin_set_input_by_name(self, input_name, value):
         """
@@ -1785,19 +1808,13 @@ class TwinRuntime:
             Input value.
         """
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before setting inputs!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before setting inputs!")
 
         if isinstance(input_name, str):
             input_name = input_name.encode()
 
-        self._twin_status = self._TwinSetInputByName(
-            self._modelPointer, c_char_p(input_name), c_double(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_set_input_by_name"
-        )
+        self._twin_status = self._TwinSetInputByName(self._modelPointer, c_char_p(input_name), c_double(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_set_input_by_name")
 
     def twin_set_input_by_index(self, index, value):
         """
@@ -1811,16 +1828,10 @@ class TwinRuntime:
             Input value.
         """
         if self._is_model_instantiated is False:
-            raise TwinRuntimeError(
-                "Model must be instantiated before setting inputs!"
-            )
+            raise TwinRuntimeError("Model must be instantiated before setting inputs!")
 
-        self._twin_status = self._TwinSetInputByIndex(
-            self._modelPointer, c_int(index), c_double(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_set_input_by_index"
-        )
+        self._twin_status = self._TwinSetInputByIndex(self._modelPointer, c_int(index), c_double(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_set_input_by_index")
 
     def twin_get_output_by_name(self, output_name):
         """
@@ -1832,17 +1843,11 @@ class TwinRuntime:
             Output value.
         """
         if self._is_model_initialized is False:
-            raise TwinRuntimeError(
-                "Model must be initialized before it can return outputs!"
-            )
+            raise TwinRuntimeError("Model must be initialized before it can return outputs!")
 
         value = c_double(0)
-        self._twin_status = self._TwinGetOutputByName(
-            self._modelPointer, c_char_p(output_name.encode()), byref(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_output_by_name"
-        )
+        self._twin_status = self._TwinGetOutputByName(self._modelPointer, c_char_p(output_name.encode()), byref(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_output_by_name")
         return value
 
     def twin_get_output_by_index(self, index):
@@ -1855,17 +1860,11 @@ class TwinRuntime:
             Output value.
         """
         if self._is_model_initialized is False:
-            raise TwinRuntimeError(
-                "Model must be initialized before it can return outputs!"
-            )
+            raise TwinRuntimeError("Model must be initialized before it can return outputs!")
 
         value = c_double(0)
-        self._twin_status = self._TwinGetOutputByIndex(
-            self._modelPointer, c_int(index), byref(value)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_output_by_index"
-        )
+        self._twin_status = self._TwinGetOutputByIndex(self._modelPointer, c_int(index), byref(value))
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_output_by_index")
         return value
 
     def twin_get_visualization_resources(self):
@@ -1884,29 +1883,20 @@ class TwinRuntime:
             .. code-block:: python
 
                 {
-                    'myTBROM_1': {
-                        'type': 'image,3D',
-                        'modelname': 'myTBROM',
-                        'views': {
-                            'View1': 'View1'
-                            },
-                        'trigger': {
-                            'field_data_storage': 'field_data_storage'
-                            }
+                    "myTBROM_1": {
+                        "type": "image,3D",
+                        "modelname": "myTBROM",
+                        "views": {"View1": "View1"},
+                        "trigger": {"field_data_storage": "field_data_storage"},
+                        "inputfields": ["inputPressure", "inputTemperature"],
                     }
                 }
         """
         visualization_info = c_char_p()
-        self._twin_status = self._TwinGetVisualizationResources(
-            self._modelPointer, byref(visualization_info)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_visualization_resources"
-        )
+        self._twin_status = self._TwinGetVisualizationResources(self._modelPointer, byref(visualization_info))
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_visualization_resources")
         try:
-            data = json.loads(
-                visualization_info.value.decode().replace("\n", "")
-            )
+            data = json.loads(visualization_info.value.decode().replace("\n", ""))
             return data
         except json.decoder.JSONDecodeError:
             return None
@@ -1933,9 +1923,7 @@ class TwinRuntime:
         self._twin_status = self._TwinGetDefaultROMImageDirectory(
             self._modelPointer, c_char_p(model_name), byref(default_location)
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_default_rom_image_location"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_default_rom_image_location")
         if default_location:
             return default_location.value.decode()
 
@@ -1950,7 +1938,7 @@ class TwinRuntime:
         model_name : str
             Model name of the TBROM.
         directory_path : str
-            Aboslute path of the directory where to store the images.
+            Absolute path of the directory where to store the images.
         """
         if type(model_name) is not bytes:
             model_name = model_name.encode()
@@ -1959,9 +1947,7 @@ class TwinRuntime:
         self._twin_status = self._TwinSetROMImageDirectory(
             self._modelPointer, c_char_p(model_name), c_char_p(directory_path)
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_set_rom_image_directory"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_set_rom_image_directory")
 
     def twin_enable_rom_model_images(self, model_name, views):
         """
@@ -1978,7 +1964,7 @@ class TwinRuntime:
         views : list
             View names for which the image generation needs to be enabled.
         """
-        n_views_c = c_int(len(views))
+        n_views_c = c_size_t(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
@@ -1989,9 +1975,7 @@ class TwinRuntime:
             array_ctypes,
             n_views_c,
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_enable_rom_model_image"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_enable_rom_model_image")
 
     def twin_disable_rom_model_images(self, model_name, views):
         """
@@ -2008,7 +1992,7 @@ class TwinRuntime:
         views : list
             View names for which the image generation needs to be disabled.
         """
-        n_views_c = c_int(len(views))
+        n_views_c = c_size_t(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
@@ -2019,9 +2003,7 @@ class TwinRuntime:
             array_ctypes,
             n_views_c,
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_disable_rom_model_images"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_disable_rom_model_images")
 
     def twin_get_rom_resource_directory(self, model_name):
         """
@@ -2043,14 +2025,98 @@ class TwinRuntime:
         if type(model_name) is not bytes:
             model_name = model_name.encode()
         ret = c_char_p()
-        self._twin_status = self._TwinGetRomResourcePath(
-            self._modelPointer, c_char_p(model_name), byref(ret)
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_resource_directory"
-        )
+        self._twin_status = self._TwinGetRomResourcePath(self._modelPointer, c_char_p(model_name), byref(ret))
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_resource_directory")
         if ret:
             return ret.value.decode()
+
+    def twin_get_rom_output_basis(self, model_name):
+        """
+        Retrieve the output field basis for the given TBROM model name.
+        This method is only supported for Twin models created from one or more TBROM components.
+
+        Parameters
+        ----------
+        model_name : str
+            Model name of the TBROM for which the basis needs to be retrieved.
+
+        Returns
+        -------
+        basis : np.ndarray
+            SVD basis
+        modes : int
+            number of modes
+        size : int
+            field size
+        """
+        if type(model_name) != bytes:
+            model_name = model_name.encode()
+        c_basis_size = c_size_t()
+        self._twin_status = self._TwinGetRomOutputBasisSize(
+            self._modelPointer, c_char_p(model_name), byref(c_basis_size)
+        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_output_basis")
+
+        basis = (c_double * c_basis_size.value)()
+        c_nb_modes = c_size_t()
+        c_field_size = c_size_t()
+        self._twin_status = self._TwinGetRomOutputBasis(
+            self._modelPointer, c_char_p(model_name), byref(basis), byref(c_nb_modes), byref(c_field_size)
+        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_output_basis")
+        np_basis = np.array([x for x in basis])
+
+        if basis:
+            return np_basis, c_nb_modes.value, c_field_size.value
+
+    def twin_get_rom_input_basis(self, model_name, field_name):
+        """
+        Retrieve the input field basis for the given TBROM model name and field name.
+        This method is only supported for Twin models created from one or more TBROM components,
+        and having input fields.
+
+        Parameters
+        ----------
+        model_name : str
+            Model name of the TBROM for which the basis needs to be retrieved.
+        field_name : str
+            Input field name of the TBROM for which the basis needs to be retrieved.
+
+        Returns
+        -------
+        basis : np.ndarray
+            SVD basis
+        modes : int
+            number of modes
+        size : int
+            field size
+        """
+        if type(model_name) != bytes:
+            model_name = model_name.encode()
+        if type(field_name) != bytes:
+            field_name = field_name.encode()
+        c_basis_size = c_size_t()
+        self._twin_status = self._TwinGetRomInputBasisSize(
+            self._modelPointer, c_char_p(model_name), c_char_p(field_name), byref(c_basis_size)
+        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_input_basis")
+
+        basis = (c_double * c_basis_size.value)()
+        c_nb_modes = c_size_t()
+        c_field_size = c_size_t()
+        self._twin_status = self._TwinGetRomInputBasis(
+            self._modelPointer,
+            c_char_p(model_name),
+            c_char_p(field_name),
+            byref(basis),
+            byref(c_nb_modes),
+            byref(c_field_size),
+        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_input_basis")
+        np_basis = np.array([x for x in basis])
+
+        if basis:
+            return np_basis, c_nb_modes.value, c_field_size.value
 
     def twin_enable_3d_rom_model_data(self, model_name):
         """
@@ -2066,12 +2132,8 @@ class TwinRuntime:
             Model name of the TBROM for which 3D data generation needs
             to be enabled.
         """
-        self._twin_status = self._TwinEnable3DROMData(
-            self._modelPointer, c_char_p(model_name.encode())
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_enable_3d_rom_model_data"
-        )
+        self._twin_status = self._TwinEnable3DROMData(self._modelPointer, c_char_p(model_name.encode()))
+        self.evaluate_twin_status(self._twin_status, self, "twin_enable_3d_rom_model_data")
 
     def twin_disable_3d_rom_model_data(self, model_name):
         """
@@ -2087,16 +2149,10 @@ class TwinRuntime:
             Model name of the TBROM for which 3D data generation needs
             to be disabled.
         """
-        self._twin_status = self._TwinDisable3DROMData(
-            self._modelPointer, c_char_p(model_name.encode())
-        )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_disable_3d_rom_model_data"
-        )
+        self._twin_status = self._TwinDisable3DROMData(self._modelPointer, c_char_p(model_name.encode()))
+        self.evaluate_twin_status(self._twin_status, self, "twin_disable_3d_rom_model_data")
 
-    def twin_get_rom_images_files(
-        self, model_name, views, time_from=-1, time_to=-1
-    ):
+    def twin_get_rom_images_files(self, model_name, views, time_from=-1, time_to=-1):
         """
         Retrieves the model images from 'time_from' up to 'time_to' for the
         given views from the given TBROM model name. By default, it returns
@@ -2121,7 +2177,7 @@ class TwinRuntime:
         list
             List of path of all the images retrieved
         """
-        n_views_c = c_int(len(views))
+        n_views_c = c_size_t(len(views))
         array_ctypes = (c_char_p * len(views))()
         for ind, view_name in enumerate(views):
             array_ctypes[ind] = view_name.encode()
@@ -2136,9 +2192,7 @@ class TwinRuntime:
             c_double(time_from),
             c_double(time_to),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_images_files"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_images_files")
 
         image_files_c = (c_char_p * num_files_c.value)()
         self._twin_status = self._TwinGetRomImageFiles(
@@ -2146,18 +2200,14 @@ class TwinRuntime:
             c_char_p(model_name.encode()),
             array_ctypes,
             n_views_c,
-            byref(image_files_c),
+            image_files_c,
             c_double(time_from),
             c_double(time_to),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_images_files"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_images_files")
         return to_np_array(image_files_c)
 
-    def twin_get_rom_mode_coef_files(
-        self, model_name, time_from=-1, time_to=-1
-    ):
+    def twin_get_rom_mode_coef_files(self, model_name, time_from=-1, time_to=-1):
         """
         Retrieves the model mode coefficients files from 'time_from' up to
         'time_to' for the given TBROM model name. By default, it returns the
@@ -2191,26 +2241,20 @@ class TwinRuntime:
             c_double(time_from),
             c_double(time_to),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_mode_coef_data"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_mode_coef_data")
 
         bin_files_c = (c_char_p * num_files_c.value)()
         self._twin_status = self._TwinGetRomModeCoefFiles(
             self._modelPointer,
             c_char_p(model_name.encode()),
-            byref(bin_files_c),
+            bin_files_c,
             c_double(time_from),
             c_double(time_to),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_mode_coef_files"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_mode_coef_files")
         return to_np_array(bin_files_c)
 
-    def twin_get_rom_snapshot_files(
-        self, model_name, time_from=-1, time_to=-1
-    ):
+    def twin_get_rom_snapshot_files(self, model_name, time_from=-1, time_to=-1):
         """
         Retrieves the model snapshots files from 'time_from' up to 'time_to'
         for the given TBROM model name. By default, it returns the snapshots
@@ -2242,21 +2286,17 @@ class TwinRuntime:
             c_double(time_from),
             c_double(time_to),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_mode_coef_data"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_mode_coef_data")
 
         bin_files_c = (c_char_p * num_files_c.value)()
         self._twin_status = self._TwinGetRomSnapshotFiles(
             self._modelPointer,
             c_char_p(model_name.encode()),
-            byref(bin_files_c),
+            bin_files_c,
             c_double(time_from),
             c_double(time_to),
         )
-        self.evaluate_twin_status(
-            self._twin_status, self, "twin_get_rom_snapshot_files"
-        )
+        self.evaluate_twin_status(self._twin_status, self, "twin_get_rom_snapshot_files")
         return to_np_array(bin_files_c)
 
     def twin_save_state(self, save_to):
@@ -2270,9 +2310,7 @@ class TwinRuntime:
             Path of the file used to save the TWIN states.
         """
         save_to = save_to.encode()
-        self._twin_status = self._TwinSaveState(
-            self._modelPointer, c_char_p(save_to)
-        )
+        self._twin_status = self._TwinSaveState(self._modelPointer, c_char_p(save_to))
         self.evaluate_twin_status(self._twin_status, self, "twin_save_state")
 
     def twin_load_state(self, load_from, do_fmi_init=True):
@@ -2291,17 +2329,11 @@ class TwinRuntime:
         """
         load_from = load_from.encode()
         try:
-            self._twin_status = self._TwinLoadState(
-                self._modelPointer, c_char_p(load_from), c_bool(do_fmi_init)
-            )
-            self.evaluate_twin_status(
-                self._twin_status, self, "twin_load_state"
-            )
+            self._twin_status = self._TwinLoadState(self._modelPointer, c_char_p(load_from), c_bool(do_fmi_init))
+            self.evaluate_twin_status(self._twin_status, self, "twin_load_state")
         except OSError:
             msg = "Fatal error when loading the model state"
-            raise TwinRuntimeError(
-                msg, self, TwinStatus.TWIN_STATUS_FATAL.value
-            )
+            raise TwinRuntimeError(msg, self, TwinStatus.TWIN_STATUS_FATAL.value)
 
         # The TwinRuntimeSDK always puts the model at least in INITIALIZED
         # state when loading a state
@@ -2356,10 +2388,7 @@ class TwinRuntime:
             evaluated, default value is numpy.inf.
         """
 
-        print(
-            "------------------------------------- Model Info"
-            " -------------------------------------"
-        )
+        print("------------------------------------- Model Info" " -------------------------------------")
         print("Twin Runtime Version: {}".format(self.twin_get_api_version()))
         print("Model Name: {}".format(self._model_name.decode()))
         print("Number of outputs: {}".format(self._number_outputs))
@@ -2367,11 +2396,7 @@ class TwinRuntime:
         print("Number of parameters: {}".format(self._number_parameters))
         print("Default time end: {}".format(self._p_end_time))
         print("Default step size: {}".format(self._p_step_size))
-        print(
-            "Default tolerance(Integration Accuracy): {}".format(
-                self._p_tolerance
-            )
-        )
+        print("Default tolerance(Integration Accuracy): {}".format(self._p_tolerance))
         print()
         print("Output names: ")
         self.print_var_info(self.twin_get_output_names(), max_var_to_print)
@@ -2441,15 +2466,13 @@ class TwinRuntime:
             "Max",
             "Description",
         ]
-        variable_info_df = pd.DataFrame(
-            prop_matrix_list, columns=var_inf_columns
-        )
+        variable_info_df = pd.DataFrame(prop_matrix_list, columns=var_inf_columns)
 
         return variable_info_df
 
     def model_properties_info_df(self, var_names, max_var_to_print):
         """
-        Evaluate the properties (name, unit, quantity type, start value,
+        Evaluate the properties (name, unit, data type, start value,
         minimum value, maximum values, description) of the given variables,
         with a maximum number of variables to consider.
 
@@ -2469,9 +2492,7 @@ class TwinRuntime:
             given variables and maximum number to consider.
         """
 
-        prop_matrix_list = self.build_prop_info_df(
-            var_names[:max_var_to_print]
-        )
+        prop_matrix_list = self.build_prop_info_df(var_names[:max_var_to_print])
 
         var_inf_columns = [
             "Name",
@@ -2483,14 +2504,12 @@ class TwinRuntime:
             "Description",
         ]
 
-        variable_info_df = pd.DataFrame(
-            data=prop_matrix_list, columns=var_inf_columns
-        )
+        variable_info_df = pd.DataFrame(data=prop_matrix_list, columns=var_inf_columns)
         return variable_info_df
 
     def build_prop_info_df(self, var_names):
         """
-        Evaluate the properties (name, unit, quantity type, start value,
+        Evaluate the properties (name, unit, data type, start value,
         minimum value, maximum values, description) of the given variables.
 
         Parameters
@@ -2517,14 +2536,14 @@ class TwinRuntime:
             ) as e:
                 o_unit = e.property_status_flag.name
             try:
-                o_quantity_type = self.twin_get_var_quantity_type(value)
+                o_data_type = self.twin_get_var_data_type(value)
             except (
                 PropertyNotDefinedError,
                 PropertyNotApplicableError,
                 PropertyInvalidError,
                 PropertyError,
             ) as e:
-                o_quantity_type = e.property_status_flag.name
+                o_data_type = e.property_status_flag.name
             try:
                 o_var_description = self.twin_get_var_description(value)
             except (
@@ -2535,7 +2554,10 @@ class TwinRuntime:
             ) as e:
                 o_var_description = e.property_status_flag.name
             try:
-                o_start = self.twin_get_var_start(value)
+                if o_data_type == "String":
+                    o_start = self.twin_get_str_var_start(value)
+                else:
+                    o_start = self.twin_get_var_start(value)
             except (
                 PropertyNotDefinedError,
                 PropertyNotApplicableError,
@@ -2565,7 +2587,7 @@ class TwinRuntime:
             prop_row = [
                 o_name,
                 o_unit,
-                o_quantity_type,
+                o_data_type,
                 o_start,
                 o_min,
                 o_max,
@@ -2581,9 +2603,7 @@ def build_empty_ctype_2d_array(num_input_rows, number_of_columns):
     # The one liner below initializes each row if 'input_data' with an array
     # of 'number_of_column' elements 'row_elements()' creates one ctypes
     # array for each input row
-    input_data = (POINTER(c_double) * num_input_rows)(
-        *[row_elements() for _ in range(num_input_rows)]
-    )
+    input_data = (POINTER(c_double) * num_input_rows)(*[row_elements() for _ in range(num_input_rows)])
 
     return input_data
 

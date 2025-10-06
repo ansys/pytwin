@@ -29,6 +29,12 @@ Global settings
 PyTwin provides global settings for configuring and changing both logging and directory options.
 For more information, see :ref:`ref_index_api_logging`.
 
+Post-processing
+---------------
+
+The post-processing module contains physics-specific functions for post-processing twin model results,
+see :ref:`ref_index_postprocessing`.
+
 Other functions
 ---------------
 
@@ -47,4 +53,5 @@ see :ref:`ref_index_api_example`.
    sdk/index
    evaluate/index
    logging/index
+   postprocessing/index
    examples/index

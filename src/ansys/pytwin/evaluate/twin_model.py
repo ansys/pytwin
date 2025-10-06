@@ -440,6 +440,11 @@ class TwinModel(Model):
         msg += "\nProvide inputs at time instant 't=0.s'."
         return msg
 
+    def _error_msg_no_timegrid(self, rom_name):
+        msg = f"[ParametricFieldHistory]The given ROM name ({rom_name}) is "
+        msg += f"not a parametric field history ROM."
+        return msg
+
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """
         Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
@@ -707,15 +712,35 @@ class TwinModel(Model):
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
-    def _field_input_port_name(self, field: str, mode_idx: int, rom_name: str = None):
-        if self.tbrom_count > 1:
-            return field + "_mode_" + str(mode_idx) + "_" + rom_name
-        return field + "_mode_" + str(mode_idx)
+    def _field_input_port_name(self, field: str, mode_idx: int, tbrom: TbRom):
+        productVersion = tbrom.product_version
+        rom_name = tbrom.name
+        if "SVDTools" or "dynaROM" in productVersion:
+            if self.tbrom_count > 1:
+                return field + "_mode_" + str(mode_idx) + "_" + rom_name
+            else:
+                return field + "_mode_" + str(mode_idx)
+        else:  # nouveau format TwinAI
+            if self.tbrom_count > 1:
+                return field + "_mode" + str(mode_idx + 1) + "_" + rom_name
+            else:
+                return field + "_mode" + str(mode_idx + 1)
 
-    def _field_output_port_name(self, mode_idx: int, rom_name: str = None):
-        if self.tbrom_count > 1:
-            return "outField" + "_mode_" + str(mode_idx) + "_" + rom_name
-        return "outField" + "_mode_" + str(mode_idx)
+    def _field_output_port_name(self, mode_idx: int, tbrom: TbRom):
+        productVersion = tbrom.product_version
+        rom_name = tbrom.name
+        if "SVDTools" in productVersion:
+            outField = "outField"
+            if self.tbrom_count > 1:
+                return outField + "_mode_" + str(mode_idx) + "_" + rom_name
+            else:
+                return outField + "_mode_" + str(mode_idx)
+        else:  # nouveau format TwinAI
+            outField = tbrom.field_output_name
+            if self.tbrom_count > 1:
+                return outField + "_mode" + str(mode_idx) + "_" + rom_name
+            else:
+                return outField + "_mode" + str(mode_idx)
 
     def _snapshot_filename(self, rom_name: str, named_selection: str = None):
         if named_selection is not None:
@@ -755,7 +780,7 @@ class TwinModel(Model):
             for field in tbrom.field_input_names:
                 inmcs = dict()
                 for i in range(0, len(tbrom._infbasis[field])):
-                    input_port_name = self._field_input_port_name(field, i, tbrom.name)
+                    input_port_name = self._field_input_port_name(field, i, tbrom)
                     for key, item in self.inputs.items():
                         if input_port_name in key:
                             inmcs.update({key: item})
@@ -771,7 +796,7 @@ class TwinModel(Model):
 
         outmcs = dict()
         for i in range(1, tbrom.nb_modes + 1):
-            output_port_name = self._field_output_port_name(i, tbrom.name)
+            output_port_name = self._field_output_port_name(i, tbrom)
             for key, item in self.outputs.items():
                 if output_port_name in key:
                     outmcs.update({key: item})
@@ -789,7 +814,10 @@ class TwinModel(Model):
         """
         for key, item in tbrom._outmcs.items():
             tbrom._outmcs[key] = self.outputs[key]
-        tbrom._update_output_field()
+        tbrom._update_output_field(time=self.evaluation_time)
+        if tbrom._logLevel is not None:
+            self._log_message(tbrom._logMessage, tbrom._logLevel)
+            tbrom._clean_log()
 
     def _update_field_inputs(self, field_inputs: dict):
         for tbrom_name, field_inputs in field_inputs.items():
@@ -1193,7 +1221,7 @@ class TwinModel(Model):
                             )
                             mc_idx = 0
                             for mc_name, mc_value in infmcs.items():
-                                header_name = self._field_input_port_name(field_name, mc_idx, tbrom_name)
+                                header_name = self._field_input_port_name(field_name, mc_idx, self._tbroms[tbrom_name])
                                 if i == 0:
                                     _inputs_df[header_name] = [0.0] * t_count
                                 _inputs_df.at[i, header_name] = mc_value
@@ -2049,6 +2077,54 @@ class TwinModel(Model):
             raise self._raise_error(msg)
 
         return tbrom.field_on_points
+
+    def get_tbrom_time_grid(self, rom_name: str):
+        """
+        Return the TBROM time grid for parametric field history ROM in the form of a list.
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Returns
+        -------
+        list[float]
+            List of time points used to build the field history.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+            If the TBROM is not a parametric field history ROM.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> romname = model.tbrom_names[0]
+        >>> time_grid = model.get_tbrom_time_grid(romname)
+        >>> model.initialize_evaluation()
+        """
+        self._log_key = "GetTimeGrid"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        if not tbrom.isparamfieldhist:
+            msg = self._error_msg_no_timegrid(rom_name)
+            self._raise_error(msg)
+
+        return tbrom.timegrid
 
 
 class TwinModelError(Exception):
