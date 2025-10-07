@@ -975,7 +975,7 @@ class TwinModel(Model):
         if self.tbrom_count > 0:
             tbroms = self.tbrom_names
             tbrom_info = self.tbrom_info
-            print("TBROMs information:")
+            print('TBROMs information:')
             for tbrom in tbroms:
                 rom_info = tbrom_info[tbrom]
                 print('Model name : {}'.format(rom_info['modelname']))
@@ -991,6 +991,8 @@ class TwinModel(Model):
                 print('Parametric Field History : {}'.format(self._tbroms[tbrom].isparamfieldhist))
                 print('Named selections : {}'.format(self.get_named_selections(tbrom)))
                 print('Product version to generate TBROM : {}\n'.format(self._tbroms[tbrom].product_version))
+        else:
+            print('Has TBROMs : False')
 
     def initialize_evaluation(
         self, parameters: dict = None, inputs: dict = None, field_inputs: dict = None, json_config_filepath: str = None
