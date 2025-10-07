@@ -191,6 +191,8 @@ rom_inputs = [4000000, 5000000, 6000000]
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 
+twin_model.print_model_info()
+
 ###############################################################################
 # Evaluate the twin with different input values and collect corresponding outputs
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

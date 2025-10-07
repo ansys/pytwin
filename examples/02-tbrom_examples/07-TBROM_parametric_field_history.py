@@ -98,6 +98,7 @@ rom_inputs = {"testROM_25r2_1_force_1_Magnitude": 9500, "testROM_25r2_1_force_2_
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
+twin_model.print_model_info()
 romname = twin_model.tbrom_names[0]
 twin_model.initialize_evaluation(parameters=rom_inputs)
 field_data = twin_model.get_tbrom_output_field(romname)
