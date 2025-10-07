@@ -947,7 +947,7 @@ class TwinModel(Model):
         parameters, default simulation settings, output names, input names and parameter names. If TBROMs are present,
         it will also print associated information.
 
-        This method must be called a TwinModel has been instantiated.
+        This method must be called after a TwinModel has been instantiated.
 
 
         .. note::
