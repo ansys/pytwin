@@ -941,6 +941,57 @@ class TwinModel(Model):
         """
         return len(self.tbrom_names)
 
+    def print_model_info(self, max_var_to_print=np.inf):
+        """
+        Print all the model information including Twin Runtime version, model name, number of outputs, inputs,
+        parameters, default simulation settings, output names, input names and parameter names. If TBROMs are present,
+        it will also print associated information.
+
+        This method must be called after a TwinModel has been instantiated.
+
+
+        .. note::
+            if field inputs are supplied for a TBROM, they will override any input mode coefficient inputs for
+            that ROM that are included in ``inputs``.
+
+        Parameters
+        ----------
+        max_var_to_print : int, optional
+            Maximum number of variables for which the properties need to be evaluated, default value is numpy.inf.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>>
+        >>> twin_model = TwinModel(model_filepath='path_to_your_twin_model.twin')
+        >>> twin_model.print_model_info()
+        """
+        self._log_key = "PrintModelInfo"
+
+        self._twin_runtime.print_model_info(max_var_to_print)
+
+        if self.tbrom_count > 0:
+            tbroms = self.tbrom_names
+            tbrom_info = self.tbrom_info
+            print("TBROMs information:")
+            for tbrom in tbroms:
+                rom_info = tbrom_info[tbrom]
+                print("Model name : {}".format(rom_info["modelname"]))
+                print("Output field name : {}".format(self.get_field_output_name(tbrom)))
+                print("Output field connected : {}".format(self._tbroms[tbrom]._hasoutmcs))
+                print("Has geometry/points file : {}".format(self._tbroms[tbrom].has_point_file))
+                if self._tbroms[tbrom]._hasinfmcs is not None:
+                    print("Input fields : ")
+                    for key, value in self._tbroms[tbrom]._hasinfmcs.items():
+                        print("    Name : {}, Connected : {}".format(key, value))
+                else:
+                    print("Has input fields : False")
+                print("Parametric Field History : {}".format(self._tbroms[tbrom].isparamfieldhist))
+                print("Named selections : {}".format(self.get_named_selections(tbrom)))
+                print("Product version to generate TBROM : {}\n".format(self._tbroms[tbrom].product_version))
+        else:
+            print("Has TBROMs : False")
+
     def initialize_evaluation(
         self, parameters: dict = None, inputs: dict = None, field_inputs: dict = None, json_config_filepath: str = None
     ):

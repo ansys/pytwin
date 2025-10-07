@@ -112,6 +112,7 @@ def plot_result_comparison(step_by_step_results: pd.DataFrame, batch_results: pd
 
 print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
+twin_model.print_model_info()
 twin_model_input_df = load_data(csv_input)
 data_dimensions = twin_model_input_df.shape
 number_of_datapoints = data_dimensions[0] - 1
