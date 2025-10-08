@@ -107,6 +107,42 @@ class TestTwinModel:
         }
         assert compare_dictionary(twin.parameters, parameters_ref)
 
+    def test_solver_parameters_property(self):
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twin = TwinModel(model_filepath=model_filepath)
+        # Test parameters have starting values JUST AFTER INSTANTIATION
+        parameters_ref = {
+            "solver.method": 1.0,
+            "solver.abstol": 1e-12,
+            "solver.reltol": 0.0001,
+        }
+        assert compare_dictionary(twin.solver_parameters, parameters_ref)
+        # Test parameters have been well updated AFTER FIRST EVALUATION INITIALIZATION
+        new_parameters = {"solver.abstol": 1e-10, "solver.reltol": 0.1}
+        twin.initialize_evaluation(parameters=new_parameters)
+        parameters_ref = {
+            "solver.method": 1.0,
+            "solver.abstol": 1e-10,
+            "solver.reltol": 0.1,
+        }
+        assert compare_dictionary(twin.solver_parameters, parameters_ref)
+        # Test parameters keep same values AFTER STEP BY STEP EVALUATION
+        twin.evaluate_step_by_step(step_size=0.001)
+        parameters_ref = {
+            "solver.method": 1.0,
+            "solver.abstol": 1e-10,
+            "solver.reltol": 0.1,
+        }
+        assert compare_dictionary(twin.solver_parameters, parameters_ref)
+        # Test parameters have been updated to starting values AFTER NEW INITIALIZATION
+        twin.initialize_evaluation()
+        parameters_ref = {
+            "solver.method": 1.0,
+            "solver.abstol": 1e-12,
+            "solver.reltol": 0.0001,
+        }
+        assert compare_dictionary(twin.solver_parameters, parameters_ref)
+
     def test_inputs_property_with_step_by_step_eval(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH
         twin = TwinModel(model_filepath=model_filepath)
@@ -193,6 +229,60 @@ class TestTwinModel:
         twin.initialize_evaluation(inputs=new_inputs)
         assert compare_dictionary(twin.inputs, new_inputs_ref)
         assert compare_dictionary(twin.parameters, parameters_default)
+
+    def test_inputs_and_solver_parameters_initialization(self):
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+        twin = TwinModel(model_filepath=model_filepath)
+        # TEST DEFAULT VALUES BEFORE FIRST INITIALIZATION
+        inputs_default = {"Clutch1_in": 0.0, "Clutch2_in": 0.0, "Clutch3_in": 0.0, "Torque_in": 0.0}
+        parameters_default = {
+            "solver.method": 1.0,
+            "solver.abstol": 1e-12,
+            "solver.reltol": 0.0001,
+        }
+        assert compare_dictionary(twin.inputs, inputs_default)
+        assert compare_dictionary(twin.solver_parameters, parameters_default)
+        # TEST INITIALIZATION UPDATES VALUES
+        inputs = {"Clutch1_in": 1.0, "Clutch2_in": 1.0, "Clutch3_in": 1.0, "Torque_in": 1.0}
+        parameters = {
+            "solver.method": 2.0,
+            "solver.abstol": 1e-6,
+            "solver.reltol": 0.1,
+        }
+        twin.initialize_evaluation(parameters=parameters, inputs=inputs)
+        assert compare_dictionary(twin.inputs, inputs)
+        assert compare_dictionary(twin.solver_parameters, parameters)
+        # TEST NEW INITIALIZATION OVERRIDES PREVIOUS VALUES IF GIVEN.
+        # OTHERWISE, RESET VALUES TO DEFAULT.
+        new_inputs = {"Clutch1_in": 2.0, "Clutch2_in": 2.0}
+        new_parameters = {"solver.abstol": 1e-10, "solver.reltol": 0.005}
+        twin.initialize_evaluation(parameters=new_parameters, inputs=new_inputs)
+        new_inputs_ref = {"Clutch1_in": 2.0, "Clutch2_in": 2.0, "Clutch3_in": 0.0, "Torque_in": 0.0}
+        new_parameters_ref = {
+            "solver.method": 1.0,
+            "solver.abstol": 1e-10,
+            "solver.reltol": 0.005,
+        }
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.solver_parameters, new_parameters_ref)
+        # TEST NEW INITIALIZATION RESET VALUES TO DEFAULT IF NOT GIVEN (ALL NONE)
+        twin.initialize_evaluation()
+        assert compare_dictionary(twin.inputs, inputs_default)
+        assert compare_dictionary(twin.solver_parameters, parameters_default)
+        # TEST NEW INITIALIZATION RESET VALUES TO DEFAULT IF NOT GIVEN (PARAMETER ONLY, INPUT=NONE --> DEFAULT)
+        twin.initialize_evaluation(parameters=new_parameters, inputs=new_inputs)
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.solver_parameters, new_parameters_ref)
+        twin.initialize_evaluation(parameters=new_parameters)
+        assert compare_dictionary(twin.inputs, inputs_default)
+        assert compare_dictionary(twin.solver_parameters, new_parameters_ref)
+        # TEST NEW INITIALIZATION RESET VALUES TO DEFAULT IF NOT GIVEN (INPUTS ONLY, PARAMETER=NONE --> DEFAULT)
+        twin.initialize_evaluation(parameters=new_parameters, inputs=new_inputs)
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.solver_parameters, new_parameters_ref)
+        twin.initialize_evaluation(inputs=new_inputs)
+        assert compare_dictionary(twin.inputs, new_inputs_ref)
+        assert compare_dictionary(twin.solver_parameters, parameters_default)
 
     def test_inputs_property_with_batch_eval(self):
         model_filepath = COUPLE_CLUTCHES_FILEPATH

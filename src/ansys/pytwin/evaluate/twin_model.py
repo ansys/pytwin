@@ -907,7 +907,13 @@ class TwinModel(Model):
     @property
     def solver_parameters(self):
         """
-        Dictionary with solver parameter values at the current evaluation time.
+        Dictionary with solver parameter values at the current evaluation time. These include :
+        solver.method : int
+            Solver integration method (ADAMS=1, BDF=2), default is 1.
+        solver.abstol : float
+            Solver absolute tolerance, default is 1e-12.
+        solver.reltol : float
+            Solver relative tolerance, default is 0.0001.
         """
         return self._solver_parameters
 
