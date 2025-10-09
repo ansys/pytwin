@@ -95,6 +95,7 @@ class TwinModel(Model):
         self._model_filepath = None
         self._outputs = None
         self._parameters = None
+        self._solver_parameters = None
         self._ss_registry = None
         self._twin_runtime = None
         self._tbrom_info = None
@@ -541,8 +542,11 @@ class TwinModel(Model):
         Initialize parameters dictionary {name:value} with starting parameter values found in the twin model.
         """
         self._parameters = dict()
+        self._solver_parameters = dict()
         for name in self._twin_runtime.twin_get_param_names():
-            if "solver." not in name:
+            if name.startswith("solver."):
+                self._solver_parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
+            else:
                 self._parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
 
     def _initialize_outputs_with_none_values(self):
@@ -586,8 +590,11 @@ class TwinModel(Model):
             for name in self._twin_runtime.twin_get_input_names():
                 self._inputs[name] = None
             self._parameters = dict()
+            self._solver_parameters = dict()
             for name in self._twin_runtime.twin_get_param_names():
-                if "solver." not in name:
+                if name.startswith("solver."):
+                    self._solver_parameters[name] = None
+                else:
                     self._parameters[name] = None
             self._outputs = dict()
             for name in self._twin_runtime.twin_get_output_names():
@@ -670,6 +677,9 @@ class TwinModel(Model):
             if name in self._parameters:
                 self._parameters[name] = value
                 self._twin_runtime.twin_set_param_by_name(param_name=name, value=value)
+            if name in self._solver_parameters:
+                self._solver_parameters[name] = value
+                self._twin_runtime.twin_set_param_by_name(param_name=name, value=value)
 
     def _tbrom_resource_directory(self, rom_name: str):
         """
@@ -708,7 +718,7 @@ class TwinModel(Model):
     def _warns_if_parameter_key_not_found(self, parameters: dict):
         if parameters is not None:
             for param in parameters:
-                if param not in self.parameters:
+                if param not in self.parameters and param not in self.solver_parameters:
                     msg = f"Provided parameter ({param}) has not been found in the model parameters."
                     self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
 
@@ -893,6 +903,15 @@ class TwinModel(Model):
         Dictionary with parameter values at the current evaluation time.
         """
         return self._parameters
+
+    @property
+    def solver_parameters(self):
+        """
+        Dictionary with solver parameter values at the current evaluation time. These include : solver.method (
+        solver integration method - ADAMS=1 and BDF=2 - default is 1), solver.abstol (solver absolute tolerance, default
+        is 1e-12), and solver.reltol (solver relative tolerance, default is 0.0001).
+        """
+        return self._solver_parameters
 
     @property
     def model_filepath(self):
@@ -1732,7 +1751,7 @@ class TwinModel(Model):
             # Store saved state metadata
             ss = SavedState()
             ss.time = self.evaluation_time
-            ss.parameters = self.parameters
+            ss.parameters = self.parameters | self.solver_parameters
             ss.outputs = self.outputs
             ss.inputs = self.inputs
             ss_filepath = self._ss_registry.return_saved_state_filepath(ss)
