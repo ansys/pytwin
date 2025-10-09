@@ -592,10 +592,10 @@ class TwinModel(Model):
             self._parameters = dict()
             self._solver_parameters = dict()
             for name in self._twin_runtime.twin_get_param_names():
-                if "solver." not in name:
-                    self._parameters[name] = None
-                else:
+                if name.startswith("solver."):
                     self._solver_parameters[name] = None
+                else:
+                    self._parameters[name] = None
             self._outputs = dict()
             for name in self._twin_runtime.twin_get_output_names():
                 self._outputs[name] = None
