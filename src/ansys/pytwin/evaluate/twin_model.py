@@ -544,10 +544,10 @@ class TwinModel(Model):
         self._parameters = dict()
         self._solver_parameters = dict()
         for name in self._twin_runtime.twin_get_param_names():
-            if "solver." not in name:
-                self._parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
-            else:
+            if name.startswith("solver."):
                 self._solver_parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
+            else:
+                self._parameters[name] = self._twin_runtime.twin_get_var_start(var_name=name)
 
     def _initialize_outputs_with_none_values(self):
         """
