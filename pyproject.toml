@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pytwin"
-version = "0.10.0"
+version = "0.10.1"
 description = "A python wrapper for Ansys Digital Twin components"
 license = "MIT"
 authors = ["ANSYS, Inc. <pyansys.core@ansys.com>"]
@@ -57,7 +57,7 @@ ansys-fluent-core = ">=0.30,<0.36"
 ansys-dpf-core = ">=0.13,<0.15"
 ansys-fluent-visualization = ">=0.21.1"
 ansys-mapdl-core = {version = ">=0.68.5,<0.72.0", extras = ["graphics"]}
-ansys-sphinx-theme = "^1.4.4"
+ansys-sphinx-theme = ">=1.0.0,<1.7"
 jupyter_sphinx = "^0.5.3"
 matplotlib = "^3.7.1"
 numpydoc = ">=1.6.0"
