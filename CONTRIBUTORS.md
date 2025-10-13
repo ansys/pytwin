@@ -6,6 +6,7 @@
 
 ## Individual Contributors
 
+* [Camille Latapie](https://github.com/clatapie)
 * [Edward Carman](https://github.com/EDCarman)
 * [German](https://github.com/germa89)
 * [Jorge Martínez](https://github.com/jorgepiloto)
