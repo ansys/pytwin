@@ -177,6 +177,7 @@ Twin with 1 dynamic field TBROM
 """
 TEST_TB_ROM_DROM = os.path.join(os.path.dirname(__file__), "data", "twin_field_dyna_rom_cc.twin")
 
+
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
     vec = field.reshape((-1, 3))
