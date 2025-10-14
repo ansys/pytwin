@@ -173,7 +173,7 @@ TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "twin_t
 
 """
 TEST_TB_ROM_DROM
-Twin with 1 dynamic field TBROM 
+Twin with 1 dynamic field TBROM
 """
 TEST_TB_ROM_DROM = os.path.join(os.path.dirname(__file__), "data", "twin_field_dyna_rom_cc.twin")
 
