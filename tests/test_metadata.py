@@ -24,4 +24,4 @@ from pytwin import __version__
 
 
 def test_pkg_version():
-    assert __version__ == "0.10.1"
+    assert __version__ == "0.10.2"
