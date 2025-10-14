@@ -171,6 +171,12 @@ Twin with 1 TBROM of type parametric field history
 """
 TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_pfieldhistory.twin")
 
+"""
+TEST_TB_ROM_DROM
+Twin with 1 dynamic field TBROM
+"""
+TEST_TB_ROM_DROM = os.path.join(os.path.dirname(__file__), "data", "twin_field_dyna_rom_cc.twin")
+
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -1544,3 +1550,9 @@ class TestTbRom:
         output = f.getvalue()
         assert "Parametric Field History : True" in output
         twinmodel.close()
+
+    def test_tbrom_dynarom(self):
+        model_filepath = TEST_TB_ROM_DROM
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        assert twinmodel._tbroms[romname]._hasoutmcs is True

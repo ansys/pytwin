@@ -739,7 +739,7 @@ class TwinModel(Model):
     def _field_output_port_name(self, mode_idx: int, tbrom: TbRom):
         productVersion = tbrom.product_version
         rom_name = tbrom.name
-        if "SVDTools" in productVersion:
+        if "SVDTools" or "dynaROM" in productVersion:
             outField = "outField"
             if self.tbrom_count > 1:
                 return outField + "_mode_" + str(mode_idx) + "_" + rom_name
@@ -995,7 +995,8 @@ class TwinModel(Model):
             print("TBROMs information:")
             for tbrom in tbroms:
                 rom_info = tbrom_info[tbrom]
-                print("Model name : {}".format(rom_info["modelname"]))
+                print("TBROM instance name : {}".format(tbrom))
+                print("TBROM model name : {}".format(rom_info["modelname"]))
                 print("Output field name : {}".format(self.get_field_output_name(tbrom)))
                 print("Output field connected : {}".format(self._tbroms[tbrom]._hasoutmcs))
                 print("Has geometry/points file : {}".format(self._tbroms[tbrom].has_point_file))
