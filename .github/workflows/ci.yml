@@ -66,6 +66,40 @@ jobs:
     runs-on: pytwin-win10
     needs: doc-style
     steps:
+      - name: "Install Git and clone project"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: "Set up Python"
+        uses: ansys/actions/_setup-python@v10.1
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          use-cache: false
+
+      - name: "Copy source files for DPF server installation"
+        shell: bash
+        run: |
+          cp -r ~ansys/Documents/devEnv/pyansys/pytwin/ansys_dpf_server_win_v2024.1.pre0/ ./
+          
+      - name: "Create virtual environment and Install Python library"
+        run: |
+          python -m venv .venv --clear
+          .venv\Scripts\Activate.ps1
+          python -m pip install pip -U
+          python -m pip install poetry
+
+      - name: "Install documentation dependencies, including DPF server"
+        run: |
+          .venv\Scripts\Activate.ps1
+          poetry install --extras graphics --with doc
+          cd ansys_dpf_server_win_v2024.1.pre0
+          pip install -e .
+          cd ..
+
+      - name: Setup headless display
+        uses: pyvista/setup-headless-display-action@7d84ae825e6d9297a8e99bdbbae20d1b919a0b19 # v4.2
+
       - name: "Clean documentation build folder"
         run: |
           .venv\Scripts\Activate.ps1
