@@ -97,7 +97,7 @@ def norm_vector_history(field: np.ndarray, index: int):
 source_build_conf_file = "SROMbuild.conf"
 source_props_conf_file = "SROM_props.conf"  # Note : SROM_props.conf may need to be adapted if inputs names change!
 desktop_version = "2025.1"
-non_graphical = False
+non_graphical = True
 new_thread = True
 confpath = os.path.join(training_data_folder, source_build_conf_file)
 doefile = os.path.join(training_data_folder, "doe.csv")
