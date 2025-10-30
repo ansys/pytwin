@@ -1,0 +1,6 @@
+TBROM\_IMAGE\_EXT
+=================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinModel.TBROM_IMAGE_EXT
