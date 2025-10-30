@@ -3651,14 +3651,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.21.0"
+version = "0.21.3"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.21.0-py3-none-any.whl", hash = "sha256:ce93315805306bb9ecc866efa5e78770063b5de65c64d36b9bed0c8e0c39aa0b"},
-    {file = "pyaedt-0.21.0.tar.gz", hash = "sha256:3728cbebf7e15f7ec0034345dd89e84b98c3ed71bd94710651de8f4da45e58e1"},
+    {file = "pyaedt-0.21.3-py3-none-any.whl", hash = "sha256:a19d50f9cf3e3a5c73fac92a76f86f12a53e8155ad93cc5e999f04dd79a11ade"},
+    {file = "pyaedt-0.21.3.tar.gz", hash = "sha256:278a22c8acd54eda7b5c20abef2a448ef405d313cac75c0518ed25b82fbba0a6"},
 ]
 
 [package.dependencies]
