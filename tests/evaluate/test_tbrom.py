@@ -1549,7 +1549,7 @@ class TestTbRom:
             twinmodel.print_model_info()
         output = f.getvalue()
         assert "Parametric Field History : True" in output
-        #twinmodel.close()
+        # twinmodel.close()
 
     def test_tbrom_dynarom(self):
         model_filepath = TEST_TB_ROM_DROM
