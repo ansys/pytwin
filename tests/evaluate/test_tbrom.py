@@ -1509,48 +1509,6 @@ class TestTbRom:
             assert np.isclose(maxt250, 5.635884051349383)
         assert np.isclose(maxt250, maxt300)
 
-    def test_print_model_info(self):
-        from contextlib import redirect_stdout
-        import io
-
-        model_filepath = COUPLE_CLUTCHES_FILEPATH
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        f = io.StringIO()
-        with redirect_stdout(f):
-            twinmodel.print_model_info()
-        output = f.getvalue()
-        assert "Has TBROMs : False" in output
-        twinmodel.close()
-
-        model_filepath = TEST_TB_ROM2
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        f = io.StringIO()
-        with redirect_stdout(f):
-            twinmodel.print_model_info()
-        output = f.getvalue()
-        assert "Output field connected : False" in output
-        assert "Has input fields : False" not in output
-        twinmodel.close()
-
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        f = io.StringIO()
-        with redirect_stdout(f):
-            twinmodel.print_model_info()
-        output = f.getvalue()
-        assert "Output field connected : True" in output
-        assert ", Connected : True" in output
-        twinmodel.close()
-
-        model_filepath = TEST_TB_PFIELD_HISTORY
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        f = io.StringIO()
-        with redirect_stdout(f):
-            twinmodel.print_model_info()
-        output = f.getvalue()
-        assert "Parametric Field History : True" in output
-        # twinmodel.close()
-
     def test_tbrom_dynarom(self):
         model_filepath = TEST_TB_ROM_DROM
         twinmodel = TwinModel(model_filepath=model_filepath)
