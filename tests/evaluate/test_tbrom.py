@@ -186,7 +186,7 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
-def test_tbrom_parametric_field_history(self):
+    def test_tbrom_parametric_field_history(self):
         model_filepath = TEST_TB_ROM_CONSTRAINTS
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
