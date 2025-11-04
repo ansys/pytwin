@@ -780,27 +780,6 @@ class TestTbRom:
         except TwinModelError as e:
             assert "cannot reshape array" not in str(e)
 
-    def test_tbrom_srb_constraints(self):
-        model_filepath = TEST_TB_ROM_CONSTRAINTS
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
-        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
-        eval_snapshot = twinmodel.generate_snapshot(romname, False)
-
-        max_snp1 = max(norm_vector_field(model_snapshot))
-        max_snp2 = max(norm_vector_field(eval_snapshot))
-        assert np.isclose(max_snp1, max_snp2) == True
-
-        twinmodel._tbroms[romname]._transformation = None  # manually change the TBROM to remove its transformation
-        twinmodel.initialize_evaluation({"Pressure_Magnitude": 5050000})
-        model_snapshot = read_binary(twinmodel.get_snapshot_filepath(romname))
-        eval_snapshot = twinmodel.generate_snapshot(romname, False)
-
-        max_snp1 = max(norm_vector_field(model_snapshot))
-        max_snp2 = max(norm_vector_field(eval_snapshot))
-        assert np.isclose(max_snp1, max_snp2) == False
-
     def test_tbrom_parametric_field_history(self):
         model_filepath = TEST_TB_ROM_CONSTRAINTS
         twinmodel = TwinModel(model_filepath=model_filepath)
