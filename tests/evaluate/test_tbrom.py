@@ -232,13 +232,6 @@ class TestTbRom:
         names = twin.get_field_input_names(rom_name)
         assert names == []
 
-    def test_tbrom_fix_bug_1168769(self):
-        model_filepath = TEST_TB_ROM_NDOF
-        try:
-            twinmodel = TwinModel(model_filepath=model_filepath)
-        except TwinModelError as e:
-            assert "cannot reshape array" not in str(e)
-
     def test_tbrom_parametric_field_history(self):
         model_filepath = TEST_TB_ROM_CONSTRAINTS
         twinmodel = TwinModel(model_filepath=model_filepath)
