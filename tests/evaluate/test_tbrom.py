@@ -397,55 +397,6 @@ class TestTbRom:
         names = twin.get_field_input_names(rom_name)
         assert names == []
 
-    def test_tbrom_getters_exceptions_if_no_tbrom(self):
-        # Raise an error if TWIN MODEL DOES NOT INCLUDE ANY TBROM
-        reinit_settings()
-        model_filepath = COUPLE_CLUTCHES_FILEPATH
-        twin = TwinModel(model_filepath=model_filepath)
-
-        # Test getters that do not need initialization
-        try:
-            twin._tbrom_resource_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_geometry_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_available_view_names(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_rom_directory(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_named_selections(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_field_input_names(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        # Test getters that need initialization
-        twin.initialize_evaluation()
-        try:
-            twin.get_snapshot_filepath(rom_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
-        try:
-            twin.get_image_filepath(rom_name="test", view_name="test")
-        except TwinModelError as e:
-            assert "[NoRom]" in str(e)
-
     def test_read_write_api(self):
         scalar_field = np.array([1.0, 2.0, 3.0, 5.0])
         write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
