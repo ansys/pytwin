@@ -198,6 +198,7 @@ class TestTbRom:
         assert tbrom1._hasoutmcs is True
         assert tbrom1._hasinfmcs["inputPressure"] is True
         assert tbrom1._hasinfmcs["inputTemperature"] is False
+        twinmodel.close()
 
     def test_tbrom_getters_that_do_not_need_initialization(self):
         reinit_settings()
