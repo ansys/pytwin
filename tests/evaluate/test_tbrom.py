@@ -235,31 +235,31 @@ class TestTbRom:
     def test_tbrom_parametric_field_history(self):
         reinit_settings()
         model_filepath = TEST_TB_PFIELD_HISTORY
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
+        twinmodel2 = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel2.tbrom_names[0]
 
-        timegrid = twinmodel.get_tbrom_time_grid(romname)
+        timegrid = twinmodel2.get_tbrom_time_grid(romname)
 
         assert len(timegrid) == 17
 
-        assert twinmodel._tbroms[romname].isparamfieldhist == True
+        assert twinmodel2._tbroms[romname].isparamfieldhist == True
 
-        twinmodel.initialize_evaluation()
+        twinmodel2.initialize_evaluation()
 
-        field_data = twinmodel.get_tbrom_output_field(romname)
-        maxt0 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+        field_data = twinmodel2.get_tbrom_output_field(romname)
+        maxt0 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
-        twinmodel.evaluate_step_by_step(100.0)
-        field_data = twinmodel.get_tbrom_output_field(romname)
-        maxt100 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+        twinmodel2.evaluate_step_by_step(100.0)
+        field_data = twinmodel2.get_tbrom_output_field(romname)
+        maxt100 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
-        twinmodel.evaluate_step_by_step(150.0)
-        field_data = twinmodel.get_tbrom_output_field(romname)
-        maxt250 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+        twinmodel2.evaluate_step_by_step(150.0)
+        field_data = twinmodel2.get_tbrom_output_field(romname)
+        maxt250 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
-        twinmodel.evaluate_step_by_step(100.0)
-        field_data = twinmodel.get_tbrom_output_field(romname)
-        maxt300 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
+        twinmodel2.evaluate_step_by_step(100.0)
+        field_data = twinmodel2.get_tbrom_output_field(romname)
+        maxt300 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
         # if sys.platform != "linux":
         assert np.isclose(maxt0, 0.8973744667566537)
