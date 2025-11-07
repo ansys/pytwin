@@ -183,38 +183,21 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
-    def test_tbrom_getters_that_do_not_need_initialization(self):
-        reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
-        twin = TwinModel(model_filepath=model_filepath)
-
-        # Test rom name
-        rom_name = twin.tbrom_names[0]
-        assert rom_name == "ThermalROM23R1_1"
-
-        # Test available view names
-        view_names = twin.get_available_view_names(rom_name)
-        assert view_names[0] == "View1"
-
-        # Test geometry filepath
-        points_filepath = twin.get_geometry_filepath(rom_name)
-        assert "points.bin" in points_filepath
-
-        # Test rom directory
-        rom_dir = twin.get_rom_directory(rom_name)
-        assert rom_name in rom_dir
-
-        # Test sdk rom resources directory
-        sdk_dir = twin._tbrom_resource_directory(rom_name)
-        assert "resources" in sdk_dir
-
-        # Test named selections
-        ns = twin.get_named_selections(rom_name)
-        assert ns[0] == "solid-part_2"
-
-        # Test field input names
-        names = twin.get_field_input_names(rom_name)
-        assert names == []
+    def test_instantiate_evaluation_tbrom4(self):
+        """
+        TEST_TB_ROM4
+        Twin with 1 TBROM and 2 input fields, 1st partially connected, second fully connected, 1 output field connected
+        -> nbTBROM = 1, NbInputField = 2, hasInputField = (True, False), hasOutputField = True
+        """
+        model_filepath = TEST_TB_ROM4
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 1
+        name = twinmodel.tbrom_names[0]
+        tbrom1 = twinmodel._tbroms[name]
+        assert tbrom1.field_input_count is 2
+        assert tbrom1._hasoutmcs is True
+        assert tbrom1._hasinfmcs["inputPressure"] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
 
     def test_tbrom_parametric_field_history(self):
         model_filepath = TEST_TB_ROM_CONSTRAINTS
