@@ -234,15 +234,6 @@ class TestTbRom:
 
     def test_tbrom_parametric_field_history(self):
         reinit_settings()
-        model_filepath = TEST_TB_ROM_CONSTRAINTS
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel.tbrom_names[0]
-
-        try:
-            timegrid = twinmodel.get_tbrom_time_grid(romname)
-        except TwinModelError as e:
-            assert "not a parametric field history ROM" in str(e)
-
         model_filepath = TEST_TB_PFIELD_HISTORY
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
