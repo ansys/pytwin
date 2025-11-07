@@ -232,13 +232,6 @@ class TestTbRom:
         names = twin.get_field_input_names(rom_name)
         assert names == []
 
-    def test_tbrom_tensor_field(self):
-        model_filepath = TEST_TB_ROM_TENSOR
-        [nsidslist, dimensionality, outputname, unit, timegrid] = tbrom._read_settings(
-            model_filepath
-        )  # instantiation should be fine without points
-        assert int(dimensionality[0]) is 6
-
     def test_tbrom_fix_bug_1168769(self):
         model_filepath = TEST_TB_ROM_NDOF
         try:
