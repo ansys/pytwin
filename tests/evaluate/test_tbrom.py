@@ -21,10 +21,8 @@
 # SOFTWARE.
 
 import os
-import sys
 
 import numpy as np
-import pandas as pd
 from pytwin import (
     TwinModel,
     TwinModelError,
@@ -35,8 +33,6 @@ from pytwin import (
 )
 from pytwin.evaluate import tbrom
 from pytwin.settings import get_pytwin_log_file
-import pyvista as pv
-
 
 def reinit_settings():
     import shutil
