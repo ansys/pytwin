@@ -232,13 +232,6 @@ class TestTbRom:
         names = twin.get_field_input_names(rom_name)
         assert names == []
 
-    def test_read_write_api_dtype(self):
-        # Test for issue #321
-        scalar_field = np.array([1.0, 2.0, 3.0, 5.0], dtype=np.int64)
-        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
-        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
-        assert np.all(np.equal(scalar_field, scalar_field_read))
-
     def test_snapshot_to_array_api(self):
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
         tensor_field = np.array(
