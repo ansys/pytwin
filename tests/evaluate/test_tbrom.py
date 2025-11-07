@@ -199,7 +199,41 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputPressure"] is True
         assert tbrom1._hasinfmcs["inputTemperature"] is False
 
+    def test_tbrom_getters_that_do_not_need_initialization(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
+        twin = TwinModel(model_filepath=model_filepath)
+
+        # Test rom name
+        rom_name = twin.tbrom_names[0]
+        assert rom_name == "ThermalROM23R1_1"
+
+        # Test available view names
+        view_names = twin.get_available_view_names(rom_name)
+        assert view_names[0] == "View1"
+
+        # Test geometry filepath
+        points_filepath = twin.get_geometry_filepath(rom_name)
+        assert "points.bin" in points_filepath
+
+        # Test rom directory
+        rom_dir = twin.get_rom_directory(rom_name)
+        assert rom_name in rom_dir
+
+        # Test sdk rom resources directory
+        sdk_dir = twin._tbrom_resource_directory(rom_name)
+        assert "resources" in sdk_dir
+
+        # Test named selections
+        ns = twin.get_named_selections(rom_name)
+        assert ns[0] == "solid-part_2"
+
+        # Test field input names
+        names = twin.get_field_input_names(rom_name)
+        assert names == []
+
     def test_tbrom_parametric_field_history(self):
+        reinit_settings()
         model_filepath = TEST_TB_ROM_CONSTRAINTS
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
