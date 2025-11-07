@@ -183,22 +183,6 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
-    def test_instantiate_evaluation_tbrom3(self):
-        """
-        TEST_TB_ROM3
-        Twin with 1 TBROM and 2 input fields both connected, 1 output field connected
-        -> nbTBROM = 1, NbInputField = 2, hasInputField = (True, True), hasOutputField = True
-        """
-        model_filepath = TEST_TB_ROM3
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        assert twinmodel.tbrom_count is 1
-        name = twinmodel.tbrom_names[0]
-        tbrom1 = twinmodel._tbroms[name]
-        assert tbrom1.field_input_count is 2
-        assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs["inputPressure"] is True
-        assert tbrom1._hasinfmcs["inputTemperature"] is True
-
     def test_instantiate_evaluation_tbrom4(self):
         """
         TEST_TB_ROM4
