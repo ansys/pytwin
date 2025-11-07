@@ -199,15 +199,38 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputPressure"] is True
         assert tbrom1._hasinfmcs["inputTemperature"] is False
 
-    def test_read_write_api(self):
-        scalar_field = np.array([1.0, 2.0, 3.0, 5.0])
-        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"), scalar_field)
-        vector_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
-        write_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"), vector_field)
-        scalar_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_scalar.bin"))
-        vector_field_read = read_binary(os.path.join(os.path.dirname(__file__), "data", "snapshot_vector.bin"))
-        assert len(scalar_field_read) is 4
-        assert len(vector_field_read) is 3 * 4
+    def test_tbrom_getters_that_do_not_need_initialization(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
+        twin = TwinModel(model_filepath=model_filepath)
+
+        # Test rom name
+        rom_name = twin.tbrom_names[0]
+        assert rom_name == "ThermalROM23R1_1"
+
+        # Test available view names
+        view_names = twin.get_available_view_names(rom_name)
+        assert view_names[0] == "View1"
+
+        # Test geometry filepath
+        points_filepath = twin.get_geometry_filepath(rom_name)
+        assert "points.bin" in points_filepath
+
+        # Test rom directory
+        rom_dir = twin.get_rom_directory(rom_name)
+        assert rom_name in rom_dir
+
+        # Test sdk rom resources directory
+        sdk_dir = twin._tbrom_resource_directory(rom_name)
+        assert "resources" in sdk_dir
+
+        # Test named selections
+        ns = twin.get_named_selections(rom_name)
+        assert ns[0] == "solid-part_2"
+
+        # Test field input names
+        names = twin.get_field_input_names(rom_name)
+        assert names == []
 
     def test_read_write_api_dtype(self):
         # Test for issue #321
