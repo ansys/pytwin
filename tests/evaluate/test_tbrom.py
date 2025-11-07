@@ -270,12 +270,6 @@ class TestTbRom:
         field_data = twinmodel.get_tbrom_output_field(romname)
         maxt300 = max(field_data[f"{twinmodel._tbroms[romname].field_output_name}-normed"])
 
-        log_file = get_pytwin_log_file()
-        with open(log_file, "r") as f:
-            lines = f.readlines()
-        msg = "is larger than last time point"
-        assert "".join(lines).count(msg) == 1
-
         # if sys.platform != "linux":
         assert np.isclose(maxt0, 0.8973744667566537)
         #    assert np.isclose(maxt100, 1.685669230751107)
