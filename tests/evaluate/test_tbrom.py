@@ -186,6 +186,97 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
+    def test_instantiate_evaluation_tbrom1(self):
+        """
+        TEST_TB_ROM1
+        Twin with no TBROM -> nbTBROM = 0
+        """
+        model_filepath = TEST_TB_ROM1
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 0
+
+    def test_instantiate_evaluation_tbrom2(self):
+        """
+        TEST_TB_ROM2
+        Twin with 1 TBROM and 2 input fields but no input field connected, no output field connected
+        -> nbTBROM = 1, NbInputField = 2, hasInputField = (False, False), hasOutputField = False
+        """
+        model_filepath = TEST_TB_ROM2
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 1
+        name = twinmodel.tbrom_names[0]
+        tbrom1 = twinmodel._tbroms[name]
+        assert tbrom1.field_input_count is 2
+        assert tbrom1._hasoutmcs is False
+        assert tbrom1._hasinfmcs["inputPressure"] is False
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
+
+    def test_instantiate_evaluation_tbrom3(self):
+        """
+        TEST_TB_ROM3
+        Twin with 1 TBROM and 2 input fields both connected, 1 output field connected
+        -> nbTBROM = 1, NbInputField = 2, hasInputField = (True, True), hasOutputField = True
+        """
+        model_filepath = TEST_TB_ROM3
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 1
+        name = twinmodel.tbrom_names[0]
+        tbrom1 = twinmodel._tbroms[name]
+        assert tbrom1.field_input_count is 2
+        assert tbrom1._hasoutmcs is True
+        assert tbrom1._hasinfmcs["inputPressure"] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is True
+
+    def test_instantiate_evaluation_tbrom4(self):
+        """
+        TEST_TB_ROM4
+        Twin with 1 TBROM and 2 input fields, 1st partially connected, second fully connected, 1 output field connected
+        -> nbTBROM = 1, NbInputField = 2, hasInputField = (True, False), hasOutputField = True
+        """
+        model_filepath = TEST_TB_ROM4
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 1
+        name = twinmodel.tbrom_names[0]
+        tbrom1 = twinmodel._tbroms[name]
+        assert tbrom1.field_input_count is 2
+        assert tbrom1._hasoutmcs is True
+        assert tbrom1._hasinfmcs["inputPressure"] is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
+
+    def test_instantiate_evaluation_tbrom5(self):
+        """
+        TEST_TB_ROM5
+        Twin with 1 TBROM and 1 input fields connected with error, 1 output field connected
+        -> nbTBROM = 1, NbInputField = 1, hasInputField = (False), hasOutputField = True
+        """
+        model_filepath = TEST_TB_ROM5
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 1
+        name = twinmodel.tbrom_names[0]
+        tbrom1 = twinmodel._tbroms[name]
+        assert tbrom1.field_input_count is 1
+        assert tbrom1._hasoutmcs is True
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
+
+    def test_instantiate_evaluation_tbrom6(self):
+        """
+        TEST_TB_ROM6
+        Twin with 2 TBROM, 1st has no connection, second has 2 input field connected, 1 output field connected,
+        -> nbTBROM = 2, NbInputField = (1, 2), hasInputField = False and (True, True), hasOutputField = False and True
+        """
+        model_filepath = TEST_TB_ROM6
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        assert twinmodel.tbrom_count is 2
+        tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]  # tbrom with 1 field
+        tbrom2 = twinmodel._tbroms[twinmodel.tbrom_names[1]]  # tbrom with 2 field
+        assert tbrom1.field_input_count is 1
+        assert tbrom2.field_input_count is 2
+        assert tbrom1._hasoutmcs is False
+        assert tbrom1._hasinfmcs["inputTemperature"] is False
+        assert tbrom2._hasoutmcs is True
+        assert tbrom2._hasinfmcs["inputPressure"] is True
+        assert tbrom2._hasinfmcs["inputTemperature"] is True
+
     def test_tbrom_getters_that_do_not_need_initialization(self):
         reinit_settings()
         model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
