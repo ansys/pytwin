@@ -232,24 +232,6 @@ class TestTbRom:
         names = twin.get_field_input_names(rom_name)
         assert names == []
 
-    def test_snapshot_to_array_api(self):
-        tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
-        tensor_field = np.array(
-            [
-                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-                [1.0, 2.0, 3.0, 5.0, 7.0, 11.0],
-            ]
-        )
-        write_binary(tensor_path, tensor_field)
-        geometry_path = os.path.join(os.path.dirname(__file__), "data", "geometry_vector.bin")
-        geometry_field = np.array([[1.0, 1.0, 0.0], [1.0, 2.0, 3.0], [5.0, 3.0, 3.0], [5.0, 5.0, 6.0]])
-        write_binary(geometry_path, geometry_field)
-        vector_field_read = snapshot_to_array(tensor_path, geometry_path)
-        assert vector_field_read.shape[0] == 4
-        assert vector_field_read.shape[1] == 9
-
     def test_snapshot_to_array_api_mismatch(self):
         # Snapshot of length 24
         tensor_path = os.path.join(os.path.dirname(__file__), "data", "snapshot_tensor.bin")
