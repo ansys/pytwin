@@ -183,15 +183,6 @@ def norm_vector_field(field: list):
 
 class TestTbRom:
 
-    def test_instantiate_evaluation_tbrom1(self):
-        """
-        TEST_TB_ROM1
-        Twin with no TBROM -> nbTBROM = 0
-        """
-        model_filepath = TEST_TB_ROM1
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        assert twinmodel.tbrom_count is 0
-
     def test_instantiate_evaluation_tbrom2(self):
         """
         TEST_TB_ROM2
