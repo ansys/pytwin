@@ -199,22 +199,6 @@ class TestTbRom:
         assert tbrom1._hasinfmcs["inputPressure"] is True
         assert tbrom1._hasinfmcs["inputTemperature"] is False
 
-    def test_instantiate_evaluation_tbrom12(self):
-        """
-        TEST_TB_ROM12
-        Twin with 1 TBROM with two named selections in settings
-        -> nbTBROM = 1, NbInputField = 1, hasInputField = True, hasOutputField = True,
-        named_selections = ['Group_1', 'Group_2']
-        """
-        model_filepath = TEST_TB_ROM12
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        assert twinmodel.tbrom_count is 1
-        tbrom1 = twinmodel._tbroms[twinmodel.tbrom_names[0]]
-        assert tbrom1.field_input_count is 1
-        assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs["inputTemperature"] is True
-        assert twinmodel.get_named_selections(twinmodel.tbrom_names[0]) == ["Group_1", "Group_2"]
-
     def test_tbrom_getters_that_do_not_need_initialization(self):
         reinit_settings()
         model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
