@@ -1503,10 +1503,9 @@ class TestTbRom:
         msg = "is larger than last time point"
         assert "".join(lines).count(msg) == 1
 
-        if sys.platform != "linux":
-            assert np.isclose(maxt0, 0.8973744667566537)
-            assert np.isclose(maxt100, 1.685669230751107)
-            assert np.isclose(maxt250, 5.635884051349383)
+        assert np.isclose(maxt0, 0.8973744667566537)
+        assert np.isclose(maxt100, 1.685669230751107)
+        assert np.isclose(maxt250, 5.635884051349383)
         assert np.isclose(maxt250, maxt300)
 
     def test_print_model_info(self):
