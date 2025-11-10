@@ -866,10 +866,9 @@ class TestTbRom:
             ).shape[0]
             == 78594
         )
-        if sys.platform != "linux":
-            # TODO - Fix BUG881733
-            assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
-            assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
+
+        assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
+        assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
 
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
