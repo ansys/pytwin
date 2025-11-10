@@ -54,25 +54,6 @@ MESH_FILE = os.path.join(os.path.dirname(__file__), "data", "mesh.vtk")
 
 UNIT_TEST_WD = os.path.join(os.path.dirname(__file__), "unit_test_wd")
 
-"""
-TEST_TB_ROM1
-Twin with no TBROM -> nbTBROM = 0
-"""
-TEST_TB_ROM1 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_1.twin")
-
-"""
-TEST_TB_ROM2
-Twin with 1 TBROM and 2 input fields but no input field connected, no output field connected
--> nbTBROM = 1, NbInputField = 2, hasInputField = (False, False), hasOutputField = False
-"""
-TEST_TB_ROM2 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_2.twin")
-
-"""
-TEST_TB_ROM3
-Twin with 1 TBROM and 2 input fields both connected, 1 output field connected
--> nbTBROM = 1, NbInputField = 2, hasInputField = (True, True), hasOutputField = True
-"""
-TEST_TB_ROM3 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_3.twin")
 
 """
 TEST_TB_ROM4
@@ -82,98 +63,10 @@ Twin with 1 TBROM and 2 input fields, 1st partially connected, second fully conn
 TEST_TB_ROM4 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_4.twin")
 
 """
-TEST_TB_ROM5
-Twin with 1 TBROM and 1 input fields connected with error, 1 output field connected
--> nbTBROM = 1, NbInputField = 1, hasInputField = (False), hasOutputField = True
-"""
-TEST_TB_ROM5 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_5.twin")
-
-"""
-TEST_TB_ROM6
-Twin with 2 TBROM, 1st has no connection, second has 2 input field connected, 1 output field connected,
--> nbTBROM = 2, NbInputField = (1, 2), hasInputField = False and (True, True), hasOutputField = False and True
-"""
-TEST_TB_ROM6 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_6.twin")
-
-"""
-TEST_TB_ROM7
-Twin with 2 TBROM, 1st has 1 input field connected and 1 output field connected,
-second has 2 input field connected with 1st field with errors, 1 output field connected
--> nbTBROM = 2, NbInputField = (1,2), hasInputField = True and (True, False), hasOutputField = True and True
-"""
-TEST_TB_ROM7 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_7.twin")
-
-"""
-TEST_TB_ROM8
-Twin with 2 TBROM, 1st has 1 input field connected and 1 output field connected,
-second has 2 input field connected, 1 output field connected
--> nbTBROM = 2, NbInputField = (1,2), hasInputField = (True, True) and True, hasOutputField = True and True
-"""
-TEST_TB_ROM8 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_8.twin")
-
-"""
-TEST_TB_ROM9
-Twin with 2 TBROM, 1st has 1 input field connected and 1 output field connected with error,
-second has 2 input field connected with second field with errors, 1 output field connected
--> nbTBROM = 2, NbInputField = (1,2), hasInputField = True and (True, False), hasOutputField = False and True
-"""
-TEST_TB_ROM9 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_9.twin")
-
-"""
-TEST_TB_ROM10
-Twin with 1 TBROM but with 3D disabled at export time -> points file not available
-"""
-TEST_TB_ROM10 = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_10.twin")
-
-"""
-TEST_TB_ROM11
-Twin with 1 TBROM without named selection in settings
--> nbTBROM = 1, NbInputField = 0, hasInputField = False, hasOutputField = True
-"""
-TEST_TB_ROM11 = os.path.join(os.path.dirname(__file__), "data", "twin_no_ns.twin")
-
-"""
-TEST_TB_ROM12
-Twin with 1 TBROM with two named selections in settings
--> nbTBROM = 1, NbInputField = 1, hasInputField = True, hasOutputField = True,
-   named_selections = ['Group_1', 'Group_2']
-"""
-TEST_TB_ROM12 = os.path.join(os.path.dirname(__file__), "data", "ThermalTBROM_FieldInput_23R1.twin")
-
-INPUT_SNAPSHOT = os.path.join(os.path.dirname(__file__), "data", "input_snapshot.bin")
-INPUT_SNAPSHOT_WRONG = os.path.join(os.path.dirname(__file__), "data", "input_snapshot_wrong.bin")
-
-"""
-TEST_TB_ROM_TENSOR
-Twin with 1 TBROM with tensor field
-(https://github.com/ansys/pytwin/discussions/164)
-"""
-TEST_TB_ROM_TENSOR = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_stress_field.json")
-
-"""
-TEST_TB_ROM_NDOF
-Twin with Dynamic ROM and NDOF not properly defined (bug 1168769 fixed in 2025R2)
-"""
-TEST_TB_ROM_NDOF = os.path.join(os.path.dirname(__file__), "data", "twin_ndof.twin")
-
-"""
-TEST_TB_ROM_CONSTRAINTS
-Twin with 1 TBROM from SRB with constraints enabled (min/max = -0.00055/0.00044), deformation vector field
-"""
-TEST_TB_ROM_CONSTRAINTS = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_constraints.twin")
-
-"""
 TEST_TB_PFIELD_HISTORY
 Twin with 1 TBROM of type parametric field history
 """
 TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_pfieldhistory.twin")
-
-"""
-TEST_TB_ROM_DROM
-Twin with 1 dynamic field TBROM
-"""
-TEST_TB_ROM_DROM = os.path.join(os.path.dirname(__file__), "data", "twin_field_dyna_rom_cc.twin")
-
 
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
@@ -232,6 +125,7 @@ class TestTbRom:
         # Test field input names
         names = twin.get_field_input_names(rom_name)
         assert names == []
+        twin.close()
 
     def test_tbrom_parametric_field_history(self):
         reinit_settings()
@@ -267,6 +161,7 @@ class TestTbRom:
         #    assert np.isclose(maxt100, 1.685669230751107)
         #    assert np.isclose(maxt250, 5.635884051349383)
         # assert np.isclose(maxt250, maxt300)
+        twinmodel2.close()
 
     # def test_tbrom_dynarom(self): #https://tfs.ansys.com:8443/tfs/ANSYS_Development/Portfolio/_workitems/edit/1362120
     #    model_filepath = TEST_TB_ROM_DROM
