@@ -41,9 +41,6 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: pyvista/setup-headless-display-action@7d84ae825e6d9297a8e99bdbbae20d1b919a0b19 # v4.2
 
-      - name: Install pytest dependencies
-        run: pip install pytest-xdist pytest-forked
-        
       - name: Run pytest
         uses: ansys/actions/tests-pytest@v10.1
         with:
