@@ -75,96 +75,109 @@ def norm_vector_field(field: list):
 
 
 class TestTbRom:
-
     def test_instantiate_evaluation_tbrom4(self):
         """
-        TEST_TB_ROM4
-        Twin with 1 TBROM and 2 input fields, 1st partially connected, second fully connected, 1 output field connected
-        -> nbTBROM = 1, NbInputField = 2, hasInputField = (True, False), hasOutputField = True
+        Twin with 1 TBROM and 2 input fields:
+        - 1st partially connected
+        - 2nd fully connected
+        - 1 output field connected
         """
-        model_filepath = TEST_TB_ROM4
-        twinmodel = TwinModel(model_filepath=model_filepath)
-        assert twinmodel.tbrom_count is 1
-        name = twinmodel.tbrom_names[0]
-        tbrom1 = twinmodel._tbroms[name]
-        assert tbrom1.field_input_count is 2
-        assert tbrom1._hasoutmcs is True
-        assert tbrom1._hasinfmcs["inputPressure"] is True
-        assert tbrom1._hasinfmcs["inputTemperature"] is False
-        twinmodel.close()
+        with TwinModel(model_filepath=TEST_TB_ROM4) as twinmodel:
+            assert twinmodel.tbrom_count == 1
+
+            name = twinmodel.tbrom_names[0]
+            tbrom1 = twinmodel._tbroms[name]
+
+            assert tbrom1.field_input_count == 2
+            assert tbrom1._hasoutmcs is True
+            assert tbrom1._hasinfmcs["inputPressure"] is True
+            assert tbrom1._hasinfmcs["inputTemperature"] is False
 
     def test_tbrom_getters_that_do_not_need_initialization(self):
-        reinit_settings()
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
-        twin = TwinModel(model_filepath=model_filepath)
+        model_filepath = download_file(
+            "ThermalTBROM_23R1_other.twin", "twin_files", force_download=True
+        )
 
-        # Test rom name
-        rom_name = twin.tbrom_names[0]
-        assert rom_name == "ThermalROM23R1_1"
+        with TwinModel(model_filepath=model_filepath) as twin:
+            # Test ROM name
+            rom_name = twin.tbrom_names[0]
+            assert rom_name == "ThermalROM23R1_1"
 
-        # Test available view names
-        view_names = twin.get_available_view_names(rom_name)
-        assert view_names[0] == "View1"
+            # Test available view names
+            view_names = twin.get_available_view_names(rom_name)
+            assert view_names[0] == "View1"
 
-        # Test geometry filepath
-        points_filepath = twin.get_geometry_filepath(rom_name)
-        assert "points.bin" in points_filepath
+            # Test geometry filepath
+            points_filepath = twin.get_geometry_filepath(rom_name)
+            assert "points.bin" in points_filepath
 
-        # Test rom directory
-        rom_dir = twin.get_rom_directory(rom_name)
-        assert rom_name in rom_dir
+            # Test ROM directory
+            rom_dir = twin.get_rom_directory(rom_name)
+            assert rom_name in rom_dir
 
-        # Test sdk rom resources directory
-        sdk_dir = twin._tbrom_resource_directory(rom_name)
-        assert "resources" in sdk_dir
+            # Test SDK ROM resources directory
+            sdk_dir = twin._tbrom_resource_directory(rom_name)
+            assert "resources" in sdk_dir
 
-        # Test named selections
-        ns = twin.get_named_selections(rom_name)
-        assert ns[0] == "solid-part_2"
+            # Test named selections
+            ns = twin.get_named_selections(rom_name)
+            assert ns[0] == "solid-part_2"
 
-        # Test field input names
-        names = twin.get_field_input_names(rom_name)
-        assert names == []
-        twin.close()
+            # Test field input names
+            names = twin.get_field_input_names(rom_name)
+            assert names == []
 
     def test_tbrom_parametric_field_history(self):
-        reinit_settings()
         model_filepath = TEST_TB_PFIELD_HISTORY
-        twinmodel2 = TwinModel(model_filepath=model_filepath)
-        romname = twinmodel2.tbrom_names[0]
 
-        timegrid = twinmodel2.get_tbrom_time_grid(romname)
+        with TwinModel(model_filepath=model_filepath) as twinmodel2:
+            romname = twinmodel2.tbrom_names[0]
+            timegrid = twinmodel2.get_tbrom_time_grid(romname)
 
-        assert len(timegrid) == 17
+            assert len(timegrid) == 17
+            assert twinmodel2._tbroms[romname].isparamfieldhist is True
 
-        assert twinmodel2._tbroms[romname].isparamfieldhist == True
+            twinmodel2.initialize_evaluation()
 
-        twinmodel2.initialize_evaluation()
+            # Step 0
+            field_data = twinmodel2.get_tbrom_output_field(romname)
+            maxt0 = max(
+                field_data[
+                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
+                ]
+            )
 
-        field_data = twinmodel2.get_tbrom_output_field(romname)
-        maxt0 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
+            # Step 100
+            twinmodel2.evaluate_step_by_step(100.0)
+            field_data = twinmodel2.get_tbrom_output_field(romname)
+            maxt100 = max(
+                field_data[
+                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
+                ]
+            )
 
-        twinmodel2.evaluate_step_by_step(100.0)
-        field_data = twinmodel2.get_tbrom_output_field(romname)
-        maxt100 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
+            # Step 250
+            twinmodel2.evaluate_step_by_step(150.0)
+            field_data = twinmodel2.get_tbrom_output_field(romname)
+            maxt250 = max(
+                field_data[
+                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
+                ]
+            )
 
-        twinmodel2.evaluate_step_by_step(150.0)
-        field_data = twinmodel2.get_tbrom_output_field(romname)
-        maxt250 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
+            # Step 300 (should saturate)
+            twinmodel2.evaluate_step_by_step(100.0)
+            field_data = twinmodel2.get_tbrom_output_field(romname)
+            maxt300 = max(
+                field_data[
+                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
+                ]
+            )
 
-        twinmodel2.evaluate_step_by_step(100.0)
-        field_data = twinmodel2.get_tbrom_output_field(romname)
-        maxt300 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
-
-        # if sys.platform != "linux":
-        assert np.isclose(maxt0, 0.8973744667566537)
-        #    assert np.isclose(maxt100, 1.685669230751107)
-        #    assert np.isclose(maxt250, 5.635884051349383)
-        # assert np.isclose(maxt250, maxt300)
-        twinmodel2.close()
-
-    # def test_tbrom_dynarom(self): #https://tfs.ansys.com:8443/tfs/ANSYS_Development/Portfolio/_workitems/edit/1362120
-    #    model_filepath = TEST_TB_ROM_DROM
-    #    twinmodel = TwinModel(model_filepath=model_filepath)
-    #    romname = twinmodel.tbrom_names[0]
-    #    assert twinmodel._tbroms[romname]._hasoutmcs is True
+            # Assertions
+            # NOTE: originally guarded with `if sys.platform != "linux"`,
+            # but the values are now expected to be consistent after isolation.
+            assert np.isclose(maxt0, 0.8973744667566537)
+            # assert np.isclose(maxt100, 1.685669230751107)
+            # assert np.isclose(maxt250, 5.635884051349383)
+            # assert np.isclose(maxt250, maxt300)
