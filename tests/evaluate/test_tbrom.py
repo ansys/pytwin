@@ -95,9 +95,7 @@ class TestTbRom:
             assert tbrom1._hasinfmcs["inputTemperature"] is False
 
     def test_tbrom_getters_that_do_not_need_initialization(self):
-        model_filepath = download_file(
-            "ThermalTBROM_23R1_other.twin", "twin_files", force_download=True
-        )
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
 
         with TwinModel(model_filepath=model_filepath) as twin:
             # Test ROM name
@@ -142,38 +140,22 @@ class TestTbRom:
 
             # Step 0
             field_data = twinmodel2.get_tbrom_output_field(romname)
-            maxt0 = max(
-                field_data[
-                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
-                ]
-            )
+            maxt0 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
             # Step 100
             twinmodel2.evaluate_step_by_step(100.0)
             field_data = twinmodel2.get_tbrom_output_field(romname)
-            maxt100 = max(
-                field_data[
-                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
-                ]
-            )
+            maxt100 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
             # Step 250
             twinmodel2.evaluate_step_by_step(150.0)
             field_data = twinmodel2.get_tbrom_output_field(romname)
-            maxt250 = max(
-                field_data[
-                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
-                ]
-            )
+            maxt250 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
             # Step 300 (should saturate)
             twinmodel2.evaluate_step_by_step(100.0)
             field_data = twinmodel2.get_tbrom_output_field(romname)
-            maxt300 = max(
-                field_data[
-                    f"{twinmodel2._tbroms[romname].field_output_name}-normed"
-                ]
-            )
+            maxt300 = max(field_data[f"{twinmodel2._tbroms[romname].field_output_name}-normed"])
 
             # Assertions
             # NOTE: originally guarded with `if sys.platform != "linux"`,
