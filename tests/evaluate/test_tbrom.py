@@ -68,6 +68,7 @@ Twin with 1 TBROM of type parametric field history
 """
 TEST_TB_PFIELD_HISTORY = os.path.join(os.path.dirname(__file__), "data", "twin_tbrom_pfieldhistory.twin")
 
+
 def norm_vector_field(field: list):
     """Compute the norm of a vector field."""
     vec = field.reshape((-1, 3))
