@@ -83,6 +83,7 @@ class TestTbRom:
         - 2nd fully connected
         - 1 output field connected
         """
+        reinit_settings()
         with TwinModel(model_filepath=TEST_TB_ROM4) as twinmodel:
             assert twinmodel.tbrom_count == 1
 
@@ -93,9 +94,13 @@ class TestTbRom:
             assert tbrom1._hasoutmcs is True
             assert tbrom1._hasinfmcs["inputPressure"] is True
             assert tbrom1._hasinfmcs["inputTemperature"] is False
+        reinit_settings()
 
     def test_tbrom_getters_that_do_not_need_initialization(self):
-        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files", force_download=True)
+        reinit_settings()
+        model_filepath = download_file(
+            "ThermalTBROM_23R1_other.twin", "twin_files", force_download=True
+        )
 
         with TwinModel(model_filepath=model_filepath) as twin:
             # Test ROM name
@@ -125,8 +130,10 @@ class TestTbRom:
             # Test field input names
             names = twin.get_field_input_names(rom_name)
             assert names == []
+        reinit_settings()
 
     def test_tbrom_parametric_field_history(self):
+        reinit_settings()
         model_filepath = TEST_TB_PFIELD_HISTORY
 
         with TwinModel(model_filepath=model_filepath) as twinmodel2:
@@ -164,3 +171,4 @@ class TestTbRom:
             # assert np.isclose(maxt100, 1.685669230751107)
             # assert np.isclose(maxt250, 5.635884051349383)
             # assert np.isclose(maxt250, maxt300)
+        reinit_settings()
