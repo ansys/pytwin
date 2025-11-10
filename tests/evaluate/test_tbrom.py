@@ -183,6 +183,7 @@ def norm_vector_field(field: list):
     vec = field.reshape((-1, 3))
     return np.sqrt((vec * vec).sum(axis=1))
 
+
 class TestTbRom:
 
     def test_instantiate_evaluation_tbrom1(self):
