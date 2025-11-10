@@ -41,12 +41,23 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: pyvista/setup-headless-display-action@7d84ae825e6d9297a8e99bdbbae20d1b919a0b19 # v4.2
 
-      - name: Run pytest
+      - name: Run pytest Linux
+        if: matrix.os == 'ubuntu-22.04'
         uses: ansys/actions/tests-pytest@v10.1
         with:
           optional-dependencies-name: "tests,graphics"
           python-version: ${{ matrix.python-version }}
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html -n auto --forked"
+        env:
+          ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+
+      - name: Run pytest Windows
+        if: matrix.os == 'windows-latest'
+        uses: ansys/actions/tests-pytest@v10.1
+        with:
+          optional-dependencies-name: "tests,graphics"
+          python-version: ${{ matrix.python-version }}
+          pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
 
