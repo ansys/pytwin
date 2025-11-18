@@ -1,0 +1,6 @@
+solver\_parameters
+==================
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.solver_parameters
