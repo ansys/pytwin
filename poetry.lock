@@ -3651,19 +3651,19 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "0.22.0"
+version = "0.22.1"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.22.0-py3-none-any.whl", hash = "sha256:b711d2dddb799ed755871aceba1566622f65eefd250b612cef6589d29f44925e"},
-    {file = "pyaedt-0.22.0.tar.gz", hash = "sha256:5de3b7175db7c32b4ee6abcdc6ff62f58c37526cb81427728e2d668cd128adaf"},
+    {file = "pyaedt-0.22.1-py3-none-any.whl", hash = "sha256:1fadc0d7760d80230a1494cd426cd084f6c268cedf69bc266512c1c509b684e0"},
+    {file = "pyaedt-0.22.1.tar.gz", hash = "sha256:f3154ed2fd7604ad125be9954c97a1de646cb2641b0414368b6125f41314f79a"},
 ]
 
 [package.dependencies]
 defusedxml = ">=0.7,<8.0"
-grpcio = ">=1.50.0,<1.76"
+grpcio = ">=1.50.0,<1.77"
 jsonschema = "*"
 numpy = ">=1.20.0,<2.3"
 psutil = "*"
@@ -3674,7 +3674,7 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 tomli-w = "*"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.47)", "requests", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)", "tables ; python_version >= \"3.10\"", "uv (>=0.8.17)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.47)", "requests", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)", "uv (>=0.8.17)"]
 doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.7)", "ansys-tools-visualization-interface", "fpdf2", "jupyter", "numpydoc (>=1.5.0,<1.9)", "pyvista[io] (>=0.38.0,<0.47)", "recommonmark", "rpyc (>=6.0.0,<6.1)", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.20)", "sphinx_design (>=0.4.0,<0.7)"]
 dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0,<2.1) ; platform_system == \"Linux\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
 examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.4)", "pyvista (>=0.38.0,<0.47)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)"]
@@ -3682,7 +3682,7 @@ graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0
 integration-tests = ["matplotlib (>=3.5.0,<3.11)", "pandas (>=1.1.0,<2.4)", "pyaedt[unit-tests]"]
 jupyter = ["ipython (>=7.30.0,<9.1)", "jupyterlab (>=3.6.0,<4.5)"]
 tests = ["ansys-tools-visualization-interface", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.47)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.9)", "tables"]
-unit-tests = ["fpdf2", "mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<7.1)", "requests"]
+unit-tests = ["fpdf2", "mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<7.1)", "requests", "typer (>=0.20.0)"]
 
 [[package]]
 name = "pyansys-tools-report"
