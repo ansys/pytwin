@@ -48,6 +48,7 @@ optional = true
 [tool.poetry.group.tests.dependencies]
 pytest = ">=7.3.1"
 pytest-cov = ">=4.0.0"
+pytest-forked = ">=1.6"
 
 [tool.poetry.group.doc]
 optional = true
@@ -58,6 +59,8 @@ ansys-dpf-core = ">=0.13,<0.15"
 ansys-fluent-visualization = ">=0.21.1"
 ansys-mapdl-core = {version = ">=0.68.5,<0.72.0", extras = ["graphics"]}
 ansys-sphinx-theme = ">=1.0.0,<1.7"
+ipywidgets = "8.1.7" # pin the version to solve doc building workflow issue as 8.1.8 leads to installation issue (PR #392)
+jupyterlab-widgets = "3.0.15" # same
 jupyter_sphinx = "^0.5.3"
 matplotlib = "^3.7.1"
 numpydoc = ">=1.6.0"

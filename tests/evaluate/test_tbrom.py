@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 import os
-import sys
 
 import numpy as np
 import pandas as pd
@@ -866,10 +865,9 @@ class TestTbRom:
             ).shape[0]
             == 78594
         )
-        if sys.platform != "linux":
-            # TODO - Fix BUG881733
-            assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
-            assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
+
+        assert np.isclose(snp_vec_ns[0, 0], 1.7188266859172047e-05)
+        assert np.isclose(snp_vec_ns[-1, -1], -1.5316792773713332e-05)
 
     def test_generate_snapshot_with_tbrom_exceptions(self):
         model_filepath = TEST_TB_ROM9
@@ -1503,10 +1501,9 @@ class TestTbRom:
         msg = "is larger than last time point"
         assert "".join(lines).count(msg) == 1
 
-        if sys.platform != "linux":
-            assert np.isclose(maxt0, 0.8973744667566537)
-            assert np.isclose(maxt100, 1.685669230751107)
-            assert np.isclose(maxt250, 5.635884051349383)
+        assert np.isclose(maxt0, 0.8973744667566537)
+        assert np.isclose(maxt100, 1.685669230751107)
+        assert np.isclose(maxt250, 5.635884051349383)
         assert np.isclose(maxt250, maxt300)
 
     def test_print_model_info(self):
@@ -1552,7 +1549,7 @@ class TestTbRom:
         twinmodel.close()
 
 
-#    def test_tbrom_dynarom(self):
+#    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
 #        model_filepath = TEST_TB_ROM_DROM
 #        twinmodel = TwinModel(model_filepath=model_filepath)
 #        romname = twinmodel.tbrom_names[0]
