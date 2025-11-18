@@ -1549,7 +1549,7 @@ class TestTbRom:
         twinmodel.close()
 
 
-#    def test_tbrom_dynarom(self):
+#    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
 #        model_filepath = TEST_TB_ROM_DROM
 #        twinmodel = TwinModel(model_filepath=model_filepath)
 #        romname = twinmodel.tbrom_names[0]
