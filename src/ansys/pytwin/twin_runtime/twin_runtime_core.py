@@ -40,8 +40,9 @@ from pathlib import Path
 import platform
 import sys
 from typing import Set, Tuple
-import defusedxml.ElementTree as ET
 import zipfile
+
+import defusedxml.ElementTree as ET
 
 CUR_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
 if platform.system() != "Windows":
