@@ -29,30 +29,6 @@
             Configuration APIP non autorisée au niveau global.
         </MSG>
     </MESSAGE><!-- Begin ACL FNP Messages [18001 - 19000] --><MESSAGE>
-        <ID>18012</ID>
-        <MSG>
-            Service de licence activé : %1 (%2)
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
-        <ID>18011</ID>
-        <MSG>
-            Version FlexNet Publisher (FNP) : %1
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
-        <ID>18010</ID>
-        <MSG>
-            FlexNet Publisher (FNP) - snpslmd
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
-        <ID>18009</ID>
-        <MSG>
-            FlexNet Publisher (FNP) - ansyslmd
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
         <ID>18008</ID>
         <MSG>
             Nombre insuffisant de licences FlexNet Publisher (FNP) de %1 disponibles pour utilisation, seules %2 des %3 tâches demandées étaient disponibles après utilisation de %4 cœurs dans le contexte %5.
@@ -316,27 +292,9 @@
           Impossible de trouver %1 dans la licence Web.          
         </MSG>
     </MESSAGE><!-- Begin ACL Messages [16001 - 17000] --><MESSAGE>
-        <ID>16056</ID>
-        <MSG>
-            File d&apos;attente FNP perdue pour la fonctionnalité %1.
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
-        <ID>16055</ID>
-        <MSG>
-            Impossible d&apos;initialiser le cache de licence Web local.
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
-        <ID>16054</ID>
-        <MSG>
-            Aucun droit de licence Web local à exporter.
-        </MSG>
-    </MESSAGE>
-    <MESSAGE>
         <ID>16053</ID>
         <MSG>
-            Impossible d&apos;exporter les données vers %1. Raison : %2
+            Impossible d&apos;exporter les données vers %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -2044,18 +2002,6 @@ Veuillez sauvegarder votre travail.
        Récupération d&apos;information du serveur FLEXlm : %1. Veuillez patienter...
     </MSG>
   </MESSAGE><!-- End Log messages: CACHE_SERVER --> <!-- Begin Log messages: INFO 1200 - 1299 --><MESSAGE>
-    <ID>1268</ID>
-    <MSG>
-      Impossible de lire les paramètres proxy.
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
-    <ID>1267</ID>
-    <MSG>
-      Le chemin d&apos;installation ne peut pas être vide.
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
     <ID>1266</ID>
     <MSG>
       Produit utilisé : %1.
@@ -2461,30 +2407,6 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
         Le serveur FLEXlm est déjà en cours d&apos;utilisation.
     </MSG>
   </MESSAGE><!-- End Log messages: CACHE_SERVER 1200 - 1299 --> <!-- Begin Log messages: ERROR 1000 - 1199 --><MESSAGE>
-    <ID>1080</ID>
-    <MSG>
-      Retour du mode DÉPASSEMENT DE DÉLAI Idle pour la fonctionnalité %1.
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
-    <ID>1079</ID>
-    <MSG>
-      Passage en mode DÉPASSEMENT DE DÉLAI Idle pour la fonctionnalité %1 avec dépassement de délai défini sur %2.
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
-    <ID>1078</ID>
-    <MSG>
-      Envoi des pulsations FNP pour le démon : %1
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
-    <ID>1077</ID>
-    <MSG>
-      Impossible d&apos;utiliser un port de la plage fournie. Connexion via un port libre attribué par le système d&apos;exploitation.
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
     <ID>1076</ID>
     <MSG>
       Permissions insuffisantes pour démarrer le binaire de licence Ansys : %1
@@ -3994,12 +3916,6 @@ ID de réservation : %2.
        Le client a été déconnecté pendant %1 secondes. La fonctionnalité va être rendue à l&apos;ensemble de licences dans %2 secondes si aucune reconnexion n&apos;est faite avant.
     </MSG>
   </MESSAGE><!-- End pool Error Messages --> <!-- Begin Server/Client Reply Messages [250 - 299] [1400 - 1449] --><MESSAGE>
-    <ID>286</ID>
-    <MSG>
-      La date et l’heure de retour n’ont pas pu être trouvées ou extraites du fichier XML d’entrée.
-    </MSG>
-  </MESSAGE>
-  <MESSAGE>
     <ID>285</ID>
     <MSG>
       Impossible d&apos;emprunter la fonctionnalité : %1 pour plus de %2 heures.
