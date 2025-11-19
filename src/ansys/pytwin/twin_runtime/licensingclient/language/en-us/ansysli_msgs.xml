@@ -1,14 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MESSAGES>
-  <LANGUAGE>
-    <ID>
-      en-us
-    </ID>
-    <LABEL>
-      English
-    </LABEL>
-  </LANGUAGE>
 
+    <!-- Begin ACLCURL ACLEXT Common Messages [20001 - 22000] -->
+    <MESSAGE>
+        <ID>
+            21018
+        </ID>
+        <MSG>
+            Unable to execute thirdparty PAC-helper utility.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21017
+        </ID>
+        <MSG>
+            Failed to execute PAC script: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21016
+        </ID>
+        <MSG>
+            PAC script does not define a FindProxyForURL()
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21015
+        </ID>
+        <MSG>
+            Unable to evaluate PAC script : %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21014
+        </ID>
+        <MSG>
+            Failed to create thirdparty PAC-helper utility context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21013
+        </ID>
+        <MSG>
+            Using proxy server: %1 for url: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21012
+        </ID>
+        <MSG>
+            Unable to fetch PAC file from url: %1. Encountered error %2 : %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21011
+        </ID>
+        <MSG>
+            Proxy auto-configuration detected. PAC url: %1 will be used to determine the proxy server for curl requests.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21010
+        </ID>
+        <MSG>
+            Proxy server configuration detected. All curl requests will use the proxy server: %1.
+        </MSG>
+    </MESSAGE>
+  
     <!-- Begin ACL APIP Messages [19001 - 20000] -->
     <MESSAGE>
         <ID>
@@ -52,6 +118,38 @@
     </MESSAGE>
     
     <!-- Begin ACL FNP Messages [18001 - 19000] -->
+    <MESSAGE>
+        <ID>
+            18012
+        </ID>
+        <MSG>
+            Licensing service enabled: %1 (%2)
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18011
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) version: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18010
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) - snpslmd
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18009
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) - ansyslmd
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             18008
@@ -121,6 +219,62 @@
     <!-- Begin Web Licensing Messages [17001 - 18000] -->
     <MESSAGE>
         <ID>
+            17036
+        </ID>
+        <MSG>
+          Authorization attempt timed out.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17035
+        </ID>
+        <MSG>
+          The Ansys Licensing process timed out waiting for ANSYSID authorization response: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17034
+        </ID>
+        <MSG>
+          Could not cache entitlements. The Web Licensing (Shared) calls might be experiencing connectivity issues or/and user is unrecognized. Skipping Web Licensing (Shared) technology for this session.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17033
+        </ID>
+        <MSG>
+          Skipping Web Licensing (Shared) technology for this session. User is not recognized and/or is not associated with any account.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17032
+        </ID>
+        <MSG>
+          User unrecognized. Web Licensing (Shared) technology will be skipped for this session. Please login as a user associated with a valid account and restart the application.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            17031
+        </ID>
+        <MSG>
+            Web Roam license %1 expired as of %2, request for feature %3 denied.
+        </MSG>
+      </MESSAGE>
+      <MESSAGE>
+        <ID>
+            17030
+        </ID>
+        <MSG>
+            Your Web-Roam license has expired. Clearing the local roam cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
             17029
         </ID>
         <MSG>
@@ -188,7 +342,7 @@
             17021
         </ID>
         <MSG>
-            Checkout out by application %1 with pid %2.
+            Lost checkout made by application %1 with pid %2.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -196,7 +350,7 @@
         17020
       </ID>
       <MSG>
-        Web Licensing checkout of feature '%1' lost.
+        Web Licensing checkout of feature '%1' from '%2' is lost.
       </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -212,7 +366,7 @@
             17018
         </ID>
         <MSG>
-            Your Web Licensing license has expired. Attempting to re-checkout using other  alternate licensing technology if configured.
+            Your Web Licensing license has expired. Attempting to re-checkout using other alternate licensing technology if configured.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -353,6 +507,326 @@
     </MESSAGE>
 
     <!-- Begin ACL Messages [16001 - 17000] -->
+    <MESSAGE>
+        <ID>
+            16056
+        </ID>
+        <MSG>
+            Lost FNP queue for feature %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16055
+        </ID>
+        <MSG>
+            Unable to initialize local web license cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16054
+        </ID>
+        <MSG>
+            No local web license entitlements to export.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16053
+        </ID>
+        <MSG>
+            Unable to export data to %1. Reason: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16052
+        </ID>
+        <MSG>
+            Unable to retrieve active licenses to write to %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16051
+        </ID>
+        <MSG>
+            Exported license data to %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16050
+        </ID>
+        <MSG>
+            Wrote active licenses to %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16049
+        </ID>
+        <MSG>
+            Unable to parse data in %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16048
+        </ID>
+        <MSG>
+            Unable to find '%1' section in %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16047
+        </ID>
+        <MSG>
+            Unable to update licenses from %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16046
+        </ID>
+        <MSG>
+            Unable to save licenses from %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16045
+        </ID>
+        <MSG>
+            Updated licenses from %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16044
+        </ID>
+        <MSG>
+            Data Verification failed %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16043
+        </ID>
+        <MSG>
+            Unknown load issue.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16042
+        </ID>
+        <MSG>
+            Unable to load Web Licensing library.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16041
+        </ID>
+        <MSG>
+            Unable to update Web Licensing Token: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16040
+        </ID>
+        <MSG>
+            Unable to create internal Web Licensing LaaS object.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16039
+        </ID>
+        <MSG>
+            Unable to access internal Web Licensing LaaS object.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16038
+        </ID>
+        <MSG>
+            Unable to initialize internal Web Licensing LaaS object.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16037
+        </ID>
+        <MSG>
+            Unable to access internal Web Licensing Token object.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16036
+        </ID>
+        <MSG>
+            Unable to update Web Licensing Token cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16035
+        </ID>
+        <MSG>
+            Unable to update Web Licensing Token cache: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16034
+        </ID>
+        <MSG>
+            Updated Web Licensing Token cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16033
+        </ID>
+        <MSG>
+            Cleared Web Licensing Token cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16032
+        </ID>
+        <MSG>
+            FAILURE:
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16031
+        </ID>
+        <MSG>
+            SUCCESS: 
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16030
+        </ID>
+        <MSG>
+            user
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16029
+        </ID>
+        <MSG>
+            Ansys Web Licensing Options:
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16028
+        </ID>
+        <MSG>
+            User for Web Licensing export. Defaults to active user.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16027
+        </ID>
+        <MSG>
+            Updates the Web Licensing cache with the access token contained in the passed %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16026
+        </ID>
+        <MSG>
+            Returns active Web Licensing entitlement cache in JSON format to the designated %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16025
+        </ID>
+        <MSG>
+            Clears the installed Web Licensing access token from the local cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16024
+        </ID>
+        <MSG>
+            Refresh or authenticate the user's Web Licensing account for the currently configured Web Licensing environment, updating the Web Licensing cache. The optional &lt;timeout&gt; is the number of seconds to wait for user authentication before timing out the request. Without it the request will not timeout.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16023
+        </ID>
+        <MSG>
+            Installs the passed access token to the Web Licensing cache
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16022
+        </ID>
+        <MSG>
+            Export the current state of the Web licensing cache as a JSON formatted file.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16021
+        </ID>
+        <MSG>
+            Update the currently checked out Web Licensing cache from the provided JSON formatted file.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16020
+        </ID>
+        <MSG>
+            Act on roamed Web Licensing cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16019
+        </ID>
+        <MSG>
+            timeout
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16018
+        </ID>
+        <MSG>
+            access token
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16017
+        </ID>
+        <MSG>
+            json file
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             16016
@@ -2171,6 +2645,14 @@ Please save your work.
     <!-- End Socket Error Messages --> 
     <!-- Begin Log messages: WARNING 1350 - 1399 -->
   <MESSAGE>
+    <ID>
+      1354
+    </ID>
+    <MSG>
+      Initialization failed: An app with the same name already exists.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
         <ID>
             1353
         </ID>
@@ -2358,6 +2840,22 @@ Please save your work.
   </MESSAGE> 
   <!-- End Log messages: CACHE_SERVER -->
     <!-- Begin Log messages: INFO 1200 - 1299 -->
+  <MESSAGE>
+    <ID>
+      1268
+    </ID>
+    <MSG>
+      Failed to read proxy settings.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1267
+    </ID>
+    <MSG>
+      Install path can not be empty.
+    </MSG>
+  </MESSAGE>
   <MESSAGE>
     <ID>
       1266
@@ -2900,6 +3398,38 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   </MESSAGE> 
   <!-- End Log messages: CACHE_SERVER 1200 - 1299 -->
     <!-- Begin Log messages: ERROR 1000 - 1199 -->
+  <MESSAGE>
+    <ID>
+      1080
+    </ID>
+    <MSG>
+      Returning from Idle TIMEOUT mode for feature %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1079
+    </ID>
+    <MSG>
+      Entering into Idle TIMEOUT mode for feature %1 with timeout set to %2.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1078
+    </ID>
+    <MSG>
+      Sending FNP heartbeats for daemon: %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1077
+    </ID>
+    <MSG>
+      Could not use a port from the provided range. Connecting through a free port assigned by the operating system.
+    </MSG>
+  </MESSAGE>
   <MESSAGE>
     <ID>
       1076
@@ -4911,6 +5441,14 @@ Reserve ID: %2.
   </MESSAGE> 
   <!-- End pool Error Messages --> 
   <!-- Begin Server/Client Reply Messages [250 - 299] [1400 - 1449] -->
+  <MESSAGE>
+    <ID>
+      286
+    </ID>
+    <MSG>
+      Return date and time could not be found or retrieved from the XML input.
+    </MSG>
+  </MESSAGE>
   <MESSAGE>
     <ID>
       285
