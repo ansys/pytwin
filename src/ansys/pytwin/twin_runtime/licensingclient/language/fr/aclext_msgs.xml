@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MESSAGES>
+    <!-- © 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. -->
+    <!-- Begin ACLCURL Messages [21001 - 22000] -->
+    <MESSAGE>
+        <ID>
+            21008
+        </ID>
+        <MSG>
+            User LaaS Authorization attempt timed out. Browser prompt for credentials was not completed in the allotted %1 seconds.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21007
+        </ID>
+        <MSG>
+            Waiting for response for as long as it takes or the process is stopped.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21006
+        </ID>
+        <MSG>
+            Waiting for response for up to %1 seconds.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21005
+        </ID>
+        <MSG>
+            ERROR: No response recieved from authorization request.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21004
+        </ID>
+        <MSG>
+            Unable to parse code from authorization response: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21003
+        </ID>
+        <MSG>
+            Curl error %1 encountered on call to %2: %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21002
+        </ID>
+        <MSG>
+            Call to %1 timed out after %2 seconds.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21001
+        </ID>
+        <MSG>
+            Unable to set URL, curl error %1 returned setting url to '%2' with arguments.
+        </MSG>
+    </MESSAGE>
+    <!-- Begin ACLEXT Messages [20001 - 21000] -->
+    <MESSAGE>
+        <ID>
+            20038
+        </ID>
+        <MSG>
+            Data verification failed.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20037
+        </ID>
+        <MSG>
+            No data returned by call to LaaS URL.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20036
+        </ID>
+        <MSG>
+            Unable to get token object to retrieve bearer token for request.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20035
+        </ID>
+        <MSG>
+            Unknown issue determining/retrieving bearer token for request
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20034
+        </ID>
+        <MSG>
+            LaaS REST API %1 returned (at: %2): %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20033
+        </ID>
+        <MSG>
+            Unable to retrieve bearer token.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20032
+        </ID>
+        <MSG>
+            Unable clear Access Token cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20031
+        </ID>
+        <MSG>
+            Unable to find Access Token file '%1.'
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20030
+        </ID>
+        <MSG>
+            No data read from Access Token file '%1.'
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20029
+        </ID>
+        <MSG>
+            No token data found in Access Token file '%1.'
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20028
+        </ID>
+        <MSG>
+            No Access Token value passed.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20027
+        </ID>
+        <MSG>
+            Unable to retrieve data from passed Access Token value: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20026
+        </ID>
+        <MSG>
+            Passed Access Token expired as of %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20025
+        </ID>
+        <MSG>
+            Unable to update Access Token cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20024
+        </ID>
+        <MSG>
+            Unable to authorize token
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20023
+        </ID>
+        <MSG>
+            Displaying default browser with ANSYSID login to acquire authentication, please enter the ANSYSID credentials to use for Web Licensing actions.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20022
+        </ID>
+        <MSG>
+            Refresh token is expired.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20021
+        </ID>
+        <MSG>
+            Refresh of existing access token succeeded.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20020
+        </ID>
+        <MSG>
+            Unable to refresh access token using the refresh token.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20019
+        </ID>
+        <MSG>
+            Attempting to refresh existing access token.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20018
+        </ID>
+        <MSG>
+            Existing token is expired.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20017
+        </ID>
+        <MSG>
+            Existing token is still valid.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20016
+        </ID>
+        <MSG>
+            No Token value.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20015
+        </ID>
+        <MSG>
+            Unable to retrieve updated token.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20014
+        </ID>
+        <MSG>
+            Token expired.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20013
+        </ID>
+        <MSG>
+            LaaS REST API %1 call (at: %2): %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20012
+        </ID>
+        <MSG>
+            Bearer token retrieved: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20011
+        </ID>
+        <MSG>
+            Retrieving bearer token...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20010
+        </ID>
+        <MSG>
+            Using user token...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20009
+        </ID>
+        <MSG>
+            Logging URL call to: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20008
+        </ID>
+        <MSG>
+            Missing/invalid cache dir specified: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20007
+        </ID>
+        <MSG>
+            Unable to create cache dir: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20006
+        </ID>
+        <MSG>
+            Unable to initialize LaaS connection: No %1 value found.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20005
+        </ID>
+        <MSG>
+            Unable to initialize LaaS connection: invalid connection type '%1' passed/set. See documentation of %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20004
+        </ID>
+        <MSG>
+            Unable to initialize LaaS connection: no %1 value set.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20003
+        </ID>
+        <MSG>
+            Unable to initialize LaaS connection: %1 value must be set 'on'.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20002
+        </ID>
+        <MSG>
+            DEBUG (%1): %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            20001
+        </ID>
+        <MSG>
+            Localized message directory %1 not found.
+        </MSG>
+    </MESSAGE>
+</MESSAGES>
