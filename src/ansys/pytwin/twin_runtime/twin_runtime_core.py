@@ -40,7 +40,7 @@ from pathlib import Path
 import platform
 import sys
 from typing import Set, Tuple
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # nosec B314
 import zipfile
 
 CUR_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
