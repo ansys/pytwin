@@ -3785,14 +3785,14 @@ files = [
 
 [[package]]
 name = "pyaedt"
-version = "0.22.2"
+version = "0.23.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.22.2-py3-none-any.whl", hash = "sha256:de7abeb140331ce9eb12ec157c5f313af5c598689eaa711199029592047d206d"},
-    {file = "pyaedt-0.22.2.tar.gz", hash = "sha256:866722cce52b9153b831a2f652bcc3d83a601c83135872c0a3a21e3cf903a061"},
+    {file = "pyaedt-0.23.0-py3-none-any.whl", hash = "sha256:c421d1b529a99ac96753a67d790a2827cf76f36d27b48a29834f9a7e73c7346d"},
+    {file = "pyaedt-0.23.0.tar.gz", hash = "sha256:7acb745cb6519d2cf3a39b9ced77f65ae18fb512fce9a3d2931575774b1ee536"},
 ]
 
 [package.dependencies]
@@ -3815,8 +3815,8 @@ examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0,<2.38)"
 graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.47)", "vtk (>=9.0,<9.6)"]
 integration-tests = ["matplotlib (>=3.5.0,<3.11)", "pandas (>=1.1.0,<2.4)", "pyaedt[unit-tests]"]
 jupyter = ["ipython (>=7.30.0,<9.1)", "jupyterlab (>=3.6.0,<4.5)"]
-tests = ["ansys-tools-visualization-interface", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.47)", "scikit-rf (>=0.30.0,<1.9)", "tables"]
-unit-tests = ["fpdf2", "mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<8.5)", "pytest-cov (>=4.0.0,<7.1)", "requests", "rpyc (>=6.0.0,<6.1)", "typer (>=0.20.0)"]
+tests = ["ansys-tools-visualization-interface", "cryptography", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.47)", "scikit-rf (>=0.30.0,<1.9)", "tables"]
+unit-tests = ["fpdf2", "mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<9.1)", "pytest-cov (>=4.0.0,<7.1)", "requests", "rpyc (>=6.0.0,<6.1)", "typer (>=0.20.0)"]
 
 [[package]]
 name = "pyansys-tools-report"
@@ -6332,4 +6332,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "af89d91d344dc302d9dcda37dbec290c092bacde09e88ce9f8d7a92c2c2b181c"
+content-hash = "da50fd12c0992e51005275b0f21a147446b5040599d0bcd0a20a82226cf775ca"
