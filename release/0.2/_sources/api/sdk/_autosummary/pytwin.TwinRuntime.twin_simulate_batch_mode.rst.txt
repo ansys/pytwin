@@ -1,0 +1,6 @@
+twin\_simulate\_batch\_mode
+===========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_simulate_batch_mode
