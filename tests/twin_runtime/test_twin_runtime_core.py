@@ -71,3 +71,8 @@ class TestTwinRuntime:
             TwinRuntime.evaluate_twin_prop_status(1, twin_runtime, "unit_test_method", 0)
         except twin_runtime_error.PropertyNotDefinedError as e:
             assert "error" in str(e)
+
+    def test_sdk_version(self):
+        api_version = TwinRuntime.twin_get_api_version()
+
+        assert api_version == "2.18.1.0"

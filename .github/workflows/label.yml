@@ -19,7 +19,7 @@ jobs:
     name: Syncer
     permissions:
       contents: read
-      pull-requests: write
+      pull-requests: write # needed to create/delete labels
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -34,7 +34,7 @@ jobs:
     needs: [label-syncer]
     permissions:
       contents: read
-      pull-requests: write
+      pull-requests: write # needed to apply labels
     runs-on: ubuntu-latest
     steps:
 
@@ -82,7 +82,7 @@ jobs:
     name: Commenter
     permissions:
       contents: read
-      pull-requests: write
+      pull-requests: write # needed to create comments
     runs-on: ubuntu-latest
     steps:
     - name: Suggest to add labels
