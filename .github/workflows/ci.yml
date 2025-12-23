@@ -195,8 +195,8 @@ jobs:
     environment: release
     # INFO: Trusted publishers require these permissions
     permissions:
-      id-token: write
-      contents: write
+      id-token: write # needed for OIDC token
+      contents: write # to download artifacts
     steps:
       - name: "Download the library artifacts from build-library step"
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -233,7 +233,7 @@ jobs:
     needs: release-pypi-public
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     permissions:
-      contents: write
+      contents: write # allow pushing to gh-pages
     steps:
       - name: "Deploy the stable documentation"
         uses: ansys/actions/doc-deploy-stable@v10.2
@@ -249,8 +249,8 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: build-library
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # to read PR details
+      pull-requests: write # to merge PRs
     steps:
       - name: "Automerging PRs"
         uses: ansys/actions/hk-automerge-prs@v10.2
