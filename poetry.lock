@@ -402,14 +402,14 @@ single-window = ["pyside6 (>=6.8.1,<6.9.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.71.3"
+version = "0.70.2"
 description = "A Python client library for Ansys MAPDL."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_mapdl_core-0.71.3-py3-none-any.whl", hash = "sha256:1218f254d4a50057ba3386771efdac35eb70a5d740805acfe5a39e95d5fecbd6"},
-    {file = "ansys_mapdl_core-0.71.3.tar.gz", hash = "sha256:23ec7bb68d2e073ea5a7d95eb2b27eea0c639f0fc763f00de62e8a9912ae387c"},
+    {file = "ansys_mapdl_core-0.70.2-py3-none-any.whl", hash = "sha256:688d41b7e3a004a8bcf0bc2f94173ef36f906ce4d37a0d582ad9bd9edb202566"},
+    {file = "ansys_mapdl_core-0.70.2.tar.gz", hash = "sha256:403ebe47bd33da211e52170d388b37af3e8795891e857a5cbdc6a78a6afbf22f"},
 ]
 
 [package.dependencies]
@@ -417,8 +417,8 @@ ansys-api-mapdl = "0.5.2"
 ansys-mapdl-reader = ">=0.51.7"
 ansys-math-core = ">=0.1.2"
 ansys-platform-instancemanagement = ">=1.0,<2.0"
-ansys-tools-common = ">=0.2.1"
-ansys-tools-visualization-interface = {version = ">=0.9.0,<0.13.0", optional = true, markers = "extra == \"graphics\""}
+ansys-tools-path = ">=0.3.1"
+ansys-tools-visualization-interface = {version = ">=0.2.6,<0.10.0", optional = true, markers = "extra == \"graphics\""}
 click = ">=8.1.3"
 grpcio = ">=1.30.0"
 matplotlib = {version = ">=3.0.0", optional = true, markers = "extra == \"graphics\""}
@@ -429,18 +429,17 @@ protobuf = ">=3.12.2"
 psutil = ">=5.9.4"
 pyansys-tools-versioning = ">=0.3.3"
 pyiges = {version = ">=0.3.1", extras = ["full"]}
-pyvista = "<=0.46.4"
 scipy = ">=1.3.0"
 tabulate = ">=0.8.0"
 tqdm = ">=4.45.0"
-vtk = ">=9.0.0,<9.5.3"
+vtk = ">=9.0.0"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface (>=0.9.0,<0.12.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
-doc = ["ansys-dpf-core[graphics] (==0.13.6)", "ansys-mapdl-reader (==0.55.1)", "ansys-sphinx-theme (==1.6.3)", "ansys-tools-visualization-interface (==0.12.1)", "grpcio (==1.76.0)", "imageio (==2.37.2)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "linuxdoc (==20240924)", "matplotlib (==3.10.7)", "nbformat (==5.10.4)", "numpydoc (==1.9.0)", "pandas (==2.3.3)", "plotly (==6.5.0)", "pyiges[full] (==0.3.2)", "pypandoc (==1.16.2)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.5.2)"]
-graphics = ["ansys-tools-visualization-interface (>=0.9.0,<0.13.0)", "matplotlib (>=3.0.0)"]
+all = ["ansys-tools-visualization-interface (>=0.9.0,<0.10.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
+doc = ["ansys-dpf-core (==0.13.6)", "ansys-mapdl-reader (==0.55.0)", "ansys-sphinx-theme (==1.4.4)", "ansys-tools-visualization-interface (==0.9.1)", "grpcio (==1.70.0)", "imageio (==2.37.0)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.10.3)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==6.0.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.15)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.4.2)"]
+graphics = ["ansys-tools-visualization-interface (>=0.2.6,<0.10.0)", "matplotlib (>=3.0.0)"]
 jupyter = ["ipywidgets", "jupyterlab (>=3)"]
-tests = ["ansys-dpf-core[graphics] (==0.13.6)", "ansys-tools-visualization-interface (==0.12.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.7)", "pandas (==2.3.3)", "pyansys-tools-report (==0.9.0)", "pyfakefs (==5.10.2)", "pyiges[full] (==0.3.2)", "pytest (==9.0.1)", "pytest-cov (==7.0.0)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.3.1)", "pytest-random-order (==1.2.0)", "pytest-reportlog (==1.0.0)", "pytest-rerunfailures (==16.1)", "pytest-timeout (==2.4.0)", "scipy (==1.15.3)", "vtk (==9.5.2)"]
+tests = ["ansys-dpf-core (==0.13.6)", "ansys-tools-visualization-interface (==0.9.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.3)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.2)", "pyfakefs (==5.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.1.9)", "pytest-random-order (==1.1.1)", "pytest-reportlog (==0.4.0)", "pytest-rerunfailures (==15.1)", "pytest-timeout (==2.4.0)", "scipy (==1.15.3)", "vtk (==9.4.2)"]
 
 [[package]]
 name = "ansys-mapdl-reader"
@@ -624,28 +623,27 @@ tests = ["pyfakefs (==5.10.2)", "pytest (==8.4.1)", "pytest-cov (==6.2.1)"]
 
 [[package]]
 name = "ansys-tools-visualization-interface"
-version = "0.12.1"
+version = "0.9.2"
 description = "A Python visualization interface for PyAnsys libraries"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_tools_visualization_interface-0.12.1-py3-none-any.whl", hash = "sha256:f1d71472f0a8cc6db8ba601a111eb61c902c992e63cd576a46b8a8f44e97527e"},
-    {file = "ansys_tools_visualization_interface-0.12.1.tar.gz", hash = "sha256:4c597502be53d6db40a62e1e9a8d4425b6ad9db4658bdce66e077da7f808a32f"},
+    {file = "ansys_tools_visualization_interface-0.9.2-py3-none-any.whl", hash = "sha256:8cd208fcfa89caece23b820180f4617519d4b71cac6dd841d1ba11de47a75d2c"},
+    {file = "ansys_tools_visualization_interface-0.9.2.tar.gz", hash = "sha256:71a6be35ba95021f0feb27e3f215c1f23a102e61a6cec82ca86e5c617b031314"},
 ]
 
 [package.dependencies]
 pyvista = ">=0.43.0,<1"
 trame = ">=3.6.0,<4"
-trame-router = ">=2.3.0,<3"
 trame-vtk = ">=2.8.7,<2.8.16 || >2.8.16,<3"
 trame-vuetify = ">=2.4.3,<4"
 websockets = ">=12.0,<16"
 
 [package.extras]
-doc = ["ansys-fluent-core (==0.35.0)", "ansys-sphinx-theme[autoapi] (==1.6.1)", "jupyter_sphinx (==0.5.3)", "jupytext (==1.17.3)", "nbsphinx (==0.9.6)", "numpydoc (==1.9.0)", "pyvista (==0.46.3)", "sphinx (==8.2.3)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx_design (==0.6.1)"]
+doc = ["ansys-fluent-core (==0.30.3)", "ansys-sphinx-theme (==1.3.2)", "jupyter_sphinx (==0.5.3)", "jupytext (==1.16.7)", "nbsphinx (==0.9.6)", "numpydoc (==1.8.0)", "sphinx (==8.2.3)", "sphinx-autoapi (==3.6.0)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx_design (==0.6.1)"]
 pyvistaqt = ["pyside6 (>=6.8.0,<7)", "pyvistaqt (>=0.11.1,<1)"]
-tests = ["pyside6 (==6.9.3)", "pytest (==8.4.2)", "pytest-cov (==7.0.0)", "pytest-pyvista (==0.2.0)", "pyvista (==0.46.3)"]
+tests = ["pyside6 (==6.9.0)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-pyvista (==0.1.9)"]
 
 [[package]]
 name = "ansys-units"
@@ -4376,14 +4374,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.46.4"
+version = "0.46.5"
 description = "Easier Pythonic interface to VTK"
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.46.4-py3-none-any.whl", hash = "sha256:f113a8db2f49ae1b2f9eeb477c51a4038a4dfdd02ac097900aa49bf1d77f7b2e"},
-    {file = "pyvista-0.46.4.tar.gz", hash = "sha256:37ddd2783a45b552623df293e77ce93ed015244e8d89d1de179d2df594d7c571"},
+    {file = "pyvista-0.46.5-py3-none-any.whl", hash = "sha256:d254e1e32e1df0dc04b409f989bd56b24d9e94086d868597af6c501151ec17fa"},
+    {file = "pyvista-0.46.5.tar.gz", hash = "sha256:b637bfa32136b95e5e5a6d972871606a68e3c625fc652ff5d9f00390294e99c0"},
 ]
 
 [package.dependencies]
@@ -5852,21 +5850,6 @@ files = [
 [package.extras]
 dev = ["nox", "pre-commit", "pytest (>=6)", "pytest-cov (>=3)", "ruff"]
 test = ["nox", "pytest (>=6)", "pytest-cov (>=3)"]
-
-[[package]]
-name = "trame-router"
-version = "2.3.0"
-description = "Vue Router widgets for trame"
-optional = false
-python-versions = "*"
-groups = ["doc"]
-files = [
-    {file = "trame-router-2.3.0.tar.gz", hash = "sha256:b382bdaad59998d5fcb93613a6e6828d68ff168eff87df56b13604a331294216"},
-    {file = "trame_router-2.3.0-py3-none-any.whl", hash = "sha256:b1d2b94ead3d6d9a731e544a7fbb343788b71e1c4139f2a5e17f19c5f4fa344d"},
-]
-
-[package.dependencies]
-trame-client = "*"
 
 [[package]]
 name = "trame-server"
