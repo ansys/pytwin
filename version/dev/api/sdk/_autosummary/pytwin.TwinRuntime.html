@@ -1,0 +1,1012 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TwinRuntime &#8212; PyTwin</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles\ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../../_static/documentation_options.js?v=142dd74e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/sdk/_autosummary/pytwin.TwinRuntime';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://twin.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="build_prop_info_df" href="pytwin.TwinRuntime.build_prop_info_df.html" />
+    <link rel="prev" title="Twin runtimes" href="../index.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.12.dev0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Digital Twin" />
+  <link rel="canonical" href="https://twin.docs.pyansys.com/version/stable/api/sdk/_autosummary/pytwin.TwinRuntime.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="https://docs.pyansys.com/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyTwin - Home"/>
+    <img src="../../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyTwin - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html" title="PyTwin home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../contributing.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pytwin" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html" title="PyTwin home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../contributing.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pytwin" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Twin runtimes</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">TwinRuntime</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.build_prop_info_df.html">build_prop_info_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.evaluate_twin_prop_status.html">evaluate_twin_prop_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.evaluate_twin_status.html">evaluate_twin_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.full_model_properties_info_df.html">full_model_properties_info_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.get_fmi_version.html">get_fmi_version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.get_model_fmi_type.html">get_model_fmi_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.get_model_name.html">get_model_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.get_twin_version.html">get_twin_version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.is_fmu_supported.html">is_fmu_supported</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.load_dll.html">load_dll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.load_twin_default_sim_settings.html">load_twin_default_sim_settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.model_properties_info_df.html">model_properties_info_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.print_model_info.html">print_model_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.print_var_info.html">print_var_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_close.html">twin_close</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_disable_3d_rom_model_data.html">twin_disable_3d_rom_model_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_disable_rom_model_images.html">twin_disable_rom_model_images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_enable_3d_rom_model_data.html">twin_enable_3d_rom_model_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_enable_rom_model_images.html">twin_enable_rom_model_images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_api_version.html">twin_get_api_version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_default_rom_image_directory.html">twin_get_default_rom_image_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_default_simulation_settings.html">twin_get_default_simulation_settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_input_names.html">twin_get_input_names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_model_dependencies.html">twin_get_model_dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_model_name.html">twin_get_model_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_inputs.html">twin_get_number_inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_outputs.html">twin_get_number_outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_params.html">twin_get_number_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_variables.html">twin_get_number_variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_output_by_index.html">twin_get_output_by_index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_output_by_name.html">twin_get_output_by_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_output_names.html">twin_get_output_names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_outputs.html">twin_get_outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_param_names.html">twin_get_param_names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_images_files.html">twin_get_rom_images_files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_input_basis.html">twin_get_rom_input_basis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_mode_coef_files.html">twin_get_rom_mode_coef_files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_output_basis.html">twin_get_rom_output_basis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_resource_directory.html">twin_get_rom_resource_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_snapshot_files.html">twin_get_rom_snapshot_files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_status_string.html">twin_get_status_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_str_var_start.html">twin_get_str_var_start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_data_type.html">twin_get_var_data_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_description.html">twin_get_var_description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_max.html">twin_get_var_max</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_min.html">twin_get_var_min</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_nominal.html">twin_get_var_nominal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_quantity_type.html">twin_get_var_quantity_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_start.html">twin_get_var_start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_unit.html">twin_get_var_unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_variable_names.html">twin_get_variable_names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_get_visualization_resources.html">twin_get_visualization_resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_initialize.html">twin_initialize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_instantiate.html">twin_instantiate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_is_cross_platform.html">twin_is_cross_platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_load.html">twin_load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_load_state.html">twin_load_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_number_of_deployments.html">twin_number_of_deployments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_number_of_deployments_from_instance.html">twin_number_of_deployments_from_instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_platform_support.html">twin_platform_support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_reset.html">twin_reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_save_state.html">twin_save_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_input_by_index.html">twin_set_input_by_index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_input_by_name.html">twin_set_input_by_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_inputs.html">twin_set_inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_param_by_index.html">twin_set_param_by_index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_param_by_name.html">twin_set_param_by_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_rom_image_directory.html">twin_set_rom_image_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_set_str_param_by_name.html">twin_set_str_param_by_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_simulate.html">twin_simulate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_simulate_batch_mode.html">twin_simulate_batch_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytwin.TwinRuntime.twin_simulate_batch_mode_csv.html">twin_simulate_batch_mode_csv</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluate/index.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging/index.html">Global settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../postprocessing/index.html">Post-processing functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Other functions</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../index.html" class="nav-link">API reference</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Twin runtimes</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">TwinRuntime</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="twinruntime">
+<h1>TwinRuntime<a class="headerlink" href="#twinruntime" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pytwin.TwinRuntime">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pytwin.</span></span><span class="sig-name descname"><span class="pre">TwinRuntime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">twin_runtime_library_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LogLevel.TWIN_LOG_WARNING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmi_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FmiType.UNDEFINED</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytwin.TwinRuntime" title="Link to this definition">#</a></dt>
+<dd><p>Instantiate a TwinRuntime wrapper object based on a TWIN file created by
+Ansys Twin Builder.</p>
+<p>After a TwinRuntime object is instantiated, it can be used to call
+different APIs to manipulate and process the TWIN Runtime execution
+(e.g. initialization, setting up inputs, evaluating a time step,
+getting the outputs,…).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>model_path</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>File path to the TWIN file for the twin model.</p>
+</dd>
+<dt><strong>log_path</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>File path to the log file associated to the TwinRuntime. By default,
+the log is written at the same location as the TWIN file.</p>
+</dd>
+<dt><strong>twin_runtime_library_path</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>File path to the TWIN Runtime library. By default, it is located in a
+subfolder of the current working directory based on the OS
+(TwinRuntimeSDK.dll or libTwinRuntimeSDK.so).</p>
+</dd>
+<dt><strong>log_level</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogLevel</span></code> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Level option associated to the TWIN Runtime logging. By default, it is
+set to LogLevel.TWIN_LOG_WARNING.</p>
+</dd>
+<dt><strong>load_model</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.15)"><span class="xref std std-ref">bool</span></a> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code>)</span></dt><dd><p>Whether the TWIN model is loaded (True) or not (False) during the
+TwinRuntime object instantiation. Default value is True.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Create the TwinRuntime given the file path to the TWIN file. Print the
+general information related to the TWIN model, then instantiate the model,
+initialize it, evaluate for a step and close the TwinRuntime.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pytwin</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinRuntime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">twin_file</span> <span class="o">=</span> <span class="s2">&quot;model.twin&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">twin_runtime</span> <span class="o">=</span> <span class="n">TwinRuntime</span><span class="p">(</span><span class="n">twin_file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">twin_runtime</span><span class="o">.</span><span class="n">twin_instantiate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">twin_runtime</span><span class="o">.</span><span class="n">twin_initialize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">twin_runtime</span><span class="o">.</span><span class="n">twin_simulate</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">twin_runtime</span><span class="o">.</span><span class="n">twin_close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.build_prop_info_df.html#pytwin.TwinRuntime.build_prop_info_df" title="pytwin.TwinRuntime.build_prop_info_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.build_prop_info_df</span></code></a>(var_names)</p></td>
+<td><p>Evaluate the properties (name, unit, data type, start value, minimum value, maximum values, description) of the given variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.evaluate_twin_prop_status.html#pytwin.TwinRuntime.evaluate_twin_prop_status" title="pytwin.TwinRuntime.evaluate_twin_prop_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.evaluate_twin_prop_status</span></code></a>(...)</p></td>
+<td><p>Returns the appropriate error message depending on prop_status when executing the function method_name with the variable var.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.evaluate_twin_status.html#pytwin.TwinRuntime.evaluate_twin_status" title="pytwin.TwinRuntime.evaluate_twin_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.evaluate_twin_status</span></code></a>(...)</p></td>
+<td><p>Returns the current status message associated to the TWIN if its status is TWIN_STATUS_WARNING.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.full_model_properties_info_df.html#pytwin.TwinRuntime.full_model_properties_info_df" title="pytwin.TwinRuntime.full_model_properties_info_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.full_model_properties_info_df</span></code></a>()</p></td>
+<td><p>Evaluate the properties (name, unit, quantity type, start value, minimum value, maximum values, description) of all the model's variables (inputs, outputs, parameters).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.get_fmi_version.html#pytwin.TwinRuntime.get_fmi_version" title="pytwin.TwinRuntime.get_fmi_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.get_fmi_version</span></code></a>(file_path)</p></td>
+<td><p>Returns the FMI version described in the given model or XML file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.get_model_fmi_type.html#pytwin.TwinRuntime.get_model_fmi_type" title="pytwin.TwinRuntime.get_model_fmi_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.get_model_fmi_type</span></code></a>(file_path)</p></td>
+<td><p>Searches the description file of the source model to discover if it contains Model Exchange and/or CoSimulation types of model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.get_model_name.html#pytwin.TwinRuntime.get_model_name" title="pytwin.TwinRuntime.get_model_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.get_model_name</span></code></a>(file_path)</p></td>
+<td><p>Reads the description file of the source model to discover the model name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.get_twin_version.html#pytwin.TwinRuntime.get_twin_version" title="pytwin.TwinRuntime.get_twin_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.get_twin_version</span></code></a>(file_path)</p></td>
+<td><p>Returns whether the loaded TWIN model is a valid model or not, as well as the Twin Builder version used to compile it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.is_fmu_supported.html#pytwin.TwinRuntime.is_fmu_supported" title="pytwin.TwinRuntime.is_fmu_supported"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.is_fmu_supported</span></code></a>(file_path)</p></td>
+<td><p>Returns whether the given FMI-based model is supported by the Twin SDK.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.load_dll.html#pytwin.TwinRuntime.load_dll" title="pytwin.TwinRuntime.load_dll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.load_dll</span></code></a>([twin_runtime_library_path])</p></td>
+<td><p>Load the TwinRuntime library.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.load_twin_default_sim_settings.html#pytwin.TwinRuntime.load_twin_default_sim_settings" title="pytwin.TwinRuntime.load_twin_default_sim_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.load_twin_default_sim_settings</span></code></a>()</p></td>
+<td><p>Set the default simulation settings (end time, step size, tolerance) stored within the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.model_properties_info_df.html#pytwin.TwinRuntime.model_properties_info_df" title="pytwin.TwinRuntime.model_properties_info_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.model_properties_info_df</span></code></a>(...)</p></td>
+<td><p>Evaluate the properties (name, unit, data type, start value, minimum value, maximum values, description) of the given variables, with a maximum number of variables to consider.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.print_model_info.html#pytwin.TwinRuntime.print_model_info" title="pytwin.TwinRuntime.print_model_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.print_model_info</span></code></a>([max_var_to_print])</p></td>
+<td><p>Print all the model information including Twin Runtime version, model name, number of outputs, inputs, parameters, default simulation settings, output names, input names and parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.print_var_info.html#pytwin.TwinRuntime.print_var_info" title="pytwin.TwinRuntime.print_var_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.print_var_info</span></code></a>(var_names, ...)</p></td>
+<td><p>Print all the properties (name, unit, quantity type, start value, minimum value, maximum values, description) of the given variables, with a maximum number of variables to consider.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_close.html#pytwin.TwinRuntime.twin_close" title="pytwin.TwinRuntime.twin_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_close</span></code></a>()</p></td>
+<td><p>Closes the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_disable_3d_rom_model_data.html#pytwin.TwinRuntime.twin_disable_3d_rom_model_data" title="pytwin.TwinRuntime.twin_disable_3d_rom_model_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_disable_3d_rom_model_data</span></code></a>(...)</p></td>
+<td><p>Disables the generation of 3D data (mode coefficients and optionally snapshots files) for the given model name in the next time steps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_disable_rom_model_images.html#pytwin.TwinRuntime.twin_disable_rom_model_images" title="pytwin.TwinRuntime.twin_disable_rom_model_images"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_disable_rom_model_images</span></code></a>(...)</p></td>
+<td><p>Disables the ROM image generation for the given model name and views in the next time steps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_enable_3d_rom_model_data.html#pytwin.TwinRuntime.twin_enable_3d_rom_model_data" title="pytwin.TwinRuntime.twin_enable_3d_rom_model_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_enable_3d_rom_model_data</span></code></a>(...)</p></td>
+<td><p>Enables the generation of 3D data (mode coefficients and optionally snapshots files) for the given model name in the next time steps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_enable_rom_model_images.html#pytwin.TwinRuntime.twin_enable_rom_model_images" title="pytwin.TwinRuntime.twin_enable_rom_model_images"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_enable_rom_model_images</span></code></a>(...)</p></td>
+<td><p>Enables the ROM image generation for the given model name and views in the next time steps (until disabled).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_api_version.html#pytwin.TwinRuntime.twin_get_api_version" title="pytwin.TwinRuntime.twin_get_api_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_api_version</span></code></a>()</p></td>
+<td><p>Returns the version of the Twin Runtime SDK being used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_default_rom_image_directory.html#pytwin.TwinRuntime.twin_get_default_rom_image_directory" title="pytwin.TwinRuntime.twin_get_default_rom_image_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_default_rom_image_directory</span></code></a>(...)</p></td>
+<td><p>Retrieves the default directory in the local filesystem where ROM images will be saved for the TBROM model name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_default_simulation_settings.html#pytwin.TwinRuntime.twin_get_default_simulation_settings" title="pytwin.TwinRuntime.twin_get_default_simulation_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_default_simulation_settings</span></code></a>()</p></td>
+<td><p>Retrieves the default simulation settings (end time, step size and tolerance) associated with the TWIN.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_input_names.html#pytwin.TwinRuntime.twin_get_input_names" title="pytwin.TwinRuntime.twin_get_input_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_input_names</span></code></a>()</p></td>
+<td><p>Retrieves the names of inputs of the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_model_dependencies.html#pytwin.TwinRuntime.twin_get_model_dependencies" title="pytwin.TwinRuntime.twin_get_model_dependencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_model_dependencies</span></code></a>(...)</p></td>
+<td><p>Returns the list of associated dependencies to the TWIN model and the corresponding binaries found on the current environment where the TWIN is loaded.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_model_name.html#pytwin.TwinRuntime.twin_get_model_name" title="pytwin.TwinRuntime.twin_get_model_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_model_name</span></code></a>()</p></td>
+<td><p>Retrieves the name of the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_inputs.html#pytwin.TwinRuntime.twin_get_number_inputs" title="pytwin.TwinRuntime.twin_get_number_inputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_number_inputs</span></code></a>()</p></td>
+<td><p>Retrieves the number of inputs of the TWIN model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_outputs.html#pytwin.TwinRuntime.twin_get_number_outputs" title="pytwin.TwinRuntime.twin_get_number_outputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_number_outputs</span></code></a>()</p></td>
+<td><p>Retrieves the number of outputs of the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_params.html#pytwin.TwinRuntime.twin_get_number_params" title="pytwin.TwinRuntime.twin_get_number_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_number_params</span></code></a>()</p></td>
+<td><p>Retrieves the number of parameters of the TWIN model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_number_variables.html#pytwin.TwinRuntime.twin_get_number_variables" title="pytwin.TwinRuntime.twin_get_number_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_number_variables</span></code></a>([...])</p></td>
+<td><p>Retrieves the number of variables of the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_output_by_index.html#pytwin.TwinRuntime.twin_get_output_by_index" title="pytwin.TwinRuntime.twin_get_output_by_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_output_by_index</span></code></a>(index)</p></td>
+<td><p>Retrieves the current value of a single TWIN output specified by index.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_output_by_name.html#pytwin.TwinRuntime.twin_get_output_by_name" title="pytwin.TwinRuntime.twin_get_output_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_output_by_name</span></code></a>(output_name)</p></td>
+<td><p>Retrieves the current value of a single TWIN output specified by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_output_names.html#pytwin.TwinRuntime.twin_get_output_names" title="pytwin.TwinRuntime.twin_get_output_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_output_names</span></code></a>()</p></td>
+<td><p>Retrieves the names of outputs of the TWIN model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_outputs.html#pytwin.TwinRuntime.twin_get_outputs" title="pytwin.TwinRuntime.twin_get_outputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_outputs</span></code></a>()</p></td>
+<td><p>Retrieves the current value of all the TWIN outputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_param_names.html#pytwin.TwinRuntime.twin_get_param_names" title="pytwin.TwinRuntime.twin_get_param_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_param_names</span></code></a>()</p></td>
+<td><p>Retrieves the names of parameters of the TWIN model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_images_files.html#pytwin.TwinRuntime.twin_get_rom_images_files" title="pytwin.TwinRuntime.twin_get_rom_images_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_rom_images_files</span></code></a>(...[, ...])</p></td>
+<td><p>Retrieves the model images from 'time_from' up to 'time_to' for the given views from the given TBROM model name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_input_basis.html#pytwin.TwinRuntime.twin_get_rom_input_basis" title="pytwin.TwinRuntime.twin_get_rom_input_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_rom_input_basis</span></code></a>(...)</p></td>
+<td><p>Retrieve the input field basis for the given TBROM model name and field name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_mode_coef_files.html#pytwin.TwinRuntime.twin_get_rom_mode_coef_files" title="pytwin.TwinRuntime.twin_get_rom_mode_coef_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_rom_mode_coef_files</span></code></a>(...)</p></td>
+<td><p>Retrieves the model mode coefficients files from 'time_from' up to 'time_to' for the given TBROM model name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_output_basis.html#pytwin.TwinRuntime.twin_get_rom_output_basis" title="pytwin.TwinRuntime.twin_get_rom_output_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_rom_output_basis</span></code></a>(model_name)</p></td>
+<td><p>Retrieve the output field basis for the given TBROM model name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_resource_directory.html#pytwin.TwinRuntime.twin_get_rom_resource_directory" title="pytwin.TwinRuntime.twin_get_rom_resource_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_rom_resource_directory</span></code></a>(...)</p></td>
+<td><p>Retrieves the absolute path of the resource directory for the given TBROM model name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_rom_snapshot_files.html#pytwin.TwinRuntime.twin_get_rom_snapshot_files" title="pytwin.TwinRuntime.twin_get_rom_snapshot_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_rom_snapshot_files</span></code></a>(...)</p></td>
+<td><p>Retrieves the model snapshots files from 'time_from' up to 'time_to' for the given TBROM model name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_status_string.html#pytwin.TwinRuntime.twin_get_status_string" title="pytwin.TwinRuntime.twin_get_status_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_status_string</span></code></a>()</p></td>
+<td><p>Retrieves the status of the last operation if the result is not TWIN_STATUS_OK.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_str_var_start.html#pytwin.TwinRuntime.twin_get_str_var_start" title="pytwin.TwinRuntime.twin_get_str_var_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_str_var_start</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the start value of a given variable by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_data_type.html#pytwin.TwinRuntime.twin_get_var_data_type" title="pytwin.TwinRuntime.twin_get_var_data_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_data_type</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the data type of a given variable (&quot;Real&quot;, &quot;Integer&quot;, &quot;Boolean&quot;, &quot;Enumeration&quot;, or String) by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_description.html#pytwin.TwinRuntime.twin_get_var_description" title="pytwin.TwinRuntime.twin_get_var_description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_description</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the description string for a given variable by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_max.html#pytwin.TwinRuntime.twin_get_var_max" title="pytwin.TwinRuntime.twin_get_var_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_max</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the maximum value of a given variable by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_min.html#pytwin.TwinRuntime.twin_get_var_min" title="pytwin.TwinRuntime.twin_get_var_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_min</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the minimum value of a given variable by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_nominal.html#pytwin.TwinRuntime.twin_get_var_nominal" title="pytwin.TwinRuntime.twin_get_var_nominal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_nominal</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the nominal value of a given variable by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_quantity_type.html#pytwin.TwinRuntime.twin_get_var_quantity_type" title="pytwin.TwinRuntime.twin_get_var_quantity_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_quantity_type</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the physical quantity type such as pressure, temperature, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_start.html#pytwin.TwinRuntime.twin_get_var_start" title="pytwin.TwinRuntime.twin_get_var_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_start</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the start value of a given variable by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_var_unit.html#pytwin.TwinRuntime.twin_get_var_unit" title="pytwin.TwinRuntime.twin_get_var_unit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_var_unit</span></code></a>(var_name)</p></td>
+<td><p>Retrieves the unit string of a given variable by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_variable_names.html#pytwin.TwinRuntime.twin_get_variable_names" title="pytwin.TwinRuntime.twin_get_variable_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_variable_names</span></code></a>([...])</p></td>
+<td><p>Retrieves the names of variables of the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_get_visualization_resources.html#pytwin.TwinRuntime.twin_get_visualization_resources" title="pytwin.TwinRuntime.twin_get_visualization_resources"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_get_visualization_resources</span></code></a>()</p></td>
+<td><p>Retrieves a JSON-like data structure in string format with the information about model visualization resources available in the TWIN model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_initialize.html#pytwin.TwinRuntime.twin_initialize" title="pytwin.TwinRuntime.twin_initialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_initialize</span></code></a>()</p></td>
+<td><p>Initializes the TWIN model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_instantiate.html#pytwin.TwinRuntime.twin_instantiate" title="pytwin.TwinRuntime.twin_instantiate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_instantiate</span></code></a>()</p></td>
+<td><p>Instantiates the TWIN model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_is_cross_platform.html#pytwin.TwinRuntime.twin_is_cross_platform" title="pytwin.TwinRuntime.twin_is_cross_platform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_is_cross_platform</span></code></a>(file_path)</p></td>
+<td><p>Returns whether the loaded TWIN model is cross-platform (Windows and Linux) compiled or not.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_load.html#pytwin.TwinRuntime.twin_load" title="pytwin.TwinRuntime.twin_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_load</span></code></a>(log_level[, fmi_type])</p></td>
+<td><p>Opens and loads a TWIN model, with a given log level for the log file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_load_state.html#pytwin.TwinRuntime.twin_load_state" title="pytwin.TwinRuntime.twin_load_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_load_state</span></code></a>(load_from[, ...])</p></td>
+<td><p>Load and set the TWIN states with the ones stored in the file 'load_from' (including model values used in the TWIN when saving the states).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_number_of_deployments.html#pytwin.TwinRuntime.twin_number_of_deployments" title="pytwin.TwinRuntime.twin_number_of_deployments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_number_of_deployments</span></code></a>(file_path)</p></td>
+<td><p>Returns the expected number of deployments for the given TWIN model as defined at the export time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_number_of_deployments_from_instance.html#pytwin.TwinRuntime.twin_number_of_deployments_from_instance" title="pytwin.TwinRuntime.twin_number_of_deployments_from_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_number_of_deployments_from_instance</span></code></a>()</p></td>
+<td><p>Returns the expected number of deployments for the current TWIN model instance as defined at the export time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_platform_support.html#pytwin.TwinRuntime.twin_platform_support" title="pytwin.TwinRuntime.twin_platform_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_platform_support</span></code></a>(file_path)</p></td>
+<td><p>Determines whether the TWIN model has Windows and/or Linux binaries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_reset.html#pytwin.TwinRuntime.twin_reset" title="pytwin.TwinRuntime.twin_reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_reset</span></code></a>()</p></td>
+<td><p>Resets the state of the TWIN model back to the instantiated state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_save_state.html#pytwin.TwinRuntime.twin_save_state" title="pytwin.TwinRuntime.twin_save_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_save_state</span></code></a>(save_to)</p></td>
+<td><p>Save the TWIN states (including model parameters) in the file indicated by the 'save_to' argument.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_input_by_index.html#pytwin.TwinRuntime.twin_set_input_by_index" title="pytwin.TwinRuntime.twin_set_input_by_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_input_by_index</span></code></a>(index, value)</p></td>
+<td><p>Set the current value of a single TWIN input specified by index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_input_by_name.html#pytwin.TwinRuntime.twin_set_input_by_name" title="pytwin.TwinRuntime.twin_set_input_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_input_by_name</span></code></a>(...)</p></td>
+<td><p>Set the current value of a single TWIN input specified by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_inputs.html#pytwin.TwinRuntime.twin_set_inputs" title="pytwin.TwinRuntime.twin_set_inputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_inputs</span></code></a>(input_array)</p></td>
+<td><p>Set the current value of all the TWIN inputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_param_by_index.html#pytwin.TwinRuntime.twin_set_param_by_index" title="pytwin.TwinRuntime.twin_set_param_by_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_param_by_index</span></code></a>(index, value)</p></td>
+<td><p>Set the current value of a single TWIN parameter specified by index.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_param_by_name.html#pytwin.TwinRuntime.twin_set_param_by_name" title="pytwin.TwinRuntime.twin_set_param_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_param_by_name</span></code></a>(...)</p></td>
+<td><p>Set the current value of a single TWIN parameter specified by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_rom_image_directory.html#pytwin.TwinRuntime.twin_set_rom_image_directory" title="pytwin.TwinRuntime.twin_set_rom_image_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_rom_image_directory</span></code></a>(...)</p></td>
+<td><p>Set the directory in the local filesystem where ROM images will be saved for the TBROM model name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_set_str_param_by_name.html#pytwin.TwinRuntime.twin_set_str_param_by_name" title="pytwin.TwinRuntime.twin_set_str_param_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_set_str_param_by_name</span></code></a>(...)</p></td>
+<td><p>Set the value of a single TWIN string parameter specified by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_simulate.html#pytwin.TwinRuntime.twin_simulate" title="pytwin.TwinRuntime.twin_simulate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_simulate</span></code></a>(time_stop[, time_step])</p></td>
+<td><p>Simulates the TWIN model from previous time point to the stop point given by time_stop.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_simulate_batch_mode.html#pytwin.TwinRuntime.twin_simulate_batch_mode" title="pytwin.TwinRuntime.twin_simulate_batch_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_simulate_batch_mode</span></code></a>(...[, ...])</p></td>
+<td><p>Simulates the TWIN model in batch mode using given input dataframe and returns the results in an output dataframe using output column names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytwin.TwinRuntime.twin_simulate_batch_mode_csv.html#pytwin.TwinRuntime.twin_simulate_batch_mode_csv" title="pytwin.TwinRuntime.twin_simulate_batch_mode_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwinRuntime.twin_simulate_batch_mode_csv</span></code></a>(...)</p></td>
+<td><p>Simulates the TWIN model in batch mode using given input CSV file and write the results in the output CSV file.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytwin.TwinRuntime"><code class="docutils literal notranslate"><span class="pre">TwinRuntime</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/sdk/_autosummary/pytwin.TwinRuntime.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
