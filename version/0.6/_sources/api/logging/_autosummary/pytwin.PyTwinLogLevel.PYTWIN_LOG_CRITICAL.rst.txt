@@ -1,0 +1,6 @@
+PYTWIN\_LOG\_CRITICAL
+=====================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: PyTwinLogLevel.PYTWIN_LOG_CRITICAL

@@ -1,0 +1,6 @@
+get\_twin\_version
+==================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.get_twin_version

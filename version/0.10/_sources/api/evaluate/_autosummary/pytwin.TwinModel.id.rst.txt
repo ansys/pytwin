@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.id

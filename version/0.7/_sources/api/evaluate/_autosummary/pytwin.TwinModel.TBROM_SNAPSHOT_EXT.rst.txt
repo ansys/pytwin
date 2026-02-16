@@ -1,0 +1,6 @@
+TBROM\_SNAPSHOT\_EXT
+====================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinModel.TBROM_SNAPSHOT_EXT

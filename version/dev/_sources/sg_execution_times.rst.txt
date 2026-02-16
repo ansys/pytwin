@@ -1,0 +1,73 @@
+
+:orphan:
+
+.. _sphx_glr_sg_execution_times:
+
+
+Computation times
+=================
+**07:37.336** total execution time for 13 files **from all galleries**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_00-TBROM_images.py` (``..\..\examples\02-tbrom_examples\00-TBROM_images.py``)
+     - 02:03.895
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_04-TBROM_CFD_mesh_based_visualization.py` (``..\..\examples\02-tbrom_examples\04-TBROM_CFD_mesh_based_visualization.py``)
+     - 01:33.982
+     - 0.0
+   * - :ref:`sphx_glr_examples_00-twin_creation_00-TBROM_Twin_creation_evaluation.py` (``..\..\examples\00-twin_creation\00-TBROM_Twin_creation_evaluation.py``)
+     - 01:15.635
+     - 0.0
+   * - :ref:`sphx_glr_examples_01-twin_examples_01-electricRange.py` (``..\..\examples\01-twin_examples\01-electricRange.py``)
+     - 01:06.018
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_01-TBROM_dataTransfer_pyMAPDL.py` (``..\..\examples\02-tbrom_examples\01-TBROM_dataTransfer_pyMAPDL.py``)
+     - 00:46.206
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_06-TBROM_FEA_static_structural_optimization.py` (``..\..\examples\02-tbrom_examples\06-TBROM_FEA_static_structural_optimization.py``)
+     - 00:22.149
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_07-TBROM_parametric_field_history.py` (``..\..\examples\02-tbrom_examples\07-TBROM_parametric_field_history.py``)
+     - 00:06.505
+     - 0.0
+   * - :ref:`sphx_glr_examples_01-twin_examples_00-coupledClutches.py` (``..\..\examples\01-twin_examples\00-coupledClutches.py``)
+     - 00:06.177
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_02-TBROM_input_field.py` (``..\..\examples\02-tbrom_examples\02-TBROM_input_field.py``)
+     - 00:04.650
+     - 0.0
+   * - :ref:`sphx_glr_examples_01-twin_examples_03-scalarDROM.py` (``..\..\examples\01-twin_examples\03-scalarDROM.py``)
+     - 00:04.616
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_05-TBROM_FEA_mesh_based_visualization.py` (``..\..\examples\02-tbrom_examples\05-TBROM_FEA_mesh_based_visualization.py``)
+     - 00:03.337
+     - 0.0
+   * - :ref:`sphx_glr_examples_01-twin_examples_02-heatExchangerRS.py` (``..\..\examples\01-twin_examples\02-heatExchangerRS.py``)
+     - 00:02.629
+     - 0.0
+   * - :ref:`sphx_glr_examples_02-tbrom_examples_03-TBROM_input_numpy_field.py` (``..\..\examples\02-tbrom_examples\03-TBROM_input_numpy_field.py``)
+     - 00:01.538
+     - 0.0

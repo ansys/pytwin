@@ -1,0 +1,6 @@
+evaluation\_is\_initialized
+===========================
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.evaluation_is_initialized

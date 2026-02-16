@@ -1,0 +1,6 @@
+p\_step\_size
+=============
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.p_step_size

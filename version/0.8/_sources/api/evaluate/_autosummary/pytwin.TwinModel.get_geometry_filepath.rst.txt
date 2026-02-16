@@ -1,0 +1,6 @@
+get\_geometry\_filepath
+=======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_geometry_filepath

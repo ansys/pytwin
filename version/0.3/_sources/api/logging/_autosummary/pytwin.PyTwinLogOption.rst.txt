@@ -1,0 +1,24 @@
+﻿pytwin.PyTwinLogOption
+======================
+
+.. currentmodule:: pytwin
+
+.. autoclass:: PyTwinLogOption
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      
+   
+   
