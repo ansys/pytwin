@@ -3966,19 +3966,19 @@ files = [
 
 [[package]]
 name = "pyaedt"
-version = "0.24.1"
+version = "0.25.1"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.24.1-py3-none-any.whl", hash = "sha256:8ba8c19d4e078224a71d183340606c1449409b49f2878a3a1b8008ebe543282a"},
-    {file = "pyaedt-0.24.1.tar.gz", hash = "sha256:30f90616fa45abd5e8e235e8990ebb9bda66ffbfbbd09515ff690708f9bff87c"},
+    {file = "pyaedt-0.25.1-py3-none-any.whl", hash = "sha256:54be2d20e2bbde4f2deca6e10f9ce84be378ddf57c434637dbacd93f8ba72365"},
+    {file = "pyaedt-0.25.1.tar.gz", hash = "sha256:dea0fba522525ebf82d467b1ca9126bc9d59811ee95e7d0d79fd0ab8699f3044"},
 ]
 
 [package.dependencies]
 defusedxml = ">=0.7,<8.0"
-grpcio = ">=1.50.0,<1.77"
+grpcio = ">=1.50.0,<1.79"
 jsonschema = "*"
 numpy = ">=1.20.0,<2.3"
 psutil = "*"
@@ -3989,15 +3989,11 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 tomli-w = "*"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.47)", "requests", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.10)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)", "uv (>=0.8.17)"]
-doc = ["Sphinx (>=7.1.0,<8.3)", "ansys-sphinx-theme (>=1.0.0,<1.7)", "ansys-tools-visualization-interface", "fpdf2", "jupyter", "numpydoc (==1.10.0)", "pyvista[io] (>=0.38.0,<0.47)", "recommonmark", "rpyc (>=6.0.0,<6.1)", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.21)", "sphinx_design (>=0.4.0,<0.7)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.47)", "requests", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.11)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)", "uv (>=0.8.17)"]
 dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0,<2.1) ; platform_system == \"Linux\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
-examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.6)", "pyvista (>=0.38.0,<0.47)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.10)"]
+examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.6)", "pyvista (>=0.38.0,<0.47)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.11)"]
 graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "pyvista[io] (>=0.38.0,<0.47)", "vtk (>=9.0,<9.6)"]
-integration-tests = ["matplotlib (>=3.5.0,<3.11)", "pandas (>=1.1.0,<2.4)", "pyaedt[unit-tests]"]
 jupyter = ["ipython (>=7.30.0,<9.1)", "jupyterlab (>=3.6.0,<4.6)"]
-tests = ["ansys-tools-visualization-interface", "cryptography", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=1.1.0,<2.1)", "pyaedt[integration-tests]", "pytest-timeout (>=2.3.0,<2.5)", "pytest-xdist (>=3.5.0,<3.9)", "pyvista[io] (>=0.38.0,<0.47)", "scikit-rf (>=0.30.0,<1.10)", "tables"]
-unit-tests = ["fpdf2", "mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<9.1)", "pytest-cov (>=4.0.0,<7.1)", "requests", "rpyc (>=6.0.0,<6.1)", "typer (>=0.20.0)"]
 
 [[package]]
 name = "pyansys-tools-report"
@@ -6593,4 +6589,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "5f679e5caf18ed78913942ab1a14c1627adb5f55e7b6df9135072d446e5a11d3"
+content-hash = "0dbb6c4cefd311ae477f35836e1ae07e2fb6d7569455cc01aa402217c09eeb53"
