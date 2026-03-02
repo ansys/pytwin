@@ -404,14 +404,14 @@ single-window = ["pyside6 (>=6.8.1,<6.9.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.72.0"
+version = "0.70.2"
 description = "A Python client library for Ansys MAPDL."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_mapdl_core-0.72.0-py3-none-any.whl", hash = "sha256:a707b6d859aa89631d94c4169ac037e7f2c6ed2dc034325e69ff4e4c53de4c92"},
-    {file = "ansys_mapdl_core-0.72.0.tar.gz", hash = "sha256:15d1dd8c447d36251d9eff3a4802fabdb5e5c683c30ab9a0a305a8d96194ceef"},
+    {file = "ansys_mapdl_core-0.70.2-py3-none-any.whl", hash = "sha256:688d41b7e3a004a8bcf0bc2f94173ef36f906ce4d37a0d582ad9bd9edb202566"},
+    {file = "ansys_mapdl_core-0.70.2.tar.gz", hash = "sha256:403ebe47bd33da211e52170d388b37af3e8795891e857a5cbdc6a78a6afbf22f"},
 ]
 
 [package.dependencies]
@@ -419,8 +419,8 @@ ansys-api-mapdl = "0.5.2"
 ansys-mapdl-reader = ">=0.51.7"
 ansys-math-core = ">=0.1.2"
 ansys-platform-instancemanagement = ">=1.0,<2.0"
-ansys-tools-common = ">=0.3.0"
-ansys-tools-visualization-interface = {version = ">=0.9.0,<0.13.0", optional = true, markers = "extra == \"graphics\""}
+ansys-tools-path = ">=0.3.1"
+ansys-tools-visualization-interface = {version = ">=0.2.6,<0.10.0", optional = true, markers = "extra == \"graphics\""}
 click = ">=8.1.3"
 grpcio = ">=1.30.0"
 matplotlib = {version = ">=3.0.0", optional = true, markers = "extra == \"graphics\""}
@@ -429,19 +429,19 @@ pexpect = {version = ">=4.8.0", markers = "platform_system == \"Linux\""}
 platformdirs = ">=3.6.0"
 protobuf = ">=3.12.2"
 psutil = ">=5.9.4"
+pyansys-tools-versioning = ">=0.3.3"
 pyiges = {version = ">=0.3.1", extras = ["full"]}
-pyvista = "<=0.46.4"
 scipy = ">=1.3.0"
 tabulate = ">=0.8.0"
 tqdm = ">=4.45.0"
-vtk = ">=9.0.0,<9.5.3"
+vtk = ">=9.0.0"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface (>=0.9.0,<0.12.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
-doc = ["ansys-dpf-core[graphics] (==0.13.6)", "ansys-mapdl-reader (==0.55.2)", "ansys-sphinx-theme (==1.6.4)", "ansys-tools-visualization-interface (==0.12.1)", "grpcio (==1.76.0)", "imageio (==2.37.2)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "linuxdoc (==20240924)", "matplotlib (==3.10.8)", "nbformat (==5.10.4)", "numpydoc (==1.10.0)", "pandas (==2.3.3)", "plotly (==6.5.2)", "pyiges[full] (==0.3.2)", "pypandoc (==1.16.2)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.20.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.2)", "vtk (==9.5.2)"]
-graphics = ["ansys-tools-visualization-interface (>=0.9.0,<0.13.0)", "matplotlib (>=3.0.0)"]
+all = ["ansys-tools-visualization-interface (>=0.9.0,<0.10.0)", "ipywidgets", "jupyterlab (>=3)", "matplotlib (>=3.0.0)"]
+doc = ["ansys-dpf-core (==0.13.6)", "ansys-mapdl-reader (==0.55.0)", "ansys-sphinx-theme (==1.4.4)", "ansys-tools-visualization-interface (==0.9.1)", "grpcio (==1.70.0)", "imageio (==2.37.0)", "imageio-ffmpeg (==0.6.0)", "jupyter (==1.1.1)", "jupyter_sphinx (==0.5.3)", "jupyterlab (>=3.2.8)", "matplotlib (==3.10.3)", "nbformat (==5.10.4)", "numpydoc (==1.8.0)", "pandas (==2.2.3)", "plotly (==6.0.1)", "pyiges[full] (==0.3.1)", "pypandoc (==1.15)", "pytest-sphinx (==0.6.3)", "pythreejs (==2.4.2)", "sphinx (==8.2.3)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.1.0)", "sphinx-copybutton (==0.5.2)", "sphinx-design (==0.6.1)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx-notfound-page (==1.1.0)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.1)", "vtk (==9.4.2)"]
+graphics = ["ansys-tools-visualization-interface (>=0.2.6,<0.10.0)", "matplotlib (>=3.0.0)"]
 jupyter = ["ipywidgets", "jupyterlab (>=3)"]
-tests = ["ansys-dpf-core[graphics] (==0.13.6)", "ansys-mapdl-reader (==0.55.2)", "ansys-tools-visualization-interface (==0.12.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.8)", "pandas (==2.3.3)", "pyansys-tools-report (==0.9.0)", "pyfakefs (==6.0.0)", "pyiges[full] (==0.3.2)", "pytest (==9.0.2)", "pytest-cov (==7.0.0)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.3.2)", "pytest-random-order (==1.2.0)", "pytest-reportlog (==1.0.0)", "pytest-rerunfailures (==16.1)", "pytest-timeout (==2.4.0)", "scipy (==1.15.3)", "vtk (==9.5.2)"]
+tests = ["ansys-dpf-core (==0.13.6)", "ansys-tools-visualization-interface (==0.9.1)", "autopep8 (==2.3.2)", "matplotlib (==3.10.3)", "pandas (==2.2.3)", "pyansys-tools-report (==0.8.2)", "pyfakefs (==5.8.0)", "pyiges[full] (==0.3.1)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-profiling (==1.8.1)", "pytest-pyvista (==0.1.9)", "pytest-random-order (==1.1.1)", "pytest-reportlog (==0.4.0)", "pytest-rerunfailures (==15.1)", "pytest-timeout (==2.4.0)", "scipy (==1.15.3)", "vtk (==9.4.2)"]
 
 [[package]]
 name = "ansys-mapdl-reader"
@@ -603,29 +603,48 @@ ansys-tools-common = ">=0.4.0"
 grpcio = ">=1.17"
 
 [[package]]
+name = "ansys-tools-path"
+version = "0.8.1"
+description = "Library to locate Ansys products in a local machine."
+optional = false
+python-versions = "<4,>=3.10"
+groups = ["doc"]
+files = [
+    {file = "ansys_tools_path-0.8.1-py3-none-any.whl", hash = "sha256:e98726f2c5731cda08d875faded59c79217192759b5103ce184553af29f15799"},
+    {file = "ansys_tools_path-0.8.1.tar.gz", hash = "sha256:92cc3b7eb7640aface42149eb5d5a6d373a50a1e2eac5b61500bdba65521a312"},
+]
+
+[package.dependencies]
+ansys-tools-common = "*"
+
+[package.extras]
+build = ["build (==1.3.0)", "twine (==6.1.0)"]
+doc = ["Sphinx (==8.2.3)", "ansys-sphinx-theme[autoapi] (==1.5.3)", "numpydoc (==1.9.0)", "sphinx-copybutton (==0.5.2)"]
+tests = ["pyfakefs (==5.10.2)", "pytest (==8.4.1)", "pytest-cov (==6.2.1)"]
+
+[[package]]
 name = "ansys-tools-visualization-interface"
-version = "0.12.1"
+version = "0.9.2"
 description = "A Python visualization interface for PyAnsys libraries"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_tools_visualization_interface-0.12.1-py3-none-any.whl", hash = "sha256:f1d71472f0a8cc6db8ba601a111eb61c902c992e63cd576a46b8a8f44e97527e"},
-    {file = "ansys_tools_visualization_interface-0.12.1.tar.gz", hash = "sha256:4c597502be53d6db40a62e1e9a8d4425b6ad9db4658bdce66e077da7f808a32f"},
+    {file = "ansys_tools_visualization_interface-0.9.2-py3-none-any.whl", hash = "sha256:8cd208fcfa89caece23b820180f4617519d4b71cac6dd841d1ba11de47a75d2c"},
+    {file = "ansys_tools_visualization_interface-0.9.2.tar.gz", hash = "sha256:71a6be35ba95021f0feb27e3f215c1f23a102e61a6cec82ca86e5c617b031314"},
 ]
 
 [package.dependencies]
 pyvista = ">=0.43.0,<1"
 trame = ">=3.6.0,<4"
-trame-router = ">=2.3.0,<3"
 trame-vtk = ">=2.8.7,<2.8.16 || >2.8.16,<3"
 trame-vuetify = ">=2.4.3,<4"
 websockets = ">=12.0,<16"
 
 [package.extras]
-doc = ["ansys-fluent-core (==0.35.0)", "ansys-sphinx-theme[autoapi] (==1.6.1)", "jupyter_sphinx (==0.5.3)", "jupytext (==1.17.3)", "nbsphinx (==0.9.6)", "numpydoc (==1.9.0)", "pyvista (==0.46.3)", "sphinx (==8.2.3)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx_design (==0.6.1)"]
+doc = ["ansys-fluent-core (==0.30.3)", "ansys-sphinx-theme (==1.3.2)", "jupyter_sphinx (==0.5.3)", "jupytext (==1.16.7)", "nbsphinx (==0.9.6)", "numpydoc (==1.8.0)", "sphinx (==8.2.3)", "sphinx-autoapi (==3.6.0)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.19.0)", "sphinx-jinja (==2.0.2)", "sphinx_design (==0.6.1)"]
 pyvistaqt = ["pyside6 (>=6.8.0,<7)", "pyvistaqt (>=0.11.1,<1)"]
-tests = ["pyside6 (==6.9.3)", "pytest (==8.4.2)", "pytest-cov (==7.0.0)", "pytest-pyvista (==0.2.0)", "pyvista (==0.46.3)"]
+tests = ["pyside6 (==6.9.0)", "pytest (==8.3.5)", "pytest-cov (==6.1.1)", "pytest-pyvista (==0.1.9)"]
 
 [[package]]
 name = "ansys-units"
@@ -727,7 +746,7 @@ version = "25.4.0"
 description = "Classes Without Boilerplate"
 optional = false
 python-versions = ">=3.9"
-groups = ["doc"]
+groups = ["main", "doc", "graphics"]
 files = [
     {file = "attrs-25.4.0-py3-none-any.whl", hash = "sha256:adcf7e2a1fb3b36ac48d97835bb6d8ade15b8dcce26aba8bf1d14847b57a3373"},
     {file = "attrs-25.4.0.tar.gz", hash = "sha256:16d5969b87f0859ef33a48b35d55ac1be6e42ae49d5e853b597db70c35c57e11"},
@@ -1390,6 +1409,35 @@ docs = ["ipython", "matplotlib", "numpydoc", "sphinx"]
 tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
+name = "cyclopts"
+version = "4.6.0"
+description = "Intuitive, easy CLIs based on type hints."
+optional = false
+python-versions = ">=3.10"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "cyclopts-4.6.0-py3-none-any.whl", hash = "sha256:0a891cb55bfd79a3cdce024db8987b33316aba11071e5258c21ac12a640ba9f2"},
+    {file = "cyclopts-4.6.0.tar.gz", hash = "sha256:483c4704b953ea6da742e8de15972f405d2e748d19a848a4d61595e8e5360ee5"},
+]
+
+[package.dependencies]
+attrs = ">=23.1.0"
+docstring-parser = ">=0.15,<4.0"
+rich = ">=13.6.0"
+rich-rst = ">=1.3.1,<2.0.0"
+tomli = {version = ">=2.0.0", markers = "python_version < \"3.11\""}
+typing-extensions = {version = ">=4.8.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+debug = ["ipdb (>=0.13.9)", "line-profiler (>=3.5.1)"]
+dev = ["coverage[toml] (>=5.1)", "mkdocs (>=1.4.0)", "pre-commit (>=2.16.0)", "pydantic (>=2.11.2,<3.0.0)", "pytest (>=8.2.0)", "pytest-cov (>=3.0.0)", "pytest-mock (>=3.7.0)", "pyyaml (>=6.0.1)", "syrupy (>=4.0.0)", "toml (>=0.10.2,<1.0.0)", "trio (>=0.10.0)"]
+docs = ["gitpython (>=3.1.31)", "myst-parser[linkify] (>=3.0.1,<5.0.0)", "sphinx (>=7.4.7,<8.2.0)", "sphinx-autodoc-typehints (>=1.25.2,<4.0.0)", "sphinx-copybutton (>=0.5,<1.0)", "sphinx-rtd-dark-mode (>=1.3.0,<2.0.0)", "sphinx-rtd-theme (>=3.0.0,<4.0.0)"]
+mkdocs = ["markdown (>=3.3)", "mkdocs (>=1.4.0)", "pymdown-extensions (>=10.0)"]
+toml = ["tomli (>=2.0.0) ; python_version < \"3.11\""]
+trio = ["trio (>=0.10.0)"]
+yaml = ["pyyaml (>=6.0.1)"]
+
+[[package]]
 name = "debugpy"
 version = "1.8.20"
 description = "An implementation of the Debug Adapter Protocol for Python"
@@ -1552,12 +1600,29 @@ ssh = ["paramiko (>=2.4.3)"]
 websockets = ["websocket-client (>=1.3.0)"]
 
 [[package]]
+name = "docstring-parser"
+version = "0.17.0"
+description = "Parse Python docstrings in reST, Google and Numpydoc format"
+optional = false
+python-versions = ">=3.8"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "docstring_parser-0.17.0-py3-none-any.whl", hash = "sha256:cf2569abd23dce8099b300f9b4fa8191e9582dda731fd533daf54c4551658708"},
+    {file = "docstring_parser-0.17.0.tar.gz", hash = "sha256:583de4a309722b3315439bb31d64ba3eebada841f2e2cee23b99df001434c912"},
+]
+
+[package.extras]
+dev = ["pre-commit (>=2.16.0) ; python_version >= \"3.9\"", "pydoctor (>=25.4.0)", "pytest"]
+docs = ["pydoctor (>=25.4.0)"]
+test = ["pytest"]
+
+[[package]]
 name = "docutils"
 version = "0.21.2"
 description = "Docutils -- Python Documentation Utilities"
 optional = false
 python-versions = ">=3.9"
-groups = ["doc"]
+groups = ["main", "doc", "graphics"]
 files = [
     {file = "docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"},
     {file = "docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"},
@@ -2543,6 +2608,30 @@ files = [
 ]
 
 [[package]]
+name = "markdown-it-py"
+version = "4.0.0"
+description = "Python port of markdown-it. Markdown parsing, done right!"
+optional = false
+python-versions = ">=3.10"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "markdown_it_py-4.0.0-py3-none-any.whl", hash = "sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147"},
+    {file = "markdown_it_py-4.0.0.tar.gz", hash = "sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3"},
+]
+
+[package.dependencies]
+mdurl = ">=0.1,<1.0"
+
+[package.extras]
+benchmarking = ["psutil", "pytest", "pytest-benchmark"]
+compare = ["commonmark (>=0.9,<1.0)", "markdown (>=3.4,<4.0)", "markdown-it-pyrs", "mistletoe (>=1.0,<2.0)", "mistune (>=3.0,<4.0)", "panflute (>=2.3,<3.0)"]
+linkify = ["linkify-it-py (>=1,<3)"]
+plugins = ["mdit-py-plugins (>=0.5.0)"]
+profiling = ["gprof2dot"]
+rtd = ["ipykernel", "jupyter_sphinx", "mdit-py-plugins (>=0.5.0)", "myst-parser", "pyyaml", "sphinx", "sphinx-book-theme (>=1.0,<2.0)", "sphinx-copybutton", "sphinx-design"]
+testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions", "requests"]
+
+[[package]]
 name = "markupsafe"
 version = "3.0.3"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -2737,6 +2826,18 @@ traitlets = "*"
 
 [package.extras]
 test = ["flake8", "nbdime", "nbval", "notebook", "pytest"]
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+description = "Markdown URL utilities"
+optional = false
+python-versions = ">=3.7"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
+    {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
+]
 
 [[package]]
 name = "mistune"
@@ -3822,6 +3923,25 @@ doc = ["Sphinx (==8.2.3)", "Sphinx-copybutton (==0.5.2)", "ansys_sphinx_theme (=
 tests = ["pytest (==8.4.2)", "pytest-cov (==7.0.0)", "scooby (==0.10.2)"]
 
 [[package]]
+name = "pyansys-tools-versioning"
+version = "0.7.0"
+description = "PyAnsys Tools Versioning."
+optional = false
+python-versions = "<4,>=3.10"
+groups = ["doc"]
+files = [
+    {file = "pyansys_tools_versioning-0.7.0-py3-none-any.whl", hash = "sha256:96149434d9bde99ffe4e14ec3ed6c471569e665c777db4755b8b3c5660c8bb1e"},
+    {file = "pyansys_tools_versioning-0.7.0.tar.gz", hash = "sha256:66038ba785353df8bc0d935541ddca2b160019b0b5cb441aabcbf71ca27d00c0"},
+]
+
+[package.dependencies]
+ansys-tools-common = "*"
+
+[package.extras]
+doc = ["Sphinx (==8.2.3)", "Sphinx-copybutton (==0.5.2)", "ansys_sphinx_theme[autoapi] (==1.6.3)", "numpydoc (==1.9.0)"]
+tests = ["hypothesis (==6.144.0)", "pytest (==8.4.2)", "pytest-cov (==6.3.0)"]
+
+[[package]]
 name = "pycparser"
 version = "3.0"
 description = "C parser in Python"
@@ -4060,7 +4180,7 @@ version = "2.19.2"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.8"
-groups = ["doc", "tests"]
+groups = ["main", "doc", "graphics", "tests"]
 files = [
     {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
     {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
@@ -4196,30 +4316,31 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.46.4"
+version = "0.47.1"
 description = "Easier Pythonic interface to VTK"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.46.4-py3-none-any.whl", hash = "sha256:f113a8db2f49ae1b2f9eeb477c51a4038a4dfdd02ac097900aa49bf1d77f7b2e"},
-    {file = "pyvista-0.46.4.tar.gz", hash = "sha256:37ddd2783a45b552623df293e77ce93ed015244e8d89d1de179d2df594d7c571"},
+    {file = "pyvista-0.47.1-py3-none-any.whl", hash = "sha256:eb8cee6b6246c41f1a9d2d07e662ec7d0192ea5cf585d64ebf1266774258df59"},
+    {file = "pyvista-0.47.1.tar.gz", hash = "sha256:2d517aeb0e76ea29d7a21ad95237c03ea0b45257d87d0bd88987b49965d1f1a3"},
 ]
 
 [package.dependencies]
+cyclopts = ">=4.0.0"
 matplotlib = ">=3.0.1"
 numpy = ">=1.21.0"
 pillow = "*"
 pooch = "*"
 scooby = ">=0.5.1"
 typing-extensions = ">=4.10"
-vtk = "<9.4.0 || >9.4.0,<9.4.1 || >9.4.1,<9.6.0"
+vtk = ">=9.2.2,<9.4.0 || >9.4.0,<9.4.1 || >9.4.1,<9.7.0"
 
 [package.extras]
 all = ["pyvista[colormaps,io,jupyter]"]
 colormaps = ["cmcrameri", "cmocean", "colorcet"]
 io = ["imageio", "meshio (>=5.2)"]
-jupyter = ["ipywidgets", "jupyter-server-proxy", "nest_asyncio", "trame (>=2.5.2)", "trame-client (>=2.12.7)", "trame-server (>=2.11.7)", "trame-vtk (>=2.5.8)", "trame-vuetify (>=2.3.1)"]
+jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.2)", "trame-client (>=2.12.7)", "trame-server (>=2.11.7,<3.7.dev0 || >3.8.0)", "trame-vtk (!=2.10.3,!=2.11.*)", "trame-vtk (>=2.5.8,<2.10.3)", "trame-vuetify (>=2.3.1)"]
 
 [[package]]
 name = "pywin32"
@@ -4602,6 +4723,44 @@ urllib3 = ">=1.21.1,<3"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "rich"
+version = "14.3.3"
+description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
+optional = false
+python-versions = ">=3.8.0"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "rich-14.3.3-py3-none-any.whl", hash = "sha256:793431c1f8619afa7d3b52b2cdec859562b950ea0d4b6b505397612db8d5362d"},
+    {file = "rich-14.3.3.tar.gz", hash = "sha256:b8daa0b9e4eef54dd8cf7c86c03713f53241884e814f4e2f5fb342fe520f639b"},
+]
+
+[package.dependencies]
+markdown-it-py = ">=2.2.0"
+pygments = ">=2.13.0,<3.0.0"
+
+[package.extras]
+jupyter = ["ipywidgets (>=7.5.1,<9)"]
+
+[[package]]
+name = "rich-rst"
+version = "1.3.2"
+description = "A beautiful reStructuredText renderer for rich"
+optional = false
+python-versions = "*"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "rich_rst-1.3.2-py3-none-any.whl", hash = "sha256:a99b4907cbe118cf9d18b0b44de272efa61f15117c61e39ebdc431baf5df722a"},
+    {file = "rich_rst-1.3.2.tar.gz", hash = "sha256:a1196fdddf1e364b02ec68a05e8ff8f6914fee10fbca2e6b6735f166bb0da8d4"},
+]
+
+[package.dependencies]
+docutils = "*"
+rich = ">=12.0.0"
+
+[package.extras]
+docs = ["sphinx"]
 
 [[package]]
 name = "roman-numerals"
@@ -5471,7 +5630,7 @@ version = "2.4.0"
 description = "A lil' TOML parser"
 optional = false
 python-versions = ">=3.8"
-groups = ["doc", "tests"]
+groups = ["main", "doc", "graphics", "tests"]
 markers = "python_version == \"3.10\""
 files = [
     {file = "tomli-2.4.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:b5ef256a3fd497d4973c11bf142e9ed78b150d36f5773f1ca6088c230ffc5867"},
@@ -5653,21 +5812,6 @@ files = [
 [package.extras]
 dev = ["nox", "pre-commit", "pytest (>=6)", "pytest-cov (>=3)", "ruff"]
 test = ["nox", "pytest (>=6)", "pytest-cov (>=3)"]
-
-[[package]]
-name = "trame-router"
-version = "2.3.0"
-description = "Vue Router widgets for trame"
-optional = false
-python-versions = "*"
-groups = ["doc"]
-files = [
-    {file = "trame-router-2.3.0.tar.gz", hash = "sha256:b382bdaad59998d5fcb93613a6e6828d68ff168eff87df56b13604a331294216"},
-    {file = "trame_router-2.3.0-py3-none-any.whl", hash = "sha256:b1d2b94ead3d6d9a731e544a7fbb343788b71e1c4139f2a5e17f19c5f4fa344d"},
-]
-
-[package.dependencies]
-trame-client = "*"
 
 [[package]]
 name = "trame-server"
