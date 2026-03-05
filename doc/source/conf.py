@@ -128,6 +128,7 @@ sphinx_gallery_conf = {
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
+    "inspect_global_variables": False,
 }
 
 
