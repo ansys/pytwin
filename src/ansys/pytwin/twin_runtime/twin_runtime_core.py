@@ -40,7 +40,7 @@ from pathlib import Path
 import platform
 import sys
 from typing import Set, Tuple
-import xml.etree.ElementTree as ET  # nosec B405
+import defusedxml.ElementTree as ET
 import zipfile
 
 CUR_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
@@ -334,7 +334,7 @@ class TwinRuntime:
         """
 
         def _parse_xml(model_description) -> Set[str]:
-            tree = ET.parse(model_description)  # nosec B314
+            tree = ET.parse(model_description)
             root = tree.getroot()
 
             available_fmi_types = set()
@@ -382,7 +382,7 @@ class TwinRuntime:
         """
 
         def _parse_xml(model_description) -> str:
-            tree = ET.parse(model_description)  # nosec B314
+            tree = ET.parse(model_description)
             root = tree.getroot()
             name = root.get("modelName")
             if name is None:
@@ -420,7 +420,7 @@ class TwinRuntime:
         """
 
         def _parse_xml(model_description) -> str:
-            tree = ET.parse(model_description)  # nosec B314
+            tree = ET.parse(model_description)
             root = tree.getroot()
             version = root.get("fmiVersion")
             if version is None:
