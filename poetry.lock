@@ -539,14 +539,14 @@ clr_loader = ">=0.2.5,<0.3.0"
 
 [[package]]
 name = "ansys-sphinx-theme"
-version = "1.7.1"
+version = "1.7.2"
 description = "A theme devised by ANSYS, Inc. for Sphinx documentation."
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_sphinx_theme-1.7.1-py3-none-any.whl", hash = "sha256:43c88dd8ad4ba13a82b632070fea04a92bc19687eec99ac93c144e1bb02de6f9"},
-    {file = "ansys_sphinx_theme-1.7.1.tar.gz", hash = "sha256:e0e120d57918633bf20b60270be195bef63dfea2ada3f844b3b0ae1e6e8a5046"},
+    {file = "ansys_sphinx_theme-1.7.2-py3-none-any.whl", hash = "sha256:9cf2aba62eede436b3ef4431dd9e20d22eb3601150ee5daa68977a98a212126c"},
+    {file = "ansys_sphinx_theme-1.7.2.tar.gz", hash = "sha256:849768cfac9c1c32bf4211de99db9c3f82535b607ac6813b76040cd0d78f78c4"},
 ]
 
 [package.dependencies]
