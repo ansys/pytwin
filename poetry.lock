@@ -349,14 +349,14 @@ tests = ["pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pytest-mock (==3.14.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.38.0"
+version = "0.38.1"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.38.0-py3-none-any.whl", hash = "sha256:931d54142e1b5414b62730b063d5257fb13fcdd09b5ec180cdd6403fa8a0cc39"},
-    {file = "ansys_fluent_core-0.38.0.tar.gz", hash = "sha256:1569e3625adfd6863b9eb8b0d3a63b73f3b1c45441c9c8a4ef4ebd013a7d610d"},
+    {file = "ansys_fluent_core-0.38.1-py3-none-any.whl", hash = "sha256:00897364a8540f2a5d25e2655be06fec4a085ec887e2c79adf3399e584831731"},
+    {file = "ansys_fluent_core-0.38.1.tar.gz", hash = "sha256:51c3548c4160f659e421fd0e90d54533eafe557591213ffdf0acf72893b355ec"},
 ]
 
 [package.dependencies]
