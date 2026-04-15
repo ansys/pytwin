@@ -122,8 +122,8 @@ zone_names = list(zone_names_vec.data)
 ids = [int(zone_ids[zone_names.index(name)]) for name in named_selections if name in zone_names]
 # extracting the individual grid associated to each named selection and merging all of them in 1 single grid
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=ids).eval()
-target_mesh = whole_mesh[-1].grid
-target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) - 1)])
+target_mesh = whole_mesh[0].grid
+target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(1, len(ids))])
 
 ###############################################################################
 # Project the TBROM field onto the targeted mesh
