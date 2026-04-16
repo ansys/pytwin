@@ -132,14 +132,6 @@ if not ids:
     )
 # extracting the individual grid associated to each named selection and merging all of them in 1 single grid
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=ids).eval()
-if len(whole_mesh) == 0:
-    raise ValueError(
-        "No CFD meshes were returned for the matched TBROM named selections. "
-        f"Matched zone ids: {ids}. "
-        f"TBROM named selections: {named_selections}. "
-        f"Available CFD zone names: {zone_names}."
-    )
-
 # assembling the full mesh by merging the individual meshes for each named selection (in case there are multiple named selections matched with CFD zones)
 # Note: depending on the version of vtk package installed, the merge order will be different (see https://docs.pyvista.org/api/utilities/_autosummary/pyvista.merge.html)
 vtk_version = importlib.metadata.version("vtk")
