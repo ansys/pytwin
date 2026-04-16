@@ -84,6 +84,7 @@ options. For more information, see the
 # files.
 
 import ansys.dpf.core as dpf
+import importlib.metadata
 from pytwin import TwinModel, download_file
 import pyvista as pv
 
@@ -137,8 +138,16 @@ if len(whole_mesh) == 0:
         f"TBROM named selections: {named_selections}. "
         f"Available CFD zone names: {zone_names}."
     )
-target_mesh = whole_mesh[0].grid
-target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(1, len(ids))])
+
+# assembling the full mesh by merging the individual meshes for each named selection (in case there are multiple named selections matched with CFD zones)
+# Note: depending on the version of vtk package installed, the merge order will be different (see https://docs.pyvista.org/api/utilities/_autosummary/pyvista.merge.html)
+vtk_version = importlib.metadata.version("vtk")
+if vtk_version>="9.5.0":
+    target_mesh = whole_mesh[0].grid
+    target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(1, len(ids))])
+else:
+    target_mesh = whole_mesh[-1].grid
+    target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) - 1)])
 
 ###############################################################################
 # Project the TBROM field onto the targeted mesh
