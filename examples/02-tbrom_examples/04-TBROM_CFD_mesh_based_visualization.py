@@ -83,8 +83,9 @@ options. For more information, see the
 # Perform required imports, which include downloading and importing the input
 # files.
 
-import ansys.dpf.core as dpf
 import importlib.metadata
+
+import ansys.dpf.core as dpf
 from pytwin import TwinModel, download_file
 import pyvista as pv
 
@@ -142,7 +143,7 @@ if len(whole_mesh) == 0:
 # assembling the full mesh by merging the individual meshes for each named selection (in case there are multiple named selections matched with CFD zones)
 # Note: depending on the version of vtk package installed, the merge order will be different (see https://docs.pyvista.org/api/utilities/_autosummary/pyvista.merge.html)
 vtk_version = importlib.metadata.version("vtk")
-if vtk_version>="9.5.0":
+if vtk_version >= "9.5.0":
     target_mesh = whole_mesh[0].grid
     target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(1, len(ids))])
 else:
