@@ -70,6 +70,7 @@ sphinx-gallery = ">=0.17,<0.21"
 sphinx-notfound-page = "^1.0.0"
 sphinxemoji = ">=0.2,<0.4"
 pyaedt = ">=0.15,<0.27"
+protobuf = ">=5.26.0"
 
 [tool.black]
 line-length = 120
