@@ -109,7 +109,6 @@ MESH_FILE = TWIN_FILE.with_name("HX_CFD.vtk")  # Expect HX_CFD.vtk in the same f
 
 DEFAULT_INPUTS = {"Mass_Flow_HX": 75.0, "Tube_temperature": 1115.0, "shell_inlet_temp": 300.0}
 DEFAULT_ROM_NAME = "test1"
-DEFAULT_SLICE_PLANE = {"origin": (0.0, 0.0, 0.0), "normal": (1.0, 0.0, 0.0)}
 
 ###############################################################################
 # Mesh creation utility (optional dependency)
@@ -188,6 +187,8 @@ class MainWindow(QWidget):
         self._initialize_plotter()
         self._initialize_mesh()
         self._build_gui()
+        self._on_slice_toggled(self._slice)  # Set initial visibility based on slice mode
+        self._reset_color_scale()  # Set initial color scale to data range
     
     
     def _initialize_twin(self) -> None:
@@ -231,12 +232,11 @@ class MainWindow(QWidget):
         self._plotter = QtInteractor(parent=self)
         self._plotter.clear()
         self._plotter.add_axes()
-        self._plotter.view_yz()
+        self._plotter.view_zy()
 
 
     def _initialize_mesh(self) -> None:
         """Initialize the mesh for visualization."""
-        self._slice_plane= DEFAULT_SLICE_PLANE.copy()
         
         print("Loading mesh: {}".format(MESH_FILE))
         if not MESH_FILE.is_file():
@@ -246,61 +246,67 @@ class MainWindow(QWidget):
         # Get the TBROM results projected onto the target mesh
         target_mesh = pv.read(MESH_FILE)
         print("Performing initial mesh projection...")
-        self._rom_on_target_mesh = self._twin_model.project_tbrom_on_mesh(self._current_rom_name, target_mesh, False)  
+        self._rom_on_target_mesh = self._twin_model.project_tbrom_on_mesh(self._current_rom_name, target_mesh, False)
+        
+        # Choose which component to plot based on the field output dimension.
+        if self._current_field_output_dim == 1:
+            # Plot the field directly for scalar outputs
+            self._scalar_to_plot = self._current_field_output_name
+            self._component = None
+        elif self._current_field_output_dim == 3:
+            # Plot the magnitude for vector outputs
+            self._scalar_to_plot = self._current_field_output_name + "-normed"
+            self._component = None
+        else:
+            # For anything else, plot the first component.
+            self._scalar_to_plot = self._current_field_output_name
+            self._component = 1
 
         # Define an interactive slice through the projected ROM results.
-        # First ensure that vector quantities have magnitude activated for slicing.
-        if self._current_field_output_dim == 3:
-            self._rom_on_target_mesh.set_active_scalars(self._current_field_output_name + "-normed")
-
         # Add a semi-transparent verion of the full mesh to display geometry when sliced.
-        self._background_mesh = self._plotter.add_mesh(
+        self._background_mesh_actor = self._plotter.add_mesh(
             target_mesh, color="grey",
             opacity=0.1,
             name="background_mesh",
             render=False
             )
+        
+        # Ensure that vector quantities have magnitude activated for slicing.
+        if self._current_field_output_dim == 3:
+            self._rom_on_target_mesh.set_active_scalars(self._current_field_output_name + "-normed")
 
-        self._slice_data = self._plotter.add_mesh_slice(
+        # Add the slice on YZ plane
+        self._slice_data_actor = self._plotter.add_mesh_slice(
             self._rom_on_target_mesh,
-            normal=self._slice_plane["normal"],
-            origin=self._slice_plane["origin"],
+            assign_to_axis='x',
+            origin_translation=False,
+            outline_translation=False,
+            outline_opacity=False,
             show_edges=False,
             name="slice_mesh",
+            scalars=self._scalar_to_plot,
+            component=self._component,
             cmap="rainbow",
-            scalar_bar_args={"title": self._current_field_output_name, "color": "black"},
-            show_scalar_bar=True,
+            show_scalar_bar=False,
             render=False
             )
-        self._slice_widget = self._plotter.plane_widgets[-1]
+        title = self._current_field_output_name + " (slice)"
+        self._slice_scalar_bar = self._plotter.add_scalar_bar(title=title, color="black")
+        self._plane_slice_widget = self._plotter.plane_widgets[-1]
 
         # Define the full mesh for the projected ROM results
-        self._full_mesh = self._plotter.add_mesh(
+        self._full_mesh_actor = self._plotter.add_mesh(
             self._rom_on_target_mesh,
             show_edges=False,
             name="full_mesh",
+            scalars=self._scalar_to_plot,
+            component=self._component,
             cmap="rainbow",
-            scalar_bar_args={"title": self._current_field_output_name, "color": "black"},
-            show_scalar_bar=True,
+            show_scalar_bar=False,
             render=False
             )
-        
-        # Toggle visibility, depending on whether slice mode is enabled.
-        self._slice_widget.SetEnabled(self._slice)
-        if self._slice:
-            self._plotter.remove_actor(self._full_mesh, render=False)
-            self._active_dataset = self._slice_data.mapper.dataset
-        else:
-            self._plotter.remove_actor(self._background_mesh, render=False)
-            self._plotter.remove_actor(self._slice_data, render=False)
-            self._active_dataset = self._full_mesh.mapper.dataset
-
-        print(f"Scalar after toggle: {self._plotter.mesh.active_scalars_name}")
-
-        
-        print(f"Mesh data ranage: {self._plotter.mesh.get_data_range()}")        
-        print(f"Active set data ranage: {self._active_dataset.get_data_range()}")
-        self._data_range = self._active_dataset.get_data_range()
+        title = self._current_field_output_name + " (full mesh)"
+        self._full_mesh_scalar_bar = self._plotter.add_scalar_bar(title=title, color="black")
         self._plotter.reset_camera()
 
 
@@ -310,15 +316,10 @@ class MainWindow(QWidget):
             name: float(edit.text()) for name, edit in self._input_edits.items()
         }
         self._twin_model.initialize_evaluation(inputs=rom_inputs)
-        self._update_results()
-
-
-    def _update_results(self) -> None:
-        """Update the visualization with the latest evaluation results."""
-        # Return active scalars after update
-        if self._current_field_output_dim == 3:
-            self._plotter.mesh.set_active_scalars(self._current_field_output_name + "-normed")
-        self._update_color_scale()
+        # PyTwin resets active scalars to field name after re-evaluation, so revert to chosen quantity.
+        if self._current_field_output_dim > 1:
+            self._full_mesh_actor.mapper.dataset.set_active_scalars(self._scalar_to_plot)
+        self._plotter.update()
 
 
     def _reset_inputs(self) -> None:
@@ -335,46 +336,31 @@ class MainWindow(QWidget):
         vmin = float(self._scale_edits["Color Scale Minimum"].text())
         vmax = float(self._scale_edits["Color Scale Maximum"].text())
         self._data_range = (vmin, vmax)
-        self._plotter.update_scalar_bar_range(self._data_range)
+        self._plotter.update_scalar_bar_range(self._data_range, self._active_scalar_bar.title)
         self._plotter.update()
 
 
     def _reset_color_scale(self) -> None:
-        """Reset the color scale to the current data range of the field output."""
-        self._data_range = self._active_dataset.get_data_range()
+        """Reset the color scale to the current data range of the field output."""   
+        self._data_range = self._active_data_mapper.dataset.get_data_range()
         self._scale_edits["Color Scale Minimum"].setText(str(self._data_range[0]))
         self._scale_edits["Color Scale Maximum"].setText(str(self._data_range[1]))
         self._update_color_scale()
 
 
-    def _update_slice_plane(self) -> None:
-        """Update the slice plane values from the GUI fields."""
-        origin = tuple(float(self._slice_edits["origin"][axis].text()) for axis in ("x", "y", "z"))
-        normal = tuple(float(self._slice_edits["normal"][axis].text()) for axis in ("x", "y", "z"))
-        self._slice_widget.SetOrigin(origin)
-        self._slice_widget.SetNormal(normal)
-        self._update_results()
-
-
     def _on_slice_toggled(self, checked: bool) -> None:
-        """Handle slice plane enable state changes."""
+        """Handle slice plane state changes."""
         self._slice = checked
-        for widget in self._slice_widgets:
-            widget.setEnabled(checked)
         
         # Toggle visibility, depending on whether slice mode is enabled.
-        if checked:
-            self._plotter.remove_actor(self._full_mesh, render=True)
-            self._plotter.add_actor(self._background_mesh, render=False)
-            self._plotter.add_actor(self._slice_data, render=False)
-            self._active_dataset = self._slice_data.mapper.dataset
-        else:
-            self._plotter.add_actor(self._full_mesh, render=True)
-            self._plotter.remove_actor(self._background_mesh, render=False)
-            self._plotter.remove_actor(self._slice_data, render=False)
-            self._active_dataset = self._full_mesh.mapper.dataset
-        self._slice_widget.SetEnabled(checked)
-        self._update_results()
+        self._plane_slice_widget.SetEnabled(checked)
+        for actor in [self._full_mesh_actor, self._full_mesh_scalar_bar]:
+            actor.visibility = not checked
+        for actor in [self._slice_data_actor, self._slice_scalar_bar, self._background_mesh_actor]:
+            actor.visibility = checked
+        self._active_data_mapper = self._slice_data_actor.mapper if checked else self._full_mesh_actor.mapper
+        self._active_scalar_bar = self._slice_scalar_bar if checked else self._full_mesh_scalar_bar
+        self._plotter.update()
 
 
     def _build_gui(self) -> None:
@@ -406,7 +392,6 @@ class MainWindow(QWidget):
     def _build_left_group(self) -> QGroupBox:
         """Build the left group box containing model input and visualization settings."""
         self._input_edits = {}
-        self._slice_edits = {"origin": {}, "normal": {}}
         self._scale_edits = {}
 
         validator = QDoubleValidator(self)
@@ -467,41 +452,6 @@ class MainWindow(QWidget):
         grid.addWidget(self._slice_toggle, row, 1)
         row += 1
 
-        self._slice_widgets = []
-        for idx, name in enumerate(["Origin", "Normal"]):
-            label = QLabel(name)
-            label.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-            grid.addWidget(label, row, idx)
-            self._slice_widgets.append(label)
-        row += 1
-
-        for label, origin, normal in zip(("x", "y", "z"), self._slice_plane["origin"], self._slice_plane["normal"]):
-            origin_edit = QLineEdit(str(origin))
-            origin_edit.setAlignment(Qt.AlignRight)
-            origin_edit.setValidator(validator)
-            origin_edit.setCursorPosition(0)
-            grid.addWidget(origin_edit, row, 0)
-            self._slice_edits["origin"][label] = origin_edit
-            self._slice_widgets.append(origin_edit)
-
-            normal_edit = QLineEdit(str(normal))
-            normal_edit.setAlignment(Qt.AlignRight)
-            normal_edit.setValidator(validator)
-            normal_edit.setCursorPosition(0)
-            grid.addWidget(normal_edit, row, 1)
-            self._slice_edits["normal"][label] = normal_edit
-            self._slice_widgets.append(normal_edit)
-            row += 1
-
-        slice_button = QPushButton("Update Slice Plane")
-        slice_button.setObjectName("sliceButton")
-        slice_button.clicked.connect(self._update_slice_plane)
-        grid.addWidget(slice_button, row, 0)
-        self._slice_widgets.append(slice_button)
-        for widget in self._slice_widgets:
-            widget.setEnabled(self._slice)
-        row += 1
-
         # Colour scale controls
         for name, value in zip(("Color Scale Minimum", "Color Scale Maximum"), self._data_range):
             label = QLabel(name)
@@ -528,6 +478,7 @@ class MainWindow(QWidget):
 
         group.setLayout(grid)
         return group
+    
 
     def _build_right_group(self) -> QGroupBox:
         """Build the right group box containing the field output visualization."""
@@ -537,6 +488,7 @@ class MainWindow(QWidget):
         layout.addWidget(self._plotter)
         group.setLayout(layout)
         return group
+    
 
     def _build_buttons_row(self) -> QHBoxLayout:
         """Build the bottom row of buttons."""
