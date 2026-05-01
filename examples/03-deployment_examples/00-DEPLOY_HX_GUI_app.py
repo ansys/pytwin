@@ -102,7 +102,7 @@ from pyvistaqt import QtInteractor
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the path to the twin file containing the TBROM, the expected path to the CFD mesh file,
 # and the default ROM input parameters. In this example, the twin file is downloaded from the Ansys file repository,
-# and the mesh file is expected to be in the same directory. 
+# and the mesh file is expected to be in the same directory.
 
 TWIN_FILE = Path(download_file("HXVelVectorTBROM_23R2.twin", "twin_files", force_download=True))
 MESH_FILE = TWIN_FILE.with_name("HX_CFD.vtk")  # Expect HX_CFD.vtk in the same folder as TWIN_FILE
@@ -118,19 +118,18 @@ DEFAULT_ROM_NAME = "test1"
 # Ansys DPF - Core as an optional dependency. For installation instructions, refer to the
 # :ref:`ref_example_TBROM_CFD_mesh_projection` example.
 
+
 def convert_cfd_file_to_mesh(mesh_file: Path, named_selections: list[str]) -> None:
     """Utility function to convert a CFD file to a generic VTK mesh file."""
     import importlib.metadata
+
     try:
         import ansys.dpf.core as dpf
     except ImportError as e:
-        raise RuntimeError(
-            "Optional dependency missing: ansys.dpf.core. "
-            "Install to enable mesh conversion."
-        ) from e
+        raise RuntimeError("Optional dependency missing: ansys.dpf.core. " "Install to enable mesh conversion.") from e
 
     cfd_file = download_file("HX_CFD.cas.h5", "other_files", force_download=True)
-    
+
     ds = dpf.DataSources()
     ds.set_result_file_path(cfd_file, "cas")
     streams = dpf.operators.metadata.streams_provider(data_sources=ds)
@@ -189,15 +188,13 @@ class MainWindow(QWidget):
         self._build_gui()
         self._on_slice_toggled(self._slice)  # Set initial visibility based on slice mode
         self._reset_color_scale()  # Set initial color scale to data range
-    
-    
+
     def _initialize_twin(self) -> None:
         print("Loading model: {}".format(TWIN_FILE))
         self._twin_model = TwinModel(TWIN_FILE)
         self._set_default_inputs()
         self._get_tbrom_metadata()
         self._twin_model.initialize_evaluation(inputs=self._default_inputs)
-
 
     def _set_default_inputs(self):
         """Set the default inputs for the twin model."""
@@ -208,7 +205,6 @@ class MainWindow(QWidget):
             if name in self._default_inputs:
                 self._default_inputs[name] = value
 
-
     def _get_tbrom_metadata(self):
         """Get metadata for TBROMs in the twin model."""
         if self._twin_model.tbrom_count == 0:
@@ -216,16 +212,15 @@ class MainWindow(QWidget):
         self._tbrom_rom_names = self._twin_model.tbrom_names
         self._current_rom_name = (
             DEFAULT_ROM_NAME if DEFAULT_ROM_NAME in self._tbrom_rom_names else self._tbrom_rom_names[0]
-            )
+        )
         self._field_output_names = {
             name: self._twin_model.get_field_output_name(name) for name in self._tbrom_rom_names
-            }
+        }
         self._current_field_output_name = self._field_output_names[self._current_rom_name]
-        self._field_output_dims  = {
+        self._field_output_dims = {
             name: self._twin_model._tbroms[name].field_output_dim for name in self._tbrom_rom_names
-            }
+        }
         self._current_field_output_dim = self._field_output_dims[self._current_rom_name]
-
 
     def _initialize_plotter(self) -> None:
         """Initialize the PyVistaQT plotter for 3D visualization."""
@@ -234,20 +229,19 @@ class MainWindow(QWidget):
         self._plotter.add_axes()
         self._plotter.view_zy()
 
-
     def _initialize_mesh(self) -> None:
         """Initialize the mesh for visualization."""
-        
+
         print("Loading mesh: {}".format(MESH_FILE))
         if not MESH_FILE.is_file():
             print("Mesh file not found. Converting CFD file to mesh...")
             convert_cfd_file_to_mesh(MESH_FILE, self._twin_model.get_named_selections(self._current_rom_name))
-        
+
         # Get the TBROM results projected onto the target mesh
         target_mesh = pv.read(MESH_FILE)
         print("Performing initial mesh projection...")
         self._rom_on_target_mesh = self._twin_model.project_tbrom_on_mesh(self._current_rom_name, target_mesh, False)
-        
+
         # Choose which component to plot based on the field output dimension.
         if self._current_field_output_dim == 1:
             # Plot the field directly for scalar outputs
@@ -263,14 +257,11 @@ class MainWindow(QWidget):
             self._component = 1
 
         # Define an interactive slice through the projected ROM results.
-        # Add a semi-transparent verion of the full mesh to display geometry when sliced.
+        # Add a semi-transparent version of the full mesh to display geometry when sliced.
         self._background_mesh_actor = self._plotter.add_mesh(
-            target_mesh, color="grey",
-            opacity=0.1,
-            name="background_mesh",
-            render=False
-            )
-        
+            target_mesh, color="grey", opacity=0.1, name="background_mesh", render=False
+        )
+
         # Ensure that vector quantities have magnitude activated for slicing.
         if self._current_field_output_dim == 3:
             self._rom_on_target_mesh.set_active_scalars(self._current_field_output_name + "-normed")
@@ -278,7 +269,7 @@ class MainWindow(QWidget):
         # Add the slice on YZ plane
         self._slice_data_actor = self._plotter.add_mesh_slice(
             self._rom_on_target_mesh,
-            assign_to_axis='x',
+            assign_to_axis="x",
             origin_translation=False,
             outline_translation=False,
             outline_opacity=False,
@@ -288,8 +279,8 @@ class MainWindow(QWidget):
             component=self._component,
             cmap="rainbow",
             show_scalar_bar=False,
-            render=False
-            )
+            render=False,
+        )
         title = self._current_field_output_name + " (slice)"
         self._slice_scalar_bar = self._plotter.add_scalar_bar(title=title, color="black")
         self._plane_slice_widget = self._plotter.plane_widgets[-1]
@@ -303,33 +294,28 @@ class MainWindow(QWidget):
             component=self._component,
             cmap="rainbow",
             show_scalar_bar=False,
-            render=False
-            )
+            render=False,
+        )
         title = self._current_field_output_name + " (full mesh)"
         self._full_mesh_scalar_bar = self._plotter.add_scalar_bar(title=title, color="black")
         self._plotter.reset_camera()
 
-
     def _run_evaluation(self) -> None:
         """Run the twin evaluation with updated input parameters and refresh the visualization."""
-        rom_inputs = {
-            name: float(edit.text()) for name, edit in self._input_edits.items()
-        }
+        rom_inputs = {name: float(edit.text()) for name, edit in self._input_edits.items()}
         self._twin_model.initialize_evaluation(inputs=rom_inputs)
         # PyTwin resets active scalars to field name after re-evaluation, so revert to chosen quantity.
         if self._current_field_output_dim > 1:
             self._full_mesh_actor.mapper.dataset.set_active_scalars(self._scalar_to_plot)
         self._plotter.update()
 
-
     def _reset_inputs(self) -> None:
         """Reset the input parameters to their default values and re-evaulate model."""
         for name, value in self._default_inputs.items():
             edit = self._input_edits[name]
-            edit.setText(str(value))            
+            edit.setText(str(value))
             edit.setCursorPosition(0)
         self._run_evaluation()
-
 
     def _update_color_scale(self) -> None:
         """Update the color scale of the visualization."""
@@ -339,19 +325,17 @@ class MainWindow(QWidget):
         self._plotter.update_scalar_bar_range(self._data_range, self._active_scalar_bar.title)
         self._plotter.update()
 
-
     def _reset_color_scale(self) -> None:
-        """Reset the color scale to the current data range of the field output."""   
+        """Reset the color scale to the current data range of the field output."""
         self._data_range = self._active_data_mapper.dataset.get_data_range()
         self._scale_edits["Color Scale Minimum"].setText(str(self._data_range[0]))
         self._scale_edits["Color Scale Maximum"].setText(str(self._data_range[1]))
         self._update_color_scale()
 
-
     def _on_slice_toggled(self, checked: bool) -> None:
         """Handle slice plane state changes."""
         self._slice = checked
-        
+
         # Toggle visibility, depending on whether slice mode is enabled.
         self._plane_slice_widget.SetEnabled(checked)
         for actor in [self._full_mesh_actor, self._full_mesh_scalar_bar]:
@@ -361,7 +345,6 @@ class MainWindow(QWidget):
         self._active_data_mapper = self._slice_data_actor.mapper if checked else self._full_mesh_actor.mapper
         self._active_scalar_bar = self._slice_scalar_bar if checked else self._full_mesh_scalar_bar
         self._plotter.update()
-
 
     def _build_gui(self) -> None:
         """Build the GUI layout and components."""
@@ -388,7 +371,6 @@ class MainWindow(QWidget):
         layout.addLayout(buttons_row)
         self.setLayout(layout)
 
-
     def _build_left_group(self) -> QGroupBox:
         """Build the left group box containing model input and visualization settings."""
         self._input_edits = {}
@@ -396,7 +378,7 @@ class MainWindow(QWidget):
 
         validator = QDoubleValidator(self)
         validator.setNotation(QDoubleValidator.StandardNotation)
-        
+
         group = QGroupBox("Model Input")
 
         # Inputs section
@@ -465,7 +447,7 @@ class MainWindow(QWidget):
             self._scale_edits[name] = edit
             row += 1
 
-        scale_button = QPushButton("Update Plot")
+        scale_button = QPushButton("Update Colour Scale")
         scale_button.setObjectName("scaleButton")
         scale_button.clicked.connect(self._update_color_scale)
         grid.addWidget(scale_button, row, 0)
@@ -478,7 +460,6 @@ class MainWindow(QWidget):
 
         group.setLayout(grid)
         return group
-    
 
     def _build_right_group(self) -> QGroupBox:
         """Build the right group box containing the field output visualization."""
@@ -488,7 +469,6 @@ class MainWindow(QWidget):
         layout.addWidget(self._plotter)
         group.setLayout(layout)
         return group
-    
 
     def _build_buttons_row(self) -> QHBoxLayout:
         """Build the bottom row of buttons."""
