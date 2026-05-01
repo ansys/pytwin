@@ -168,9 +168,9 @@ def convert_cfd_file_to_mesh(mesh_file: Path, named_selections: list[str]) -> No
 # 1. Adjust ROM input parameters in real-time
 # 2. Update ROM evaluation and visualize results immediately
 # 3. Control the color scale for field visualization
-# 4. View the ROM results as a 3D mesh with cross-sectional slice down the centerline of the heat exchanger.
+# 4. View the ROM results as a 3D mesh with toggleable cross-sectional slice down the centerline of the heat exchanger.
 #
-# The core PyTwin functionalities demonstrated in this application include:
+# The core PyTwin functionalities demonstrated in this application are included in the following methods:
 #
 # - :method:``_initialize_twin``: Loading a twin model and initializing evaluation with specified inputs
 # - :method:``_initialize_mesh``: Projecting TBROM results onto a target mesh for visualization
@@ -189,7 +189,14 @@ class MainWindow(QWidget):
         self._on_slice_toggled(self._slice)  # Set initial visibility based on slice mode
         self._reset_color_scale()  # Set initial color scale to data range
 
+    # The functions below use the PyTwin APIs in various ways to access and manipulate the twin model.
     def _initialize_twin(self) -> None:
+        """
+        Initialize the twin model.
+
+        Use PyTwin APIs to instantiate the twin model from the specified twin file and run the initialization step with
+        selected inputs.
+        """
         print("Loading model: {}".format(TWIN_FILE))
         self._twin_model = TwinModel(TWIN_FILE)
         self._set_default_inputs()
@@ -197,7 +204,12 @@ class MainWindow(QWidget):
         self._twin_model.initialize_evaluation(inputs=self._default_inputs)
 
     def _set_default_inputs(self):
-        """Set the default inputs for the twin model."""
+        """
+        Set the default inputs for the twin model.
+
+        Use the PyTwin API to retrieve the current twin inputs and then override some or all of them with the values
+        defined in DEFAULT_INPUTS.
+        """
         if self._twin_model.evaluation_is_initialized:
             print("WARNING: Evaluation already initialized, using current twin inputs as default values.")
         self._default_inputs = self._twin_model.inputs.copy()
@@ -206,7 +218,12 @@ class MainWindow(QWidget):
                 self._default_inputs[name] = value
 
     def _get_tbrom_metadata(self):
-        """Get metadata for TBROMs in the twin model."""
+        """
+        Get metadata for TBROMs in the twin model.
+
+        Use PyTwin APIs to get information about what TBROMs are available in the twin, their associated field output
+        names, and the dimensions of those outputs.
+        """
         if self._twin_model.tbrom_count == 0:
             raise ValueError("No TBROMs found in the twin model.")
         self._tbrom_rom_names = self._twin_model.tbrom_names
@@ -222,25 +239,29 @@ class MainWindow(QWidget):
         }
         self._current_field_output_dim = self._field_output_dims[self._current_rom_name]
 
-    def _initialize_plotter(self) -> None:
-        """Initialize the PyVistaQT plotter for 3D visualization."""
-        self._plotter = QtInteractor(parent=self)
-        self._plotter.clear()
-        self._plotter.add_axes()
-        self._plotter.view_zy()
-
     def _initialize_mesh(self) -> None:
-        """Initialize the mesh for visualization."""
+        """
+        Initialize the mesh for visualization.
+
+        Use PyTwin API to project TBROM results onto a target mesh.
+
+        The projected mesh is a PyVista UnstructuredGrid whose coordinates correspond to the target mesh and whose
+        scalar values correspond to the TBROM field output. The scalar values automatically update when the twin is
+        re-evaluated with new inputs.
+        """
 
         print("Loading mesh: {}".format(MESH_FILE))
         if not MESH_FILE.is_file():
             print("Mesh file not found. Converting CFD file to mesh...")
             convert_cfd_file_to_mesh(MESH_FILE, self._twin_model.get_named_selections(self._current_rom_name))
 
-        # Get the TBROM results projected onto the target mesh
+        # Get the TBROM results projected onto the target mesh. The interpolate argument is set to False since the CFD
+        # mesh is the same as that used to create the ROM.
         target_mesh = pv.read(MESH_FILE)
         print("Performing initial mesh projection...")
-        self._rom_on_target_mesh = self._twin_model.project_tbrom_on_mesh(self._current_rom_name, target_mesh, False)
+        self._rom_on_target_mesh = self._twin_model.project_tbrom_on_mesh(
+            self._current_rom_name, target_mesh, interpolate=False
+        )
 
         # Choose which component to plot based on the field output dimension.
         if self._current_field_output_dim == 1:
@@ -261,10 +282,6 @@ class MainWindow(QWidget):
         self._background_mesh_actor = self._plotter.add_mesh(
             target_mesh, color="grey", opacity=0.1, name="background_mesh", render=False
         )
-
-        # Ensure that vector quantities have magnitude activated for slicing.
-        if self._current_field_output_dim == 3:
-            self._rom_on_target_mesh.set_active_scalars(self._current_field_output_name + "-normed")
 
         # Add the slice on YZ plane
         self._slice_data_actor = self._plotter.add_mesh_slice(
@@ -301,13 +318,25 @@ class MainWindow(QWidget):
         self._plotter.reset_camera()
 
     def _run_evaluation(self) -> None:
-        """Run the twin evaluation with updated input parameters and refresh the visualization."""
+        """
+        Run the twin evaluation with input parameters from the GUIand refresh the visualization.
+
+        Assumes that TBROM is a static ROM, so uses the PyTwin `initialize_evaluation` method to re-run the evaluation
+        with new inputs.
+        """
         rom_inputs = {name: float(edit.text()) for name, edit in self._input_edits.items()}
         self._twin_model.initialize_evaluation(inputs=rom_inputs)
-        # PyTwin resets active scalars to field name after re-evaluation, so revert to chosen quantity.
-        if self._current_field_output_dim > 1:
-            self._full_mesh_actor.mapper.dataset.set_active_scalars(self._scalar_to_plot)
+        # PyTwin resets active scalars to TBROM field name after re-evaluation, so revert to chosen quantity.
+        self._full_mesh_actor.mapper.dataset.set_active_scalars(self._scalar_to_plot)
         self._plotter.update()
+
+    # The functions below use PyVista APIs to manage the 3D visualization of the TBROM results on the mesh.
+    def _initialize_plotter(self) -> None:
+        """Initialize the PyVistaQT plotter for 3D visualization."""
+        self._plotter = QtInteractor(parent=self)
+        self._plotter.clear()
+        self._plotter.add_axes()
+        self._plotter.view_zy()
 
     def _reset_inputs(self) -> None:
         """Reset the input parameters to their default values and re-evaulate model."""
@@ -346,6 +375,7 @@ class MainWindow(QWidget):
         self._active_scalar_bar = self._slice_scalar_bar if checked else self._full_mesh_scalar_bar
         self._plotter.update()
 
+    # The functions below use PySide6 APIs to build the GUI layout and manage user interactions.
     def _build_gui(self) -> None:
         """Build the GUI layout and components."""
         self.setWindowTitle("ROM evaluation and post processing")
@@ -514,20 +544,22 @@ def main() -> None:
 #
 # **Typical workflow:**
 #
-# 1. Adjust one or more ROM input parameters (e.g., ``Mass_Flow_HX``, ``Tube_temperature``, ``shell_inlet_temp``)
-# 2. Click **"Update Results"** to re-evaluate the ROM and update the visualization
-# 3. Optionally adjust the **"Color Scale Minimum"** and **"Color Scale Maximum"** and click **"Update Plot"** to better
-#    visualize the data range. Click **"Reset Plot"** to reset the color scale to the current data range.
-# 4. Use the 3D view to interact with the mesh (rotate, zoom, pan)
+# 1. Adjust one or more ROM input parameters (e.g., ``Mass_Flow_HX``, ``Tube_temperature``, ``shell_inlet_temp``).
+# 2. Click **"Update Results"** to re-evaluate the ROM and update the visualization. Click **"Reset Inputs"** to revert
+#    to initial inputs.
+# 3. Optionally adjust the **"Color Scale Minimum"** and **"Color Scale Maximum"** and click **"Update Colour Scale"**
+#    to better visualize the data range. Click **"Reset Colour Scale"** to reset the color scale to the current visible
+#    data range.
+# 4. Use the 3D view to interact with the mesh (rotate, zoom, pan).
 # 5. Click **"Exit"** to close the application
 #
 # **Potential extensions:**
 #
-# - Add support for additional TBROMs by extending the input parameter panel
-# - Export visualization results (screenshots or mesh data) to files
+# - Replace the mesh file with a lower resolution version for faster visualization.
+# - Add support for twins with multiple TBROMs.
+# - Add support for visualizing different components of vector fields.
 # - Add support for additional field visualization options (streamlines, contours, etc.)
-# - Add support for loading different twin and mesh files at runtime
-
+# - Add support for loading different twin and mesh files at runtime.
 
 if __name__ == "__main__":
     main()
