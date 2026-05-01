@@ -37,8 +37,7 @@ The GUI features include:
 - Cross-sectional slicing of field results
 - Dynamic color scale adjustment for field visualization
 
-This example is **not executed** during documentation building. It is provided as a reference
-implementation for developers wishing to create interactive TBROM applications.
+This example is provided as a reference implementation for developers wishing to create interactive TBROM applications.
 """
 
 ###############################################################################
@@ -172,9 +171,10 @@ def convert_cfd_file_to_mesh(mesh_file: Path, named_selections: list[str]) -> No
 #
 # The core PyTwin functionalities demonstrated in this application are included in the following methods:
 #
-# - :method:``_initialize_twin``: Loading a twin model and initializing evaluation with specified inputs
-# - :method:``_initialize_mesh``: Projecting TBROM results onto a target mesh for visualization
-# - :method:``_run_evaluation``: Updating the twin evaluation with new input parameters and refreshing the visualization
+# - :meth:`MainWindow._initialize_twin`: Loading a twin model and initializing evaluation with specified inputs
+# - :meth:`MainWindow._initialize_mesh`: Projecting TBROM results onto a target mesh for visualization
+# - :meth:`MainWindow._run_evaluation`: Updating the twin evaluation with new input parameters and refreshing the
+#   visualization
 
 
 class MainWindow(QWidget):
@@ -528,14 +528,18 @@ def main() -> None:
     sys.exit(app.exec())
 
 
+if __name__ == "__main__":
+    main()
+
+
 ###############################################################################
-# Entry point and usage
-# ~~~~~~~~~~~~~~~~~~~~~
+# Usage and extension ideas
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
 # To run this application as a standalone script:
 #
 # .. code-block:: bash
 #
-#    python 00-DEPLOY_HX_GUI_app.py
+#    python 00-DEPLOY_HX_GUI_app_no_execute.py
 #
 # This will launch the GUI application window with:
 #
@@ -560,6 +564,3 @@ def main() -> None:
 # - Add support for visualizing different components of vector fields.
 # - Add support for additional field visualization options (streamlines, contours, etc.)
 # - Add support for loading different twin and mesh files at runtime.
-
-if __name__ == "__main__":
-    main()
