@@ -101,10 +101,10 @@ from pyvistaqt import QtInteractor
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the path to the twin file containing the TBROM, the expected path to the CFD mesh file,
 # and the default ROM input parameters. In this example, the twin file is downloaded from the Ansys file repository,
-# and the mesh file is expected to be in the same directory.
+# and the mesh file is expected to be in the ``../other_files`` directory relative to the twin file parent directory.
 
 TWIN_FILE = Path(download_file("HXVelVectorTBROM_23R2.twin", "twin_files", force_download=True))
-MESH_FILE = TWIN_FILE.with_name("HX_CFD.vtk")  # Expect HX_CFD.vtk in the same folder as TWIN_FILE
+MESH_FILE = TWIN_FILE.parent.parent.joinpath("other_files", "HX_CFD.vtk")  # Expect HX_CFD.vtk in ../other_files
 
 DEFAULT_INPUTS = {"Mass_Flow_HX": 75.0, "Tube_temperature": 1115.0, "shell_inlet_temp": 300.0}
 DEFAULT_ROM_NAME = "test1"
