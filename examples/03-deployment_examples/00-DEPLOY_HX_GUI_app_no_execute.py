@@ -342,7 +342,7 @@ class MainWindow(QWidget):
         """Reset the input parameters to their default values and re-evaulate model."""
         for name, value in self._default_inputs.items():
             edit = self._input_edits[name]
-            edit.setText(str(value))
+            edit.setText(f"{value:.4g}")
             edit.setCursorPosition(0)
         self._run_evaluation()
 
@@ -357,8 +357,8 @@ class MainWindow(QWidget):
     def _reset_color_scale(self) -> None:
         """Reset the color scale to the current data range of the field output."""
         self._data_range = self._active_data_mapper.dataset.get_data_range()
-        self._scale_edits["Color Scale Minimum"].setText(str(self._data_range[0]))
-        self._scale_edits["Color Scale Maximum"].setText(str(self._data_range[1]))
+        self._scale_edits["Color Scale Minimum"].setText(f"{self._data_range[0]:.4g}")
+        self._scale_edits["Color Scale Maximum"].setText(f"{self._data_range[1]:.4g}")
         self._update_color_scale()
 
     def _on_slice_toggled(self, checked: bool) -> None:
@@ -427,7 +427,7 @@ class MainWindow(QWidget):
         for name, value in self._default_inputs.items():
             label = QLabel(name)
             label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            edit = QLineEdit(str(value))
+            edit = QLineEdit(f"{value:.4g}")
             edit.setAlignment(Qt.AlignRight)
             edit.setValidator(validator)
             edit.setCursorPosition(0)
@@ -468,7 +468,7 @@ class MainWindow(QWidget):
         for name, value in zip(("Color Scale Minimum", "Color Scale Maximum"), self._data_range):
             label = QLabel(name)
             label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            edit = QLineEdit(str(value))
+            edit = QLineEdit(f"{value:.4g}")
             edit.setAlignment(Qt.AlignRight)
             edit.setValidator(validator)
             edit.setCursorPosition(0)
