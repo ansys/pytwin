@@ -1963,62 +1963,6 @@ class TwinModel(Model):
             msg += f"\n{str(e)}."
             self._raise_error(msg)
 
-    def tbrom_data_extract(self, rom_name: str, named_selection: str, data: np.ndarray):
-        """
-        Given a full-field data array, this method returns only the data values 
-        associated with the points in the given named selection of the given TBROM. If no named
-        selection is provided, the full data array is returned unchanged.
-
-        Parameters
-        ----------
-        rom_name : str
-            Name of the TBROM associated to the named selection. To get a list of available
-            TBROMs, see the :attr:`pytwin.TwinModel.tbrom_names` attribute.
-        named_selection : str or None
-            Name of the named selection that defines the subset of points to extract. If
-            ``None``, the full data array is returned without filtering. To get a list of
-            available named selections, use the
-            :func:`pytwin.TwinModel.get_named_selections` method.
-        data : numpy.ndarray
-            Full-field data array from which the subset is extracted. 
-
-        Returns
-        -------
-        numpy.ndarray
-            Subset of the data array corresponding to the points in the named selection,
-            sorted by point index. If ``named_selection`` is ``None``, the original
-            ``data`` array is returned.
-
-        Raises
-        ------
-        TwinModelError:
-            If ``rom_name`` is not included in the twin model's list of TBROMs.
-            If ``named_selection`` is not included in the TBROM's list of named selections.
-
-        Examples
-        --------
-        >>> import numpy as np
-        >>> from pytwin import TwinModel
-        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
-        >>> model.initialize_evaluation()
-        >>> romname = model.tbrom_names[0]
-        >>> field_data = model.get_tbrom_output_field(romname)
-        >>> ns_list = model.get_named_selections(romname)
-        >>> extracted_data = model.tbrom_data_extract(romname, ns_list[0], field_data)
-        """
-        tbrom = None
-        if self._check_rom_name_is_valid(rom_name):
-            tbrom = self._tbroms[rom_name]
-        if named_selection is not None:
-            if named_selection not in tbrom.named_selections:
-                msg = self._error_msg_for_unknown_named_selection(named_selection, tbrom)
-                raise self._raise_error(msg)
-            pointsids = tbrom._named_selection_indexes(named_selection)
-            listids = np.sort(pointsids)
-            return data[listids]
-        else:
-            return data
-    
     def project_tbrom_on_mesh(
         self,
         rom_name: str,
