@@ -562,7 +562,7 @@ class TbRom:
             if not self.isparamfieldhist:
                 self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
             else:
-                self._pointsdata[self.field_output_name] = np.tensordot(mc, outmeshbasis, axes=1)
+                self._meshdata[self.field_output_name] = np.tensordot(mc, outmeshbasis, axes=1)
             if self.field_output_dim > 1:
                 update_vector_norm(self._meshdata, self.field_output_name)
             self._meshdata.set_active_scalars(self.field_output_name)
