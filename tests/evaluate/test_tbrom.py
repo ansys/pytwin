@@ -1548,6 +1548,55 @@ class TestTbRom:
         assert "Parametric Field History : True" in output
         twinmodel.close()
 
+    def test_tbrom_data_extract_is_ok(self):
+        """
+        TEST_TB_ROM12
+        Twin with 1 TBROM, output field connected, named selections ['Group_1', 'Group_2'].
+        Full field: 104422 points x 3 components = 313266 elements (flat).
+        Group_1 NS: 26198 points x 3 components = 78594 elements (flat).
+        """
+        model_filepath = TEST_TB_ROM12
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        ns_list = twinmodel.get_named_selections(romname)
+
+        # Generate full-field snapshot in memory: shape (nb_points, dim)
+        full_field = twinmodel.generate_snapshot(romname, on_disk=False)
+
+        # named_selection=None -> original data object returned unchanged (same reference)
+        result_no_ns = twinmodel.tbrom_data_extract(romname, None, full_field)
+        assert result_no_ns is full_field
+
+        # Valid named selection -> subset matching generate_snapshot with that NS
+        result_ns = twinmodel.tbrom_data_extract(romname, ns_list[0], full_field)
+        assert result_ns.reshape(-1).shape[0] == 78594
+
+        snp_ns = twinmodel.generate_snapshot(romname, on_disk=False, named_selection=ns_list[0])
+        assert np.allclose(result_ns, snp_ns)
+
+    def test_tbrom_data_extract_exceptions(self):
+        """
+        TEST_TB_ROM12
+        Verify that tbrom_data_extract raises TwinModelError for invalid rom_name or named_selection.
+        """
+        model_filepath = TEST_TB_ROM12
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        full_field = twinmodel.generate_snapshot(romname, on_disk=False)
+
+        # Raise an exception if rom name is unknown
+        try:
+            twinmodel.tbrom_data_extract("unknown_rom", None, full_field)
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise an exception if named selection is unknown
+        try:
+            twinmodel.tbrom_data_extract(romname, "unknown_ns", full_field)
+        except TwinModelError as e:
+            assert "[NamedSelection]" in str(e)
 
 #    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
 #        model_filepath = TEST_TB_ROM_DROM
