@@ -499,7 +499,7 @@ class TbRom:
                     self._meshdata = None
                     self._outmeshbasis = None
             else:  # pv.DataSet
-                if named_selection is not None:  # naamed selection -> reset to dict case
+                if named_selection is not None:  # named selection -> reset to dict case
                     self._meshdata = dict()
                     self._outmeshbasis = dict()
         nbmc = self.nb_modes
