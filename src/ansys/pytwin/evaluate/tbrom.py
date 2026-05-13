@@ -494,12 +494,12 @@ class TbRom:
         """
         # reset the attributes if needed
         if self._meshdata:  # not none or empty dict (i.e. after _pojrect_on_mesh has been called)
-            if isinstance(self._meshdata, dict): # dict case
-                if named_selection is None: # no named selection -> reset to non dict case
+            if isinstance(self._meshdata, dict):  # dict case
+                if named_selection is None:  # no named selection -> reset to non dict case
                     self._meshdata = None
                     self._outmeshbasis = None
-            else: # pv.DataSet
-                if named_selection is not None: # naamed selection -> reset to dict case
+            else:  # pv.DataSet
+                if named_selection is not None:  # naamed selection -> reset to dict case
                     self._meshdata = dict()
                     self._outmeshbasis = dict()
         nbmc = self.nb_modes
