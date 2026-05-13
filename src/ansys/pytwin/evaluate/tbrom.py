@@ -646,9 +646,9 @@ class TbRom:
             ) * (self._outbasis[:, index, :, :] - self._outbasis[:, index - 1, :, :])
 
         if self._meshdata:
-            if len(self.named_selections) > 0:
+            if isinstance(self._meshdata, dict):
                 meshgrid = dict()
-                for ns in self.named_selections:
+                for ns in self._meshdata:
                     if time <= timegrid[0] or time >= timegrid[-1]:
                         meshgrid[ns] = self._meshdata[ns][index]
                     else:
@@ -750,10 +750,10 @@ class TbRom:
                             minValue,
                             maxValue,
                         )
-            else:
-                self._meshdata[self.field_output_name] = np.clip(
-                    np.power(np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
-                )
+                else:
+                    self._meshdata[self.field_output_name] = np.clip(
+                        np.power(np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+                    )
 
     def _clean_log(self):
         self._logLevel = None
