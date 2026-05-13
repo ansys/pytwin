@@ -1548,6 +1548,159 @@ class TestTbRom:
         assert "Parametric Field History : True" in output
         twinmodel.close()
 
+    def test_tbrom_get_output_field_on_mesh_errors(self):
+        reinit_settings()
+        romname = "unknown"
+        model_filepath = COUPLE_CLUTCHES_FILEPATH
+
+        # Raise an exception if no tbrom available in the twin
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        try:
+            twinmodel.get_tbrom_output_field_on_mesh(romname)
+        except TwinModelError as e:
+            assert "[NoRom]" in str(e)
+
+        # Raise an exception if unknown rom name is given
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        try:
+            twinmodel.get_tbrom_output_field_on_mesh(romname)
+        except TwinModelError as e:
+            assert "[RomName]" in str(e)
+
+        # Raise an exception if project_tbrom_on_mesh has not been called yet (no-NS case: _meshdata is None)
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.get_tbrom_output_field_on_mesh(romname)
+        except TwinModelError as e:
+            assert "[NoProjection]" in str(e)
+
+        # Raise an exception if project_tbrom_on_mesh has not been called yet (NS case: _meshdata is empty dict {})
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        try:
+            twinmodel.get_tbrom_output_field_on_mesh(romname)
+        except TwinModelError as e:
+            assert "[NoProjection]" in str(e)
+
+        # Raise an exception if the twin considered has no output MC connected
+        model_filepath = download_file("ThermalTBROM_23R1_other.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        twinmodel.initialize_evaluation()
+        romname = twinmodel.tbrom_names[0]
+        mesh = pv.read(MESH_FILE)
+        # project_tbrom_on_mesh itself will raise [RomOutputConnection], so test directly on tbrom
+        twinmodel._tbroms[romname]._meshdata = mesh  # bypass projection
+        try:
+            twinmodel.get_tbrom_output_field_on_mesh(romname)
+        except TwinModelError as e:
+            assert "[RomOutputConnection]" in str(e)
+
+
+    def test_tbrom_get_output_field_on_mesh_no_named_selection(self):
+        """
+        After project_tbrom_on_mesh without named selection, get_tbrom_output_field_on_mesh
+        returns a single pv.DataSet (not a dict) and its field data is updated on evaluation.
+        """
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_field_input_names(romname)[0]
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        mesh = pv.read(MESH_FILE)
+
+        # Project on mesh without named selection
+        result = twinmodel.project_tbrom_on_mesh(romname, mesh, False)
+        assert result is not None
+        assert isinstance(result, pv.DataSet)
+
+        # get_tbrom_output_field_on_mesh returns same object (not a dict)
+        field_on_mesh = twinmodel.get_tbrom_output_field_on_mesh(romname)
+        assert field_on_mesh is result
+
+        # Field data is updated after a step evaluation with different input
+        fieldname = twinmodel.get_field_input_names(romname)[0]
+        zero_snapshot = np.zeros_like(read_binary(INPUT_SNAPSHOT))
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        result = twinmodel.project_tbrom_on_mesh(romname, mesh, False)
+        field_on_mesh = twinmodel.get_tbrom_output_field_on_mesh(romname)
+        field_before = field_on_mesh[twinmodel.get_field_output_name(romname)].copy()
+        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: zero_snapshot}})
+        field_after = field_on_mesh[twinmodel.get_field_output_name(romname)]
+        assert not np.allclose(field_before, field_after)
+
+
+    def test_tbrom_get_output_field_on_mesh_with_named_selections(self):
+        """
+        After project_tbrom_on_mesh with named selections, get_tbrom_output_field_on_mesh
+        returns a dict keyed by named selection name; each value is a pv.DataSet.
+        Field data in the dict is updated on evaluation.
+        """
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_field_input_names(romname)[0]
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        nslist = twinmodel.get_named_selections(romname)
+        assert len(nslist) >= 2
+        mesh = pv.read(MESH_FILE)
+
+        # Project each named selection onto the mesh
+        for ns in nslist:
+            result = twinmodel.project_tbrom_on_mesh(romname, mesh, False, ns)
+            assert result is not None
+            assert isinstance(result, dict)
+
+        # get_tbrom_output_field_on_mesh returns a dict with all projected named selections
+        field_on_mesh = twinmodel.get_tbrom_output_field_on_mesh(romname)
+        assert isinstance(field_on_mesh, dict)
+        for ns in nslist:
+            assert ns in field_on_mesh
+            assert isinstance(field_on_mesh[ns], pv.DataSet)
+
+        # Field data in each entry of the dict is updated after a step evaluation with different input
+        fieldname = twinmodel.get_field_input_names(romname)[0]
+        zero_snapshot = np.zeros_like(read_binary(INPUT_SNAPSHOT))
+        field_name = twinmodel.get_field_output_name(romname)
+        fields_before = {ns: field_on_mesh[ns][field_name].copy() for ns in nslist}
+        twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: zero_snapshot}})
+        field_on_mesh = twinmodel.get_tbrom_output_field_on_mesh(romname)
+        fields_after = {ns: field_on_mesh[ns][field_name] for ns in nslist}
+        for ns in nslist:
+            assert not np.allclose(fields_before[ns], fields_after[ns])
+
+
+    def test_tbrom_get_output_field_on_mesh_partial_named_selections(self):
+        """
+        If only a subset of named selections have been projected, get_tbrom_output_field_on_mesh
+        returns a dict containing only those that were projected (not empty).
+        """
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        fieldname = twinmodel.get_field_input_names(romname)[0]
+        twinmodel.initialize_evaluation(field_inputs={romname: {fieldname: INPUT_SNAPSHOT}})
+        nslist = twinmodel.get_named_selections(romname)
+        assert len(nslist) >= 2
+        mesh = pv.read(MESH_FILE)
+
+        # Project only the first named selection
+        twinmodel.project_tbrom_on_mesh(romname, mesh, False, nslist[0])
+
+        # get_tbrom_output_field_on_mesh should succeed (dict is non-empty)
+        field_on_mesh = twinmodel.get_tbrom_output_field_on_mesh(romname)
+        assert isinstance(field_on_mesh, dict)
+        assert nslist[0] in field_on_mesh
+        assert nslist[1] not in field_on_mesh
 
 #    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
 #        model_filepath = TEST_TB_ROM_DROM

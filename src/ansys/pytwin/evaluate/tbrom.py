@@ -284,9 +284,7 @@ class TbRom:
         self._outmcs = None
         self._infbasis = None
         self._pointsdata = None
-        self._meshdata = None
         self._outbasis = None
-        self._outmeshbasis = None
         self._hasinfmcs = None
         self._hasoutmcs = False
         self._productVersion = None
@@ -325,6 +323,13 @@ class TbRom:
         self._infbasis = infdata
 
         self._nsidslist = nsidslist
+        if self._nsidslist: # multiple named selections -> initialize _meshdata and _outmeshbasis 
+            # as dict to track each named selection 
+            self._meshdata = dict()
+            self._outmeshbasis = dict()
+        else:
+            self._meshdata = None
+            self._outmeshbasis = None
         self._outdim = int(dimensionality[0])
         self._outname = outputname
         self._outunit = unit
@@ -494,7 +499,9 @@ class TbRom:
                 pointsids = self._named_selection_indexes(named_selection)
                 listids = np.sort(pointsids)
                 outmeshbasis = outmeshbasis[:, listids]
-            self._outmeshbasis = outmeshbasis
+                self._outmeshbasis[named_selection] = outmeshbasis
+            else:
+                self._outmeshbasis = outmeshbasis
         else:  # interpolation required, e.g. because target mesh is different
             progress_bar = False
             if _HAS_TQDM:
@@ -525,10 +532,16 @@ class TbRom:
                     )
             if not nodal_values:
                 interpolated_mesh = interpolated_points.point_data_to_cell_data()
-                self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
+                if named_selection is not None:
+                    self._outmeshbasis[named_selection] = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
+                else:
+                    self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
             else:
                 interpolated_mesh = interpolated_points
-                self._outmeshbasis = np.array([interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)])
+                if named_selection is not None:
+                    self._outmeshbasis[named_selection] = np.array([interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)])
+                else:
+                    self._outmeshbasis = np.array([interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)])
 
         if interpolate and strategy == "mask_points":
             mesh_data = interpolated_mesh.copy()
@@ -538,10 +551,15 @@ class TbRom:
         mesh_data.clear_data()
 
         # initialize output field data
-        nb_data = self._outmeshbasis.shape[1]
-        mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
-
-        self._meshdata = mesh_data
+        if named_selection is not None:
+            nb_data = self._outmeshbasis[named_selection].shape[1]
+            mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
+            self._meshdata[named_selection] = mesh_data
+        else:
+            nb_data = self._outmeshbasis.shape[1]
+            mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
+            self._meshdata = mesh_data
+        return self._meshdata
 
     def _update_output_field(self, time=None):
         """
@@ -558,14 +576,24 @@ class TbRom:
             update_vector_norm(self._pointsdata, self.field_output_name)
         self._pointsdata.set_active_scalars(self.field_output_name)
 
-        if self._meshdata is not None:
-            if not self.isparamfieldhist:
-                self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
+        if self._meshdata: # not none or empty dict (i.e. after _pojrect_on_mesh has been called)
+            if isinstance(self._meshdata, dict):
+                for ns in self._meshdata:
+                    if not self.isparamfieldhist:
+                        self._meshdata[ns][self.field_output_name] = np.tensordot(mc, self._outmeshbasis[ns], axes=1)
+                    else:
+                        self._meshdata[ns][self.field_output_name] = np.tensordot(mc, outmeshbasis[ns], axes=1)
+                    if self.field_output_dim > 1:
+                        update_vector_norm(self._meshdata[ns], self.field_output_name)
+                    self._meshdata[ns].set_active_scalars(self.field_output_name)
             else:
-                self._meshdata[self.field_output_name] = np.tensordot(mc, outmeshbasis, axes=1)
-            if self.field_output_dim > 1:
-                update_vector_norm(self._meshdata, self.field_output_name)
-            self._meshdata.set_active_scalars(self.field_output_name)
+                if not self.isparamfieldhist:
+                    self._meshdata[self.field_output_name] = np.tensordot(mc, self._outmeshbasis, axes=1)
+                else:
+                    self._meshdata[self.field_output_name] = np.tensordot(mc, outmeshbasis, axes=1)
+                if self.field_output_dim > 1:
+                    update_vector_norm(self._meshdata, self.field_output_name)
+                self._meshdata.set_active_scalars(self.field_output_name)
 
         if self._transformation is not None:
             self._reverseConstraints()
@@ -611,13 +639,23 @@ class TbRom:
                 timegrid[index] - timegrid[index - 1]
             ) * (self._outbasis[:, index, :, :] - self._outbasis[:, index - 1, :, :])
 
-        if self._meshdata is not None:
-            if time <= timegrid[0] or time >= timegrid[-1]:
-                meshgrid = self._meshdata[index]
+        if self._meshdata:
+            if len(self.named_selections) > 0:
+                meshgrid = dict()
+                for ns in self.named_selections:
+                    if time <= timegrid[0] or time >= timegrid[-1]:
+                        meshgrid[ns] = self._meshdata[ns][index]
+                    else:
+                        meshgrid[ns] = self._meshdata[ns][:, index - 1, :, :] + (time - timegrid[index - 1]) / (
+                            timegrid[index] - timegrid[index - 1]
+                        ) * (self._meshdata[ns][:, index, :, :] - self._meshdata[ns][:, index - 1, :, :])
             else:
-                meshgrid = self._meshdata[:, index - 1, :, :] + (time - timegrid[index - 1]) / (
-                    timegrid[index] - timegrid[index - 1]
-                ) * (self._meshdata[:, index, :, :] - self._meshdata[:, index - 1, :, :])
+                if time <= timegrid[0] or time >= timegrid[-1]:
+                    meshgrid = self._meshdata[index]
+                else:
+                    meshgrid = self._meshdata[:, index - 1, :, :] + (time - timegrid[index - 1]) / (
+                        timegrid[index] - timegrid[index - 1]
+                    ) * (self._meshdata[:, index, :, :] - self._meshdata[:, index - 1, :, :])
 
         return outgrid, meshgrid
 
@@ -657,15 +695,23 @@ class TbRom:
             minValue = self._transformation["minValue"]
             self._pointsdata[self.field_output_name] = np.power(self._pointsdata[self.field_output_name], 2) + minValue
 
-            if self._meshdata is not None:
-                self._meshdata[self.field_output_name] = np.power(self._meshdata[self.field_output_name], 2) + minValue
+            if self._meshdata:
+                if isinstance(self._meshdata, dict):
+                    for ns in self._meshdata:
+                        self._meshdata[ns][self.field_output_name] = np.power(self._meshdata[ns][self.field_output_name], 2) + minValue
+                else:
+                    self._meshdata[self.field_output_name] = np.power(self._meshdata[self.field_output_name], 2) + minValue
 
         elif self._transformation["function"] == "max":
             maxValue = self._transformation["maxValue"]
             self._pointsdata[self.field_output_name] = maxValue - np.power(self._pointsdata[self.field_output_name], 2)
 
-            if self._meshdata is not None:
-                self._meshdata[self.field_output_name] = maxValue - np.power(self._meshdata[self.field_output_name], 2)
+            if self._meshdata:
+                if isinstance(self._meshdata, dict):
+                    for ns in self._meshdata:
+                        self._meshdata[ns][self.field_output_name] = maxValue - np.power(self._meshdata[ns][self.field_output_name], 2)
+                else:
+                    self._meshdata[self.field_output_name] = maxValue - np.power(self._meshdata[self.field_output_name], 2)
 
         elif self._transformation["function"] == "minMax":
             minValue = self._transformation["minValue"]
@@ -682,7 +728,13 @@ class TbRom:
                 np.power(np.exp(self._pointsdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
             )
 
-            if self._meshdata is not None:
+            if self._meshdata:
+                if isinstance(self._meshdata, dict):
+                    for ns in self._meshdata:
+                        self._meshdata[ns][self.field_output_name] = np.clip(
+                            np.power(np.exp(self._meshdata[ns][self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+                        )
+            else:
                 self._meshdata[self.field_output_name] = np.clip(
                     np.power(np.exp(self._meshdata[self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
                 )
