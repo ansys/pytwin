@@ -445,7 +445,7 @@ class TwinModel(Model):
         msg = f"[ParametricFieldHistory]The given ROM name ({rom_name}) is "
         msg += f"not a parametric field history ROM."
         return msg
-    
+
     def _error_msg_for_not_projection(self, rom_name):
         msg = f"[NoProjection]The provided ROM name ({rom_name}) does not have mesh data available yet."
         msg += f" Call this method after having projected the TBROM output field on mesh with "
@@ -2154,7 +2154,7 @@ class TwinModel(Model):
             raise self._raise_error(msg)
 
         return tbrom.field_on_points
-    
+
     def get_tbrom_output_field_on_mesh(self, rom_name: str):
         """
         Return the TBROM output field projected on the target mesh, as a PyVista DataSet object or a
@@ -2176,8 +2176,8 @@ class TwinModel(Model):
             If :func:`pytwin.TwinModel.project_tbrom_on_mesh` was previously called without a named
             selection, returns the PyVista DataSet of the full-domain projection.
         dict[str, pyvista.DataSet]
-            If :func:`pytwin.TwinModel.project_tbrom_on_mesh` was previously called with named selections 
-            (once or multiple times), returns a dictionary mapping each projected named selection name 
+            If :func:`pytwin.TwinModel.project_tbrom_on_mesh` was previously called with named selections
+            (once or multiple times), returns a dictionary mapping each projected named selection name
             to its PyVista DataSet.
 
 

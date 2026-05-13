@@ -323,8 +323,8 @@ class TbRom:
         self._infbasis = infdata
 
         self._nsidslist = nsidslist
-        if self._nsidslist: # multiple named selections -> initialize _meshdata and _outmeshbasis 
-            # as dict to track each named selection 
+        if self._nsidslist:  # multiple named selections -> initialize _meshdata and _outmeshbasis
+            # as dict to track each named selection
             self._meshdata = dict()
             self._outmeshbasis = dict()
         else:
@@ -533,13 +533,17 @@ class TbRom:
             if not nodal_values:
                 interpolated_mesh = interpolated_points.point_data_to_cell_data()
                 if named_selection is not None:
-                    self._outmeshbasis[named_selection] = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
+                    self._outmeshbasis[named_selection] = np.array(
+                        [interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)]
+                    )
                 else:
                     self._outmeshbasis = np.array([interpolated_mesh.cell_data[str(i)] for i in range(0, nbmc)])
             else:
                 interpolated_mesh = interpolated_points
                 if named_selection is not None:
-                    self._outmeshbasis[named_selection] = np.array([interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)])
+                    self._outmeshbasis[named_selection] = np.array(
+                        [interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)]
+                    )
                 else:
                     self._outmeshbasis = np.array([interpolated_mesh.point_data[str(i)] for i in range(0, nbmc)])
 
@@ -578,7 +582,7 @@ class TbRom:
             update_vector_norm(self._pointsdata, self.field_output_name)
         self._pointsdata.set_active_scalars(self.field_output_name)
 
-        if self._meshdata: # not none or empty dict (i.e. after _pojrect_on_mesh has been called)
+        if self._meshdata:  # not none or empty dict (i.e. after _pojrect_on_mesh has been called)
             if isinstance(self._meshdata, dict):
                 for ns in self._meshdata:
                     if not self.isparamfieldhist:
@@ -700,9 +704,13 @@ class TbRom:
             if self._meshdata:
                 if isinstance(self._meshdata, dict):
                     for ns in self._meshdata:
-                        self._meshdata[ns][self.field_output_name] = np.power(self._meshdata[ns][self.field_output_name], 2) + minValue
+                        self._meshdata[ns][self.field_output_name] = (
+                            np.power(self._meshdata[ns][self.field_output_name], 2) + minValue
+                        )
                 else:
-                    self._meshdata[self.field_output_name] = np.power(self._meshdata[self.field_output_name], 2) + minValue
+                    self._meshdata[self.field_output_name] = (
+                        np.power(self._meshdata[self.field_output_name], 2) + minValue
+                    )
 
         elif self._transformation["function"] == "max":
             maxValue = self._transformation["maxValue"]
@@ -711,9 +719,13 @@ class TbRom:
             if self._meshdata:
                 if isinstance(self._meshdata, dict):
                     for ns in self._meshdata:
-                        self._meshdata[ns][self.field_output_name] = maxValue - np.power(self._meshdata[ns][self.field_output_name], 2)
+                        self._meshdata[ns][self.field_output_name] = maxValue - np.power(
+                            self._meshdata[ns][self.field_output_name], 2
+                        )
                 else:
-                    self._meshdata[self.field_output_name] = maxValue - np.power(self._meshdata[self.field_output_name], 2)
+                    self._meshdata[self.field_output_name] = maxValue - np.power(
+                        self._meshdata[self.field_output_name], 2
+                    )
 
         elif self._transformation["function"] == "minMax":
             minValue = self._transformation["minValue"]
@@ -734,7 +746,9 @@ class TbRom:
                 if isinstance(self._meshdata, dict):
                     for ns in self._meshdata:
                         self._meshdata[ns][self.field_output_name] = np.clip(
-                            np.power(np.exp(self._meshdata[ns][self.field_output_name]) + alpha, -1) + beta, minValue, maxValue
+                            np.power(np.exp(self._meshdata[ns][self.field_output_name]) + alpha, -1) + beta,
+                            minValue,
+                            maxValue,
                         )
             else:
                 self._meshdata[self.field_output_name] = np.clip(

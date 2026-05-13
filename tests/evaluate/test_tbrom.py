@@ -1602,7 +1602,6 @@ class TestTbRom:
         except TwinModelError as e:
             assert "[RomOutputConnection]" in str(e)
 
-
     def test_tbrom_get_output_field_on_mesh_no_named_selection(self):
         """
         After project_tbrom_on_mesh without named selection, get_tbrom_output_field_on_mesh
@@ -1635,7 +1634,6 @@ class TestTbRom:
         twinmodel.evaluate_step_by_step(step_size=0.1, field_inputs={romname: {fieldname: zero_snapshot}})
         field_after = field_on_mesh[twinmodel.get_field_output_name(romname)]
         assert not np.allclose(field_before, field_after)
-
 
     def test_tbrom_get_output_field_on_mesh_with_named_selections(self):
         """
@@ -1677,7 +1675,6 @@ class TestTbRom:
         for ns in nslist:
             assert not np.allclose(fields_before[ns], fields_after[ns])
 
-
     def test_tbrom_get_output_field_on_mesh_partial_named_selections(self):
         """
         If only a subset of named selections have been projected, get_tbrom_output_field_on_mesh
@@ -1701,6 +1698,7 @@ class TestTbRom:
         assert isinstance(field_on_mesh, dict)
         assert nslist[0] in field_on_mesh
         assert nslist[1] not in field_on_mesh
+
 
 #    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
 #        model_filepath = TEST_TB_ROM_DROM
