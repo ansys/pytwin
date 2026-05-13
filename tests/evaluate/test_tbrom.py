@@ -1657,7 +1657,7 @@ class TestTbRom:
         for ns in nslist:
             result = twinmodel.project_tbrom_on_mesh(romname, mesh, False, ns)
             assert result is not None
-            assert isinstance(result, dict)
+            assert isinstance(result, pv.DataSet)
 
         # get_tbrom_output_field_on_mesh returns a dict with all projected named selections
         field_on_mesh = twinmodel.get_tbrom_output_field_on_mesh(romname)

@@ -555,11 +555,13 @@ class TbRom:
             nb_data = self._outmeshbasis[named_selection].shape[1]
             mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
             self._meshdata[named_selection] = mesh_data
+            return self._meshdata[named_selection]
+
         else:
             nb_data = self._outmeshbasis.shape[1]
             mesh_data[self.field_output_name] = np.zeros((nb_data, self.field_output_dim))
             self._meshdata = mesh_data
-        return self._meshdata
+            return self._meshdata
 
     def _update_output_field(self, time=None):
         """
