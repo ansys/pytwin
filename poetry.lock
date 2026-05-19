@@ -523,21 +523,6 @@ doc = ["Sphinx (==7.1.2)", "ansys-api-platform-instancemanagement (==1.0.0)", "a
 tests = ["ansys-api-platform-instancemanagement (==1.0.0)", "grpcio-health-checking (==1.56.2)", "grpcio-testing", "pytest (==7.4.0)", "pytest-cov (==4.1.0)", "six (>=1.16,<2.0)"]
 
 [[package]]
-name = "ansys-pythonnet"
-version = "3.1.0rc6"
-description = ".NET and Mono integration for Python (Ansys, Inc. fork)"
-optional = false
-python-versions = "<3.14,>=3.7"
-groups = ["doc"]
-files = [
-    {file = "ansys_pythonnet-3.1.0rc6-py3-none-any.whl", hash = "sha256:556d67706bc293a2d990ab14176db6e812d294c81ab2eff23b230998c7dd0dcc"},
-    {file = "ansys_pythonnet-3.1.0rc6.tar.gz", hash = "sha256:8ae09cf7687a7b431f41f570d12bd7547e393618231d0ef877fe021d491fc945"},
-]
-
-[package.dependencies]
-clr_loader = ">=0.2.5,<0.3.0"
-
-[[package]]
 name = "ansys-sphinx-theme"
 version = "1.7.2"
 description = "A theme devised by ANSYS, Inc. for Sphinx documentation."
@@ -793,6 +778,7 @@ description = "Foreign Function Interface for Python calling C code."
 optional = false
 python-versions = ">=3.9"
 groups = ["doc"]
+markers = "implementation_name == \"pypy\""
 files = [
     {file = "cffi-2.0.0-cp310-cp310-macosx_10_13_x86_64.whl", hash = "sha256:0cf2d91ecc3fcc0625c2c530fe004f82c110405f101548512cce44322fa8ac44"},
     {file = "cffi-2.0.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:f73b96c41e3b2adedc34a7356e64c8eb96e03a3782b535e043a986276ce12a49"},
@@ -1036,21 +1022,6 @@ files = [
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
-
-[[package]]
-name = "clr-loader"
-version = "0.2.10"
-description = "Generic pure Python loader for .NET runtimes"
-optional = false
-python-versions = ">=3.7"
-groups = ["doc"]
-files = [
-    {file = "clr_loader-0.2.10-py3-none-any.whl", hash = "sha256:ebbbf9d511a7fe95fa28a95a4e04cd195b097881dfe66158dc2c281d3536f282"},
-    {file = "clr_loader-0.2.10.tar.gz", hash = "sha256:81f114afbc5005bafc5efe5af1341d400e22137e275b042a8979f3feb9fc9446"},
-]
-
-[package.dependencies]
-cffi = {version = ">=1.17", markers = "python_version >= \"3.8\""}
 
 [[package]]
 name = "colorama"
@@ -3772,35 +3743,35 @@ files = [
 
 [[package]]
 name = "pyaedt"
-version = "0.26.3"
+version = "0.27.1"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-0.26.3-py3-none-any.whl", hash = "sha256:07d149956f5cfe676583d2b59a536bd58e6e48a02061a79c99a7017126ec084f"},
-    {file = "pyaedt-0.26.3.tar.gz", hash = "sha256:4120c1a4147587c7f8473a1b84bec15cfc547bf3fc7de63bf9eeebdda888d11d"},
+    {file = "pyaedt-0.27.1-py3-none-any.whl", hash = "sha256:1e0da2f634dad3bbf807063e515c8ab87aa35efacc97c11e3f1314a1ea5e3732"},
+    {file = "pyaedt-0.27.1.tar.gz", hash = "sha256:5aac24c2c5b200921ea69db756fa9e7dde85d4070d96060cee5c9816b07d49fc"},
 ]
 
 [package.dependencies]
 ansys-tools-common = "*"
-defusedxml = ">=0.7,<8.0"
-grpcio = ">=1.50.0,<1.81"
+defusedxml = ">=0.7"
+grpcio = ">=1.50.0"
 jsonschema = "*"
-numpy = ">=1.20.0,<2.3"
+numpy = ">=1.20.0"
 psutil = ">=6.0.0"
-pydantic = ">=2.6.4,<2.14"
-pyedb = "0.74.0"
+pydantic = ">=2.6.4"
+pyedb = ">=0.75.0"
 pyyaml = "*"
 tomli = {version = "*", markers = "python_version < \"3.11\""}
 tomli-w = "*"
 
 [package.extras]
-all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=2.0.0,<2.2)", "pandas (>=1.1.0,<2.4)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.48)", "requests", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.12)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0,<2.1) ; platform_system == \"Linux\"", "dotnetcore2 (==3.1.23) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
-examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0,<2.38)", "joblib (>=1.4.0,<1.6)", "matplotlib (>=3.5.0,<3.11)", "openpyxl (>=3.1.0,<3.3)", "osmnx (>=2.0.0,<2.2)", "pandas (>=1.1.0,<2.4)", "plotly (>=6.0,<6.8)", "pyvista[jupyter] (>=0.38.0,<0.48)", "rpyc (>=6.0.0,<6.1)", "scikit-rf (>=0.30.0,<1.12)", "tables ; python_version >= \"3.10\""]
-graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0,<3.11)", "pillow", "pyvista[io] (>=0.38.0,<0.48)", "vtk (>=9.0,<9.7)"]
-jupyter = ["ipython (>=7.30.0,<9.1)", "jupyterlab (>=3.6.0,<4.6)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.48)", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
+dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
+examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0)", "joblib (>=1.4.0)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "plotly (>=6.0)", "pyvista[jupyter] (>=0.38.0)", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\""]
+graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0)", "pillow", "pyvista[io] (>=0.38.0,<0.48)", "vtk (>=9.0,<9.7)"]
+jupyter = ["ipython (>=7.30.0)", "jupyterlab (>=3.6.0)"]
 
 [[package]]
 name = "pycparser"
@@ -3809,7 +3780,7 @@ description = "C parser in Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["doc"]
-markers = "implementation_name != \"PyPy\""
+markers = "implementation_name == \"pypy\""
 files = [
     {file = "pycparser-3.0-py3-none-any.whl", hash = "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"},
     {file = "pycparser-3.0.tar.gz", hash = "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29"},
@@ -4001,35 +3972,33 @@ test = ["pytest", "pytest-cov", "pytest-regressions", "sphinx[test]"]
 
 [[package]]
 name = "pyedb"
-version = "0.74.0"
+version = "0.75.0"
 description = "Higher-Level Pythonic Ansys Electronics Data Base"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyedb-0.74.0-py3-none-any.whl", hash = "sha256:7d34ad640314b3655eaf899ce119bda0eeb3d6d12f7deb3a1f17dae431f42447"},
-    {file = "pyedb-0.74.0.tar.gz", hash = "sha256:d3d705df64a8495cda829faa07a9c0ee1e4d4ec373ed73e7e60592f5b802d625"},
+    {file = "pyedb-0.75.0-py3-none-any.whl", hash = "sha256:f02b2795e2feadc1c31a4d105d9d10dc303d8a593613cf7a3c3bfa4e67baabe4"},
+    {file = "pyedb-0.75.0.tar.gz", hash = "sha256:140cba86a66821698fca44bdc592adaab69dea6bc6667d65251dd04d3aae080c"},
 ]
 
 [package.dependencies]
 ansys-edb-core = "0.3.1"
-ansys-pythonnet = ">=3.1.0rc6"
-cffi = {version = ">=1.16.0,<2.1", markers = "platform_system == \"Linux\""}
 defusedxml = ">=0.7,<8.0"
 numpy = ">=1.20.0,<3"
 psutil = "*"
 pydantic = ">=2.6.4,<2.14"
-pywin32 = {version = ">=304", markers = "platform_system == \"Windows\""}
 toml = "0.10.2"
 xmltodict = "*"
 
 [package.extras]
 all = ["Rtree (>=1.2.0)", "ezdxf (>=1.4.2)", "matplotlib (>=3.5.0,<3.11)", "pandas (>=1.1.0,<2.4)", "scikit-rf", "scipy (>=1.13,<2.0)", "shapely"]
 analysis = ["pandas (>=1.1.0,<2.4)", "scikit-rf"]
-doc = ["Rtree (>=1.2.0)", "Sphinx (>=7.1.0,<9.1)", "ansys-sphinx-theme[autoapi] (>=1.0.0,<1.8)", "ezdxf (>=1.4.2)", "imageio (>=2.30.0,<2.38)", "jupyterlab (>=4.0.0,<4.6)", "jupytext (>=1.16.0,<1.20)", "matplotlib (>=3.5.0,<3.11)", "nbconvert (<7.18)", "nbsphinx (>=0.9.0,<0.10)", "numpydoc (==1.10.0)", "pandas (>=1.1.0,<2.4)", "pypandoc (>=1.10.0,<1.18)", "recommonmark", "shapely", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.21)", "sphinx_design (>=0.4.0,<0.7)"]
+doc = ["Rtree (>=1.2.0)", "Sphinx (>=7.1.0,<9.1)", "ansys-sphinx-theme[autoapi] (>=1.0.0,<1.8)", "ezdxf (>=1.4.2)", "imageio (>=2.30.0,<2.38)", "jupyterlab (>=4.0.0,<4.6)", "jupytext (>=1.16.0,<1.20)", "matplotlib (>=3.5.0,<3.11)", "nbconvert (<7.18)", "nbsphinx (>=0.9.0,<0.10)", "numpydoc (==1.10.0)", "pandas (>=1.1.0,<2.4)", "pypandoc (>=1.10.0,<1.18)", "recommonmark", "shapely", "sphinx-autobuild (==2024.10.3)", "sphinx-copybutton (>=0.5.0,<0.6)", "sphinx-gallery (>=0.14.0,<0.22)", "sphinx_design (>=0.4.0,<0.7)"]
+dotnet = ["ansys-pythonnet (>=3.1.0rc6)", "cffi (>=1.16.0,<2.1) ; platform_system == \"Linux\"", "pywin32 (>=304) ; platform_system == \"Windows\""]
 geometry = ["Rtree (>=1.2.0)", "ezdxf (>=1.4.2)", "scipy (>=1.13,<2.0)", "shapely"]
 graphics = ["matplotlib (>=3.5.0,<3.11)"]
-tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<9.1)", "pytest-cov (>=4.0.0,<7.2)", "pytest-xdist (>=3.5.0,<3.7)"]
+tests = ["mock (>=5.1.0,<5.3)", "pytest (>=7.4.0,<9.1)", "pytest-cov (>=4.0.0,<7.2)", "pytest-rerunfailures (>=14.0,<17)", "pytest-xdist (>=3.5.0,<3.7)"]
 
 [[package]]
 name = "pygments"
@@ -6225,4 +6194,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "0823a11ef2467a0aa22f09610b9cb41750ad3d13b34a82fc6fb9e44b0518f543"
+content-hash = "d7b5974fa0abc82b39b4d60def423b2569b15b1e5edb783deca308bf69f30605"
