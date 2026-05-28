@@ -4219,14 +4219,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.47.0"
-description = "Easier Pythonic interface to VTK"
+version = "0.48.4"
+description = "3D visualization and mesh analysis for science and engineering."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.47.0-py3-none-any.whl", hash = "sha256:35d9b003d3bfac709da5b76dd264919b6847c469be08283d3295833f6a7ea657"},
-    {file = "pyvista-0.47.0.tar.gz", hash = "sha256:3956348e3e1529ef51bb1d08ceb102d2bf1972bc52fe9545a1c53c2a35406025"},
+    {file = "pyvista-0.48.4-py3-none-any.whl", hash = "sha256:a46eda178e10e279afda550c341676a82dcee607c86db74565fa455ac0bd23e2"},
+    {file = "pyvista-0.48.4.tar.gz", hash = "sha256:c639dad1bddff5e366d77371f66f783f6e6a0581446810a66439902222d8db07"},
 ]
 markers = {main = "extra == \"graphics\""}
 
@@ -4243,8 +4243,8 @@ vtk = ">=9.2.2,<9.4.0 || >9.4.0,<9.4.1 || >9.4.1,<9.7.0"
 [package.extras]
 all = ["pyvista[colormaps,io,jupyter]"]
 colormaps = ["cmcrameri", "cmocean", "colorcet"]
-io = ["imageio", "meshio (>=5.2)"]
-jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.2)", "trame-client (>=2.12.7)", "trame-server (>=2.11.7,<3.7.dev0 || >3.8.0)", "trame-vtk (>=2.5.8)", "trame-vuetify (>=2.3.1)"]
+io = ["fsspec", "imageio", "meshio (>=5.2)", "pyvista-zstd (>=0.2.2)"]
+jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.2)", "trame-client (>=2.12.7)", "trame-server (>=2.11.7,<3.7.dev0 || >3.8.0)", "trame-vtk (!=2.10.3,!=2.11.0,!=2.11.1,!=2.11.2,!=2.11.3,!=2.11.4,!=2.11.5,!=2.11.6)", "trame-vtk (>=2.5.8,<2.11.9)", "trame-vuetify (>=2.3.1)"]
 
 [[package]]
 name = "pyvistaqt"
