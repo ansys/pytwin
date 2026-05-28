@@ -100,6 +100,7 @@ print("Loading model: {}".format(twin_file))
 twin_model = TwinModel(twin_file)
 twin_model.print_model_info()
 romname = twin_model.tbrom_names[0]
+fieldName = twin_model.get_field_output_name(romname) + "-normed"
 twin_model.initialize_evaluation(parameters=rom_inputs)
 field_data = twin_model.get_tbrom_output_field(romname)
 plotter = pv.Plotter()
@@ -108,7 +109,7 @@ plotter.add_axes()
 plotter.add_mesh(field_data, scalar_bar_args={"color": "black"}, clim=[0.0, 6.0])
 plotter.add_title("Time = {}".format(twin_model.evaluation_time))
 plotter.show()
-print(max(field_data.active_scalars))
+print(max(field_data[fieldName]))
 
 ###############################################################################
 # .. image:: /_static/TBROM_pfieldhistory_t0.png
@@ -134,7 +135,7 @@ plotter.add_axes()
 plotter.add_mesh(field_data, scalar_bar_args={"color": "black"}, clim=[0.0, 6.0])
 plotter.add_title("Time = {}".format(twin_model.evaluation_time))
 plotter.show()
-print(max(field_data.active_scalars))
+print(max(field_data[fieldName]))
 
 ###############################################################################
 # .. image:: /_static/TBROM_pfieldhistory_t100.png
@@ -151,7 +152,7 @@ plotter.add_axes()
 plotter.add_mesh(field_data, scalar_bar_args={"color": "black"}, clim=[0.0, 6.0])
 plotter.add_title("Time = {}".format(twin_model.evaluation_time))
 plotter.show()
-print(max(field_data.active_scalars))
+print(max(field_data[fieldName]))
 
 ###############################################################################
 # .. image:: /_static/TBROM_pfieldhistory_t250.png
@@ -169,8 +170,6 @@ print(max(field_data.active_scalars))
 
 timegrid = twin_model.get_tbrom_time_grid(romname)
 print(timegrid)
-
-fieldName = twin_model.get_field_output_name(romname) + "-normed"
 
 point = np.array([0.0, 0.0, 0.0])
 idx = field_data.find_closest_point(point)
