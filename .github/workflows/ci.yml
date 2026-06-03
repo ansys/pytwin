@@ -13,6 +13,7 @@ permissions:
 
 env:
   MAIN_PYTHON_VERSION: "3.14"
+  DOC_PYTHON_VERSION: "3.13"
   DOCUMENTATION_CNAME: 'twin.docs.pyansys.com'
   LIBRARY_NAME: 'pytwin'
 
@@ -74,7 +75,7 @@ jobs:
       - name: "Set up Python"
         uses: ansys/actions/_setup-python@v10.3.2
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ env.DOC_PYTHON_VERSION }}
           use-cache: false
 
       - name: "Copy source files for DPF server installation"
