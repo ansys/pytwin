@@ -391,7 +391,7 @@ description = "A python wrapper for ansys Fluent visualization"
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["doc"]
-markers = "python_version < \"3.14\""
+markers = "python_version < \"3.12\""
 files = [
     {file = "ansys_fluent_visualization-0.26.0-py3-none-any.whl", hash = "sha256:1690bd955c3fdbf24e9c36822046c3ec7e87e280f74e41c458477afba135f78b"},
     {file = "ansys_fluent_visualization-0.26.0.tar.gz", hash = "sha256:79bf00423f75017e4bce461cdebcac2c07ed8159d9996a1299ace111c0eec537"},
@@ -405,6 +405,28 @@ pyvista = ">=0.44.0"
 [package.extras]
 interactive = ["pyvistaqt (>=0.11.1,<0.12.0)"]
 single-window = ["pyside6 (>=6.8.1,<6.9.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
+
+[[package]]
+name = "ansys-fluent-visualization"
+version = "0.26.1"
+description = "A python wrapper for ansys Fluent visualization"
+optional = false
+python-versions = "<3.15,>=3.10"
+groups = ["doc"]
+markers = "python_version >= \"3.12\""
+files = [
+    {file = "ansys_fluent_visualization-0.26.1-py3-none-any.whl", hash = "sha256:b161370c485603faea56e2d354f1f036717ab4148e8d0dbb1ab19e62867f5a1f"},
+    {file = "ansys_fluent_visualization-0.26.1.tar.gz", hash = "sha256:4c9ac7c6e86e6ec6c8693b889cb21643c182180b704ee1b1065dd8f879d06da1"},
+]
+
+[package.dependencies]
+ansys-fluent-core = ">=0.35.0,<0.40.0"
+matplotlib = ">=3.6.0"
+pyvista = ">=0.44.0"
+
+[package.extras]
+interactive = ["pyvistaqt (>=0.11.1,<0.12.0)"]
+single-window = ["pyside6 (>=6.8.1,<7.0.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
 
 [[package]]
 name = "ansys-mapdl-core"
@@ -6420,4 +6442,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "b5a3648ead86776195d05210afba8c1882a71148e8b1d8fef14fc1f617a7d8a3"
+content-hash = "10a29ab30a5bfb57961d8bc3c0b138bf8002aae882465453abb626f6d2aab68c"

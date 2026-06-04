@@ -55,7 +55,7 @@ optional = true
 [tool.poetry.group.doc.dependencies]
 ansys-fluent-core = ">=0.30,<0.40"
 ansys-dpf-core = ">=0.13,<0.17"
-ansys-fluent-visualization = {version = ">=0.21.1", python = "<3.14"} # doc build not using python 3.14 as long as ansys-fluent-visualization does not support it
+ansys-fluent-visualization = ">=0.21.1"
 ansys-mapdl-core = {version = ">=0.68.5,<0.74.0", extras = ["graphics"]}
 ansys-sphinx-theme = ">=1.0.0,<1.9"
 ipywidgets = "8.1.8" # pin the version to solve doc building workflow issue as 8.1.8 leads to installation issue (PR #392)
