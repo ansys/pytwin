@@ -33,6 +33,7 @@ def pytest_collection_modifyitems(config, items):
             if "TestTbRom" in item.nodeid:
                 item.add_marker(pytest.mark.forked)
 
+
 # ---------------------------------------------------------------------------
 # Coverage support for os.fork() + os._exit() used by pytest-forked on Linux
 # ---------------------------------------------------------------------------
