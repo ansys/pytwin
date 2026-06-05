@@ -88,6 +88,7 @@ src_paths = ["doc", "src", "tests"]
 ignore-words = "doc/styles/config/vocabularies/ANSYS/accept.txt"
 
 [tool.coverage.run]
+concurrency = ["multiprocessing"]
 source = ["ansys.pytwin"]
 
 [tool.coverage.report]
