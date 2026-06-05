@@ -172,6 +172,7 @@ jobs:
       - name: Combine parallel coverage data (Linux only)
         if: matrix.os == 'ubuntu-22.04'
         run: |
+          pip install coverage[toml]
           python -m coverage combine
           python -m coverage xml -o .cov/coverage.xml
           python -m coverage html -d .cov/html
