@@ -1705,12 +1705,12 @@ class TestTbRom:
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
         location = twinmodel.get_tbrom_data_location(romname)
-        assert location=="elemental"
+        assert location == "elemental"
         model_filepath = download_file("FEADeformationTBROM_23R2.twin", "twin_files")
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
         location = twinmodel.get_tbrom_data_location(romname)
-        assert location=="Nodal"
+        assert location == "Nodal"
 
 
 #    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
