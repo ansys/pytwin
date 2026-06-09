@@ -1425,7 +1425,7 @@ class TestTbRom:
 
     def test_tbrom_tensor_field(self):
         model_filepath = TEST_TB_ROM_TENSOR
-        [nsidslist, dimensionality, outputname, unit, timegrid] = tbrom._read_settings(
+        [nsidslist, dimensionality, outputname, unit, timegrid, location] = tbrom._read_settings(
             model_filepath
         )  # instantiation should be fine without points
         assert int(dimensionality[0]) is 6
@@ -1701,7 +1701,7 @@ class TestTbRom:
 
     def test_tbrom_get_data_location(self):
         reinit_settings()
-        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        model_filepath = download_file("HXVelVectorTBROM_23R2.twin", "twin_files")
         twinmodel = TwinModel(model_filepath=model_filepath)
         romname = twinmodel.tbrom_names[0]
         location = twinmodel.get_tbrom_data_location(romname)
