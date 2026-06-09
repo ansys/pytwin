@@ -1699,6 +1699,19 @@ class TestTbRom:
         assert nslist[0] in field_on_mesh
         assert nslist[1] not in field_on_mesh
 
+    def test_tbrom_get_output_field_data_location(self):
+        reinit_settings()
+        model_filepath = download_file("ThermalTBROM_FieldInput_23R1.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        location = twinmodel.get_field_output_data_location(romname)
+        assert location is "elemental"
+        model_filepath = download_file("FEADeformationTBROM_23R2.twin", "twin_files")
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        location = twinmodel.get_field_output_data_location(romname)
+        assert location is "Nodal"
+
 
 #    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
 #        model_filepath = TEST_TB_ROM_DROM

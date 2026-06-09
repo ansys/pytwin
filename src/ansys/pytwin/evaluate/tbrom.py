@@ -200,6 +200,11 @@ def _read_settings(filepath):
     else:
         timegrid = None
 
+    if "location" in data:
+        location = data["location"]
+    else:
+        location = "elemental"
+
     tbromns = dict()
 
     # Create list of name selections indexes
@@ -214,7 +219,7 @@ def _read_settings(filepath):
             i = i + 1
         tbromns.update({name: idsListNp})
 
-    return [tbromns, dimensionality, outputname, unit, timegrid]
+    return [tbromns, dimensionality, outputname, unit, timegrid, location]
 
 
 def _read_properties(filepath):
@@ -294,7 +299,7 @@ class TbRom:
 
         settingspath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_SET)
         if os.path.exists(settingspath):
-            [nsidslist, dimensionality, outputname, unit, timegrid] = _read_settings(settingspath)
+            [nsidslist, dimensionality, outputname, unit, timegrid, location] = _read_settings(settingspath)
         else:
             raise ValueError("Settings file {} does not exist.".format(settingspath))
 
@@ -334,6 +339,7 @@ class TbRom:
         self._outname = outputname
         self._outunit = unit
         self._outputfilespath = None
+        self._outputlocation = location
 
         # bug 1168769 (fixed in 2025R2)
         pointpath = os.path.join(tbrom_path, TbRom.OUT_F_KEY, TbRom.TBROM_POINTS)
@@ -800,6 +806,11 @@ class TbRom:
     def field_output_unit(self):
         """Return the field output unit."""
         return self._outunit
+    
+    @property
+    def field_output_data_location(self):
+        """Return the data location of the field output."""
+        return self._outputlocation
 
     @property
     def named_selections(self):
