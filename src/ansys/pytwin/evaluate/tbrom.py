@@ -806,7 +806,7 @@ class TbRom:
     def field_output_unit(self):
         """Return the field output unit."""
         return self._outunit
-    
+
     @property
     def field_output_data_location(self):
         """Return the data location of the field output."""

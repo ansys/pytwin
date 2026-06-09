@@ -1607,7 +1607,7 @@ class TwinModel(Model):
         tbrom = self._tbroms[rom_name]
 
         return tbrom.field_output_name
-    
+
     def get_field_output_data_location(self, rom_name):
         """
         Get the data location (elemental or Nodal) of the output field associated to the TBROM named rom_name.
