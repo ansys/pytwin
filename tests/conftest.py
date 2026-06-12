@@ -39,10 +39,10 @@ def pytest_collection_modifyitems(config, items):
 # ---------------------------------------------------------------------------
 # pytest-forked forks a child with os.fork() and terminates it with os._exit(),
 # which bypasses all Python cleanup (atexit, __del__, coverage finalisation).
-# We wrap os.fork() so that the child:
-#   1. Stops the inherited parent coverage instance (to avoid double-counting).
-#   2. Starts a NEW coverage instance with a unique parallel data suffix.
-#   3. Patches os._exit() to flush that data before the hard exit.
+# We wrap os.fork() so that the child patches os._exit() to flush the
+# already-running pytest-cov coverage instance before the hard exit.
+# parallel=true in pyproject.toml ensures each child writes a uniquely-named
+# .coverage.<host>.<pid>.<rand> file; pytest-cov combines them at session end.
 # ---------------------------------------------------------------------------
 if sys.platform == "linux" and hasattr(os, "fork") and os.environ.get("COVERAGE_PROCESS_START"):
 

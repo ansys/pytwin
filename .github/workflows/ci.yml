@@ -167,34 +167,6 @@ jobs:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
           COVERAGE_PROCESS_START: pyproject.toml
 
-      # On Linux, forked children write separate .coverage.* files.
-      # Combine them all into one before generating reports.
-      - name: Combine parallel coverage data (Linux only)
-        if: matrix.os == 'ubuntu-22.04'
-        run: |
-          pip install coverage[toml]
-          shopt -s nullglob
-          files=(.coverage.*)
-          if [ ${#files[@]} -gt 0 ]; then
-            echo "Found ${#files[@]} parallel coverage files - combining"
-            python -m coverage combine
-            python -m coverage xml -o .cov/coverage.xml
-            python -m coverage html -d .cov/html
-          else
-            echo "No parallel coverage files found - pytest-cov already combined them"
-          fi
-
-      # TEMPORARY DIAGNOSTIC - remove before merging to main
-      - name: Diagnose parallel coverage (Linux only)
-        if: matrix.os == 'ubuntu-22.04'
-        run: |
-          pip install coverage[toml]
-          echo "=== .coverage data file ==="
-          ls -lh .coverage 2>/dev/null || echo "WARNING: .coverage NOT found"
-          echo ""
-          echo "=== Coverage for tbrom module (should be non-zero if fork fix works) ==="
-          python -m coverage report --include="*/pytwin/evaluate/tbrom*" --show-missing || echo "No coverage data available"
-
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
