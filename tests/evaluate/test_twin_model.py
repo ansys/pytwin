@@ -31,6 +31,7 @@ from pytwin.settings import get_pytwin_log_file, get_pytwin_logger, get_pytwin_w
 from tests.utilities import compare_dictionary
 
 COUPLE_CLUTCHES_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "CoupleClutches_22R2_other.twin")
+FMU_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "test_model.fmu")
 DYNAROM_HX_23R1 = os.path.join(os.path.dirname(__file__), "data", "HX_scalarDRB_23R1_other.twin")
 RC_HEAT_CIRCUIT_23R1 = os.path.join(os.path.dirname(__file__), "data", "RC_heat_circuit_23R1.twin")
 
@@ -703,3 +704,18 @@ class TestTwinModel:
                     shutil.rmtree(os.path.join(parent_dir, dir_name))
         except Exception as e:
             pass
+
+    def test_twin_fmu_loading(self):
+        reinit_settings()
+        model1 = TwinModel(model_filepath=COUPLE_CLUTCHES_FILEPATH)
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "FMU model considered" not in "".join(log_str)
+        model1.close()
+        model1 = TwinModel(model_filepath=FMU_FILEPATH)
+        log_file = get_pytwin_log_file()
+        with open(log_file, "r") as log:
+            log_str = log.readlines()
+        assert "FMU model considered" in "".join(log_str)
+        model1.close()

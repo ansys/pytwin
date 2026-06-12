@@ -606,8 +606,16 @@ class TwinModel(Model):
             for name in self._twin_runtime.twin_get_output_names():
                 self._outputs[name] = None
 
-            # Retrieve tbrom_info
-            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+            # Retrieve tbrom_info (if not possible -> FMU model)
+            tbrom_info = None
+            try:
+                tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+
+            except Exception as e:
+                msg = "TBROM information extraction failed during instantiation, "
+                msg += "FMU model considered"
+                self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
             if tbrom_info:
                 self._log_key += "WithTBROM : {}".format(tbrom_info)
                 self._tbrom_info = tbrom_info
@@ -1607,6 +1615,42 @@ class TwinModel(Model):
         tbrom = self._tbroms[rom_name]
 
         return tbrom.field_output_name
+
+    def get_tbrom_data_location(self, rom_name):
+        """
+        Get the data location (elemental or Nodal) of the output field associated to the TBROM named rom_name.
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.get_tbrom_data_location(model.tbrom_names[0])
+        """
+        self._log_key = "GetTBROMDataLocation"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        return tbrom.field_output_data_location
 
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
