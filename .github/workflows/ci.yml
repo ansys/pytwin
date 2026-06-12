@@ -177,6 +177,17 @@ jobs:
           python -m coverage xml -o .cov/coverage.xml
           python -m coverage html -d .cov/html
 
+      # TEMPORARY DIAGNOSTIC - remove before merging to main
+      - name: Diagnose parallel coverage files (Linux only)
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          echo "=== .coverage.* files written by forked children ==="
+          ls -lh .coverage.* 2>/dev/null || echo "NONE FOUND - fix is not working"
+          echo "Total child data files: $(ls .coverage.* 2>/dev/null | wc -l)"
+          echo ""
+          echo "=== Combined coverage summary (after combine) ==="
+          python -m coverage report --include="*/pytwin/evaluate/tbrom*" --show-missing
+
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
