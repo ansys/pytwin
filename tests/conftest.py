@@ -54,29 +54,19 @@ if sys.platform == "linux" and hasattr(os, "fork") and os.environ.get("COVERAGE_
         pid = _real_fork()
 
         if pid == 0:
-            # ---- We are in the forked child process ----
-
-            # 1. Stop and discard the inherited parent coverage instance so it
-            #    does not interfere or write to the parent's data file.
-            existing = _coverage_module.Coverage.current()
-            if existing is not None:
-                existing.stop()
-
-            # 2. Start a brand-new coverage instance.
-            #    data_suffix=True makes coverage.py append .HOSTNAME.PID.RANDOM
-            #    to the filename, ensuring each child writes a unique file.
-            _child_cov = _coverage_module.Coverage(
-                config_file=os.environ["COVERAGE_PROCESS_START"],
-                data_suffix=True,
-            )
-            _child_cov.start()
-
-            # 3. Patch os._exit so coverage is saved before the hard kill.
+            # In the forked child: patch os._exit to save pytest-cov's
+            # already-running coverage before the hard exit (which bypasses
+            # atexit and all normal Python cleanup).
             _real_exit = os._exit
 
             def _exit_with_coverage_save(code):
-                _child_cov.stop()
-                _child_cov.save()
+                cov = _coverage_module.Coverage.current()
+                if cov is not None:
+                    try:
+                        cov.stop()
+                        cov.save()  # parallel=true → writes .coverage.<host>.<pid>.<rand>
+                    except Exception:
+                        pass
                 _real_exit(code)
 
             os._exit = _exit_with_coverage_save
