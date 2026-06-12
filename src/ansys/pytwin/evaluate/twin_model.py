@@ -606,8 +606,17 @@ class TwinModel(Model):
             for name in self._twin_runtime.twin_get_output_names():
                 self._outputs[name] = None
 
-            # Retrieve tbrom_info
-            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+
+            # Retrieve tbrom_info (if not possible -> FMU model)
+            tbrom_info = None
+            try:
+                tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+            
+            except Exception as e:
+                msg = "TBROM information extraction failed during instantiation, " 
+                msg += "FMU model considered"
+                self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+            
             if tbrom_info:
                 self._log_key += "WithTBROM : {}".format(tbrom_info)
                 self._tbrom_info = tbrom_info
