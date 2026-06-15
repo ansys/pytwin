@@ -165,6 +165,7 @@ jobs:
           pytest-extra-args: "--cov=pytwin --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html"
         env:
           ANSYSLMD_LICENSE_FILE: 1055@${{ secrets.LICENSE_SERVER }}
+          COVERAGE_PROCESS_START: pyproject.toml
 
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
