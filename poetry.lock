@@ -386,34 +386,11 @@ ui-jupyter = ["ipywidgets (>=8.1.8)"]
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.26.0"
-description = "A python wrapper for ansys Fluent visualization"
-optional = false
-python-versions = "<3.14,>=3.10"
-groups = ["doc"]
-markers = "python_version < \"3.12\""
-files = [
-    {file = "ansys_fluent_visualization-0.26.0-py3-none-any.whl", hash = "sha256:1690bd955c3fdbf24e9c36822046c3ec7e87e280f74e41c458477afba135f78b"},
-    {file = "ansys_fluent_visualization-0.26.0.tar.gz", hash = "sha256:79bf00423f75017e4bce461cdebcac2c07ed8159d9996a1299ace111c0eec537"},
-]
-
-[package.dependencies]
-ansys-fluent-core = ">=0.35.0,<0.40.0"
-matplotlib = ">=3.6.0"
-pyvista = ">=0.44.0"
-
-[package.extras]
-interactive = ["pyvistaqt (>=0.11.1,<0.12.0)"]
-single-window = ["pyside6 (>=6.8.1,<6.9.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
-
-[[package]]
-name = "ansys-fluent-visualization"
 version = "0.26.1"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
-markers = "python_version >= \"3.12\""
 files = [
     {file = "ansys_fluent_visualization-0.26.1-py3-none-any.whl", hash = "sha256:b161370c485603faea56e2d354f1f036717ab4148e8d0dbb1ab19e62867f5a1f"},
     {file = "ansys_fluent_visualization-0.26.1.tar.gz", hash = "sha256:4c9ac7c6e86e6ec6c8693b889cb21643c182180b704ee1b1065dd8f879d06da1"},
@@ -3108,7 +3085,7 @@ description = "Fundamental package for array computing in Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
-markers = "python_version == \"3.10\""
+markers = "python_version < \"3.14\""
 files = [
     {file = "numpy-2.2.6-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b412caa66f72040e6d268491a59f2c43bf03eb6c96dd8f0307829feb7fa2b6fb"},
     {file = "numpy-2.2.6-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:8e41fd67c52b86603a91c1a505ebaef50b3314de0213461c7a6e99c9a3beff90"},
@@ -3174,7 +3151,7 @@ description = "Fundamental package for array computing in Python"
 optional = false
 python-versions = ">=3.11"
 groups = ["main", "doc", "graphics"]
-markers = "python_version >= \"3.11\""
+markers = "python_version == \"3.14\""
 files = [
     {file = "numpy-2.4.6-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:0280e0356c0829a18d9de1cb7eee50ec22ca639878d7240307ca0943d73cd2c4"},
     {file = "numpy-2.4.6-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:110f8b71aacb688ec69062bb7f6938a0f8acb01b7c1c4beb453c65b6d234584d"},
@@ -5769,14 +5746,14 @@ files = [
 
 [[package]]
 name = "tqdm"
-version = "4.67.3"
+version = "4.68.1"
 description = "Fast, Extensible Progress Meter"
 optional = false
 python-versions = ">=3.7"
 groups = ["main", "doc"]
 files = [
-    {file = "tqdm-4.67.3-py3-none-any.whl", hash = "sha256:ee1e4c0e59148062281c49d80b25b67771a127c85fc9676d3be5f243206826bf"},
-    {file = "tqdm-4.67.3.tar.gz", hash = "sha256:7d825f03f89244ef73f1d4ce193cb1774a8179fd96f31d7e1dcde62092b960bb"},
+    {file = "tqdm-4.68.1-py3-none-any.whl", hash = "sha256:fea4a90e4023f764914569f7802a297277c5ab1a66be5144143e142e1a4031d8"},
+    {file = "tqdm-4.68.1.tar.gz", hash = "sha256:fc163d96b287bd031e1aa24421ce4411b25559bd0a1be4fe649bdaa4d2c02bf5"},
 ]
 
 [package.dependencies]
@@ -5784,10 +5761,10 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
 dev = ["nbval", "pytest (>=6)", "pytest-asyncio (>=0.24)", "pytest-cov", "pytest-timeout"]
-discord = ["requests"]
+discord = ["envwrap", "requests"]
 notebook = ["ipywidgets (>=6)"]
-slack = ["slack-sdk"]
-telegram = ["requests"]
+slack = ["envwrap", "slack-sdk"]
+telegram = ["envwrap", "requests"]
 
 [[package]]
 name = "traitlets"
@@ -6442,4 +6419,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "10a29ab30a5bfb57961d8bc3c0b138bf8002aae882465453abb626f6d2aab68c"
+content-hash = "17f629ee0fa0e01aedb0d0dedf7696dd5484e59cb81921ed8cc8988c0b7e2094"
