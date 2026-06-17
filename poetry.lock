@@ -3406,7 +3406,7 @@ description = "Pexpect allows easy control of interactive console applications."
 optional = false
 python-versions = "*"
 groups = ["doc"]
-markers = "platform_system == \"Linux\" or sys_platform != \"win32\" and sys_platform != \"emscripten\""
+markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or platform_system == \"Linux\""
 files = [
     {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
     {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
@@ -3786,7 +3786,7 @@ description = "Run a subprocess in a pseudo terminal"
 optional = false
 python-versions = "*"
 groups = ["doc"]
-markers = "platform_system == \"Linux\" or sys_platform != \"win32\" and sys_platform != \"emscripten\""
+markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or platform_system == \"Linux\""
 files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
@@ -3821,14 +3821,14 @@ files = [
 
 [[package]]
 name = "pyaedt"
-version = "1.0.0"
+version = "1.0.1"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.0.0-py3-none-any.whl", hash = "sha256:a7b86e8a8006c7aac47da7a6b444022b8f3ea6c0c052d0b8894e697dca62a016"},
-    {file = "pyaedt-1.0.0.tar.gz", hash = "sha256:1f43e5745541709f1e6caf4b70fbd64c0171edbf3be0ddaf8a310d4c52e8f20a"},
+    {file = "pyaedt-1.0.1-py3-none-any.whl", hash = "sha256:2e08bff312bb6cf02a529e74792a4b9b53e71cd4a7a950a355f8955c1875ae32"},
+    {file = "pyaedt-1.0.1.tar.gz", hash = "sha256:58faf088979a70cf972a82539e09788721d85cb788820c30744be61cf98fcf09"},
 ]
 
 [package.dependencies]
