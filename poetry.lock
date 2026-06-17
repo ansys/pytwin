@@ -296,16 +296,16 @@ protobuf = ">=5.29"
 
 [[package]]
 name = "ansys-dpf-core"
-version = "0.16.0"
+version = "0.16.1"
 description = "Data Processing Framework - Python Core "
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_dpf_core-0.16.0-py3-none-any.whl", hash = "sha256:464e6762f5eca8a598267aaeafcaba625e8f9b44da6928a3442a9ea9b9fc9c55"},
-    {file = "ansys_dpf_core-0.16.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:ecfcb7ddbad0914195c109be2ffd566b66d5b0e0d5f18a516d2be5f2cbe54cad"},
-    {file = "ansys_dpf_core-0.16.0-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:0416ddf22aca0b40388a6c0482322ea9fb623f58569c0da8a6da5429a8d1400f"},
-    {file = "ansys_dpf_core-0.16.0-py3-none-win_amd64.whl", hash = "sha256:a9d62f75ad0f40c2952465209895d3f40ccf10138947526abfc55abbd871b527"},
+    {file = "ansys_dpf_core-0.16.1-py3-none-any.whl", hash = "sha256:610bab3712a94f2ce4b7bd31b5cf92e7691346baef101da73d74323b6c94c324"},
+    {file = "ansys_dpf_core-0.16.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:0b3274f609786d986e269b37a56f7a9e1d7ec2b2f5667cdd4837c3313c5dd565"},
+    {file = "ansys_dpf_core-0.16.1-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:984488b048d4c7f8a39086d391401474bba978d8aa2158da34f8a7697b2d81c3"},
+    {file = "ansys_dpf_core-0.16.1-py3-none-win_amd64.whl", hash = "sha256:18b1d16228f5da89832f507ac719db245577b4e361b065bbf2d38740791da40d"},
 ]
 
 [package.dependencies]
@@ -320,9 +320,9 @@ setuptools = "*"
 tqdm = "*"
 
 [package.extras]
-graphics = ["ansys-tools-visualization-interface (==1.0.0a1)", "imageio", "imageio-ffmpeg", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk (!=9.4.0)"]
+graphics = ["ansys-tools-visualization-interface (>=0.13.0)", "imageio", "imageio-ffmpeg", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk (!=9.4.0)"]
 operator-doc = ["jinja2"]
-plotting = ["ansys-tools-visualization-interface (==1.0.0a1)", "imageio", "imageio-ffmpeg", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk"]
+plotting = ["ansys-tools-visualization-interface (>=0.13.0)", "imageio", "imageio-ffmpeg", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk"]
 
 [[package]]
 name = "ansys-edb-core"
