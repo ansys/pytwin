@@ -3821,14 +3821,14 @@ files = [
 
 [[package]]
 name = "pyaedt"
-version = "1.0.1"
+version = "1.1.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.0.1-py3-none-any.whl", hash = "sha256:2e08bff312bb6cf02a529e74792a4b9b53e71cd4a7a950a355f8955c1875ae32"},
-    {file = "pyaedt-1.0.1.tar.gz", hash = "sha256:58faf088979a70cf972a82539e09788721d85cb788820c30744be61cf98fcf09"},
+    {file = "pyaedt-1.1.0-py3-none-any.whl", hash = "sha256:d3fbed942f70620ff1246d48d5790ad4c90d72391c026db9d5d9188754599498"},
+    {file = "pyaedt-1.1.0.tar.gz", hash = "sha256:8f62eb457fe9aed2fac9248c25cf9675c6580cd0a715af5c67a22c0fd7892f7c"},
 ]
 
 [package.dependencies]
@@ -3846,6 +3846,7 @@ tomli-w = "*"
 
 [package.extras]
 all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.49)", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
+all-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "ansys-tools-visualization-interface", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.49)", "pywin32 (>=303) ; platform_system == \"Windows\"", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
 dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
 examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0)", "joblib (>=1.4.0)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "plotly (>=6.0)", "pyvista[jupyter] (>=0.38.0)", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\""]
 graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0)", "pillow", "pyvista[io] (>=0.38.0,<0.49)", "vtk (>=9.0,<9.7)"]
@@ -6420,4 +6421,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "17f629ee0fa0e01aedb0d0dedf7696dd5484e59cb81921ed8cc8988c0b7e2094"
+content-hash = "85d23937e5041f08bdea1ca115f467f1448724f29ef165aeee0528aebfea26a2"
