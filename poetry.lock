@@ -407,14 +407,14 @@ single-window = ["pyside6 (>=6.8.1,<7.0.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.73.0"
+version = "0.73.1"
 description = "A Python client library for Ansys MAPDL."
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_mapdl_core-0.73.0-py3-none-any.whl", hash = "sha256:59e7026b53b767d69446b6ce978fc7f731ed49ef086c9d105b212169b988931b"},
-    {file = "ansys_mapdl_core-0.73.0.tar.gz", hash = "sha256:dc67c3a5b1da23441b7dc5eabcc8468cf554757f9abfe37d406e9e3018379295"},
+    {file = "ansys_mapdl_core-0.73.1-py3-none-any.whl", hash = "sha256:060d56b0b2aafe1bb40ca7b58585f4d75097c24cd01b39a92ea070b3d33a86ae"},
+    {file = "ansys_mapdl_core-0.73.1.tar.gz", hash = "sha256:a5382148389a62fe78d842c4161911d3bcd4a8baa2a0c3bb75f37dcef6ef9d73"},
 ]
 
 [package.dependencies]
