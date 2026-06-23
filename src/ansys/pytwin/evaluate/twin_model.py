@@ -446,6 +446,12 @@ class TwinModel(Model):
         msg += f"not a parametric field history ROM."
         return msg
 
+    def _error_msg_for_not_projection(self, rom_name):
+        msg = f"[NoProjection]The provided ROM name ({rom_name}) does not have mesh data available yet."
+        msg += f" Call this method after having projected the TBROM output field on mesh with "
+        msg += f"the method project_tbrom_output_on_mesh()."
+        return msg
+
     def _create_dataframe_inputs(self, inputs_df: pd.DataFrame):
         """
         Create a dataframe inputs that satisfies the conventions of the runtime SDK batch mode evaluation, that are:
@@ -600,8 +606,16 @@ class TwinModel(Model):
             for name in self._twin_runtime.twin_get_output_names():
                 self._outputs[name] = None
 
-            # Retrieve tbrom_info
-            tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+            # Retrieve tbrom_info (if not possible -> FMU model)
+            tbrom_info = None
+            try:
+                tbrom_info = self._twin_runtime.twin_get_visualization_resources()
+
+            except Exception as e:
+                msg = "TBROM information extraction failed during instantiation, "
+                msg += "FMU model considered"
+                self._log_message(msg, PyTwinLogLevel.PYTWIN_LOG_WARNING)
+
             if tbrom_info:
                 self._log_key += "WithTBROM : {}".format(tbrom_info)
                 self._tbrom_info = tbrom_info
@@ -1602,6 +1616,42 @@ class TwinModel(Model):
 
         return tbrom.field_output_name
 
+    def get_tbrom_data_location(self, rom_name):
+        """
+        Get the data location (elemental or Nodal) of the output field associated to the TBROM named rom_name.
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.get_tbrom_data_location(model.tbrom_names[0])
+        """
+        self._log_key = "GetTBROMDataLocation"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        return tbrom.field_output_data_location
+
     def get_snapshot_filepath(self, rom_name: str, evaluation_time: float = 0.0):
         """
         Get the snapshot file that was created by the given ROM at the given time instant.
@@ -2075,7 +2125,7 @@ class TwinModel(Model):
                     interpolate_flag = interpolate
                 if interpolate_flag:
                     self._check_tbrom_points_file(rom_name)
-                self._tbroms[rom_name]._project_on_mesh(
+                meshdata = self._tbroms[rom_name]._project_on_mesh(
                     target_mesh,
                     interpolate_flag,
                     named_selection,
@@ -2088,7 +2138,7 @@ class TwinModel(Model):
                     all_points=all_points,
                 )
                 self._update_tbrom_outmcs(self._tbroms[rom_name])
-                return self._tbroms[rom_name].field_on_mesh
+                return meshdata
 
         except Exception as e:
             msg = f"Something went wrong while projecting on target mesh:"
@@ -2148,6 +2198,85 @@ class TwinModel(Model):
             raise self._raise_error(msg)
 
         return tbrom.field_on_points
+
+    def get_tbrom_output_field_on_mesh(self, rom_name: str):
+        """
+        Return the TBROM output field projected on the target mesh, as a PyVista DataSet object or a
+        dictionary of PyVista DataSet objects (one per named selection). The resulting field is based on
+        current states of the TwinModel and is automatically updated whenever the TwinModel is evaluated.
+
+        .. note::
+            :func:`pytwin.TwinModel.project_tbrom_on_mesh` must be called before this method.
+
+        Parameters
+        ----------
+        rom_name : str
+            Name of the ROM. To get a list of available ROMs, see the
+            :attr:`pytwin.TwinModel.tbrom_names` attribute.
+
+        Returns
+        -------
+        pyvista.DataSet
+            If :func:`pytwin.TwinModel.project_tbrom_on_mesh` was previously called without a named
+            selection, returns the PyVista DataSet of the full-domain projection.
+        dict[str, pyvista.DataSet]
+            If :func:`pytwin.TwinModel.project_tbrom_on_mesh` was previously called with named selections
+            (once or multiple times), returns a dictionary mapping each projected named selection name
+            to its PyVista DataSet.
+
+
+        Raises
+        ------
+        TwinModelError:
+            If ``TwinModel`` object does not include any TBROMs.
+            If the provided ROM name is not available.
+            If :func:`pytwin.TwinModel.project_tbrom_on_mesh` has not been called yet for this TBROM.
+            If TBROM hasn't its mode coefficients outputs connected to the twin's outputs.
+
+        Examples
+        --------
+        >>> from pytwin import TwinModel
+        >>> import pyvista as pv
+        >>> # Example 1 - Full-domain projection (no named selection)
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.initialize_evaluation()
+        >>> romname = model.tbrom_names[0]
+        >>> target_mesh = pv.read('mesh.vtk')
+        >>> model.project_tbrom_on_mesh(romname, target_mesh, interpolate=True)
+        >>> rom_results_on_mesh = model.get_tbrom_output_field_on_mesh(romname)
+        >>> # rom_results_on_mesh is a pyvista.DataSet
+        >>> # Example 2 - Named-selection projection
+        >>> model = TwinModel(model_filepath='path_to_twin_model_with_TBROM_in_it.twin')
+        >>> model.initialize_evaluation()
+        >>> romname = model.tbrom_names[0]
+        >>> nslist = model.get_named_selections(romname)
+        >>> target_mesh = pv.read('mesh.vtk')
+        >>> for ns in nslist:
+        >>>     model.project_tbrom_on_mesh(romname, target_mesh, interpolate=True, named_selection=ns)
+        >>> rom_results_on_mesh = model.get_tbrom_output_field_on_mesh(romname)
+        >>> # rom_results_on_mesh is a dict: {ns_name: pyvista.DataSet}
+        """
+        self._log_key = "GetMeshData"
+
+        if self.tbrom_info is None:
+            msg = self._error_msg_no_tbrom()
+            self._raise_error(msg)
+
+        if rom_name not in self.tbrom_names:
+            msg = self._error_msg_for_rom_name(rom_name)
+            self._raise_error(msg)
+
+        tbrom = self._tbroms[rom_name]
+
+        if not tbrom._meshdata:
+            msg = self._error_msg_for_not_projection(rom_name)
+            self._raise_error(msg)
+
+        if not tbrom._hasoutmcs:
+            msg = self._error_msg_for_rom_output_connection(rom_name)
+            raise self._raise_error(msg)
+
+        return tbrom.field_on_mesh
 
     def get_tbrom_time_grid(self, rom_name: str):
         """

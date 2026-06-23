@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 # conftest.py
+import os
 import sys
 
 import pytest
@@ -31,3 +32,45 @@ def pytest_collection_modifyitems(config, items):
         for item in items:
             if "TestTbRom" in item.nodeid:
                 item.add_marker(pytest.mark.forked)
+
+
+# ---------------------------------------------------------------------------
+# Coverage support for os.fork() + os._exit() used by pytest-forked on Linux
+# ---------------------------------------------------------------------------
+# pytest-forked forks a child with os.fork() and terminates it with os._exit(),
+# which bypasses all Python cleanup (atexit, __del__, coverage finalisation).
+# We wrap os.fork() so that the child patches os._exit() to flush the
+# already-running pytest-cov coverage instance before the hard exit.
+# parallel=true in pyproject.toml ensures each child writes a uniquely-named
+# .coverage.<host>.<pid>.<rand> file; pytest-cov combines them at session end.
+# ---------------------------------------------------------------------------
+if sys.platform == "linux" and hasattr(os, "fork") and os.environ.get("COVERAGE_PROCESS_START"):
+
+    import coverage as _coverage_module
+
+    _real_fork = os.fork
+
+    def _coverage_aware_fork():
+        pid = _real_fork()
+
+        if pid == 0:
+            # In the forked child: patch os._exit to save pytest-cov's
+            # already-running coverage before the hard exit (which bypasses
+            # atexit and all normal Python cleanup).
+            _real_exit = os._exit
+
+            def _exit_with_coverage_save(code):
+                cov = _coverage_module.Coverage.current()
+                if cov is not None:
+                    try:
+                        cov.stop()
+                        cov.save()  # parallel=true → writes .coverage.<host>.<pid>.<rand>
+                    except Exception:
+                        pass
+                _real_exit(code)
+
+            os._exit = _exit_with_coverage_save
+
+        return pid
+
+    os.fork = _coverage_aware_fork

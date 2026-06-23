@@ -83,6 +83,8 @@ options. For more information, see the
 # Perform required imports, which include downloading and importing the input
 # files.
 
+import importlib.metadata
+
 import ansys.dpf.core as dpf
 from pytwin import TwinModel, download_file
 import pyvista as pv
@@ -120,10 +122,27 @@ zone_names_vec = minfo.get_property("zone_names")
 zone_ids = zone_names_vec.scoping.ids
 zone_names = list(zone_names_vec.data)
 ids = [int(zone_ids[zone_names.index(name)]) for name in named_selections if name in zone_names]
+unmatched_named_selections = [name for name in named_selections if name not in zone_names]
+if not ids:
+    raise ValueError(
+        "None of the TBROM named selections match the CFD zone names. "
+        f"TBROM named selections: {named_selections}. "
+        f"Unmatched named selections: {unmatched_named_selections}. "
+        f"Available CFD zone names: {zone_names}."
+    )
 # extracting the individual grid associated to each named selection and merging all of them in 1 single grid
 whole_mesh = dpf.operators.mesh.meshes_provider(streams_container=streams, region_scoping=ids).eval()
-target_mesh = whole_mesh[-1].grid
-target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) - 1)])
+# assembling the full mesh by merging the individual meshes for each named selection (in case there are multiple named
+# selections matched with CFD zones)
+# Note: depending on the version of vtk package installed, the merge order will be different
+# (see https://docs.pyvista.org/api/utilities/_autosummary/pyvista.merge.html)
+vtk_version = importlib.metadata.version("vtk")
+if vtk_version >= "9.5.0":
+    target_mesh = whole_mesh[0].grid
+    target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(1, len(ids))])
+else:
+    target_mesh = whole_mesh[-1].grid
+    target_mesh = target_mesh.merge([whole_mesh[i].grid for i in range(0, len(ids) - 1)])
 
 ###############################################################################
 # Project the TBROM field onto the targeted mesh

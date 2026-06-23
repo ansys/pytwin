@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pytwin"
-version = "0.12.dev0"
+version = "0.13.dev0"
 description = "A python wrapper for Ansys Digital Twin components"
 license = "MIT"
 authors = ["ANSYS, Inc. <pyansys.core@ansys.com>"]
@@ -23,8 +23,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-numpy = ">=1.17"
+python = ">=3.10,<3.15"
+numpy = [{version = ">=1.17,<2.3", python = "<3.14"}, {version = ">=2.3.0",     python = ">=3.14"}]
 pandas = ">=1.3.2"
 tqdm = ">=4.45.0"
 pywin32 = { version = ">=304", markers = "platform_system == 'Windows'" }
@@ -53,11 +53,11 @@ pytest-forked = ">=1.6"
 optional = true
 
 [tool.poetry.group.doc.dependencies]
-ansys-fluent-core = ">=0.30,<0.36"
-ansys-dpf-core = ">=0.13,<0.16"
-ansys-fluent-visualization = ">=0.21.1"
-ansys-mapdl-core = {version = ">=0.68.5,<0.72.0", extras = ["graphics"]}
-ansys-sphinx-theme = ">=1.0.0,<1.7"
+ansys-fluent-core = ">=0.30,<0.40"
+ansys-dpf-core = ">=0.13,<0.17"
+ansys-fluent-visualization = ">=0.26.1"
+ansys-mapdl-core = {version = ">=0.68.5,<0.74.0", extras = ["graphics"]}
+ansys-sphinx-theme = ">=1.0.0,<1.9"
 ipywidgets = "8.1.8" # pin the version to solve doc building workflow issue as 8.1.8 leads to installation issue (PR #392)
 jupyterlab-widgets = "3.0.15" # same
 jupyter_sphinx = "^0.5.3"
@@ -66,10 +66,13 @@ numpydoc = ">=1.6.0"
 Sphinx = ">=7.0.1,<9.0.0"
 sphinx-autodoc-typehints = ">=1.25.2,<4.0.0"
 sphinx-copybutton = "^0.5.0"
-sphinx-gallery = ">=0.17,<0.21"
+sphinx-gallery = ">=0.17,<0.22"
 sphinx-notfound-page = "^1.0.0"
 sphinxemoji = ">=0.2,<0.4"
-pyaedt = ">=0.15,<0.26"
+pyaedt = ">=0.15,<1.2"
+protobuf = ">=5.26.0"
+pyvistaqt = {version = "^0.11.4", extras = ["graphics"]}
+pyside6 = {version = "^6.11.0", extras = ["graphics"]}
 
 [tool.black]
 line-length = 120
@@ -85,6 +88,7 @@ src_paths = ["doc", "src", "tests"]
 ignore-words = "doc/styles/config/vocabularies/ANSYS/accept.txt"
 
 [tool.coverage.run]
+parallel = true
 source = ["ansys.pytwin"]
 
 [tool.coverage.report]

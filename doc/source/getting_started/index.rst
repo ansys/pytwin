@@ -41,6 +41,8 @@ TWIN files are generally made up of several types of models, including system-le
 models can have specific runtime dependencies. For example, Modelica models cross-compiled with
 TwinAI on Ubuntu 20.04 have a dependency on libgfortran5.
 
+In particular, the current version of ``pytwin`` requires Microsoft Visual C++ 2022 Redistributable (x64) version 14.36 or later.
+
 When executing twin runtimes through PyTwin on a specific environment, all dependencies of the
 twin runtimes, including the ones of their constitutive models, must be properly installed
 and made available in that environment.
@@ -48,7 +50,7 @@ and made available in that environment.
 Install the package
 -------------------
 
-The ``pytwin`` package supports Python 3.10 through Python 3.13 on Windows and Linux.
+The ``pytwin`` package supports Python 3.10 through Python 3.14 on Windows and Linux.
 
 Install the latest release from `PyPi <https://pypi.org/project/pytwin/>`_
 with this command:
