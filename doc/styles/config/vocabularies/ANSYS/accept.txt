@@ -1,8 +1,10 @@
 ANSYS
 Ansys
 ansys
+Synopsys
 Twin Builder
 Twin Deployer
+TwinAI
 Deployer
 PyAnsys
 pyansys
