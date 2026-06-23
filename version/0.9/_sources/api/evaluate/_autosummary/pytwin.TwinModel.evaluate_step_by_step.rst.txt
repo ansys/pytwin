@@ -1,0 +1,6 @@
+evaluate\_step\_by\_step
+========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.evaluate_step_by_step

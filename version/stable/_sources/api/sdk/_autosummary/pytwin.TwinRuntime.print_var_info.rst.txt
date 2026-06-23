@@ -1,0 +1,6 @@
+print\_var\_info
+================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.print_var_info

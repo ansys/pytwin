@@ -1,0 +1,6 @@
+twin\_get\_default\_simulation\_settings
+========================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_default_simulation_settings

@@ -1,0 +1,6 @@
+load\_state
+===========
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.load_state

@@ -1,0 +1,6 @@
+get\_rom\_directory
+===================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_rom_directory
