@@ -349,18 +349,18 @@ tests = ["pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pytest-mock (==3.14.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.39.0"
+version = "0.39.1"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.39.0-py3-none-any.whl", hash = "sha256:6b329e9c604b532487c005df09a2ca8e7b683adf151c601ecc5bd29552a7444a"},
-    {file = "ansys_fluent_core-0.39.0.tar.gz", hash = "sha256:ad1a161b11512b4d9477a60255bf2076d67ba1d39d7747d250b4e2dcace9834f"},
+    {file = "ansys_fluent_core-0.39.1-py3-none-any.whl", hash = "sha256:b3da4d915a3bf3b19ce1654a12de5e77a477634564ac9316719ffc76f6f4944b"},
+    {file = "ansys_fluent_core-0.39.1.tar.gz", hash = "sha256:1e944dcfc92e8bf8e6546abedf21630b77bc3a4421ed66079b6c3a5a93d46b26"},
 ]
 
 [package.dependencies]
-ansys-api-fluent = ">=0.3.40"
+ansys-api-fluent = ">=0.3.40,<0.3.42"
 ansys-platform-instancemanagement = ">=1.1,<2.0"
 ansys-tools-common = ">=0.4.0"
 ansys-tools-filetransfer = ">=0.2,<1.0"
@@ -529,21 +529,21 @@ tests = ["ansys-api-platform-instancemanagement (==1.0.0)", "grpcio-health-check
 
 [[package]]
 name = "ansys-sphinx-theme"
-version = "1.8.2"
+version = "1.9.0"
 description = "A theme devised by ANSYS, Inc. for Sphinx documentation."
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_sphinx_theme-1.8.2-py3-none-any.whl", hash = "sha256:cdc2553586700c3b5e9a594ccfa3255fdb6aefd7fc4431494f4c847754bf7718"},
-    {file = "ansys_sphinx_theme-1.8.2.tar.gz", hash = "sha256:73570863d8a4f5f723826723f44cf5666c4e9b443dbc66fd3640f12d4241b7c4"},
+    {file = "ansys_sphinx_theme-1.9.0-py3-none-any.whl", hash = "sha256:eb483928d86b1906aa4bfd9db225f1f67eb50ebbf7e9d7b9c652c87efe0ea038"},
+    {file = "ansys_sphinx_theme-1.9.0.tar.gz", hash = "sha256:23a6d2f22f318a0ecc4954e8c017a5a6fccfcfa32d4e4446a9355f7516086cf9"},
 ]
 
 [package.dependencies]
 importlib-metadata = ">=4.0"
 Jinja2 = ">=3.1.2"
 pdf2image = ">=1.17.0"
-pydata-sphinx-theme = ">=0.15.4,<0.18"
+pydata-sphinx-theme = ">=0.15.4,<0.19"
 PyYAML = ">=6.0"
 Sphinx = ">=6.1.0"
 
@@ -4193,14 +4193,14 @@ shiboken6 = "6.11.1"
 
 [[package]]
 name = "pytest"
-version = "9.1.0"
+version = "9.1.1"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["tests"]
 files = [
-    {file = "pytest-9.1.0-py3-none-any.whl", hash = "sha256:8ebb0e7888bdf2bdfc602ec51f8f62d50200af37356c74e503c79a94f5c81f32"},
-    {file = "pytest-9.1.0.tar.gz", hash = "sha256:41dd9148c08072446394cefd3d79701701335a9f4cae69ba92e39f6c7f5c061c"},
+    {file = "pytest-9.1.1-py3-none-any.whl", hash = "sha256:37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"},
+    {file = "pytest-9.1.1.tar.gz", hash = "sha256:1088fbde8f2b49d95a549a195707afa7a76a3ce9bcadc26b6d71f0ffda5fe313"},
 ]
 
 [package.dependencies]
@@ -5748,21 +5748,20 @@ files = [
 
 [[package]]
 name = "tqdm"
-version = "4.68.2"
+version = "4.68.3"
 description = "Fast, Extensible Progress Meter"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 groups = ["main", "doc"]
 files = [
-    {file = "tqdm-4.68.2-py3-none-any.whl", hash = "sha256:d4240441fb5353290b87d6a85968c9decc131a99b8c7faa28269d829de669ede"},
-    {file = "tqdm-4.68.2.tar.gz", hash = "sha256:89c230e8dbc67c7615c142487111222f878c77427ea09549960f62389e258add"},
+    {file = "tqdm-4.68.3-py3-none-any.whl", hash = "sha256:39832cc2def2789a6f29df83f172db7416cea70052c0907a57801c5f2fdccb03"},
+    {file = "tqdm-4.68.3.tar.gz", hash = "sha256:00dfa48452b6b6cfae3dd9885636c23d3422d1ec97c66d96818cbd5e0821d482"},
 ]
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
-dev = ["nbval", "pytest (>=6)", "pytest-asyncio (>=0.24)", "pytest-cov", "pytest-timeout"]
 discord = ["envwrap", "requests"]
 notebook = ["ipywidgets (>=6)"]
 slack = ["envwrap", "slack-sdk"]
@@ -6421,4 +6420,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "85d23937e5041f08bdea1ca115f467f1448724f29ef165aeee0528aebfea26a2"
+content-hash = "68966d4f4f00ed086d0b9d64c9690e5b212a93d1dc553dfac7a15775a10682f7"
