@@ -1,0 +1,24 @@
+﻿PyTwinLogOption
+===============
+
+.. currentmodule:: pytwin
+
+.. autoclass:: PyTwinLogOption
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PyTwinLogOption.PYTWIN_LOGGING_OPT_FILE
+      PyTwinLogOption.PYTWIN_LOGGING_OPT_CONSOLE
+      PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING
+   
+   

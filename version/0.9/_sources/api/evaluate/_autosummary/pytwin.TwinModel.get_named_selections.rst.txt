@@ -1,0 +1,6 @@
+get\_named\_selections
+======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_named_selections

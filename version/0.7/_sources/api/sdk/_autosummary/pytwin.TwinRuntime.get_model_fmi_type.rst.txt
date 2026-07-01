@@ -1,0 +1,6 @@
+get\_model\_fmi\_type
+=====================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.get_model_fmi_type

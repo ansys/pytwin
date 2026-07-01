@@ -1,0 +1,6 @@
+get\_tbrom\_time\_grid
+======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_tbrom_time_grid
