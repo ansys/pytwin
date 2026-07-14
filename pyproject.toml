@@ -71,7 +71,7 @@ sphinx-notfound-page = "^1.0.0"
 sphinxemoji = ">=0.2,<0.4"
 pyaedt = ">=0.15,<1.3"
 protobuf = ">=5.26.0"
-pyvistaqt = {version = "^0.11.4", extras = ["graphics"]}
+pyvistaqt = {version = ">=0.11.4,<0.13.0", extras = ["graphics"]}
 pyside6 = {version = "^6.11.0", extras = ["graphics"]}
 
 [tool.black]
