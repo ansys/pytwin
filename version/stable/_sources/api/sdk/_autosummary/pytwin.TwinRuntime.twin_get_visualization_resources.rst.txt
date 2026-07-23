@@ -1,0 +1,6 @@
+twin\_get\_visualization\_resources
+===================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_visualization_resources

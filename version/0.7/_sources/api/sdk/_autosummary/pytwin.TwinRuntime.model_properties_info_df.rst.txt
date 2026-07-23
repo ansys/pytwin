@@ -1,0 +1,6 @@
+model\_properties\_info\_df
+===========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.model_properties_info_df

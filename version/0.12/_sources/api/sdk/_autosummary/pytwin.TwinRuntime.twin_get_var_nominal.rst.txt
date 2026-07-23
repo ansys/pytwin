@@ -1,0 +1,6 @@
+twin\_get\_var\_nominal
+=======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_var_nominal

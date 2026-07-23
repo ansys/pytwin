@@ -1,0 +1,6 @@
+get\_tbrom\_output\_field\_on\_mesh
+===================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_tbrom_output_field_on_mesh

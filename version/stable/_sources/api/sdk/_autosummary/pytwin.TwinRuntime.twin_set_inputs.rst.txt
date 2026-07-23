@@ -1,0 +1,6 @@
+twin\_set\_inputs
+=================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_set_inputs

@@ -1,0 +1,6 @@
+debug\_mode
+===========
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.debug_mode

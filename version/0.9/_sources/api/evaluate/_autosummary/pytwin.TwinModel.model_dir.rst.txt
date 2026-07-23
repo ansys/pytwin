@@ -1,0 +1,6 @@
+model\_dir
+==========
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.model_dir
