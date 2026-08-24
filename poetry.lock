@@ -410,14 +410,14 @@ single-window = ["pyside6 (>=6.8.1,<7.0.0)", "pyvistaqt (>=0.11.1,<0.12.0)"]
 
 [[package]]
 name = "ansys-mapdl-core"
-version = "0.74.0"
+version = "0.74.1"
 description = "A Python client library for Ansys MAPDL."
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_mapdl_core-0.74.0-py3-none-any.whl", hash = "sha256:612c1612b80e2a5c6d3ff2fefe8d2d7839fbfe511901f7e51db9b3b40bcac7b3"},
-    {file = "ansys_mapdl_core-0.74.0.tar.gz", hash = "sha256:568c99ae4fd130dfecb96229e830619a2cf9ae2af5dc4777b1de35cfd29df221"},
+    {file = "ansys_mapdl_core-0.74.1-py3-none-any.whl", hash = "sha256:8f746bb1c2a4f5421ac4362fb61bb5a04ebce4f6477fc91702c653b8a24395cc"},
+    {file = "ansys_mapdl_core-0.74.1.tar.gz", hash = "sha256:c11d76500aaeb57941daae68c30f17d9a739b106cc091a663d8ec6c02005fce5"},
 ]
 
 [package.dependencies]
@@ -3791,14 +3791,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "1.3.0"
+version = "1.4.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.3.0-py3-none-any.whl", hash = "sha256:a318f94ed1dcb1607b153d6db23c087ab77bd386104c73c7f9dc47c3be65708f"},
-    {file = "pyaedt-1.3.0.tar.gz", hash = "sha256:97e26349a79dc53ea3b06fc40aa4b1683442104397f90bf7fae27e1deea454df"},
+    {file = "pyaedt-1.4.0-py3-none-any.whl", hash = "sha256:06ce66da33f0c7b19620f209fc55d63515b880cab0ab9c2cfc35a8d1de0c890e"},
+    {file = "pyaedt-1.4.0.tar.gz", hash = "sha256:b35066363896a5ac1318be5306ae95fe28ef337830a725475bdd8a7830e93a1c"},
 ]
 
 [package.dependencies]
@@ -6279,4 +6279,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "2c42a46d11b2a32703d24b6dcb61e2300fba35d6298584d03e15b118d7cfc7b9"
+content-hash = "85b9b59af7b32b7df607c3187f58229b3fc7715e78e88e0497901b88eb0342f2"
