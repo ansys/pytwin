@@ -389,18 +389,18 @@ ui-jupyter = ["ipywidgets (>=8.1.8)"]
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.27.0"
+version = "0.28.0"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_visualization-0.27.0-py3-none-any.whl", hash = "sha256:b3f5d878689c518d71380f64fc855b7dd580cd5077e366162444d46cb9e43bcc"},
-    {file = "ansys_fluent_visualization-0.27.0.tar.gz", hash = "sha256:a67b45716d833c3194617f5b824fe5637fdf428b3a36f33144f754978b79423d"},
+    {file = "ansys_fluent_visualization-0.28.0-py3-none-any.whl", hash = "sha256:25dfc4364125abcd7e0bc4c77776ff73f8d75d672b3a1428eb9ee8a95a593e2d"},
+    {file = "ansys_fluent_visualization-0.28.0.tar.gz", hash = "sha256:f5bcdaa9c0a3c34f2b8966cb466d36513f441bcaf4bb3e39efa4f7ea97757d5e"},
 ]
 
 [package.dependencies]
-ansys-fluent-core = ">=0.35.0"
+ansys-fluent-core = ">=0.41.0"
 matplotlib = ">=3.6.0"
 pyvista = ">=0.44.0"
 
@@ -3388,7 +3388,7 @@ description = "Pexpect allows easy control of interactive console applications."
 optional = false
 python-versions = "*"
 groups = ["doc"]
-markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or platform_system == \"Linux\""
+markers = "platform_system == \"Linux\" or sys_platform != \"win32\" and sys_platform != \"emscripten\""
 files = [
     {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
     {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
@@ -3768,7 +3768,7 @@ description = "Run a subprocess in a pseudo terminal"
 optional = false
 python-versions = "*"
 groups = ["doc"]
-markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or platform_system == \"Linux\""
+markers = "platform_system == \"Linux\" or sys_platform != \"win32\" and sys_platform != \"emscripten\""
 files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
@@ -6279,4 +6279,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "b4ddb504d8f66ca508400c8bcb44ff96057a158dbe092ceb58747238424a9e7e"
+content-hash = "b6cf0d1e55ad292033bd36bb67e73b2748c2fd3e3c517df73e3b4df427fe67ce"
