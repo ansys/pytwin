@@ -6279,4 +6279,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "85b9b59af7b32b7df607c3187f58229b3fc7715e78e88e0497901b88eb0342f2"
+content-hash = "c20f80e4c386ecb1d948a5494eaeb4e50d0d48bc1ac7324abe6ad71eb05bc165"
