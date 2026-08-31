@@ -1,0 +1,6 @@
+PYTWIN\_LOGGING\_OPT\_NOLOGGING
+===============================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: PyTwinLogOption.PYTWIN_LOGGING_OPT_NOLOGGING

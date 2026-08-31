@@ -1,0 +1,6 @@
+load\_twin\_default\_sim\_settings
+==================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.load_twin_default_sim_settings

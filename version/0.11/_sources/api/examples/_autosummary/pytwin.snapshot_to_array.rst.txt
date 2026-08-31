@@ -1,0 +1,6 @@
+﻿snapshot\_to\_array
+===================
+
+.. currentmodule:: pytwin
+
+.. autofunction:: snapshot_to_array

@@ -1,0 +1,6 @@
+output\_names
+=============
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.output_names

@@ -1,0 +1,6 @@
+twin\_simulate
+==============
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_simulate

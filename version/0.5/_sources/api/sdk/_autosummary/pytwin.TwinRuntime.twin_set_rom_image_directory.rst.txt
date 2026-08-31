@@ -1,0 +1,6 @@
+twin\_set\_rom\_image\_directory
+================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_set_rom_image_directory

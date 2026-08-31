@@ -1,0 +1,6 @@
+PYTWIN\_LOG\_DEBUG
+==================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: PyTwinLogLevel.PYTWIN_LOG_DEBUG

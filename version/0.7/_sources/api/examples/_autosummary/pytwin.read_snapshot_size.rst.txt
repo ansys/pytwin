@@ -1,0 +1,6 @@
+﻿read\_snapshot\_size
+====================
+
+.. currentmodule:: pytwin
+
+.. autofunction:: read_snapshot_size

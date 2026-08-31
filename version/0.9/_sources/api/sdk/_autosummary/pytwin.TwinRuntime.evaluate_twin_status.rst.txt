@@ -1,0 +1,6 @@
+evaluate\_twin\_status
+======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.evaluate_twin_status

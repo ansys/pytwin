@@ -1,0 +1,6 @@
+twin\_simulate\_batch\_mode\_csv
+================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_simulate_batch_mode_csv

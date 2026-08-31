@@ -1,0 +1,6 @@
+parameter\_names
+================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.parameter_names
