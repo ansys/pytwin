@@ -14,3 +14,5 @@ Provide the PyAnsys Core team with this information:
 - Step-by-step guidance to reproduce the problem
 - The exact location of the problematic source code, including tag, branch, commit, or a direct URL
 - The potential consequences of the vulnerability, along with a description of how an attacker could take advantage of the issue
+
+<!-- Begin content specific to your library here. -->
