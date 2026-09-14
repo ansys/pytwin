@@ -4278,14 +4278,14 @@ jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.
 
 [[package]]
 name = "pyvistaqt"
-version = "0.12.0"
+version = "0.13.0"
 description = "pyvista qt plotter"
 optional = false
 python-versions = ">=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyvistaqt-0.12.0-py3-none-any.whl", hash = "sha256:de8a1986b97d5ec2f0968e93316323535b0e85e0c2751160408938d325b98b1b"},
-    {file = "pyvistaqt-0.12.0.tar.gz", hash = "sha256:95d4c0588186b4febb98fb337794abf54829ace2588e37deede576db515bbc38"},
+    {file = "pyvistaqt-0.13.0-py3-none-any.whl", hash = "sha256:859734f809b53adee5d5e31706409689ff12ba8e79ffb1efdfcc1eb63afbada0"},
+    {file = "pyvistaqt-0.13.0.tar.gz", hash = "sha256:fb8efda9289fc1b6456b04b1ed1497c02b8178d634fbb5e832134a2f6b46be6e"},
 ]
 
 [package.dependencies]
@@ -4295,7 +4295,7 @@ QtPy = ">=1.9.0"
 [package.extras]
 dev = ["pre-commit"]
 docs = ["Sphinx", "pydata-sphinx-theme", "sphinx-copybutton", "sphinx-notfound-page"]
-test = ["ipython (==8.39.0)", "numpy (==2.2.6) ; python_version < \"3.11\"", "numpy (==2.4.4) ; python_version >= \"3.11\"", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-memprof (==0.2.0)", "pytest-qt (==4.5.0)", "pyvista[jupyter]", "scooby (==0.11.2)", "sphinx_gallery (==0.21.0)"]
+test = ["ipython (==8.39.0)", "numpy (==2.2.6) ; python_version < \"3.11\"", "numpy (==2.4.4) ; python_version >= \"3.11\"", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-memprof (==0.2.0)", "pytest-qt (==4.5.0)", "pyvista[jupyter]", "refleak (==0.2.2)", "scooby (==0.11.2)", "sphinx_gallery (==0.21.0)"]
 
 [[package]]
 name = "pywin32"
@@ -6279,4 +6279,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "329e994bc2da9005fc6f7e32d7a02872058fc4d22079735c163fe37db739e807"
+content-hash = "e29e546c2d28793a8fa8b4165ee6d6be56d5cbdf3411ee329d884436efa0ec76"
