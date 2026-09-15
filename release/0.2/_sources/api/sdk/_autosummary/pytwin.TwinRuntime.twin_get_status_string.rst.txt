@@ -1,0 +1,6 @@
+twin\_get\_status\_string
+=========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_status_string

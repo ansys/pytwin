@@ -1,0 +1,6 @@
+get\_field\_output\_name
+========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_field_output_name

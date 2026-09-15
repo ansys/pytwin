@@ -1,0 +1,6 @@
+twin\_close
+===========
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_close

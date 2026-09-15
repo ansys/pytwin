@@ -1,0 +1,48 @@
+
+
+.. _sphx_glr_examples_03-deployment_examples:
+
+Twin deployment examples
+========================
+These examples show how to use PyTwin to include a TWIN file in other applications.
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to build a desktop GUI application that integrates PyTwin with PyVista and PySide6 to provide interactive visualization and real-time evaluation of a TBROM showing flow velocity in a heat exchanger. The application allows users to interactively adjust ROM input parameters and visualize the resulting field outputs on a CFD mesh in real-time.">
+
+.. only:: html
+
+  .. image:: /examples/03-deployment_examples/images/thumb/sphx_glr_00-DEPLOY_HX_GUI_app_no_execute_thumb.png
+    :alt:
+
+  :doc:`/examples/03-deployment_examples/00-DEPLOY_HX_GUI_app_no_execute`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">TBROM interactive visualization GUI application</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/03-deployment_examples/00-DEPLOY_HX_GUI_app_no_execute
+
