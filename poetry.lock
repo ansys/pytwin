@@ -349,14 +349,14 @@ tests = ["pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pytest-mock (==3.14.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.42.0"
+version = "0.42.1"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.42.0-py3-none-any.whl", hash = "sha256:2c1d0faa9f69fd6c6530e2c4cc1b229d9d74d57535a36d94e6a5dde0b643a330"},
-    {file = "ansys_fluent_core-0.42.0.tar.gz", hash = "sha256:feff76547b942140315bfa53d06d415fb6c92ccf975ddad05823cd2f36fffef7"},
+    {file = "ansys_fluent_core-0.42.1-py3-none-any.whl", hash = "sha256:5d451ef50ea9d5ce801f0b776c8993c4a55d858c77d34ae42600d5d8f6ff6b12"},
+    {file = "ansys_fluent_core-0.42.1.tar.gz", hash = "sha256:b2657cec1af3b5808c73b6cffc681cde29bfec4725b710cb4de55600c3ccbc1a"},
 ]
 
 [package.dependencies]
@@ -3791,14 +3791,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "1.4.0"
+version = "1.5.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.4.0-py3-none-any.whl", hash = "sha256:06ce66da33f0c7b19620f209fc55d63515b880cab0ab9c2cfc35a8d1de0c890e"},
-    {file = "pyaedt-1.4.0.tar.gz", hash = "sha256:b35066363896a5ac1318be5306ae95fe28ef337830a725475bdd8a7830e93a1c"},
+    {file = "pyaedt-1.5.0-py3-none-any.whl", hash = "sha256:a56af0bb413f48df725af0c3fbdd2c88e42791b15e3e9e1fee1b525910598bd1"},
+    {file = "pyaedt-1.5.0.tar.gz", hash = "sha256:a2296aeb331a9585451d08b09d091fb7d87b6923bb744e7588dd3d3bfd2198f3"},
 ]
 
 [package.dependencies]
@@ -4278,14 +4278,14 @@ jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.
 
 [[package]]
 name = "pyvistaqt"
-version = "0.12.0"
+version = "0.13.0"
 description = "pyvista qt plotter"
 optional = false
 python-versions = ">=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyvistaqt-0.12.0-py3-none-any.whl", hash = "sha256:de8a1986b97d5ec2f0968e93316323535b0e85e0c2751160408938d325b98b1b"},
-    {file = "pyvistaqt-0.12.0.tar.gz", hash = "sha256:95d4c0588186b4febb98fb337794abf54829ace2588e37deede576db515bbc38"},
+    {file = "pyvistaqt-0.13.0-py3-none-any.whl", hash = "sha256:859734f809b53adee5d5e31706409689ff12ba8e79ffb1efdfcc1eb63afbada0"},
+    {file = "pyvistaqt-0.13.0.tar.gz", hash = "sha256:fb8efda9289fc1b6456b04b1ed1497c02b8178d634fbb5e832134a2f6b46be6e"},
 ]
 
 [package.dependencies]
@@ -4295,7 +4295,7 @@ QtPy = ">=1.9.0"
 [package.extras]
 dev = ["pre-commit"]
 docs = ["Sphinx", "pydata-sphinx-theme", "sphinx-copybutton", "sphinx-notfound-page"]
-test = ["ipython (==8.39.0)", "numpy (==2.2.6) ; python_version < \"3.11\"", "numpy (==2.4.4) ; python_version >= \"3.11\"", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-memprof (==0.2.0)", "pytest-qt (==4.5.0)", "pyvista[jupyter]", "scooby (==0.11.2)", "sphinx_gallery (==0.21.0)"]
+test = ["ipython (==8.39.0)", "numpy (==2.2.6) ; python_version < \"3.11\"", "numpy (==2.4.4) ; python_version >= \"3.11\"", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-memprof (==0.2.0)", "pytest-qt (==4.5.0)", "pyvista[jupyter]", "refleak (==0.2.2)", "scooby (==0.11.2)", "sphinx_gallery (==0.21.0)"]
 
 [[package]]
 name = "pywin32"
@@ -6279,4 +6279,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "329e994bc2da9005fc6f7e32d7a02872058fc4d22079735c163fe37db739e807"
+content-hash = "2180b204ecf786026596202961811796839b3cbbd354c8a3347da3de9ed195f8"
