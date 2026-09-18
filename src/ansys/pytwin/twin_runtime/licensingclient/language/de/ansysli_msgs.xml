@@ -1,5 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<MESSAGES><!-- Begin ACL APIP Messages [19001 - 20000] --><MESSAGE>
+<MESSAGES><!-- Begin ACLCURL ACLEXT Common Messages [20001 - 22000] --><MESSAGE>
+        <ID>21018</ID>
+        <MSG>
+            PAC-Helper-Dienstprogramm eines Drittanbieters kann nicht ausgeführt werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21017</ID>
+        <MSG>
+            PAC-Skript %1 konnte nicht ausgeführt werden
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21016</ID>
+        <MSG>
+            PAC-Skript definiert keine FindProxyForURL()
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21015</ID>
+        <MSG>
+            PAC-Skript %1 kann nicht ausgewertet werden
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21014</ID>
+        <MSG>
+            Kontext des PAC-Helper-Dienstprogramms eines Drittanbieters konnte nicht erstellt werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21013</ID>
+        <MSG>
+            Proxyserver %1 wird für url %2 verwendet
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21012</ID>
+        <MSG>
+            PAC-Datei kann nicht aus url %1 abgerufen werden. Fehler %2 : %3 aufgetreten
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21011</ID>
+        <MSG>
+            Automatische Proxy-Konfiguration erkannt. PAC url %1 wird verwendet, um den Proxyserver für curl-Anfragen zu bestimmen.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>21010</ID>
+        <MSG>
+            Proxyserverkonfiguration erkannt. Alle curl-Anfragen verwenden den Proxyserver: %1.
+        </MSG>
+    </MESSAGE><!-- Begin ACL APIP Messages [19001 - 20000] --><MESSAGE>
         <ID>19005</ID>
         <MSG>
             Das erforderliche zugehörige Verzeichnis gemeinsamer Dateien kann nicht gefunden werden.
@@ -29,6 +82,54 @@
             APIP-Konfiguration global nicht zulässig.
         </MSG>
     </MESSAGE><!-- Begin ACL FNP Messages [18001 - 19000] --><MESSAGE>
+        <ID>18016</ID>
+        <MSG>
+            Es werden anwendungsdefinierte Attribute (%1) für den Checkout verwendet.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18015</ID>
+        <MSG>
+            Der Cache des Servers %1 wurde blockiert, um Verzögerungen der Anwendung zu vermeiden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18014</ID>
+        <MSG>
+            Kein Lizenzpfad für FNP Daemon %1 gefunden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18013</ID>
+        <MSG>
+            %1 kann nicht vom %2 FNP Daemon ausgecheckt werden; derzeit ist nur ein aktiver Check-out für den %3-Dienst zulässig.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18012</ID>
+        <MSG>
+            Lizenzierungsservice aktiviert: %1 (%2)
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18011</ID>
+        <MSG>
+            FlexNet Publisher (FNP) Version: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18010</ID>
+        <MSG>
+            FlexNet Publisher (FNP) - snpslmd
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18009</ID>
+        <MSG>
+            FlexNet Publisher (FNP) - ansyslmd
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>18008</ID>
         <MSG>
             Es sind nicht genügend FlexNet Publisher (FNP)-Lizenzen von %1 zur Verwendung verfügbar, nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die im Kontext %5 enthaltenen %4 Kerne verwendet wurden.
@@ -37,7 +138,7 @@
     <MESSAGE>
         <ID>18007</ID>
         <MSG>
-            Ungenügende Anzahl von %1 FlexNet Publisher (FNP)-Lizenzen zur Verwendung verfügbar, nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die im Feature %5 enthaltenen %4 Kerne verwendet wurden.
+            Ungenügende Anzahl von %1 FlexNet Publisher(FNP)-Lizenzen zur Verwendung verfügbar; nur %2 der angeforderten %3 Aufgaben waren verfügbar, nachdem die im Feature %5 enthaltenen %4 Kerne verwendet wurden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -49,13 +150,13 @@
     <MESSAGE>
         <ID>18005</ID>
         <MSG>
-            FlexNet Publisher (FNP) Lizenz %1 Version %2 unzureichend, Anfrage für Version %3 von Feature %4 verweigert.
+            FlexNet Publisher(FNP)-Lizenz %1 Version %2 unzureichend; Anfrage für Version %3 von Feature %4 abgelehnt.
         </MSG>
     </MESSAGE>
     <MESSAGE>
         <ID>18004</ID>
         <MSG>
-            Die FlexNet Publisher (FNP)-Lizenz %1 ist seit %2 abgelaufen, die Anfrage für Feature %3 wurde abgelehnt.
+            FlexNet Publisher(FNP)-Lizenz %1 ist seit %2 abgelaufen; Anfrage für Feature %3 abgelehnt.
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -109,7 +210,7 @@
     <MESSAGE>
         <ID>17031</ID>
         <MSG>
-            Web-Roaming-Lizenz %1 ist am %2 abgelaufen, Anfrage für Feature %3 abgelehnt.
+            Web-Roaming-Lizenz %1 ist seit %2 abgelaufen; Anfrage für Feature %3 abgelehnt.
         </MSG>
       </MESSAGE>
       <MESSAGE>
@@ -292,9 +393,51 @@
           %1 konnte in der Weblizenzierung nicht gefunden werden.          
         </MSG>
     </MESSAGE><!-- Begin ACL Messages [16001 - 17000] --><MESSAGE>
+        <ID>16060</ID>
+        <MSG>
+            Die Startoption %1 wird derzeit nicht von der ausführbaren ACL-Datei %2 unterstützt.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16059</ID>
+        <MSG>
+            Proxy-Einstellungen %1 können nicht geschrieben werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16058</ID>
+        <MSG>
+            Proxy-Einstellungen %1 können nicht gelesen werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16057</ID>
+        <MSG>
+            Der Proxy-Ausgabepfad darf nicht leer sein.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16056</ID>
+        <MSG>
+            FNP-Warteschlange für Feature %1 verloren.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16055</ID>
+        <MSG>
+            Lokaler Weblizenz-Cache kann nicht initialisiert werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>16054</ID>
+        <MSG>
+            Keine lokalen Weblizenz-Berechtigungen für den Export.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>16053</ID>
         <MSG>
-            Daten können nicht nach %1 exportiert werden.
+            Daten können nicht nach %1 exportiert werden. Grund: %2
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -644,6 +787,120 @@
             Ungültiger Wert %2 für Umgebungsvariable %1; Verzeichnis konnte nicht gefunden werden.
         </MSG>
     </MESSAGE><!-- End Debug Messages [15001 - 16000] --> <!-- Begin License Context specific Messages [14001 - 15000] --><MESSAGE>
+        <ID>14073</ID>
+        <MSG>
+            Es kann keine Verbindung zum Lizenz-Handler für Kontext-ID %1 hergestellt werden. Die Verbindung für den direkten Checkout des Features %2 ist fehlgeschlagen.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14072</ID>
+        <MSG>
+            Es kann keine Verbindung zum Lizenz-Handler für Kontext-ID %1 hergestellt werden. Versuch %2 von %3.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14071</ID>
+        <MSG>
+            Feature darf nicht leer sein. Der Kontext für einen bestehenden Check-out kann nicht geprüft werden, wenn kein Feature angegeben wird.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14070</ID>
+        <MSG>
+            Der Kontext für einen Check-out von %1 kann ohne Identifizierung des Kontexts nicht geprüft werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14069</ID>
+        <MSG>
+            Der vorbereitende Checkout der Features schlug für den %1-Kontext mit ID %2 fehl.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14068</ID>
+        <MSG>
+            Der vorbereitende Checkout der Features für den %1-Kontext mit ID %2 ist abgeschlossen.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14067</ID>
+        <MSG>
+            Der vorbereitende Checkout der Features für den %1­-Kontext mit ID %2 wurde gestartet.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14066</ID>
+        <MSG>
+            Der vorbereitende Checkout des Features %1 wurde ignoriert. Ein vorbereitender Checkout des Features %2 ist für %3-Kontexte nicht zulässig.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14065</ID>
+        <MSG>
+            Es können nicht %1 Aufteilungen für den Checkout von %2 erstellt werden. Dies kann die Feature-Nachverfolgung von %3 im Lizenzkontext beeinträchtigen.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14064</ID>
+        <MSG>
+            Der Checkout von %1 wurde zu Nachverfolgungszwecken im Lizenzkontext in %2 separate Checkouts aufgeteilt.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14063</ID>
+        <MSG>
+            In der übermittelten XML fehlt der %1-Wert für ein oder mehrere Features.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14062</ID>
+        <MSG>
+            In der übermittelten XML wurden keine Features gefunden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14061</ID>
+        <MSG>
+            Ungültige XML.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14060</ID>
+        <MSG>
+            Fehlende XML.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14059</ID>
+        <MSG>
+            Vorbereitende Checkouts können nicht durchgeführt werden. Aus der eingehenden XML können die Features nicht ermittelt werden: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14058</ID>
+        <MSG>
+            Lizenzpool
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14057</ID>
+        <MSG>
+            Vorbereitende Checkouts können nicht durchgeführt werden. Die auszucheckenden Features konnten aus der eingehenden Anfrage nicht geparst werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14056</ID>
+        <MSG>
+            Vorbereitende Checkouts können nicht durchgeführt werden. Der angegebene Kontext unterstützt keine vorbereitenden Checkouts. Der Kontext mit ID %1 ist ein %2-Kontext.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>14055</ID>
+        <MSG>
+            Ohne Angabe eines Kontexts können keine vorbereitenden Checkouts durchgeführt werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>14054</ID>
         <MSG>
             %1 Kontext mit ID %2 kann nicht aus Wiederherstellungsdetails erstellt werden.
@@ -1173,7 +1430,7 @@
     <MESSAGE>
         <ID>13010</ID>
         <MSG>
-            Check-out
+            Checkout
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1617,7 +1874,7 @@ Bitte speichern Sie Ihre Arbeit.
   <MESSAGE>
     <ID>11002</ID>
     <MSG>
-       Es wurde kein nicht-autorisierender Host gefunden.
+       Es wurde kein nicht autoritativer Host gefunden.
     </MSG>
   </MESSAGE> 
   <MESSAGE>
@@ -2002,6 +2259,24 @@ Bitte speichern Sie Ihre Arbeit.
        Zwischenspeichern von Informationen vom FLEXlm-Server: %1. Bitte warten Sie ...
     </MSG>
   </MESSAGE><!-- End Log messages: CACHE_SERVER --> <!-- Begin Log messages: INFO 1200 - 1299 --><MESSAGE>
+    <ID>1269</ID>
+    <MSG>
+      Die Server im Pfad %1 sind nicht verfügbar und wurden vorübergehend geblockt.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>1268</ID>
+    <MSG>
+      Proxy-Einstellungen konnten nicht gelesen werden.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>1267</ID>
+    <MSG>
+      Der Installationspfad darf nicht leer sein.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
     <ID>1266</ID>
     <MSG>
       Verwendetes Produkt: %1.
@@ -2407,6 +2682,30 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
         Der FLEXlm-Server wird bereits ausgeführt.
     </MSG>
   </MESSAGE><!-- End Log messages: CACHE_SERVER 1200 - 1299 --> <!-- Begin Log messages: ERROR 1000 - 1199 --><MESSAGE>
+    <ID>1080</ID>
+    <MSG>
+      Rückkehr aus dem Inaktivitäts-/TIMEOUT-Modus für Feature %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>1079</ID>
+    <MSG>
+      Wechsel in den Inaktivitäts-/TIMEOUT-Modus für Feature %1 mit auf %2 eingestelltem Timeout.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>1078</ID>
+    <MSG>
+      FNP-Heartbeat-Signale werden gesendet für Daemon: %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>1077</ID>
+    <MSG>
+      Es konnte kein Port auf der bereitgestellten Reihe verwendet werden. Verbindung wird über einen freien Port aus dem Betriebssystem bereitgestellt.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
     <ID>1076</ID>
     <MSG>
       Unzureichende Berechtigungen zum Starten der Ansys Licensing Binärdatei: %1
@@ -3916,6 +4215,36 @@ Reservierungs-ID: %2.
        Der Client wurde für %1 Sekunden getrennt. Das Feature wird in %2 Sekunden in den Pool zurückgegeben, falls davor keine erneute Verbindung aufgebaut wird.
     </MSG>
   </MESSAGE><!-- End pool Error Messages --> <!-- Begin Server/Client Reply Messages [250 - 299] [1400 - 1449] --><MESSAGE>
+    <ID>290</ID>
+    <MSG>
+      Feature %1 wurde nicht ausgeliehen, daher konnte es nicht zurückgegeben werden.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>289</ID>
+    <MSG>
+      Rückgabe ausgeliehener Features nicht möglich: keine Features zum Zurückgeben gefunden.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>288</ID>
+    <MSG>
+      Es wurde ein ungültiger FNP Daemon angegeben, von dem ausgeliehen werden soll: %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>287</ID>
+    <MSG>
+      Ausleihen von Features nicht möglich: keine Features zum Ausleihen gefunden.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>286</ID>
+    <MSG>
+      Rückgabedatum und -uhrzeit konnten nicht gefunden oder aus der XML-Eingabe abgerufen werden.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
     <ID>285</ID>
     <MSG>
       Das Feature %1 konnte über %2 Stunden nicht ausgeliehen werden.

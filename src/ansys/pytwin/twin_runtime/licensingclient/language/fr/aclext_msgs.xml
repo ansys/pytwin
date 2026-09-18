@@ -1,374 +1,361 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<MESSAGES>
-    <!-- © 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. -->
-    <!-- Begin ACLCURL Messages [21001 - 22000] -->
-    <MESSAGE>
-        <ID>
-            21008
-        </ID>
+<?xml version="1.0" encoding="utf-8"?>
+<MESSAGES><!-- © 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. --> <!-- Begin ACLCURL Messages [21001 - 22000] --><MESSAGE>
+        <ID>21018</ID>
         <MSG>
-            User LaaS Authorization attempt timed out. Browser prompt for credentials was not completed in the allotted %1 seconds.
+            Impossible d’exécuter l&apos;utilitaire d’aide PAC tiers.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21007
-        </ID>
+        <ID>21017</ID>
         <MSG>
-            Waiting for response for as long as it takes or the process is stopped.
+            Échec de l&apos;exécution du script PAC : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21006
-        </ID>
+        <ID>21016</ID>
         <MSG>
-            Waiting for response for up to %1 seconds.
+            Le script PAC ne définit pas FindProxyForURL()
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21005
-        </ID>
+        <ID>21015</ID>
         <MSG>
-            ERROR: No response recieved from authorization request.
+            Impossible d&apos;évaluer le script PAC : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21004
-        </ID>
+        <ID>21014</ID>
         <MSG>
-            Unable to parse code from authorization response: %1
+            Impossible de créer le contexte de l&apos;utilitaire d&apos;aide PAC tiers.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21003
-        </ID>
+        <ID>21013</ID>
         <MSG>
-            Curl error %1 encountered on call to %2: %3
+            Utilisation du serveur proxy : %1 pour l&apos;url : %2
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21002
-        </ID>
+        <ID>21012</ID>
         <MSG>
-            Call to %1 timed out after %2 seconds.
+            Impossible de récupérer le fichier PAC à partir de l&apos;url : %1. Erreur %2 rencontrée : %3
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21001
-        </ID>
+        <ID>21011</ID>
         <MSG>
-            Unable to set URL, curl error %1 returned setting url to '%2' with arguments.
-        </MSG>
-    </MESSAGE>
-    <!-- Begin ACLEXT Messages [20001 - 21000] -->
-    <MESSAGE>
-        <ID>
-            20038
-        </ID>
-        <MSG>
-            Data verification failed.
+            Configuration automatique du proxy détectée. L&apos;url PAC : %1 sera utilisée pour déterminer le serveur proxy pour les demandes curl.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20037
-        </ID>
+        <ID>21010</ID>
         <MSG>
-            No data returned by call to LaaS URL.
+            Configuration du serveur proxy détectée. Toutes les demandes curl utiliseront le serveur proxy : %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20036
-        </ID>
+        <ID>21009</ID>
         <MSG>
-            Unable to get token object to retrieve bearer token for request.
+            Paramètre de serveur proxy incorrect. Spécifiez le serveur proxy au format «http://&lt;proxyserver&gt;:&lt;port&gt;» ou «http://&lt;username&gt;:&lt;password&gt;@&lt;proxyserver&gt;:&lt;port&gt;».
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20035
-        </ID>
+        <ID>21008</ID>
         <MSG>
-            Unknown issue determining/retrieving bearer token for request
+            La tentative d&apos;autorisation User LaaS a expiré. L&apos;invite du navigateur pour les identifiants n&apos;a pas été terminée dans le délai imparti de %1 secondes.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20034
-        </ID>
+        <ID>21007</ID>
         <MSG>
-            LaaS REST API %1 returned (at: %2): %3
+            Attente de la réponse aussi longtemps que nécessaire ou jusqu&apos;à l&apos;arrêt du processus.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20033
-        </ID>
+        <ID>21006</ID>
         <MSG>
-            Unable to retrieve bearer token.
+            Attente de la réponse pendant un maximum de %1 secondes.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20032
-        </ID>
+        <ID>21005</ID>
         <MSG>
-            Unable clear Access Token cache.
+            ERREUR : aucune réponse reçue de la demande d&apos;autorisation.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20031
-        </ID>
+        <ID>21004</ID>
         <MSG>
-            Unable to find Access Token file '%1.'
+            Impossible d&apos;analyser le code depuis la réponse d&apos;autorisation : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20030
-        </ID>
+        <ID>21003</ID>
         <MSG>
-            No data read from Access Token file '%1.'
+            Erreur curl %1 rencontrée lors de l&apos;appel à %1 : %3
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20029
-        </ID>
+        <ID>21002</ID>
         <MSG>
-            No token data found in Access Token file '%1.'
+            L&apos;appel à %1 a expiré après %2 secondes.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20028
-        </ID>
+        <ID>21001</ID>
         <MSG>
-            No Access Token value passed.
+            Impossible de définir l&apos;URL ; l&apos;erreur curl %1 a été renvoyée lors de la définition de l&apos;URL sur « %2 » avec les arguments.
+        </MSG>
+    </MESSAGE><!-- Begin ACLEXT Messages [20001 - 21000] --><MESSAGE>
+        <ID>20042</ID>
+        <MSG>
+            Échec de la mise à jour des paramètres proxy dans le fichier ansyslmd.ini.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20027
-        </ID>
+        <ID>20041</ID>
         <MSG>
-            Unable to retrieve data from passed Access Token value: %1
+            Échec de la mise à jour du fichier de sortie des paramètres proxy.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20026
-        </ID>
+        <ID>20040</ID>
         <MSG>
-            Passed Access Token expired as of %1.
+            Impossible de lire les paramètres proxy.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20025
-        </ID>
+        <ID>20039</ID>
         <MSG>
-            Unable to update Access Token cache.
+            Le chemin d&apos;installation ne peut pas être vide.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20024
-        </ID>
+        <ID>20038</ID>
         <MSG>
-            Unable to authorize token
+            Échec de la vérification des données.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20023
-        </ID>
+        <ID>20037</ID>
         <MSG>
-            Displaying default browser with ANSYSID login to acquire authentication, please enter the ANSYSID credentials to use for Web Licensing actions.
+            Aucune donnée renvoyée par l&apos;appel à l&apos;URL LaaS.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20022
-        </ID>
+        <ID>20036</ID>
         <MSG>
-            Refresh token is expired.
+            Impossible d&apos;obtenir l&apos;objet de jeton pour récupérer le jeton porteur de la demande.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20021
-        </ID>
+        <ID>20035</ID>
         <MSG>
-            Refresh of existing access token succeeded.
+            Problème inconnu lors de la détermination/récupération du jeton porteur pour la demande
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20020
-        </ID>
+        <ID>20034</ID>
         <MSG>
-            Unable to refresh access token using the refresh token.
+            L&apos;API REST LaaS %1 a renvoyé (à : %2) : %3
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20019
-        </ID>
+        <ID>20033</ID>
         <MSG>
-            Attempting to refresh existing access token.
+            Impossible de récupérer le jeton porteur.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20018
-        </ID>
+        <ID>20032</ID>
         <MSG>
-            Existing token is expired.
+            Impossible d&apos;effacer le cache du jeton d&apos;accès.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20017
-        </ID>
+        <ID>20031</ID>
         <MSG>
-            Existing token is still valid.
+            Impossible de trouver le fichier de jeton d&apos;accès « %1 ».
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20016
-        </ID>
+        <ID>20030</ID>
         <MSG>
-            No Token value.
+            Aucune donnée lue depuis le fichier de jeton d&apos;accès « %1 ».
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20015
-        </ID>
+        <ID>20029</ID>
         <MSG>
-            Unable to retrieve updated token.
+            Aucune donnée de jeton trouvée dans le fichier de jeton d&apos;accès « %1 ».
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20014
-        </ID>
+        <ID>20028</ID>
         <MSG>
-            Token expired.
+            Aucune valeur de jeton d&apos;accès transmise.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20013
-        </ID>
+        <ID>20027</ID>
         <MSG>
-            LaaS REST API %1 call (at: %2): %3
+            Impossible de récupérer les données depuis la valeur de jeton d&apos;accès transmise : %1
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20012
-        </ID>
+        <ID>20026</ID>
         <MSG>
-            Bearer token retrieved: %1
+            Le jeton d&apos;accès transmis a expiré le %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20011
-        </ID>
+        <ID>20025</ID>
         <MSG>
-            Retrieving bearer token...
+            Impossible de mettre à jour le cache du jeton d&apos;accès.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20010
-        </ID>
+        <ID>20024</ID>
         <MSG>
-            Using user token...
+            Impossible d&apos;autoriser le jeton
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20009
-        </ID>
+        <ID>20023</ID>
         <MSG>
-            Logging URL call to: %1
+            Affichage du navigateur par défaut avec la connexion ANSYSID pour obtenir l&apos;authentification ; veuillez saisir les identifiants ANSYSID à utiliser pour les actions de licence Web.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20008
-        </ID>
+        <ID>20022</ID>
         <MSG>
-            Missing/invalid cache dir specified: %1
+            Le jeton d&apos;actualisation a expiré.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20007
-        </ID>
+        <ID>20021</ID>
         <MSG>
-            Unable to create cache dir: %1
+            L&apos;actualisation du jeton d&apos;accès existant a réussi.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20006
-        </ID>
+        <ID>20020</ID>
         <MSG>
-            Unable to initialize LaaS connection: No %1 value found.
+            Impossible d&apos;actualiser le jeton d&apos;accès à l&apos;aide du jeton d&apos;actualisation.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20005
-        </ID>
+        <ID>20019</ID>
         <MSG>
-            Unable to initialize LaaS connection: invalid connection type '%1' passed/set. See documentation of %2.
+            Tentative d&apos;actualisation du jeton d&apos;accès existant.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20004
-        </ID>
+        <ID>20018</ID>
         <MSG>
-            Unable to initialize LaaS connection: no %1 value set.
+            Le jeton existant a expiré.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20003
-        </ID>
+        <ID>20017</ID>
         <MSG>
-            Unable to initialize LaaS connection: %1 value must be set 'on'.
+            Le jeton existant est toujours valide.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20002
-        </ID>
+        <ID>20016</ID>
         <MSG>
-            DEBUG (%1): %2
+            Aucune valeur de jeton.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20001
-        </ID>
+        <ID>20015</ID>
         <MSG>
-            Localized message directory %1 not found.
+            Impossible de récupérer le jeton actualisé.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20014</ID>
+        <MSG>
+            Le jeton a expiré.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20013</ID>
+        <MSG>
+            Appel à l&apos;API REST LaaS %1 (à : %2) : %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20012</ID>
+        <MSG>
+            Jeton porteur récupéré : %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20011</ID>
+        <MSG>
+            Récupération du jeton porteur...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20010</ID>
+        <MSG>
+            Utilisation du jeton utilisateur...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20009</ID>
+        <MSG>
+            Journalisation de l&apos;appel d&apos;URL à : %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20008</ID>
+        <MSG>
+            Répertoire de cache spécifié manquant/non valide : %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20007</ID>
+        <MSG>
+            Impossible de créer le répertoire de cache : %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20006</ID>
+        <MSG>
+            Impossible d&apos;initialiser la connexion LaaS : aucune valeur %1 trouvée.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20005</ID>
+        <MSG>
+            Impossible d&apos;initialiser la connexion LaaS : type de connexion non valide « %1 » transmis/défini. Consultez la documentation de %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20004</ID>
+        <MSG>
+            Impossible d&apos;initialiser la connexion LaaS : aucune valeur %1 définie.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20003</ID>
+        <MSG>
+            Impossible d&apos;initialiser la connexion LaaS : la valeur %1 doit être activée.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20002</ID>
+        <MSG>
+            DÉBOGAGE (%1) : %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20001</ID>
+        <MSG>
+            Répertoire des messages localisés %1 introuvable.
         </MSG>
     </MESSAGE>
 </MESSAGES>
