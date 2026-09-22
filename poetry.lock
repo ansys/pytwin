@@ -4088,6 +4088,51 @@ full = ["geomdl", "pyvista (>=0.28.0)"]
 test = ["pytest", "pytest-cov"]
 
 [[package]]
+name = "pyobjc-core"
+version = "12.2.2"
+description = "Python<->ObjC Interoperability Module"
+optional = false
+python-versions = ">=3.10"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "pyobjc_core-12.2.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:56c6c39f1de059fcbb174ebca5525505fc8feaa89be2a28c329bf09b6b25ee75"},
+    {file = "pyobjc_core-12.2.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:b9cdd686e32db8e451feb19f8a85bc4cd52c2893103881d04aca51e1f35371d1"},
+    {file = "pyobjc_core-12.2.2-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:122e6ad302a2abf5d4d4adb0156db751600ddf2768441696cba17b31323085e7"},
+    {file = "pyobjc_core-12.2.2-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:950bd2d9c74634398c4e3d24ef2f213d4e23d705083697464fa67afedc53c1ad"},
+    {file = "pyobjc_core-12.2.2-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:3772b406edb3ff78171530a17cda1c4a7817f87b87ded0d8715b3fa664df16db"},
+    {file = "pyobjc_core-12.2.2-cp314-cp314-macosx_10_15_universal2.whl", hash = "sha256:2062e8ad30a310441cd022544a897553408bebeaa7820d5edba3c96fd7fd693b"},
+    {file = "pyobjc_core-12.2.2-cp314-cp314t-macosx_10_15_universal2.whl", hash = "sha256:2c7ef3d2f865b4b3ebb14ec3556f7a3e8abb6d130c67275cd9daa08dbd6e4e4e"},
+    {file = "pyobjc_core-12.2.2-cp315-cp315-macosx_10_15_universal2.whl", hash = "sha256:89acc6bc13aaa6e3f52b0ce652ede7e201edb6bf062741b246b0c5a44582f25f"},
+    {file = "pyobjc_core-12.2.2-cp315-cp315t-macosx_10_15_universal2.whl", hash = "sha256:59a77038ebe0ab1240f61c341e7fb67b8674f2b4cd41bc71a6472511a12b50f7"},
+    {file = "pyobjc_core-12.2.2.tar.gz", hash = "sha256:3906452339cd06a3bb07df103c2511d4cb0f7a22d8771c0b802eba15d9a642b6"},
+]
+markers = {main = "sys_platform == \"darwin\" and extra == \"graphics\"", doc = "sys_platform == \"darwin\"", graphics = "sys_platform == \"darwin\""}
+
+[[package]]
+name = "pyobjc-framework-cocoa"
+version = "12.2.2"
+description = "Wrappers for the Cocoa frameworks on macOS"
+optional = false
+python-versions = ">=3.10"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "pyobjc_framework_cocoa-12.2.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:5a751c8033a3b51f7996f0327e0675eb44dcfdfe7920fae01e3d78b662723fff"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:851dca4c16e70b405e5cd5a8c166cf7c445ae54a4cdd95ce9a523803172f32d1"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:e106f395531e67694376b0f1184612cbeea3ec8b9bf56b55ef41d026171d2a2d"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:600b1723184ca094931330e79355274949965460e23de38628d601b5a967baf9"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:875f2aad73963faa81a6b36ae674fd494a4658d6d999e1075e0e2aca3d2391df"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp314-cp314-macosx_10_15_universal2.whl", hash = "sha256:889d7bbd4ba2d4941078bfbbfb882138e51dbead27df006abfe0f2e0d49b5b2e"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp314-cp314t-macosx_10_15_universal2.whl", hash = "sha256:de69c5933750f3a4599ed962eccd92b6a71914c7e4318dacc7895738a8ae60d7"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp315-cp315-macosx_10_15_universal2.whl", hash = "sha256:0e8ace0d44a00d281281a723d17fcd05eea7544a38a6a512e1fd018ddb7aece2"},
+    {file = "pyobjc_framework_cocoa-12.2.2-cp315-cp315t-macosx_10_15_universal2.whl", hash = "sha256:8fe5b2e79c9530f667b4e58a87a3a15ea62f86a5d19eec405517ecbd4f454868"},
+    {file = "pyobjc_framework_cocoa-12.2.2.tar.gz", hash = "sha256:c96c0ef69a71afbbb0e6a7d594b455c5fe47d62e0db376ee7a2b4b828c16ace9"},
+]
+markers = {main = "sys_platform == \"darwin\" and extra == \"graphics\"", doc = "sys_platform == \"darwin\"", graphics = "sys_platform == \"darwin\""}
+
+[package.dependencies]
+pyobjc-core = ">=12.2.2"
+
+[[package]]
 name = "pyparsing"
 version = "3.3.2"
 description = "pyparsing - Classes and methods to define and execute parsing grammars"
@@ -4249,14 +4294,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.48.4"
+version = "0.49.0"
 description = "3D visualization and mesh analysis for science and engineering."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.48.4-py3-none-any.whl", hash = "sha256:a46eda178e10e279afda550c341676a82dcee607c86db74565fa455ac0bd23e2"},
-    {file = "pyvista-0.48.4.tar.gz", hash = "sha256:c639dad1bddff5e366d77371f66f783f6e6a0581446810a66439902222d8db07"},
+    {file = "pyvista-0.49.0-py3-none-any.whl", hash = "sha256:8528b753baf9a32dd7a44f4e88912fe5c8771f7d921c813e1cbac35fc5a37996"},
+    {file = "pyvista-0.49.0.tar.gz", hash = "sha256:5bc914769dfa9baeedb3b761c81e3326bd4c7a3aeed475c25f164c798806dba2"},
 ]
 markers = {main = "extra == \"graphics\""}
 
@@ -4266,15 +4311,48 @@ matplotlib = ">=3.0.1"
 numpy = ">=1.21.0"
 pillow = "*"
 pooch = "*"
+pyobjc-framework-Cocoa = {version = "*", markers = "sys_platform == \"darwin\""}
+pyvista-validation = "0.2.2"
 scooby = ">=0.5.1"
 typing-extensions = ">=4.10"
-vtk = ">=9.2.2,<9.4.0 || >9.4.0,<9.4.1 || >9.4.1,<9.7.0"
+vtk = ">=9.3.1,<9.4.0 || >9.4.0,<9.4.1 || >9.4.1,<9.8.0"
 
 [package.extras]
-all = ["pyvista[colormaps,io,jupyter]"]
+all = ["pyvista[colormaps,io,io-override,jupyter]"]
 colormaps = ["cmcrameri", "cmocean", "colorcet"]
-io = ["fsspec", "imageio", "meshio (>=5.2)", "pyvista-zstd (>=0.2.2)"]
-jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.2)", "trame-client (>=2.12.7)", "trame-server (>=2.11.7,<3.7.dev0 || >3.8.0)", "trame-vtk (!=2.10.3,!=2.11.0,!=2.11.1,!=2.11.2,!=2.11.3,!=2.11.4,!=2.11.5,!=2.11.6)", "trame-vtk (>=2.5.8,<2.11.9)", "trame-vuetify (>=2.3.1)"]
+cvista = ["cvista[all] (>=9.7.0.2,<9.8.0)"]
+io = ["fsspec", "imageio", "meshio (>=5.2)", "pyvista-frd-reader (>=0.2.1)", "pyvista-zstd (>=0.3.1)"]
+io-override = ["pyvista-miniply (>=0.5.2)", "pyvista-stl (>=0.5.3)"]
+jupyter = ["ipywidgets", "nest-asyncio2", "trame-pyvista"]
+
+[[package]]
+name = "pyvista-validation"
+version = "0.2.2"
+description = "Validate and standardize array-like input."
+optional = false
+python-versions = ">=3.10"
+groups = ["main", "doc", "graphics"]
+files = [
+    {file = "pyvista_validation-0.2.2-cp310-abi3-macosx_10_9_x86_64.whl", hash = "sha256:4ae9af24e888e4ffc941fc01529cc3a4668bd0de7066f98e41aa1d02a5e23d58"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:8b7156dec1699d65501df65578d759dbab6ddfccd803213fc837fff0c2e41a92"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:1be12fb7dbc05035a58a3245a0fac018a6be41837be9ec90a0796db700bd7dfa"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a45b633b89d843329db1608ba2bbed75d075ab63c5a7427c8dfa9ad9c23eadb4"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:aba7a1fc01ba9c762f14d1418329b2a462c881aa7a42b65b2088b6ab9fe8e530"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:672991acf11588de5ce4042cf4f1cc59d0f2b0e84bca792c3358fac6b07e2b38"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-win32.whl", hash = "sha256:6ba8b5f39a9c4e1f75c4dd9adc037cfeb5a50be9fdb93d787a34e98245bba51a"},
+    {file = "pyvista_validation-0.2.2-cp310-abi3-win_amd64.whl", hash = "sha256:9ee46b4177e6b8fcc5d750d9c471d30fa05f1384668a67cef0b19a700a797659"},
+    {file = "pyvista_validation-0.2.2.tar.gz", hash = "sha256:af234130a3b34b3e1af49584d75b41fafc694752b2958b36e9dbfd9f188e6a0c"},
+]
+markers = {main = "extra == \"graphics\""}
+
+[package.dependencies]
+numpy = ">=1.21.0"
+typing-extensions = {version = ">=4.4", markers = "python_version < \"3.13\""}
+
+[package.extras]
+all = ["pyvista-validation[scipy,vtk]"]
+scipy = ["scipy"]
+vtk = ["vtk"]
 
 [[package]]
 name = "pyvistaqt"
