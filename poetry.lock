@@ -4278,14 +4278,14 @@ jupyter = ["ipywidgets", "jupyter-server-proxy", "nest-asyncio2", "trame (>=2.5.
 
 [[package]]
 name = "pyvistaqt"
-version = "0.13.0"
+version = "0.13.1"
 description = "pyvista qt plotter"
 optional = false
 python-versions = ">=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyvistaqt-0.13.0-py3-none-any.whl", hash = "sha256:859734f809b53adee5d5e31706409689ff12ba8e79ffb1efdfcc1eb63afbada0"},
-    {file = "pyvistaqt-0.13.0.tar.gz", hash = "sha256:fb8efda9289fc1b6456b04b1ed1497c02b8178d634fbb5e832134a2f6b46be6e"},
+    {file = "pyvistaqt-0.13.1-py3-none-any.whl", hash = "sha256:8ec3c40d2bb5de2b90b73cc47bc9179ae1d3d169078c7b7e84514cdde9f268be"},
+    {file = "pyvistaqt-0.13.1.tar.gz", hash = "sha256:f5d06435381e7b2cb803a57682c7a0e4500de689b6da0c5679afe68fdeb81d98"},
 ]
 
 [package.dependencies]
