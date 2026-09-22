@@ -1,0 +1,6 @@
+model\_filepath
+===============
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.model_filepath

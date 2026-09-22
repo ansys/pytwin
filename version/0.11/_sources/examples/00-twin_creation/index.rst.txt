@@ -1,0 +1,45 @@
+
+
+.. _sphx_glr_examples_00-twin_creation:
+
+Twin creation examples
+======================
+These examples show how to use additional functionalities to create TWIN file (for example using PyAEDT).
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Static ROM creation, Twin generation and evaluation">
+
+.. only:: html
+
+  .. image:: /examples/00-twin_creation/images/thumb/sphx_glr_00-TBROM_Twin_creation_evaluation_thumb.png
+    :alt:
+
+  :doc:`/examples/00-twin_creation/00-TBROM_Twin_creation_evaluation`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Static ROM creation, Twin generation and evaluation</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/00-twin_creation/00-TBROM_Twin_creation_evaluation
+

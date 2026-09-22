@@ -1,0 +1,6 @@
+TBROM\_SNAPSHOT\_FILE\_PREFIX
+=============================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinModel.TBROM_SNAPSHOT_FILE_PREFIX

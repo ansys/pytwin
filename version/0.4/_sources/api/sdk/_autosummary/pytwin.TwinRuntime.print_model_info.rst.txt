@@ -1,0 +1,6 @@
+print\_model\_info
+==================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.print_model_info

@@ -1,0 +1,6 @@
+evaluation\_time
+================
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.evaluation_time

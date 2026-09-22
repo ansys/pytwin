@@ -1,0 +1,6 @@
+p\_end\_time
+============
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.p_end_time

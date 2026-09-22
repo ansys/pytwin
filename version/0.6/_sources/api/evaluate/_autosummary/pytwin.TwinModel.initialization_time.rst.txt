@@ -1,0 +1,6 @@
+initialization\_time
+====================
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.initialization_time

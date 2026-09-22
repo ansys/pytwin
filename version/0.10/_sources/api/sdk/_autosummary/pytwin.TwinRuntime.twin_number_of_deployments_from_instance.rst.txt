@@ -1,0 +1,6 @@
+twin\_number\_of\_deployments\_from\_instance
+=============================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_number_of_deployments_from_instance
