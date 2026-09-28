@@ -1,0 +1,6 @@
+load\_dll
+=========
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.load_dll

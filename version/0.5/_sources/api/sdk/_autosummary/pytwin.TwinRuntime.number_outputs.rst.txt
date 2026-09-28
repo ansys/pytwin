@@ -1,0 +1,6 @@
+number\_outputs
+===============
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.number_outputs

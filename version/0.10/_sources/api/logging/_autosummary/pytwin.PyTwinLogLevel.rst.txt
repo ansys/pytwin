@@ -1,0 +1,26 @@
+﻿PyTwinLogLevel
+==============
+
+.. currentmodule:: pytwin
+
+.. autoclass:: PyTwinLogLevel
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PyTwinLogLevel.PYTWIN_LOG_DEBUG
+      PyTwinLogLevel.PYTWIN_LOG_INFO
+      PyTwinLogLevel.PYTWIN_LOG_WARNING
+      PyTwinLogLevel.PYTWIN_LOG_ERROR
+      PyTwinLogLevel.PYTWIN_LOG_CRITICAL
+   
+   

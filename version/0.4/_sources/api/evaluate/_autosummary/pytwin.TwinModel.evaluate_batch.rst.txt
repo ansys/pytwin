@@ -1,0 +1,6 @@
+evaluate\_batch
+===============
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.evaluate_batch

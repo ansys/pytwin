@@ -1,0 +1,6 @@
+PYTWIN\_LOG\_WARNING
+====================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: PyTwinLogLevel.PYTWIN_LOG_WARNING

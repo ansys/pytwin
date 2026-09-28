@@ -1,0 +1,6 @@
+get\_field\_input\_names
+========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_field_input_names

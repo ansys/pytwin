@@ -1,0 +1,6 @@
+twin\_get\_input\_names
+=======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_input_names

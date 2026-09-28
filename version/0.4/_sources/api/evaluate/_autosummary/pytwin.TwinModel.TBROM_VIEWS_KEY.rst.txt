@@ -1,0 +1,6 @@
+TBROM\_VIEWS\_KEY
+=================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinModel.TBROM_VIEWS_KEY
