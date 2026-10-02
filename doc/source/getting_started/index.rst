@@ -47,6 +47,38 @@ When executing twin runtimes through PyTwin on a specific environment, all depen
 twin runtimes, including the ones of their constitutive models, must be properly installed
 and made available in that environment.
 
+Linux C++ runtime
+~~~~~~~~~~~~~~~~~
+
+On Linux, PyTwin preloads its bundled ``libstdc++.so.6`` before importing its
+third-party dependencies. This applies to all public APIs, including ``TwinModel``
+and ``TwinRuntime``, and avoids using an older system C++ runtime when PyTwin is
+imported first. The bundled library's system dependencies must still be available.
+
+Import PyTwin before other native packages, particularly on systems such as
+Rocky Linux 8.10 whose system C++ runtime might not provide the symbol versions
+required by the Twin Runtime SDK:
+
+.. code-block:: python
+
+   import pytwin
+   import numpy as np
+
+Preloading during import cannot reliably replace an incompatible C++ runtime
+already loaded in the process. In that case, restart Python with a compatible
+system or environment C++ runtime, or preload PyTwin's bundled library before
+Python starts:
+
+.. code-block:: bash
+
+   LD_PRELOAD=/absolute/path/to/pytwin/twin_runtime/libstdc++.so.6 python your_script.py
+
+Replace the path with the bundled library in your installed package. Do not
+import PyTwin to discover this path in a process where imports already fail.
+For notebooks, configure the environment before starting the kernel and restart
+any existing kernel. If other native packages cannot share a compatible runtime,
+run PyTwin in a separate process with its own startup environment.
+
 Install the package
 -------------------
 
