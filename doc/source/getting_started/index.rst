@@ -65,7 +65,7 @@ required by the Twin Runtime SDK:
    import numpy as np
 
 Preloading during import cannot reliably replace an incompatible C++ runtime
-already loaded in the process. In that case, restart Python with a compatible
+already loaded in the Python process. In that case, restart Python with a compatible
 system or environment C++ runtime, or preload PyTwin's bundled library before
 Python starts:
 
