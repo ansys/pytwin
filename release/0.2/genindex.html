@@ -1,0 +1,703 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; PyTwin</title>
+    
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css\ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    
+        <link href="_static/css/breadcrumbs.css" rel="stylesheet">
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    <img src="_static/pyansys-logo-black-cropped.png" class="logo__image only-light" alt="Logo image">
+    <img src="_static/pyansys-logo-black-cropped.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="user_guide/index.html">
+  User guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="examples/index.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="contributing.html">
+  Contributing
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.2  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables genindex and {'json_url': 'https://twin.docs.pyansys.com/release/versions.json', 'version_match': '0.2'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "genindex.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://twin.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "genindex.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.2.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.2") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pyansys/pytwin" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+     
+<div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(text => document.getElementById("announcement_msg").innerHTML = text)
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+
+    
+        <div class="container-xl">
+    <div class="row">
+        <div class="col-12 col-md-3" id="breadcrumbs-spacer"></div>
+        <div class="col-12 col-md-11 col-xl-9" id="breadcrumbs">
+          
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+    
+        <li class="nav-item nav-item-additional-breadcrumb"><a href="https://docs.pyansys.com/">PyAnsys</a> » </li>
+    
+    
+        <li class="nav-item nav-item-0"><a href="index.html">PyTwin</a> » </li>
+    
+
+        <li class="nav-item nav-item-this"><a href="">Index</a></li> 
+      </ul>
+    </div>
+        </div>
+  </div>
+</div>
+    
+
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#B"><strong>B</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ 
+</div>
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.build_prop_info_df.html#pytwin.TwinRuntime.build_prop_info_df">build_prop_info_df() (pytwin.TwinRuntime method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.debug_mode.html#pytwin.TwinRuntime.debug_mode">debug_mode (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/examples/_autosummary/pytwin.download_file.html#pytwin.download_file">download_file() (in module pytwin)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.evaluate_batch.html#pytwin.TwinModel.evaluate_batch">evaluate_batch() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.evaluate_step_by_step.html#pytwin.TwinModel.evaluate_step_by_step">evaluate_step_by_step() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.evaluate_twin_prop_status.html#pytwin.TwinRuntime.evaluate_twin_prop_status">evaluate_twin_prop_status() (pytwin.TwinRuntime static method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.evaluate_twin_status.html#pytwin.TwinRuntime.evaluate_twin_status">evaluate_twin_status() (pytwin.TwinRuntime static method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.evaluation_is_initialized.html#pytwin.TwinModel.evaluation_is_initialized">evaluation_is_initialized (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.evaluation_time.html#pytwin.TwinModel.evaluation_time">evaluation_time (pytwin.TwinModel property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.full_model_properties_info_df.html#pytwin.TwinRuntime.full_model_properties_info_df">full_model_properties_info_df() (pytwin.TwinRuntime method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.get_available_view_names.html#pytwin.TwinModel.get_available_view_names">get_available_view_names() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.get_geometry_filepath.html#pytwin.TwinModel.get_geometry_filepath">get_geometry_filepath() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.get_image_filepath.html#pytwin.TwinModel.get_image_filepath">get_image_filepath() (pytwin.TwinModel method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.get_rom_directory.html#pytwin.TwinModel.get_rom_directory">get_rom_directory() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.get_snapshot_filepath.html#pytwin.TwinModel.get_snapshot_filepath">get_snapshot_filepath() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.get_twin_version.html#pytwin.TwinRuntime.get_twin_version">get_twin_version() (pytwin.TwinRuntime static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.has_default_settings.html#pytwin.TwinRuntime.has_default_settings">has_default_settings (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.id.html#pytwin.TwinModel.id">id (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.initialization_time.html#pytwin.TwinModel.initialization_time">initialization_time (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.initialize_evaluation.html#pytwin.TwinModel.initialize_evaluation">initialize_evaluation() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.input_names.html#pytwin.TwinRuntime.input_names">input_names (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.inputs.html#pytwin.TwinModel.inputs">inputs (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.instantiation_time.html#pytwin.TwinModel.instantiation_time">instantiation_time (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.is_model_initialized.html#pytwin.TwinRuntime.is_model_initialized">is_model_initialized (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.is_model_instantiated.html#pytwin.TwinRuntime.is_model_instantiated">is_model_instantiated (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.is_model_opened.html#pytwin.TwinRuntime.is_model_opened">is_model_opened (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.last_time_stop.html#pytwin.TwinRuntime.last_time_stop">last_time_stop (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/examples/_autosummary/pytwin.load_data.html#pytwin.load_data">load_data() (in module pytwin)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.load_dll.html#pytwin.TwinRuntime.load_dll">load_dll() (pytwin.TwinRuntime static method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.load_state.html#pytwin.TwinModel.load_state">load_state() (pytwin.TwinModel method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.load_twin_default_sim_settings.html#pytwin.TwinRuntime.load_twin_default_sim_settings">load_twin_default_sim_settings() (pytwin.TwinRuntime method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.model_dir.html#pytwin.TwinModel.model_dir">model_dir (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.model_filepath.html#pytwin.TwinModel.model_filepath">model_filepath (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.model_log.html#pytwin.TwinModel.model_log">model_log (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.model_log_link.html#pytwin.TwinModel.model_log_link">model_log_link (pytwin.TwinModel property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.model_name.html#pytwin.TwinRuntime.model_name">model_name (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.model_properties_info_df.html#pytwin.TwinRuntime.model_properties_info_df">model_properties_info_df() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.model_temp.html#pytwin.TwinModel.model_temp">model_temp (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/logging/_autosummary/pytwin.modify_pytwin_logging.html#pytwin.modify_pytwin_logging">modify_pytwin_logging() (in module pytwin)</a>
+</li>
+      <li><a href="api/logging/_autosummary/pytwin.modify_pytwin_working_dir.html#pytwin.modify_pytwin_working_dir">modify_pytwin_working_dir() (in module pytwin)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.name.html#pytwin.TwinModel.name">name (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.number_inputs.html#pytwin.TwinRuntime.number_inputs">number_inputs (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.number_outputs.html#pytwin.TwinRuntime.number_outputs">number_outputs (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.number_parameters.html#pytwin.TwinRuntime.number_parameters">number_parameters (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.os_version.html#pytwin.TwinRuntime.os_version">os_version (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.output_names.html#pytwin.TwinRuntime.output_names">output_names (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.outputs.html#pytwin.TwinModel.outputs">outputs (pytwin.TwinModel property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.p_end_time.html#pytwin.TwinRuntime.p_end_time">p_end_time (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.p_step_size.html#pytwin.TwinRuntime.p_step_size">p_step_size (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.p_tolerance.html#pytwin.TwinRuntime.p_tolerance">p_tolerance (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.parameter_names.html#pytwin.TwinRuntime.parameter_names">parameter_names (pytwin.TwinRuntime attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.parameters.html#pytwin.TwinModel.parameters">parameters (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.print_model_info.html#pytwin.TwinRuntime.print_model_info">print_model_info() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.print_var_info.html#pytwin.TwinRuntime.print_var_info">print_var_info() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/logging/_autosummary/pytwin.PyTwinLogLevel.html#pytwin.PyTwinLogLevel">PyTwinLogLevel (class in pytwin)</a>
+</li>
+      <li><a href="api/logging/_autosummary/pytwin.PyTwinLogOption.html#pytwin.PyTwinLogOption">PyTwinLogOption (class in pytwin)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.save_state.html#pytwin.TwinModel.save_state">save_state() (pytwin.TwinModel method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.tbrom_directory_path.html#pytwin.TwinModel.tbrom_directory_path">tbrom_directory_path (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.tbrom_info.html#pytwin.TwinModel.tbrom_info">tbrom_info (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.tbrom_names.html#pytwin.TwinModel.tbrom_names">tbrom_names (pytwin.TwinModel property)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_close.html#pytwin.TwinRuntime.twin_close">twin_close() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_disable_3d_rom_model_data.html#pytwin.TwinRuntime.twin_disable_3d_rom_model_data">twin_disable_3d_rom_model_data() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_disable_rom_model_images.html#pytwin.TwinRuntime.twin_disable_rom_model_images">twin_disable_rom_model_images() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_enable_3d_rom_model_data.html#pytwin.TwinRuntime.twin_enable_3d_rom_model_data">twin_enable_3d_rom_model_data() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_enable_rom_model_images.html#pytwin.TwinRuntime.twin_enable_rom_model_images">twin_enable_rom_model_images() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_api_version.html#pytwin.TwinRuntime.twin_get_api_version">twin_get_api_version() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_default_rom_image_directory.html#pytwin.TwinRuntime.twin_get_default_rom_image_directory">twin_get_default_rom_image_directory() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_default_simulation_settings.html#pytwin.TwinRuntime.twin_get_default_simulation_settings">twin_get_default_simulation_settings() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_input_names.html#pytwin.TwinRuntime.twin_get_input_names">twin_get_input_names() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_model_dependencies.html#pytwin.TwinRuntime.twin_get_model_dependencies">twin_get_model_dependencies() (pytwin.TwinRuntime static method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_model_name.html#pytwin.TwinRuntime.twin_get_model_name">twin_get_model_name() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_number_inputs.html#pytwin.TwinRuntime.twin_get_number_inputs">twin_get_number_inputs() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_number_outputs.html#pytwin.TwinRuntime.twin_get_number_outputs">twin_get_number_outputs() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_number_params.html#pytwin.TwinRuntime.twin_get_number_params">twin_get_number_params() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_output_by_index.html#pytwin.TwinRuntime.twin_get_output_by_index">twin_get_output_by_index() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_output_by_name.html#pytwin.TwinRuntime.twin_get_output_by_name">twin_get_output_by_name() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_output_names.html#pytwin.TwinRuntime.twin_get_output_names">twin_get_output_names() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_outputs.html#pytwin.TwinRuntime.twin_get_outputs">twin_get_outputs() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_param_names.html#pytwin.TwinRuntime.twin_get_param_names">twin_get_param_names() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_rom_images_files.html#pytwin.TwinRuntime.twin_get_rom_images_files">twin_get_rom_images_files() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_rom_mode_coef_files.html#pytwin.TwinRuntime.twin_get_rom_mode_coef_files">twin_get_rom_mode_coef_files() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_rom_resource_directory.html#pytwin.TwinRuntime.twin_get_rom_resource_directory">twin_get_rom_resource_directory() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_rom_snapshot_files.html#pytwin.TwinRuntime.twin_get_rom_snapshot_files">twin_get_rom_snapshot_files() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_status_string.html#pytwin.TwinRuntime.twin_get_status_string">twin_get_status_string() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_str_var_start.html#pytwin.TwinRuntime.twin_get_str_var_start">twin_get_str_var_start() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_data_type.html#pytwin.TwinRuntime.twin_get_var_data_type">twin_get_var_data_type() (pytwin.TwinRuntime method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_description.html#pytwin.TwinRuntime.twin_get_var_description">twin_get_var_description() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_max.html#pytwin.TwinRuntime.twin_get_var_max">twin_get_var_max() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_min.html#pytwin.TwinRuntime.twin_get_var_min">twin_get_var_min() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_nominal.html#pytwin.TwinRuntime.twin_get_var_nominal">twin_get_var_nominal() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_quantity_type.html#pytwin.TwinRuntime.twin_get_var_quantity_type">twin_get_var_quantity_type() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_start.html#pytwin.TwinRuntime.twin_get_var_start">twin_get_var_start() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_var_unit.html#pytwin.TwinRuntime.twin_get_var_unit">twin_get_var_unit() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_get_visualization_resources.html#pytwin.TwinRuntime.twin_get_visualization_resources">twin_get_visualization_resources() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_initialize.html#pytwin.TwinRuntime.twin_initialize">twin_initialize() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_instantiate.html#pytwin.TwinRuntime.twin_instantiate">twin_instantiate() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_is_cross_platform.html#pytwin.TwinRuntime.twin_is_cross_platform">twin_is_cross_platform() (pytwin.TwinRuntime static method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_load.html#pytwin.TwinRuntime.twin_load">twin_load() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_load_state.html#pytwin.TwinRuntime.twin_load_state">twin_load_state() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_reset.html#pytwin.TwinRuntime.twin_reset">twin_reset() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_runtime_library.html#pytwin.TwinRuntime.twin_runtime_library">twin_runtime_library (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_save_state.html#pytwin.TwinRuntime.twin_save_state">twin_save_state() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_input_by_index.html#pytwin.TwinRuntime.twin_set_input_by_index">twin_set_input_by_index() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_input_by_name.html#pytwin.TwinRuntime.twin_set_input_by_name">twin_set_input_by_name() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_inputs.html#pytwin.TwinRuntime.twin_set_inputs">twin_set_inputs() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_param_by_index.html#pytwin.TwinRuntime.twin_set_param_by_index">twin_set_param_by_index() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_param_by_name.html#pytwin.TwinRuntime.twin_set_param_by_name">twin_set_param_by_name() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_rom_image_directory.html#pytwin.TwinRuntime.twin_set_rom_image_directory">twin_set_rom_image_directory() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_set_str_param_by_name.html#pytwin.TwinRuntime.twin_set_str_param_by_name">twin_set_str_param_by_name() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_simulate.html#pytwin.TwinRuntime.twin_simulate">twin_simulate() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_simulate_batch_mode.html#pytwin.TwinRuntime.twin_simulate_batch_mode">twin_simulate_batch_mode() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_simulate_batch_mode_csv.html#pytwin.TwinRuntime.twin_simulate_batch_mode_csv">twin_simulate_batch_mode_csv() (pytwin.TwinRuntime method)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.twin_status.html#pytwin.TwinRuntime.twin_status">twin_status (pytwin.TwinRuntime attribute)</a>
+</li>
+      <li><a href="api/evaluate/_autosummary/pytwin.TwinModel.html#pytwin.TwinModel">TwinModel (class in pytwin)</a>
+</li>
+      <li><a href="api/sdk/_autosummary/pytwin.TwinRuntime.html#pytwin.TwinRuntime">TwinRuntime (class in pytwin)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+              </article>
+              
+
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright (c) 2023 ANSYS, Inc. All rights reserved.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

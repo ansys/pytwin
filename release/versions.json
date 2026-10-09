@@ -1,0 +1,20 @@
+[
+  {
+    "name": "dev",
+    "version": "dev",
+    "url": "https://twin.docs.pyansys.com/version/dev/"
+  },
+  {
+    "name": "0.3 (stable)",
+    "version": "0.3",
+    "url": "https://twin.docs.pyansys.com/version/stable/"
+  },
+    {
+        "version": "0.2",
+        "url": "https://twin.docs.pyansys.com/release/0.2/"
+    },
+    {
+        "version": "0.1",
+        "url": "https://twin.docs.pyansys.com/release/0.1/"
+    }
+]

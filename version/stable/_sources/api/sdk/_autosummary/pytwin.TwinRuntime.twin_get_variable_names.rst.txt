@@ -1,0 +1,6 @@
+twin\_get\_variable\_names
+==========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_variable_names
