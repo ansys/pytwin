@@ -212,7 +212,7 @@ def _read_settings(filepath):
         idsListNp = np.array(idsList)
         ind = np.where(idsListNp == -1)
         i = 0
-        for elem in np.nditer(ind):
+        for elem in ind[0]:
             subarray = np.arange(idsListNp[elem - 1 - i] + 1, idsListNp[elem + 1 - i])
             idsListNp = np.delete(idsListNp, elem - i)
             idsListNp = np.concatenate((idsListNp, subarray))
