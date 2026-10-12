@@ -1712,9 +1712,8 @@ class TestTbRom:
         location = twinmodel.get_tbrom_data_location(romname)
         assert location == "Nodal"
 
-
-#    def test_tbrom_dynarom(self): # wait for seg fault error to be resolved
-#        model_filepath = TEST_TB_ROM_DROM
-#        twinmodel = TwinModel(model_filepath=model_filepath)
-#        romname = twinmodel.tbrom_names[0]
-#        assert twinmodel._tbroms[romname]._hasoutmcs is True
+    def test_tbrom_dynarom(self):
+        model_filepath = TEST_TB_ROM_DROM
+        twinmodel = TwinModel(model_filepath=model_filepath)
+        romname = twinmodel.tbrom_names[0]
+        assert twinmodel._tbroms[romname]._hasoutmcs is True

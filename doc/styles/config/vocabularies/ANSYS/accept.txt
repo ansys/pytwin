@@ -16,6 +16,9 @@ pytest
 Postprocessing
 postprocessing
 postprocess
+preload
+preloading
+preloads
 Pythonic
 ROM
 ROMs

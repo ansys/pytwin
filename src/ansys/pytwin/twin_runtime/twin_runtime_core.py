@@ -22,12 +22,6 @@ from enum import Enum, IntFlag
 from pathlib import Path
 from typing import Set, Tuple
 
-CUR_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
-if platform.system() != "Windows":
-    # Load the local libstdc++.so.6
-    # This is required since Pandas loads the system libstdc++.so.6
-    cdll.LoadLibrary(os.path.join(str(CUR_DIR), "libstdc++.so.6"))
-
 import numpy as np
 import pandas as pd
 

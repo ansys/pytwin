@@ -26,6 +26,8 @@ pytwin.
 library
 """
 
+from . import _bootstrap  # noqa: F401
+
 try:
     import importlib.metadata as importlib_metadata
 except ModuleNotFoundError:
