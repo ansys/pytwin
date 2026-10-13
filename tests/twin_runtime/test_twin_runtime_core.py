@@ -20,10 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
 from pytwin import TwinRuntime, TwinRuntimeError
 import pytwin.examples.downloads as downloads
 import pytwin.twin_runtime.twin_runtime_error as twin_runtime_error
-
 
 class TestTwinRuntime:
     def test_evaluate_twin_status(self):
@@ -44,33 +44,41 @@ class TestTwinRuntime:
             assert "fatal error" in str(e)
 
     def test_evaluate_twin_prop_status(self):
-        model_fp = downloads.download_file("CoupledClutches_23R1_other.twin", "twin_files", force_download=True)
+        model_fp = downloads.download_file(
+            "CoupledClutches_23R1_other.twin",
+            "twin_files",
+            force_download=True,
+        )
         twin_runtime = TwinRuntime(model_fp, load_model=True)
         twin_runtime.twin_instantiate()
 
-        # Property error
-        try:
-            TwinRuntime.evaluate_twin_prop_status(4, twin_runtime, "unit_test_method", 0)
-        except twin_runtime_error.PropertyError as e:
-            assert "error" in str(e)
+        with pytest.raises(twin_runtime_error.PropertyError) as exc_info:
+            TwinRuntime.evaluate_twin_prop_status(
+                4, twin_runtime, "unit_test_method", 0
+            )
+        assert "caused an error" in exc_info.value.message
 
-        # Property invalid error
-        try:
-            TwinRuntime.evaluate_twin_prop_status(3, twin_runtime, "unit_test_method", 0)
-        except twin_runtime_error.PropertyInvalidError as e:
-            assert "error" in str(e)
+        with pytest.raises(twin_runtime_error.PropertyInvalidError) as exc_info:
+            TwinRuntime.evaluate_twin_prop_status(
+                3, twin_runtime, "unit_test_method", 0
+            )
+        assert "is invalid" in exc_info.value.message
 
-        # Property not applicable error
-        try:
-            TwinRuntime.evaluate_twin_prop_status(2, twin_runtime, "unit_test_method", 0)
-        except twin_runtime_error.PropertyNotApplicableError as e:
-            assert "error" in str(e)
+        with pytest.raises(
+            twin_runtime_error.PropertyNotApplicableError
+        ) as exc_info:
+            TwinRuntime.evaluate_twin_prop_status(
+                2, twin_runtime, "unit_test_method", 0
+            )
+        assert "is not applicable" in exc_info.value.message
 
-        # Property not defined error
-        try:
-            TwinRuntime.evaluate_twin_prop_status(1, twin_runtime, "unit_test_method", 0)
-        except twin_runtime_error.PropertyNotDefinedError as e:
-            assert "error" in str(e)
+        with pytest.raises(
+            twin_runtime_error.PropertyNotDefinedError
+        ) as exc_info:
+            TwinRuntime.evaluate_twin_prop_status(
+                1, twin_runtime, "unit_test_method", 0
+            )
+        assert "is not defined" in exc_info.value.message
 
     def test_sdk_version(self):
         api_version = TwinRuntime.twin_get_api_version()

@@ -40,8 +40,8 @@ class TestExamples:
             model = TwinModel(model_fp)
             if model.parameters:
                 model._twin_runtime.twin_set_param_by_index(0, 0)
-                model._twin_runtime.twin_set_str_param_by_name(
-                    list(model.parameters.keys())[0], list(model.parameters.keys())[0]
+                model._twin_runtime.twin_set_param_by_name(
+                    list(model.parameters.keys())[0], list(model.parameters.values())[0]
                 )
             model.initialize_evaluation()
             assert model.evaluation_is_initialized
