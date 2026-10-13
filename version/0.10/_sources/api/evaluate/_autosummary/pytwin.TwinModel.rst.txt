@@ -1,0 +1,116 @@
+﻿TwinModel
+=========
+
+.. currentmodule:: pytwin
+
+.. autoclass:: TwinModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TwinModel.close
+      
+      
+      TwinModel.evaluate_batch
+      
+      
+      TwinModel.evaluate_step_by_step
+      
+      
+      TwinModel.generate_points
+      
+      
+      TwinModel.generate_snapshot
+      
+      
+      TwinModel.generate_snapshot_batch
+      
+      
+      TwinModel.get_available_view_names
+      
+      
+      TwinModel.get_field_input_names
+      
+      
+      TwinModel.get_field_output_name
+      
+      
+      TwinModel.get_geometry_filepath
+      
+      
+      TwinModel.get_image_filepath
+      
+      
+      TwinModel.get_named_selections
+      
+      
+      TwinModel.get_rom_directory
+      
+      
+      TwinModel.get_snapshot_filepath
+      
+      
+      TwinModel.get_tbrom_output_field
+      
+      
+      TwinModel.get_tbrom_time_grid
+      
+      
+      TwinModel.initialize_evaluation
+      
+      
+      TwinModel.load_state
+      
+      
+      TwinModel.print_model_info
+      
+      
+      TwinModel.project_tbrom_on_mesh
+      
+      
+      TwinModel.save_state
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TwinModel.TBROM_FILENAME_TIME_FORMAT
+      TwinModel.TBROM_FOLDER_NAME
+      TwinModel.TBROM_IMAGE_EXT
+      TwinModel.TBROM_SNAPSHOT_EXT
+      TwinModel.TBROM_SNAPSHOT_FILE_PREFIX
+      TwinModel.TBROM_VIEWS_KEY
+      TwinModel.evaluation_is_initialized
+      TwinModel.evaluation_time
+      TwinModel.id
+      TwinModel.initialization_time
+      TwinModel.inputs
+      TwinModel.instantiation_time
+      TwinModel.model_dir
+      TwinModel.model_filepath
+      TwinModel.model_log
+      TwinModel.model_log_link
+      TwinModel.model_temp
+      TwinModel.name
+      TwinModel.outputs
+      TwinModel.parameters
+      TwinModel.solver_parameters
+      TwinModel.tbrom_count
+      TwinModel.tbrom_directory_path
+      TwinModel.tbrom_info
+      TwinModel.tbrom_names
+   
+   

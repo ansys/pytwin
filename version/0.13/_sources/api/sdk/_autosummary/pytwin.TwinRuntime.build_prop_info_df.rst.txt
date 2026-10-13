@@ -1,0 +1,6 @@
+build\_prop\_info\_df
+=====================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.build_prop_info_df

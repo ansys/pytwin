@@ -1,0 +1,6 @@
+twin\_set\_param\_by\_index
+===========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_set_param_by_index

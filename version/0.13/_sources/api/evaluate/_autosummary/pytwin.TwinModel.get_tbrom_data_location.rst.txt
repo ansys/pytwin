@@ -1,0 +1,6 @@
+get\_tbrom\_data\_location
+==========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_tbrom_data_location

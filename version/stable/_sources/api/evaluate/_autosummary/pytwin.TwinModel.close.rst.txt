@@ -1,0 +1,6 @@
+close
+=====
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.close

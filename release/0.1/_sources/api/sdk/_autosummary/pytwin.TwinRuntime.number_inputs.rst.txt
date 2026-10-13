@@ -1,0 +1,6 @@
+number\_inputs
+==============
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.number_inputs
