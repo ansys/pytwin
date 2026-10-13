@@ -3791,14 +3791,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "1.7.0"
+version = "1.8.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.7.0-py3-none-any.whl", hash = "sha256:ffcad8455a027b4e8d068106161e4456c46cbeb409af6b3685539c84a53f6655"},
-    {file = "pyaedt-1.7.0.tar.gz", hash = "sha256:97cfa148aa02a77b30cec96eec3b1f277a2f32e9e5aab7f885aa5465cff17b27"},
+    {file = "pyaedt-1.8.0-py3-none-any.whl", hash = "sha256:b6c120f9d68bcfc87a8d9827bfa6f6c34483386686ae66f1ecdf0d47b5d64736"},
+    {file = "pyaedt-1.8.0.tar.gz", hash = "sha256:e9c5a15266d594f69ab429a85853d097c97f628c16317e13a185ded3c8678958"},
 ]
 
 [package.dependencies]
@@ -6358,4 +6358,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "385f9aa9d8d828e4c119b1321297aa99b22ad05dcb50c4f1b6b09a822a986e87"
+content-hash = "c3ab478c2dc357313d53b1f97bfa343edbdddd507b4c559c38962a9c7ab737b5"
