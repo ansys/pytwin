@@ -1,374 +1,361 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<MESSAGES>
-    <!-- © 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. -->
-    <!-- Begin ACLCURL Messages [21001 - 22000] -->
-    <MESSAGE>
-        <ID>
-            21008
-        </ID>
+<?xml version="1.0" encoding="utf-8"?>
+<MESSAGES><!-- © 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. --> <!-- Begin ACLCURL Messages [21001 - 22000] --><MESSAGE>
+        <ID>21018</ID>
         <MSG>
-            User LaaS Authorization attempt timed out. Browser prompt for credentials was not completed in the allotted %1 seconds.
+            PAC-Helper-Dienstprogramm eines Drittanbieters kann nicht ausgeführt werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21007
-        </ID>
+        <ID>21017</ID>
         <MSG>
-            Waiting for response for as long as it takes or the process is stopped.
+            PAC-Skript %1 konnte nicht ausgeführt werden
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21006
-        </ID>
+        <ID>21016</ID>
         <MSG>
-            Waiting for response for up to %1 seconds.
+            PAC-Skript definiert keine FindProxyForURL()
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21005
-        </ID>
+        <ID>21015</ID>
         <MSG>
-            ERROR: No response recieved from authorization request.
+            PAC-Skript %1 kann nicht ausgewertet werden
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21004
-        </ID>
+        <ID>21014</ID>
         <MSG>
-            Unable to parse code from authorization response: %1
+            Kontext des PAC-Helper-Dienstprogramms eines Drittanbieters konnte nicht erstellt werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21003
-        </ID>
+        <ID>21013</ID>
         <MSG>
-            Curl error %1 encountered on call to %2: %3
+            Proxyserver %1 wird für url %2 verwendet
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21002
-        </ID>
+        <ID>21012</ID>
         <MSG>
-            Call to %1 timed out after %2 seconds.
+            PAC-Datei kann nicht aus url %1 abgerufen werden. Fehler %2 : %3 aufgetreten
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            21001
-        </ID>
+        <ID>21011</ID>
         <MSG>
-            Unable to set URL, curl error %1 returned setting url to '%2' with arguments.
-        </MSG>
-    </MESSAGE>
-    <!-- Begin ACLEXT Messages [20001 - 21000] -->
-    <MESSAGE>
-        <ID>
-            20038
-        </ID>
-        <MSG>
-            Data verification failed.
+            Automatische Proxy-Konfiguration erkannt. PAC url %1 wird verwendet, um den Proxyserver für curl-Anfragen zu bestimmen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20037
-        </ID>
+        <ID>21010</ID>
         <MSG>
-            No data returned by call to LaaS URL.
+            Proxyserverkonfiguration erkannt. Alle curl-Anfragen verwenden den Proxyserver: %1.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20036
-        </ID>
+        <ID>21009</ID>
         <MSG>
-            Unable to get token object to retrieve bearer token for request.
+            Falsche Proxyserver-Einstellung. Geben Sie den Proxyserver im Format „http://&lt;proxyserver&gt;:&lt;port&gt;“ oder „http://&lt;username&gt;:&lt;password&gt;@&lt;proxyserver&gt;:&lt;port&gt;“ an.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20035
-        </ID>
+        <ID>21008</ID>
         <MSG>
-            Unknown issue determining/retrieving bearer token for request
+            Zeitüberschreitung beim Versuch der LaaS-Benutzerautorisierung. Die Browseraufforderung zur Eingabe von Anmeldedaten wurde nicht innerhalb der vorgesehenen %1 Sekunden abgeschlossen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20034
-        </ID>
+        <ID>21007</ID>
         <MSG>
-            LaaS REST API %1 returned (at: %2): %3
+            Es wird so lange wie nötig gewartet oder bis der Vorgang abgebrochen wird.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20033
-        </ID>
+        <ID>21006</ID>
         <MSG>
-            Unable to retrieve bearer token.
+            Es wird bis zu %1 Sekunden lang gewartet.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20032
-        </ID>
+        <ID>21005</ID>
         <MSG>
-            Unable clear Access Token cache.
+            FEHLER: Keine Antwort auf Autorisierungsanfrage erhalten.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20031
-        </ID>
+        <ID>21004</ID>
         <MSG>
-            Unable to find Access Token file '%1.'
+            Code aus der Autorisierungsantwort %1 kann nicht geparst werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20030
-        </ID>
+        <ID>21003</ID>
         <MSG>
-            No data read from Access Token file '%1.'
+            Curl-Fehler %1 beim Anruf an %2: %3
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20029
-        </ID>
+        <ID>21002</ID>
         <MSG>
-            No token data found in Access Token file '%1.'
+            Zeitüberschreitung beim Anruf an %1 nach %2 Sekunden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20028
-        </ID>
+        <ID>21001</ID>
         <MSG>
-            No Access Token value passed.
+            URL kann nicht festgelegt werden, curl-Fehler %1, url wird mit Argumenten auf &apos;%2&apos; gestellt.
+        </MSG>
+    </MESSAGE><!-- Begin ACLEXT Messages [20001 - 21000] --><MESSAGE>
+        <ID>20042</ID>
+        <MSG>
+            Aktualisierung der Proxy-Einstellungen in der Datei &quot;ansyslmd ini&quot; fehlgeschlagen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20027
-        </ID>
+        <ID>20041</ID>
         <MSG>
-            Unable to retrieve data from passed Access Token value: %1
+            Aktualisierung der Ausgabedatei der Proxy-Einstellungen fehlgeschlagen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20026
-        </ID>
+        <ID>20040</ID>
         <MSG>
-            Passed Access Token expired as of %1.
+            Proxy-Einstellungen konnten nicht gelesen werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20025
-        </ID>
+        <ID>20039</ID>
         <MSG>
-            Unable to update Access Token cache.
+            Der Installationspfad darf nicht leer sein.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20024
-        </ID>
+        <ID>20038</ID>
         <MSG>
-            Unable to authorize token
+            Datenverifizierung fehlgeschlagen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20023
-        </ID>
+        <ID>20037</ID>
         <MSG>
-            Displaying default browser with ANSYSID login to acquire authentication, please enter the ANSYSID credentials to use for Web Licensing actions.
+            Beim Anruf an LaaS URL wurden keine Daten ausgegeben.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20022
-        </ID>
+        <ID>20036</ID>
         <MSG>
-            Refresh token is expired.
+            Erhalt des Token-Objekts zum Abrufen des Bearer-Tokens für die Anfrage nicht möglich.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20021
-        </ID>
+        <ID>20035</ID>
         <MSG>
-            Refresh of existing access token succeeded.
+            Unbekanntes Problem beim Ermitteln/Abrufen des Bearer-Tokens für die Anfrage
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20020
-        </ID>
+        <ID>20034</ID>
         <MSG>
-            Unable to refresh access token using the refresh token.
+            LaaS REST API %1 meldete %3 (bei: %2) zurück
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20019
-        </ID>
+        <ID>20033</ID>
         <MSG>
-            Attempting to refresh existing access token.
+            Bearer-Token kann nicht abgerufen werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20018
-        </ID>
+        <ID>20032</ID>
         <MSG>
-            Existing token is expired.
+            Der Zugriffstoken-Cache kann nicht bereinigt werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20017
-        </ID>
+        <ID>20031</ID>
         <MSG>
-            Existing token is still valid.
+            Die Zugriffstoken-Datei &apos;%1&apos; kann nicht gefunden werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20016
-        </ID>
+        <ID>20030</ID>
         <MSG>
-            No Token value.
+            Es wurden keine Daten aus der Zugriffstoken-Datei &apos;%1&apos; gelesen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20015
-        </ID>
+        <ID>20029</ID>
         <MSG>
-            Unable to retrieve updated token.
+            Es wurden keine Daten in der Zugriffstoken-Datei &apos;%1&apos; gefunden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20014
-        </ID>
+        <ID>20028</ID>
         <MSG>
-            Token expired.
+            Es wurde kein Zugriffstoken-Wert übergeben.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20013
-        </ID>
+        <ID>20027</ID>
         <MSG>
-            LaaS REST API %1 call (at: %2): %3
+            Die Daten des übergebenen Zugriffstoken-Werts %1 können nicht abgerufen werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20012
-        </ID>
+        <ID>20026</ID>
         <MSG>
-            Bearer token retrieved: %1
+            Der übergebene Zugriffstoken ist am %1 abgelaufen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20011
-        </ID>
+        <ID>20025</ID>
         <MSG>
-            Retrieving bearer token...
+            Zugriffstoken-Cache kann nicht aktualisiert werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20010
-        </ID>
+        <ID>20024</ID>
         <MSG>
-            Using user token...
+            Token kann nicht autorisiert werden
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20009
-        </ID>
+        <ID>20023</ID>
         <MSG>
-            Logging URL call to: %1
+            Es wird der Standardbrowser mit ANSYSID-Anmeldung zum Erhalt der Authentifizierung angezeigt. Bitte geben Sie die ANSYSID-Anmeldedaten zur Verwendung für Weblizenzierungsaktionen ein.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20008
-        </ID>
+        <ID>20022</ID>
         <MSG>
-            Missing/invalid cache dir specified: %1
+            Aktualisierungstoken ist abgelaufen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20007
-        </ID>
+        <ID>20021</ID>
         <MSG>
-            Unable to create cache dir: %1
+            Aktualisierung des vorhandenen Zugriffstoken erfolgreich.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20006
-        </ID>
+        <ID>20020</ID>
         <MSG>
-            Unable to initialize LaaS connection: No %1 value found.
+            Der Zugriffstoken kann nicht mithilfe des Aktualisierungstokens aktualisiert werden.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20005
-        </ID>
+        <ID>20019</ID>
         <MSG>
-            Unable to initialize LaaS connection: invalid connection type '%1' passed/set. See documentation of %2.
+            Es wird versucht, den vorhandenen Zugriffstoken zu aktualisieren.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20004
-        </ID>
+        <ID>20018</ID>
         <MSG>
-            Unable to initialize LaaS connection: no %1 value set.
+            Vorhandener Token ist abgelaufen.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20003
-        </ID>
+        <ID>20017</ID>
         <MSG>
-            Unable to initialize LaaS connection: %1 value must be set 'on'.
+            Vorhandener Token ist noch gültig.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20002
-        </ID>
+        <ID>20016</ID>
         <MSG>
-            DEBUG (%1): %2
+            Kein Token-Wert.
         </MSG>
     </MESSAGE>
     <MESSAGE>
-        <ID>
-            20001
-        </ID>
+        <ID>20015</ID>
         <MSG>
-            Localized message directory %1 not found.
+            Aktualisierter Token kann nicht abgerufen werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20014</ID>
+        <MSG>
+            Token abgelaufen.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20013</ID>
+        <MSG>
+            LaaS REST API %1 Anruf (bei: %2): %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20012</ID>
+        <MSG>
+            Bearer-Token abgerufen: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20011</ID>
+        <MSG>
+            Bearer-Token wird abgerufen...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20010</ID>
+        <MSG>
+            Bearer-Token wird verwendet...
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20009</ID>
+        <MSG>
+            URL-Anruf an %1 wird geloggt.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20008</ID>
+        <MSG>
+            Fehlendes/ungültiges Cache-Verzeichnis: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20007</ID>
+        <MSG>
+            Cache-Verzeichnis %1 kann nicht erstellt werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20006</ID>
+        <MSG>
+            LaaS-Verbindung kann nicht initialisiert werden: Kein %1-Wert gefunden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20005</ID>
+        <MSG>
+            LaaS-Verbindung kann nicht initialisiert werden: ungültiger Verbindungstyp &apos;%1&apos; übergeben/eingestellt. Siehe Dokumentation zu %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20004</ID>
+        <MSG>
+            LaaS-Verbindung kann nicht initialisiert werden: kein %1-Wert eingestellt.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20003</ID>
+        <MSG>
+            LaaS-Verbindung kann nicht initialisiert werden: %1-Wert muss auf &apos;Ein&apos; gestellt sein.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20002</ID>
+        <MSG>
+            DEBUGGING (%1): %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>20001</ID>
+        <MSG>
+            Verzeichnis %1 der lokalisierten Nachricht nicht gefunden.
         </MSG>
     </MESSAGE>
 </MESSAGES>

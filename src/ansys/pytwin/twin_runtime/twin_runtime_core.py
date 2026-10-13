@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# flake8: noqa: E402
 from ctypes import (
     POINTER,
     byref,
@@ -278,8 +279,14 @@ class TwinRuntime:
         """
         with zipfile.ZipFile(file_path) as zip_handler:
             zip_contents = zip_handler.namelist()
-            has_windows = any([name.startswith("binaries/win64/") for name in zip_contents])
-            has_linux = any([name.startswith("binaries/linux64/") for name in zip_contents])
+            has_windows = any(
+                name.startswith("binaries/win64/") or name.startswith("binaries/x86_64-windows/")
+                for name in zip_contents
+            )
+            has_linux = any(
+                name.startswith("binaries/linux64/") or name.startswith("binaries/x86_64-linux/")
+                for name in zip_contents
+            )
 
         return has_windows and has_linux
 
@@ -338,6 +345,8 @@ class TwinRuntime:
             model_exchange_tag = root.find("ModelExchange")
             if model_exchange_tag is not None:
                 available_fmi_types.add("me")
+            if available_fmi_types == set():
+                raise TwinRuntimeError("Unknown FMI type! The model is neither Model Exchange nor Co Simulation.")
             return available_fmi_types
 
         file_path = Path(file_path)
@@ -440,7 +449,7 @@ class TwinRuntime:
         """
         Returns whether the given FMI-based model is supported by the Twin SDK.
 
-        Twin SDK currently only supports FMI 2.0 models
+        Twin SDK supports FMI 2.0 and FMI 3.0 models.
 
         Parameters
         ----------
@@ -455,7 +464,7 @@ class TwinRuntime:
         """
 
         version = TwinRuntime.get_fmi_version(file_path)
-        if version == "2.0":
+        if version in ("2.0", "3.0"):
             return True, ""
         return False, f"FMI {version} models are not supported"
 
@@ -502,8 +511,14 @@ class TwinRuntime:
         """
         with zipfile.ZipFile(file_path) as zip_handler:
             zip_contents = zip_handler.namelist()
-            has_windows = any([name.startswith("binaries/win64/") for name in zip_contents])
-            has_linux = any([name.startswith("binaries/linux64/") for name in zip_contents])
+            has_windows = any(
+                name.startswith("binaries/win64/") or name.startswith("binaries/x86_64-windows/")
+                for name in zip_contents
+            )
+            has_linux = any(
+                name.startswith("binaries/linux64/") or name.startswith("binaries/x86_64-linux/")
+                for name in zip_contents
+            )
 
         return {"has_windows": has_windows, "has_linux": has_linux}
 

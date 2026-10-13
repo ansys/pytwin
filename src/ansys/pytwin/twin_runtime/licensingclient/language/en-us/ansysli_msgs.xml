@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MESSAGES>
+
+    <!-- Begin ACLCURL ACLEXT Common Messages [20001 - 22000] -->
+    <MESSAGE>
+        <ID>
+            21018
+        </ID>
+        <MSG>
+            Unable to execute thirdparty PAC-helper utility.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21017
+        </ID>
+        <MSG>
+            Failed to execute PAC script: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21016
+        </ID>
+        <MSG>
+            PAC script does not define a FindProxyForURL()
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21015
+        </ID>
+        <MSG>
+            Unable to evaluate PAC script : %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21014
+        </ID>
+        <MSG>
+            Failed to create thirdparty PAC-helper utility context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21013
+        </ID>
+        <MSG>
+            Using proxy server: %1 for url: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21012
+        </ID>
+        <MSG>
+            Unable to fetch PAC file from url: %1. Encountered error %2 : %3
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21011
+        </ID>
+        <MSG>
+            Proxy auto-configuration detected. PAC url: %1 will be used to determine the proxy server for curl requests.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            21010
+        </ID>
+        <MSG>
+            Proxy server configuration detected. All curl requests will use the proxy server: %1.
+        </MSG>
+    </MESSAGE>
+  
     <!-- Begin ACL APIP Messages [19001 - 20000] -->
     <MESSAGE>
         <ID>
@@ -43,6 +118,70 @@
     </MESSAGE>
     
     <!-- Begin ACL FNP Messages [18001 - 19000] -->
+    <MESSAGE>
+        <ID>
+            18016
+        </ID>
+        <MSG>
+            Using application defined attributes (%1) for checkout.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18015
+        </ID>
+        <MSG>
+            Cache of server %1 blocked to prevent application delays.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18014
+        </ID>
+        <MSG>
+            No license path found for FNP daemon %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18013
+        </ID>
+        <MSG>
+            Unable to checkout %1 from %2 FNP daemon, only one active checkout allowed for the %3 service at this time.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18012
+        </ID>
+        <MSG>
+            Licensing service enabled: %1 (%2)
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18011
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) version: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18010
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) - snpslmd
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18009
+        </ID>
+        <MSG>
+            FlexNet Publisher (FNP) - ansyslmd
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             18008
@@ -402,10 +541,66 @@
     <!-- Begin ACL Messages [16001 - 17000] -->
     <MESSAGE>
         <ID>
+            16060
+        </ID>
+        <MSG>
+            Startup option %1 is not currently supported by ACL executable %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16059
+        </ID>
+        <MSG>
+            Unable to write proxy settings: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16058
+        </ID>
+        <MSG>
+            Unable to read proxy settings: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16057
+        </ID>
+        <MSG>
+            Proxy output path cannot be empty.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16056
+        </ID>
+        <MSG>
+            Lost FNP queue for feature %1.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16055
+        </ID>
+        <MSG>
+            Unable to initialize local web license cache.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            16054
+        </ID>
+        <MSG>
+            No local web license entitlements to export.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
             16053
         </ID>
         <MSG>
-            Unable to export data to %1.
+            Unable to export data to %1. Reason: %2
         </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -878,6 +1073,158 @@
     <!-- End Debug Messages [15001 - 16000] -->
     
     <!-- Begin License Context specific Messages [14001 - 15000] -->
+    <MESSAGE>
+        <ID>
+            14073
+        </ID>
+        <MSG>
+            Unable to connect to license handler for context id %1. Connection failed for direct checkout of feature %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14072
+        </ID>
+        <MSG>
+            Unable to connect to license handler for context id %1. Attempt %2 of %3.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14071
+        </ID>
+        <MSG>
+            Feature cannot be empty. Unable to check the context for an existing checkout if no feature is provided.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14070
+        </ID>
+        <MSG>
+            Unable to check the context for a checkout of %1 without identifying the context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14069
+        </ID>
+        <MSG>
+            Upfront checkout of features failed for %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14068
+        </ID>
+        <MSG>
+            Upfront checkout of features complete for %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14067
+        </ID>
+        <MSG>
+            Upfront checkout of features started for %1 context with id %2.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14066
+        </ID>
+        <MSG>
+            Upfront checkout of feature %1 has been ignored. Upfront checkout of feature %2 is not permitted for %3 contexts.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14065
+        </ID>
+        <MSG>
+            Unable to create %1 splits for checkout of %2, this may compromise license context feature tracking of %3.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14064
+        </ID>
+        <MSG>
+            Checkout of %1 was split into %2 individual checkouts for license context tracking purposes.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14063
+        </ID>
+        <MSG>
+            One or more features in passed XML missing %1 value.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14062
+        </ID>
+        <MSG>
+            No features found in passed XML.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14061
+        </ID>
+        <MSG>
+            Invalid XML.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14060
+        </ID>
+        <MSG>
+            Missing XML.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14059
+        </ID>
+        <MSG>
+            Unable to perform upfront checkouts, unable to determine features from incoming XML: %1
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14058
+        </ID>
+        <MSG>
+            License Pooling
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14057
+        </ID>
+        <MSG>
+            Unable to perform upfront checkouts, features to checkout could not be parsed from incoming request.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14056
+        </ID>
+        <MSG>
+            Unable to perform upfront checkouts, context specified does not support upfront checkouts.  Context with id %1 is a %2 context.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            14055
+        </ID>
+        <MSG>
+            Unable to perform upfront checkouts without a context identified.
+        </MSG>
+    </MESSAGE>
     <MESSAGE>
         <ID>
             14054
@@ -2711,6 +3058,30 @@ Please save your work.
     <!-- Begin Log messages: INFO 1200 - 1299 -->
   <MESSAGE>
     <ID>
+      1269
+    </ID>
+    <MSG>
+      The servers in the path %1 are unavailable and have been temporarily blocked.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1268
+    </ID>
+    <MSG>
+      Failed to read proxy settings.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1267
+    </ID>
+    <MSG>
+      Install path cannot be empty.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
       1266
     </ID>
     <MSG>
@@ -3251,6 +3622,30 @@ ndd -set /dev/tcp tcp_fin_wait_2_flush_interval 67500
   </MESSAGE> 
   <!-- End Log messages: CACHE_SERVER 1200 - 1299 -->
     <!-- Begin Log messages: ERROR 1000 - 1199 -->
+  <MESSAGE>
+    <ID>
+      1080
+    </ID>
+    <MSG>
+      Returning from Idle TIMEOUT mode for feature %1.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1079
+    </ID>
+    <MSG>
+      Entering into Idle TIMEOUT mode for feature %1 with timeout set to %2.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      1078
+    </ID>
+    <MSG>
+      Sending FNP heartbeats for daemon: %1
+    </MSG>
+  </MESSAGE>
   <MESSAGE>
     <ID>
       1077
@@ -5270,6 +5665,46 @@ Reserve ID: %2.
   </MESSAGE> 
   <!-- End pool Error Messages --> 
   <!-- Begin Server/Client Reply Messages [250 - 299] [1400 - 1449] -->
+  <MESSAGE>
+    <ID>
+      290
+    </ID>
+    <MSG>
+      Feature %1 was not borrowed so it could not be returned.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      289
+    </ID>
+    <MSG>
+      Unable to return borrowed features: no features identified to return.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      288
+    </ID>
+    <MSG>
+      Invalid FNP daemon to borrow from specified: %1
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      287
+    </ID>
+    <MSG>
+      Unable to borrow features: no features identified to borrow.
+    </MSG>
+  </MESSAGE>
+  <MESSAGE>
+    <ID>
+      286
+    </ID>
+    <MSG>
+      Return date and time could not be found or retrieved from the XML input.
+    </MSG>
+  </MESSAGE>
   <MESSAGE>
     <ID>
       285
