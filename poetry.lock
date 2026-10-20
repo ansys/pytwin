@@ -349,14 +349,14 @@ tests = ["pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pytest-mock (==3.14.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.42.1"
+version = "0.42.2"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.42.1-py3-none-any.whl", hash = "sha256:5d451ef50ea9d5ce801f0b776c8993c4a55d858c77d34ae42600d5d8f6ff6b12"},
-    {file = "ansys_fluent_core-0.42.1.tar.gz", hash = "sha256:b2657cec1af3b5808c73b6cffc681cde29bfec4725b710cb4de55600c3ccbc1a"},
+    {file = "ansys_fluent_core-0.42.2-py3-none-any.whl", hash = "sha256:4f7b703b311820d17bdf1cd93394790a844b60f2a40dd8259f6154a16e9c9efc"},
+    {file = "ansys_fluent_core-0.42.2.tar.gz", hash = "sha256:558bcfc33adde5d6bc1d1e3d396bcd5e3628aaab89170429234bf88282147166"},
 ]
 
 [package.dependencies]
@@ -4295,14 +4295,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.49.0"
+version = "0.49.1"
 description = "3D visualization and mesh analysis for science and engineering."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.49.0-py3-none-any.whl", hash = "sha256:8528b753baf9a32dd7a44f4e88912fe5c8771f7d921c813e1cbac35fc5a37996"},
-    {file = "pyvista-0.49.0.tar.gz", hash = "sha256:5bc914769dfa9baeedb3b761c81e3326bd4c7a3aeed475c25f164c798806dba2"},
+    {file = "pyvista-0.49.1-py3-none-any.whl", hash = "sha256:e4bd78c829051207e885281c45d03280dcde25445e1885c0824518ea7849b1c8"},
+    {file = "pyvista-0.49.1.tar.gz", hash = "sha256:e3a37f2330ce9d2d680a153ac08fea2bd900aa59d13db46da8f64c92896ddd8e"},
 ]
 markers = {main = "extra == \"graphics\""}
 
@@ -4324,7 +4324,7 @@ colormaps = ["cmcrameri", "cmocean", "colorcet"]
 cvista = ["cvista[all] (>=9.7.0.2,<9.8.0)"]
 io = ["fsspec", "imageio", "meshio (>=5.2)", "pyvista-frd-reader (>=0.2.1)", "pyvista-zstd (>=0.3.1)"]
 io-override = ["pyvista-miniply (>=0.5.2)", "pyvista-stl (>=0.5.3)"]
-jupyter = ["ipywidgets", "nest-asyncio2", "trame-pyvista"]
+jupyter = ["trame-pyvista[jupyter]"]
 
 [[package]]
 name = "pyvista-validation"
