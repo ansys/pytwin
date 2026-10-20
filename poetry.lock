@@ -3791,14 +3791,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "1.7.0"
+version = "1.9.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.7.0-py3-none-any.whl", hash = "sha256:ffcad8455a027b4e8d068106161e4456c46cbeb409af6b3685539c84a53f6655"},
-    {file = "pyaedt-1.7.0.tar.gz", hash = "sha256:97cfa148aa02a77b30cec96eec3b1f277a2f32e9e5aab7f885aa5465cff17b27"},
+    {file = "pyaedt-1.9.0-py3-none-any.whl", hash = "sha256:2db03d1e4c70c14fed8eb05f91cc68506932c173107c220f901a1a8b1b44cbc8"},
+    {file = "pyaedt-1.9.0.tar.gz", hash = "sha256:9ae9d9ae03f9bd185c7a274670bdda1c0fc74de81c76c8385493a27d2e046dd8"},
 ]
 
 [package.dependencies]
@@ -3816,11 +3816,11 @@ tomli-w = "*"
 typing_extensions = {version = ">=4.4", markers = "python_version < \"3.13\""}
 
 [package.extras]
-all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
-all-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "ansys-tools-visualization-interface", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "pywin32 (>=303) ; platform_system == \"Windows\"", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pdf-oxide", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
+all-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "ansys-tools-visualization-interface", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pdf-oxide", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "pywin32 (>=303) ; platform_system == \"Windows\"", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
 dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
-examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0)", "joblib (>=1.4.0)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "plotly (>=6.0)", "pyvista[jupyter] (>=0.38.0)", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\""]
-graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0)", "pillow", "pyvista[io] (>=0.38.0,<0.50)", "vtk (>=9.0,<9.8)"]
+examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0)", "joblib (>=1.4.0)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pdf-oxide", "plotly (>=6.0)", "pyvista[jupyter] (>=0.38.0)", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\""]
+graphics = ["ansys-tools-visualization-interface", "matplotlib (>=3.5.0)", "pdf-oxide", "pillow", "pyvista[io] (>=0.38.0,<0.50)", "vtk (>=9.0,<9.8)"]
 jupyter = ["ipython (>=7.30.0)", "jupyterlab (>=3.6.0)"]
 
 [[package]]
@@ -6358,4 +6358,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "385f9aa9d8d828e4c119b1321297aa99b22ad05dcb50c4f1b6b09a822a986e87"
+content-hash = "7781ec72ecb7ea3da9a51290f703cdc3ef9fffd8a81bb57597bd98713379ac19"
