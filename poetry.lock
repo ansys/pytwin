@@ -349,14 +349,14 @@ tests = ["pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pytest-mock (==3.14.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.42.1"
+version = "0.42.2"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.42.1-py3-none-any.whl", hash = "sha256:5d451ef50ea9d5ce801f0b776c8993c4a55d858c77d34ae42600d5d8f6ff6b12"},
-    {file = "ansys_fluent_core-0.42.1.tar.gz", hash = "sha256:b2657cec1af3b5808c73b6cffc681cde29bfec4725b710cb4de55600c3ccbc1a"},
+    {file = "ansys_fluent_core-0.42.2-py3-none-any.whl", hash = "sha256:4f7b703b311820d17bdf1cd93394790a844b60f2a40dd8259f6154a16e9c9efc"},
+    {file = "ansys_fluent_core-0.42.2.tar.gz", hash = "sha256:558bcfc33adde5d6bc1d1e3d396bcd5e3628aaab89170429234bf88282147166"},
 ]
 
 [package.dependencies]
@@ -3791,14 +3791,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "1.7.0"
+version = "1.9.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.7.0-py3-none-any.whl", hash = "sha256:ffcad8455a027b4e8d068106161e4456c46cbeb409af6b3685539c84a53f6655"},
-    {file = "pyaedt-1.7.0.tar.gz", hash = "sha256:97cfa148aa02a77b30cec96eec3b1f277a2f32e9e5aab7f885aa5465cff17b27"},
+    {file = "pyaedt-1.9.0-py3-none-any.whl", hash = "sha256:2db03d1e4c70c14fed8eb05f91cc68506932c173107c220f901a1a8b1b44cbc8"},
+    {file = "pyaedt-1.9.0.tar.gz", hash = "sha256:9ae9d9ae03f9bd185c7a274670bdda1c0fc74de81c76c8385493a27d2e046dd8"},
 ]
 
 [package.dependencies]
@@ -3816,11 +3816,11 @@ tomli-w = "*"
 typing_extensions = {version = ">=4.4", markers = "python_version < \"3.13\""}
 
 [package.extras]
-all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
-all-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "ansys-tools-visualization-interface", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "fast-simplification (>=0.1.7)", "fpdf2", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "pywin32 (>=303) ; platform_system == \"Windows\"", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
+all = ["ansys-tools-visualization-interface", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pdf-oxide", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
+all-dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "ansys-tools-visualization-interface", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "fast-simplification (>=0.1.7)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pdf-oxide", "pyaedt[jupyter]", "pyvista[io] (>=0.38.0,<0.50)", "pywin32 (>=303) ; platform_system == \"Windows\"", "requests", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\"", "typer (>=0.20.0)"]
 dotnet = ["ansys-pythonnet (>=3.1.0rc3)", "cffi (>=1.16.0) ; platform_system == \"Linux\"", "pywin32 (>=303) ; platform_system == \"Windows\""]
-examples = ["fast-simplification (>=0.1.7)", "fpdf2", "imageio (>=2.34.0)", "joblib (>=1.4.0)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "plotly (>=6.0)", "pyvista[jupyter] (>=0.38.0)", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\""]
-graphics = ["ansys-tools-visualization-interface", "fpdf2", "matplotlib (>=3.5.0)", "pillow", "pyvista[io] (>=0.38.0,<0.50)", "vtk (>=9.0,<9.8)"]
+examples = ["fast-simplification (>=0.1.7)", "imageio (>=2.34.0)", "joblib (>=1.4.0)", "matplotlib (>=3.5.0)", "openpyxl (>=3.1.0)", "osmnx (>=2.0.0)", "pandas (>=1.1.0)", "pdf-oxide", "plotly (>=6.0)", "pyvista[jupyter] (>=0.38.0)", "rpyc (>=6.0.0)", "scikit-rf (>=0.30.0)", "tables ; python_version >= \"3.10\""]
+graphics = ["ansys-tools-visualization-interface", "matplotlib (>=3.5.0)", "pdf-oxide", "pillow", "pyvista[io] (>=0.38.0,<0.50)", "vtk (>=9.0,<9.8)"]
 jupyter = ["ipython (>=7.30.0)", "jupyterlab (>=3.6.0)"]
 
 [[package]]
@@ -4334,14 +4334,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.49.0"
+version = "0.49.1"
 description = "3D visualization and mesh analysis for science and engineering."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.49.0-py3-none-any.whl", hash = "sha256:8528b753baf9a32dd7a44f4e88912fe5c8771f7d921c813e1cbac35fc5a37996"},
-    {file = "pyvista-0.49.0.tar.gz", hash = "sha256:5bc914769dfa9baeedb3b761c81e3326bd4c7a3aeed475c25f164c798806dba2"},
+    {file = "pyvista-0.49.1-py3-none-any.whl", hash = "sha256:e4bd78c829051207e885281c45d03280dcde25445e1885c0824518ea7849b1c8"},
+    {file = "pyvista-0.49.1.tar.gz", hash = "sha256:e3a37f2330ce9d2d680a153ac08fea2bd900aa59d13db46da8f64c92896ddd8e"},
 ]
 markers = {main = "extra == \"graphics\""}
 
@@ -4363,7 +4363,7 @@ colormaps = ["cmcrameri", "cmocean", "colorcet"]
 cvista = ["cvista[all] (>=9.7.0.2,<9.8.0)"]
 io = ["fsspec", "imageio", "meshio (>=5.2)", "pyvista-frd-reader (>=0.2.1)", "pyvista-zstd (>=0.3.1)"]
 io-override = ["pyvista-miniply (>=0.5.2)", "pyvista-stl (>=0.5.3)"]
-jupyter = ["ipywidgets", "nest-asyncio2", "trame-pyvista"]
+jupyter = ["trame-pyvista[jupyter]"]
 
 [[package]]
 name = "pyvista-validation"
@@ -6397,4 +6397,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "385f9aa9d8d828e4c119b1321297aa99b22ad05dcb50c4f1b6b09a822a986e87"
+content-hash = "7781ec72ecb7ea3da9a51290f703cdc3ef9fffd8a81bb57597bd98713379ac19"
