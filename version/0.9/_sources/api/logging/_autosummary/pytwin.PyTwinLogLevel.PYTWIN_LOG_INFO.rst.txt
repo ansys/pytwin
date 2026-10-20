@@ -1,0 +1,6 @@
+PYTWIN\_LOG\_INFO
+=================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: PyTwinLogLevel.PYTWIN_LOG_INFO

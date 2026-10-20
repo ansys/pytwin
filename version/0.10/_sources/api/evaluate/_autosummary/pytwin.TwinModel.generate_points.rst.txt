@@ -1,0 +1,6 @@
+generate\_points
+================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.generate_points

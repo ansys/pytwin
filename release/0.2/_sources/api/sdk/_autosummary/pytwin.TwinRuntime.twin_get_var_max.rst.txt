@@ -1,0 +1,6 @@
+twin\_get\_var\_max
+===================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_var_max

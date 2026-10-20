@@ -1,0 +1,6 @@
+is\_model\_opened
+=================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.is_model_opened

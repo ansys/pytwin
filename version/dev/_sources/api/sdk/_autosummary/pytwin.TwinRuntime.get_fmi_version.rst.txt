@@ -1,0 +1,6 @@
+get\_fmi\_version
+=================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.get_fmi_version

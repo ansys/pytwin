@@ -1,0 +1,6 @@
+get\_model\_name
+================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.get_model_name

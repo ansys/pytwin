@@ -1,0 +1,6 @@
+tbrom\_directory\_path
+======================
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.tbrom_directory_path
