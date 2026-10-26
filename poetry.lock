@@ -296,16 +296,16 @@ protobuf = ">=5.29"
 
 [[package]]
 name = "ansys-dpf-core"
-version = "0.16.1"
+version = "0.16.3"
 description = "Data Processing Framework - Python Core "
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "ansys_dpf_core-0.16.1-py3-none-any.whl", hash = "sha256:610bab3712a94f2ce4b7bd31b5cf92e7691346baef101da73d74323b6c94c324"},
-    {file = "ansys_dpf_core-0.16.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:0b3274f609786d986e269b37a56f7a9e1d7ec2b2f5667cdd4837c3313c5dd565"},
-    {file = "ansys_dpf_core-0.16.1-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:984488b048d4c7f8a39086d391401474bba978d8aa2158da34f8a7697b2d81c3"},
-    {file = "ansys_dpf_core-0.16.1-py3-none-win_amd64.whl", hash = "sha256:18b1d16228f5da89832f507ac719db245577b4e361b065bbf2d38740791da40d"},
+    {file = "ansys_dpf_core-0.16.3-py3-none-any.whl", hash = "sha256:20fabc1067ca984edc8dcb10b101697e3f9201b712b1076223b1b4b9ce0529b1"},
+    {file = "ansys_dpf_core-0.16.3-py3-none-manylinux1_x86_64.whl", hash = "sha256:c0ee948c43f11458fe217a8d9777cc2f23f0acb7ebf9a5b8d9b2e1b677ab41e5"},
+    {file = "ansys_dpf_core-0.16.3-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:a4cf40c54c7d723eef1fddc0119370db1eeee8311ac6d2d829dce19c4fb81f0a"},
+    {file = "ansys_dpf_core-0.16.3-py3-none-win_amd64.whl", hash = "sha256:0a4da18d0a49a12a8094c4466fb230ae1c45e378c8fedeb29736f9729197a1ea"},
 ]
 
 [package.dependencies]
@@ -316,11 +316,11 @@ numpy = "*"
 packaging = "*"
 protobuf = "*"
 psutil = "*"
-setuptools = "*"
 tqdm = "*"
 
 [package.extras]
-graphics = ["ansys-tools-visualization-interface (>=0.13.0)", "imageio", "imageio-ffmpeg", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk (!=9.4.0)"]
+all = ["ansys-tools-visualization-interface (>=0.13.0)", "imageio", "imageio-ffmpeg", "jinja2", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk (!=9.4.0)"]
+graphics = ["ansys-tools-visualization-interface (>=0.13.0)", "imageio", "imageio (==2.38.0)", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk (!=9.4.0)"]
 operator-doc = ["jinja2"]
 plotting = ["ansys-tools-visualization-interface (>=0.13.0)", "imageio", "imageio-ffmpeg", "matplotlib (>=3.10.8)", "pyvista (>=0.47.3)", "vtk"]
 
@@ -5190,27 +5190,6 @@ markers = {main = "extra == \"graphics\""}
 
 [package.extras]
 cpu = ["mkl ; platform_system != \"Darwin\"", "psutil"]
-
-[[package]]
-name = "setuptools"
-version = "82.0.1"
-description = "Most extensible Python build backend with support for C/C++ extension modules"
-optional = false
-python-versions = ">=3.9"
-groups = ["doc"]
-files = [
-    {file = "setuptools-82.0.1-py3-none-any.whl", hash = "sha256:a59e362652f08dcd477c78bb6e7bd9d80a7995bc73ce773050228a348ce2e5bb"},
-    {file = "setuptools-82.0.1.tar.gz", hash = "sha256:7d872682c5d01cfde07da7bccc7b65469d3dca203318515ada1de5eda35efbf9"},
-]
-
-[package.extras]
-check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1) ; sys_platform != \"cygwin\"", "ruff (>=0.13.0) ; sys_platform != \"cygwin\""]
-core = ["importlib_metadata (>=6) ; python_version < \"3.10\"", "jaraco.functools (>=4)", "jaraco.text (>=3.7)", "more_itertools", "more_itertools (>=8.8)", "packaging (>=24.2)", "tomli (>=2.0.1) ; python_version < \"3.11\"", "wheel (>=0.43.0)"]
-cover = ["pytest-cov"]
-doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "pyproject-hooks (!=1.1)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier", "towncrier (<24.7)"]
-enabler = ["pytest-enabler (>=2.2)"]
-test = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21) ; python_version >= \"3.9\" and sys_platform != \"cygwin\"", "jaraco.envs (>=2.2)", "jaraco.path (>=3.7.2)", "jaraco.test (>=5.5)", "packaging (>=24.2)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.*)", "pytest-home (>=0.5)", "pytest-perf ; sys_platform != \"cygwin\"", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel (>=0.44.0)"]
-type = ["importlib_metadata (>=7.0.2) ; python_version < \"3.10\"", "jaraco.develop (>=7.21) ; sys_platform != \"cygwin\"", "mypy (==1.18.*)", "pytest-mypy"]
 
 [[package]]
 name = "shiboken6"
