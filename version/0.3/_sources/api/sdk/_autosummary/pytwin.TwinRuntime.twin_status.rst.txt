@@ -1,0 +1,6 @@
+twin\_status
+============
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.twin_status

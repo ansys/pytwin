@@ -1,0 +1,6 @@
+twin\_platform\_support
+=======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_platform_support
