@@ -1,0 +1,6 @@
+twin\_enable\_rom\_model\_images
+================================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_enable_rom_model_images

@@ -1,0 +1,6 @@
+﻿write\_binary
+=============
+
+.. currentmodule:: pytwin
+
+.. autofunction:: write_binary

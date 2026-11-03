@@ -1,0 +1,6 @@
+get\_snapshot\_filepath
+=======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_snapshot_filepath

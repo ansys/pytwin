@@ -1,0 +1,6 @@
+get\_available\_view\_names
+===========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinModel.get_available_view_names

@@ -1,0 +1,6 @@
+TBROM\_FILENAME\_TIME\_FORMAT
+=============================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinModel.TBROM_FILENAME_TIME_FORMAT

@@ -1,0 +1,6 @@
+twin\_set\_input\_by\_index
+===========================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_set_input_by_index

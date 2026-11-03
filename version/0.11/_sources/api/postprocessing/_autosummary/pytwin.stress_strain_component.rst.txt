@@ -1,0 +1,6 @@
+﻿stress\_strain\_component
+=========================
+
+.. currentmodule:: pytwin
+
+.. autofunction:: stress_strain_component
