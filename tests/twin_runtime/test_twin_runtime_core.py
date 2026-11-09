@@ -72,4 +72,4 @@ class TestTwinRuntime:
     def test_sdk_version(self):
         api_version = TwinRuntime.twin_get_api_version()
 
-        assert api_version == "2.20.5.0"
+        assert api_version == "2.20.6.0"
