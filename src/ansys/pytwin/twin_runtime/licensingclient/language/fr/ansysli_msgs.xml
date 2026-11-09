@@ -82,6 +82,18 @@
             Configuration APIP non autorisée au niveau global.
         </MSG>
     </MESSAGE><!-- Begin ACL FNP Messages [18001 - 19000] --><MESSAGE>
+        <ID>18018</ID>
+        <MSG>
+            Remarque : ANS_FLEXLM_DISABLE_DEFLICPATH est défini, les valeurs ini sont donc ignorées lors de la configuration de ANSYSLMD_LICENSE_FILE.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18017</ID>
+        <MSG>
+            Chemin de la licence récupéré depuis %1: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>18016</ID>
         <MSG>
             Utilisation des attributs définis par l&apos;application (%1) pour l&apos;extraction.
@@ -1131,7 +1143,7 @@
     <MESSAGE>
       <ID>14016</ID>
       <MSG>
-        L&apos;id de contexte %1 a été interrompu, pas de vérification permise pour un id de contexte interrompu.
+          L&apos;id de contexte %1 a été arrêté. Les extractions ne sont pas autorisées dans un contexte arrêté. Tentative d&apos;extraction de %2 sans contexte…
       </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1179,7 +1191,7 @@
   <MESSAGE>
     <ID>14008</ID>
     <MSG>
-      L&apos;id de contexte %1 a déjà été fermé, aucune vérification d&apos;id de contexte fermé n&apos;est permise. Tentative de vérification %2 sans contexte en cours...
+        L&apos;id de contexte %1 a déjà été fermé. Aucune vérification d&apos;id de contexte fermé n&apos;est permise. Tentative de vérification %2 sans contexte en cours...
     </MSG>
   </MESSAGE>
   <MESSAGE>
