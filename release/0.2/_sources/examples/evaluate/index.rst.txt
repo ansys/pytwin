@@ -1,0 +1,138 @@
+
+
+.. _sphx_glr_examples_evaluate:
+
+Twin evaluation examples
+=========================
+These examples show how to use the evaluation workflow given a twin file. This includes multiple workflow demonstrations such as :
+
+- single evaluation of dynamic model,
+- parametric sweep of dynamic model,
+- parametric response surface ROM evaluation,
+- scalar dynamic ROM simulation with state saving and loading,
+- field ROM evaluation and results visualization from the runtime and post processed in Fluent,
+- field ROM evaluation and transfer of results as inputs for Mechanical stress analysis
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Twin evaluation example">
+
+.. only:: html
+
+  .. image:: /examples/evaluate/images/thumb/sphx_glr_00-coupledClutches_thumb.png
+    :alt: Twin evaluation example
+
+  :ref:`sphx_glr_examples_evaluate_00-coupledClutches.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Twin evaluation example</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Parametric dynamic Twin evaluation example">
+
+.. only:: html
+
+  .. image:: /examples/evaluate/images/thumb/sphx_glr_01-electricRange_thumb.png
+    :alt: Parametric dynamic Twin evaluation example
+
+  :ref:`sphx_glr_examples_evaluate_01-electricRange.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parametric dynamic Twin evaluation example</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Parametric response surface ROM Twin evaluation example">
+
+.. only:: html
+
+  .. image:: /examples/evaluate/images/thumb/sphx_glr_02-heatExchangerRS_thumb.png
+    :alt: Parametric response surface ROM Twin evaluation example
+
+  :ref:`sphx_glr_examples_evaluate_02-heatExchangerRS.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parametric response surface ROM Twin evaluation example</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Scalar dynamic ROM Twin evaluation example">
+
+.. only:: html
+
+  .. image:: /examples/evaluate/images/thumb/sphx_glr_03-scalarDROM_thumb.png
+    :alt: Scalar dynamic ROM Twin evaluation example
+
+  :ref:`sphx_glr_examples_evaluate_03-scalarDROM.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Scalar dynamic ROM Twin evaluation example</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how PyTwin can be used to load and evaluate a Twin model in order to visuali...">
+
+.. only:: html
+
+  .. image:: /examples/evaluate/images/thumb/sphx_glr_04-TBROM_images_thumb.png
+    :alt: 3D field ROM example for images generation
+
+  :ref:`sphx_glr_examples_evaluate_04-TBROM_images.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">3D field ROM example for images generation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how PyTwin can be used to load and evaluate a Twin model in order to predict...">
+
+.. only:: html
+
+  .. image:: /examples/evaluate/images/thumb/sphx_glr_05-TBROM_coSimulation_pyMAPDL_thumb.png
+    :alt: 3D field ROM co-simulation with FEA model
+
+  :ref:`sphx_glr_examples_evaluate_05-TBROM_coSimulation_pyMAPDL.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">3D field ROM co-simulation with FEA model</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/evaluate/00-coupledClutches
+   /examples/evaluate/01-electricRange
+   /examples/evaluate/02-heatExchangerRS
+   /examples/evaluate/03-scalarDROM
+   /examples/evaluate/04-TBROM_images
+   /examples/evaluate/05-TBROM_coSimulation_pyMAPDL
+

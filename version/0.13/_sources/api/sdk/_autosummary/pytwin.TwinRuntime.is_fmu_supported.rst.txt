@@ -1,0 +1,6 @@
+is\_fmu\_supported
+==================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.is_fmu_supported

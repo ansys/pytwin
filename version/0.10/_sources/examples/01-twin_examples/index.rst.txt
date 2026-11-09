@@ -1,0 +1,101 @@
+
+
+.. _sphx_glr_examples_01-twin_examples:
+
+Twin evaluation examples
+=========================
+These examples show how to use the evaluation workflow in a TWIN file.
+Included are multiple workflow demonstrations such as single evaluation of a dynamic model, parametric sweep analysis
+(static/dynamic models), evaluation with states saving and loading.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Twin evaluation">
+
+.. only:: html
+
+  .. image:: /examples/01-twin_examples/images/thumb/sphx_glr_00-coupledClutches_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_01-twin_examples_00-coupledClutches.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Twin evaluation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Parametric dynamic twin evaluation">
+
+.. only:: html
+
+  .. image:: /examples/01-twin_examples/images/thumb/sphx_glr_01-electricRange_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_01-twin_examples_01-electricRange.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parametric dynamic twin evaluation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Parametric twin evaluation of a response surface ROM">
+
+.. only:: html
+
+  .. image:: /examples/01-twin_examples/images/thumb/sphx_glr_02-heatExchangerRS_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_01-twin_examples_02-heatExchangerRS.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parametric twin evaluation of a response surface ROM</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Twin evaluation of a scalar dynamic ROM">
+
+.. only:: html
+
+  .. image:: /examples/01-twin_examples/images/thumb/sphx_glr_03-scalarDROM_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_01-twin_examples_03-scalarDROM.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Twin evaluation of a scalar dynamic ROM</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/01-twin_examples/00-coupledClutches
+   /examples/01-twin_examples/01-electricRange
+   /examples/01-twin_examples/02-heatExchangerRS
+   /examples/01-twin_examples/03-scalarDROM
+

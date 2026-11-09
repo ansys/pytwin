@@ -1,0 +1,6 @@
+﻿read\_binary
+============
+
+.. currentmodule:: pytwin
+
+.. autofunction:: read_binary

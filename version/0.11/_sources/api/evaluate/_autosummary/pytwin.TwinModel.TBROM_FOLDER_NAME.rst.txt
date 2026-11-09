@@ -1,0 +1,6 @@
+TBROM\_FOLDER\_NAME
+===================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinModel.TBROM_FOLDER_NAME
