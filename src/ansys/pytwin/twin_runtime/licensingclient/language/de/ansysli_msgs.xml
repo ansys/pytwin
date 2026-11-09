@@ -82,6 +82,18 @@
             APIP-Konfiguration global nicht zulässig.
         </MSG>
     </MESSAGE><!-- Begin ACL FNP Messages [18001 - 19000] --><MESSAGE>
+        <ID>18018</ID>
+        <MSG>
+            Hinweis: ANS_FLEXLM_DISABLE_DEFLICPATH ist eingestellt, sodass die ini-Werte bei der Einstellung von ANSYSLMD_LICENSE_FILE ignoriert werden.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>18017</ID>
+        <MSG>
+            Lizenzpfad (abgerufen von %1): %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
         <ID>18016</ID>
         <MSG>
             Es werden anwendungsdefinierte Attribute (%1) für den Checkout verwendet.
@@ -1131,7 +1143,7 @@
     <MESSAGE>
       <ID>14016</ID>
       <MSG>
-        Kontext-ID %1 wurde beendet. Es sind keine Checkouts für eine beendete Kontext-ID erlaubt.
+          Der Kontext mit ID %1 wurde beendet. Checkouts aus einem beendeten Kontext sind nicht erlaubt. Es wird versucht, %2 ohne Kontext auszuchecken...
       </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1179,7 +1191,7 @@
   <MESSAGE>
     <ID>14008</ID>
     <MSG>
-      Kontext-ID %1 wurde geschlossen. Checkouts aus einer geschlossenen Kontext-ID sind nicht erlaubt. Es wird versucht, %2 ohne Kontext auszuchecken ...
+        Der Kontext mit ID %1 wurde geschlossen. Checkouts aus einem geschlossenen Kontext sind nicht erlaubt. Es wird versucht, %2 ohne Kontext auszuchecken...
     </MSG>
   </MESSAGE>
   <MESSAGE>

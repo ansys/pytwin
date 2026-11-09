@@ -120,6 +120,22 @@
     <!-- Begin ACL FNP Messages [18001 - 19000] -->
     <MESSAGE>
         <ID>
+            18018
+        </ID>
+        <MSG>
+            Note: ANS_FLEXLM_DISABLE_DEFLICPATH is set, so the ini values are ignored when setting ANSYSLMD_LICENSE_FILE.
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
+            18017
+        </ID>
+        <MSG>
+            License path retrieved from %1: %2
+        </MSG>
+    </MESSAGE>
+    <MESSAGE>
+        <ID>
             18016
         </ID>
         <MSG>
@@ -1531,10 +1547,10 @@
     </MESSAGE>
     <MESSAGE>
       <ID>
-        14016
+          14016
       </ID>
       <MSG>
-        Context id %1 has been terminated, no checkouts are permitted to a terminated context id.
+          The context with id %1 has been terminated. Checkouts are not permitted to a terminated context. Attempting to checkout %2 without a context...
       </MSG>
     </MESSAGE>
     <MESSAGE>
@@ -1595,10 +1611,10 @@
     </MESSAGE>
   <MESSAGE>
     <ID>
-      14008
+        14008
     </ID>
     <MSG>
-      Context id %1 has been closed, no checkouts are permitted to a closed context id. Attempting to checkout %2 without a context...
+        The context with id %1 has been closed. Checkouts are not permitted to a closed context. Attempting to checkout %2 without a context...
     </MSG>
   </MESSAGE>
   <MESSAGE>
