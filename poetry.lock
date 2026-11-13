@@ -4334,14 +4334,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.49.1"
+version = "0.49.2"
 description = "3D visualization and mesh analysis for science and engineering."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.49.1-py3-none-any.whl", hash = "sha256:e4bd78c829051207e885281c45d03280dcde25445e1885c0824518ea7849b1c8"},
-    {file = "pyvista-0.49.1.tar.gz", hash = "sha256:e3a37f2330ce9d2d680a153ac08fea2bd900aa59d13db46da8f64c92896ddd8e"},
+    {file = "pyvista-0.49.2-py3-none-any.whl", hash = "sha256:63f78495b30e146c9d1debeca7fa44c7a3935cc9f9ded8638b809ef955fc167a"},
+    {file = "pyvista-0.49.2.tar.gz", hash = "sha256:24cf548b15a375ddb0952bda5ea0ae4948006c7ab724cd676c420f8e04b3718d"},
 ]
 markers = {main = "extra == \"graphics\""}
 
