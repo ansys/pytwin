@@ -1,0 +1,6 @@
+outputs
+=======
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.outputs

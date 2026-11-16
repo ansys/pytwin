@@ -1,0 +1,6 @@
+PYTWIN\_LOG\_ERROR
+==================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: PyTwinLogLevel.PYTWIN_LOG_ERROR

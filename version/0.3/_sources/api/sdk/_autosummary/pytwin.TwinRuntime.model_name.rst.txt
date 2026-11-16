@@ -1,0 +1,6 @@
+model\_name
+===========
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.model_name

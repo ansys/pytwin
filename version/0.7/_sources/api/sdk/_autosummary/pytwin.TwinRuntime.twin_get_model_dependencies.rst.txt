@@ -1,0 +1,6 @@
+twin\_get\_model\_dependencies
+==============================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_model_dependencies

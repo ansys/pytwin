@@ -1,0 +1,6 @@
+inputs
+======
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.inputs

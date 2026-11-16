@@ -1,0 +1,6 @@
+number\_parameters
+==================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.number_parameters

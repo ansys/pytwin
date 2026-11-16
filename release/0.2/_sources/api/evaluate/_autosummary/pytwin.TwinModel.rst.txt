@@ -1,0 +1,115 @@
+﻿pytwin.TwinModel
+================
+
+.. currentmodule:: pytwin
+
+.. autoclass:: TwinModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TwinModel.evaluate_batch
+      
+      
+      TwinModel.evaluate_step_by_step
+      
+      
+      TwinModel.get_available_view_names
+      
+      
+      TwinModel.get_geometry_filepath
+      
+      
+      TwinModel.get_image_filepath
+      
+      
+      TwinModel.get_rom_directory
+      
+      
+      TwinModel.get_snapshot_filepath
+      
+      
+      TwinModel.initialize_evaluation
+      
+      
+      TwinModel.load_state
+      
+      
+      TwinModel.save_state
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      
+      
+      
+      
+      
+      TwinModel.evaluation_is_initialized
+      
+      
+      TwinModel.evaluation_time
+      
+      
+      TwinModel.id
+      
+      
+      TwinModel.initialization_time
+      
+      
+      TwinModel.inputs
+      
+      
+      TwinModel.instantiation_time
+      
+      
+      TwinModel.model_dir
+      
+      
+      TwinModel.model_filepath
+      
+      
+      TwinModel.model_log
+      
+      
+      TwinModel.model_log_link
+      
+      
+      TwinModel.model_temp
+      
+      
+      TwinModel.name
+      
+      
+      TwinModel.outputs
+      
+      
+      TwinModel.parameters
+      
+      
+      TwinModel.tbrom_directory_path
+      
+      
+      TwinModel.tbrom_info
+      
+      
+      TwinModel.tbrom_names
+      
+   
+   

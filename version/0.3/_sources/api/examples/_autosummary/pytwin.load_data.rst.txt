@@ -1,0 +1,6 @@
+﻿load\_data
+==========
+
+.. currentmodule:: pytwin
+
+.. autofunction:: load_data

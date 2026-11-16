@@ -1,0 +1,6 @@
+last\_time\_stop
+================
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.last_time_stop

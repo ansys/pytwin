@@ -1,0 +1,6 @@
+twin\_get\_param\_names
+=======================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_param_names

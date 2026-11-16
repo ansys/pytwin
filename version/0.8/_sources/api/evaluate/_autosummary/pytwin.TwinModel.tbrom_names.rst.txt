@@ -1,0 +1,6 @@
+tbrom\_names
+============
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.tbrom_names
