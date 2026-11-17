@@ -4396,14 +4396,14 @@ vtk = ["vtk"]
 
 [[package]]
 name = "pyvistaqt"
-version = "0.13.1"
+version = "0.13.2"
 description = "pyvista qt plotter"
 optional = false
 python-versions = ">=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyvistaqt-0.13.1-py3-none-any.whl", hash = "sha256:8ec3c40d2bb5de2b90b73cc47bc9179ae1d3d169078c7b7e84514cdde9f268be"},
-    {file = "pyvistaqt-0.13.1.tar.gz", hash = "sha256:f5d06435381e7b2cb803a57682c7a0e4500de689b6da0c5679afe68fdeb81d98"},
+    {file = "pyvistaqt-0.13.2-py3-none-any.whl", hash = "sha256:158b986e24c38984794ad707f263218d3fdfb3f4c0c1ae9f6683d7eddc43071c"},
+    {file = "pyvistaqt-0.13.2.tar.gz", hash = "sha256:82aef38012e3110fbe9a3aa92feb8175142cbcee0ae167cd99068c697dce81e1"},
 ]
 
 [package.dependencies]
@@ -4413,7 +4413,7 @@ QtPy = ">=1.9.0"
 [package.extras]
 dev = ["pre-commit"]
 docs = ["Sphinx", "pydata-sphinx-theme", "sphinx-copybutton", "sphinx-notfound-page"]
-test = ["ipython (==8.39.0)", "numpy (==2.2.6) ; python_version < \"3.11\"", "numpy (==2.4.4) ; python_version >= \"3.11\"", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-memprof (==0.2.0)", "pytest-qt (==4.5.0)", "pyvista[jupyter]", "refleak (==0.2.2)", "scooby (==0.11.2)", "sphinx_gallery (==0.21.0)"]
+test = ["ipython (==8.39.0)", "numpy (==2.2.6) ; python_version < \"3.11\"", "numpy (==2.4.4) ; python_version >= \"3.11\"", "pytest (==9.2.0)", "pytest-cov (==7.1.0)", "pytest-memprof (==0.2.0)", "pytest-qt (==4.5.0)", "pyvista[jupyter]", "refleak (==0.2.2)", "scooby (==0.12.1)", "sphinx_gallery (==0.22.1)"]
 
 [[package]]
 name = "pywin32"
