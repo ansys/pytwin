@@ -130,7 +130,7 @@ jobs:
     strategy:
        matrix:
            os: [ubuntu-latest, windows-latest]
-           python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
+           python-version: ['3.12', '3.13', '3.14']
     steps:
       - uses: ansys/actions/build-wheelhouse@v11.1
         with:
@@ -145,7 +145,7 @@ jobs:
     strategy:
        matrix:
            os: [windows-latest, ubuntu-22.04]
-           python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
+           python-version: ['3.12', '3.13', '3.14']
     steps:
       - name: Install Ubuntu dependencies for RomViewerSharedLib.so
         if: matrix.os == 'ubuntu-22.04'
