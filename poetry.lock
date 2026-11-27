@@ -348,14 +348,14 @@ tests = ["pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pytest-mock (==3.14.1)", "
 
 [[package]]
 name = "ansys-fluent-core"
-version = "0.43.0"
+version = "0.44.0"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 optional = false
-python-versions = "<3.15,>=3.10"
+python-versions = "<3.15,>=3.12"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_core-0.43.0-py3-none-any.whl", hash = "sha256:33ae6bfe7bec8fc6c037092c02e8b98b51686f6e502760b372fbe6a46098735b"},
-    {file = "ansys_fluent_core-0.43.0.tar.gz", hash = "sha256:6d21b4bf491cead61272e625abb00798889a680e17dbbb003f0619bbfb94cab5"},
+    {file = "ansys_fluent_core-0.44.0-py3-none-any.whl", hash = "sha256:895229990ebb49c6fab87bce71b5bfdee9001e909c171ee45f8933744e747e42"},
+    {file = "ansys_fluent_core-0.44.0.tar.gz", hash = "sha256:ccd3eb9bb602df3bb06b78853d6feb59451814ac5ea1ab8b12000cf957d6fb09"},
 ]
 
 [package.dependencies]
@@ -363,7 +363,7 @@ ansys-api-fluent = ">=0.7.0"
 ansys-platform-instancemanagement = ">=1.1,<2.0"
 ansys-tools-common = ">=0.4.0"
 ansys-tools-filetransfer = ">=0.2,<1.0"
-ansys-units = ">=0.10,<1.0"
+ansys-units = ">=0.16,<0.17"
 defusedxml = ">=0.7.1"
 deprecated = ">=1.2.18"
 docker = ">=7.1.0"
@@ -378,28 +378,29 @@ pyyaml = ">=6.0"
 typing-extensions = ">=4.12"
 
 [package.extras]
-ci-types = ["ansys-fluent-visualization", "basedpyright (==1.40.1)", "h5py", "imageio", "matplotlib", "plotly", "pyfakefs", "pytest", "pytest-cov", "pytest-mock", "pytest-xdist", "scikit-learn", "seaborn", "tensorflow", "tomli", "xgboost"]
-docs = ["Sphinx (==8.1.3)", "ansys-sphinx-theme (==1.9.0)", "autodocsumm (==0.2.15)", "beautifulsoup4 (==4.15.0)", "docker (==7.1.0)", "jupyter_sphinx (==0.5.3)", "matplotlib (==3.10.9)", "numpy (==2.5.0)", "numpydoc (==1.11.0)", "openpyxl (>=3.1.5)", "pdf2image (==1.17.0)", "plotly (>=5.22.0)", "pypandoc (==1.17)", "pytest-sphinx (==0.7.1)", "python-pptx (>=0.6.23)", "quarto-cli (==1.10.18)", "seaborn (>=0.13.2)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.0.1)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.22.1)", "sphinx-notfound-page (==1.1.0)", "sphinx-toggleprompt (==0.6.0)", "sphinx_design (==0.6.1)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.2)"]
+ci-types = ["ansys-fluent-visualization", "basedpyright (==1.40.2)", "h5py", "imageio", "matplotlib", "plotly", "pyfakefs", "pytest", "pytest-cov", "pytest-mock", "pytest-xdist", "scikit-learn", "seaborn", "tensorflow", "tomli", "xgboost"]
+docs = ["Sphinx (==8.1.3)", "ansys-sphinx-theme (==1.9.0)", "autodocsumm (==0.2.15)", "beautifulsoup4 (==4.15.0)", "docker (==7.1.0)", "jupyter_sphinx (==0.5.3)", "matplotlib (==3.10.9)", "numpy (==2.5.0)", "numpydoc (==1.11.0)", "openpyxl (>=3.1.5)", "pdf2image (==1.17.0)", "plotly (>=5.22.0)", "pypandoc (==1.17)", "pytest-sphinx (==0.7.1)", "python-pptx (>=0.6.23)", "quarto-cli (==1.10.19)", "seaborn (>=0.13.2)", "sphinx-autobuild (==2024.10.3)", "sphinx-autodoc-typehints (==3.0.1)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.22.1)", "sphinx-notfound-page (==1.1.0)", "sphinx-toggleprompt (==0.6.0)", "sphinx_design (==0.6.1)", "sphinxcontrib-websupport (==2.0.0)", "sphinxemoji (==0.3.2)"]
+grpc = ["ansys-api-fluent (>=0.7.0)", "grpcio (>=1.30.0)", "grpcio-health-checking (>=1.30.0)", "grpcio-reflection (>=1.30.0)", "grpcio-status (>=1.26.0)"]
 reader = ["h5py (>=3.15.1)"]
 search = ["nltk (>=3.10.3)"]
-tests = ["docker (==7.1.0)", "numpy (==2.5.0)", "pyfakefs (==6.2.0)", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-mock (==3.15.1)", "pytest-xdist (==3.8.0)"]
+tests = ["docker (==7.1.0)", "numpy (==2.5.0)", "pyfakefs (==6.2.0)", "pytest (==9.2.0)", "pytest-cov (==7.1.0)", "pytest-mock (==3.17.0)", "pytest-xdist (==3.8.0)"]
 ui = ["panel (>=1.8.1)"]
 ui-jupyter = ["ipywidgets (>=8.1.8)"]
 
 [[package]]
 name = "ansys-fluent-visualization"
-version = "0.28.0"
+version = "0.29.0"
 description = "A python wrapper for ansys Fluent visualization"
 optional = false
-python-versions = "<3.15,>=3.10"
+python-versions = "<3.15,>=3.12"
 groups = ["doc"]
 files = [
-    {file = "ansys_fluent_visualization-0.28.0-py3-none-any.whl", hash = "sha256:25dfc4364125abcd7e0bc4c77776ff73f8d75d672b3a1428eb9ee8a95a593e2d"},
-    {file = "ansys_fluent_visualization-0.28.0.tar.gz", hash = "sha256:f5bcdaa9c0a3c34f2b8966cb466d36513f441bcaf4bb3e39efa4f7ea97757d5e"},
+    {file = "ansys_fluent_visualization-0.29.0-py3-none-any.whl", hash = "sha256:50f86926f691f0a0cda8a7cd457710f74f7fe6c2a64bc48bda627e858e07596a"},
+    {file = "ansys_fluent_visualization-0.29.0.tar.gz", hash = "sha256:1dd5503e49af7bef8fd6b643126c102270cd1d4f30da67c4bbb441e679d6ccbd"},
 ]
 
 [package.dependencies]
-ansys-fluent-core = ">=0.41.0"
+ansys-fluent-core = ">=0.44.0"
 matplotlib = ">=3.6.0"
 pyvista = ">=0.44.0"
 
@@ -625,14 +626,14 @@ tests = ["pyside6 (==6.9.3)", "pytest (==8.4.2)", "pytest-cov (==7.0.0)", "pytes
 
 [[package]]
 name = "ansys-units"
-version = "0.12.1"
+version = "0.16.0"
 description = "Pythonic interface for units, unit systems, and unit conversions."
 optional = false
-python-versions = "<3.15,>=3.10"
+python-versions = "<3.15,>=3.12"
 groups = ["doc"]
 files = [
-    {file = "ansys_units-0.12.1-py3-none-any.whl", hash = "sha256:e86d13d8dfab25004818703f8743639a0b6ea87d4e6aad6cdd8b7d8fb3c6a7f6"},
-    {file = "ansys_units-0.12.1.tar.gz", hash = "sha256:ab125e8182c0e8518a42426dd09d4a56ff4b104e05951ef6fdc56aec2c5c2ebd"},
+    {file = "ansys_units-0.16.0-py3-none-any.whl", hash = "sha256:06c6770465cbee0b8bc14f2733fa1052c3a3062412a1a0b96031db808eb590b7"},
+    {file = "ansys_units-0.16.0.tar.gz", hash = "sha256:66f32950578e1fc4f6a704fafcba9f005388ff084b86c57a140671410d466d3f"},
 ]
 
 [package.dependencies]
@@ -640,10 +641,10 @@ pyyaml = ">=6.0"
 typing-extensions = ">=4.5.0"
 
 [package.extras]
-additional = ["numpy (>=1.24,<3)", "pandas (>=2.2,<3.0) ; python_version < \"3.11\"", "pandas (>=3.0.0) ; python_version >= \"3.11\"", "pandas-stubs (>=2)", "pydantic (>=2.11.7)", "pydantic_core (>=2.33.2)"]
-ci-types = ["basedpyright", "black (==26.3.1)", "matplotlib (==3.10.8)", "pandas (>=2.2,<3.0) ; python_version < \"3.11\"", "pandas (>=3.0.0) ; python_version >= \"3.11\"", "pandas-stubs (>=2)", "pint (==0.24.4)", "pydantic (>=2.11.7)", "pydantic_core (>=2.33.2)", "pytest (==9.0.3)", "pytest-cov (==7.1.0)", "pytest-mock (==3.15.1)"]
-doc = ["Sphinx (==7.4.7)", "ansys-sphinx-theme (==1.7.2)", "matplotlib (==3.10.8)", "numpydoc (==1.10.0)", "pdf2image (==1.17.0)", "quarto-cli (==1.9.37)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.20.0)", "sphinx-toggleprompt (==0.6.0)"]
-tests = ["numpy (>=1.24,<3)", "pandas (>=2.2,<3.0) ; python_version < \"3.11\"", "pandas (>=3.0.0) ; python_version >= \"3.11\"", "pandas-stubs (>=2)", "pint (==0.24.4)", "pytest (==9.0.3)", "pytest-cov (==7.1.0)", "pytest-mock (==3.15.1)"]
+additional = ["numpy (>=1.24,<3)", "pandas (>=3.0.0)", "pandas-stubs (>=2)", "pydantic (>=2.11.7)", "pydantic_core (>=2.33.2)"]
+ci-types = ["basedpyright", "black (==26.10.1)", "matplotlib (==3.10.9)", "pandas (>=3.0.0)", "pandas-stubs (>=2)", "pint (==0.24.4)", "pydantic (>=2.11.7)", "pydantic_core (>=2.33.2)", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-mock (==3.17.0)"]
+doc = ["Sphinx (==7.4.7)", "ansys-sphinx-theme (==1.9.0)", "matplotlib (==3.10.9)", "numpydoc (==1.11.0)", "pdf2image (==1.17.0)", "quarto-cli (==1.10.19)", "sphinx-copybutton (==0.5.2)", "sphinx-gallery (==0.22.1)", "sphinx-toggleprompt (==0.6.0)"]
+tests = ["numpy (>=1.24,<3)", "pandas (>=3.0.0)", "pandas-stubs (>=2)", "pint (==0.24.4)", "pytest (==9.1.1)", "pytest-cov (==7.1.0)", "pytest-mock (==3.17.0)"]
 
 [[package]]
 name = "appdirs"
@@ -5890,4 +5891,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.15"
-content-hash = "ad3b324ab4daa92b09f3bef71ad9325e0bb330a085827084eb3513a508da34e0"
+content-hash = "01f248a11f2a633d762cb7f8362e1c0c25a4c9cdeadff0cb46c2e4f7e20f6a05"
