@@ -1,0 +1,6 @@
+model\_temp
+===========
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.model_temp

@@ -1,0 +1,6 @@
+model\_log\_link
+================
+
+.. currentmodule:: pytwin
+
+.. autoproperty:: TwinModel.model_log_link

@@ -1,0 +1,6 @@
+os\_version
+===========
+
+.. currentmodule:: pytwin
+
+.. autoattribute:: TwinRuntime.os_version

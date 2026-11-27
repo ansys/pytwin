@@ -1,0 +1,6 @@
+twin\_get\_rom\_output\_basis
+=============================
+
+.. currentmodule:: pytwin
+
+.. automethod:: TwinRuntime.twin_get_rom_output_basis
