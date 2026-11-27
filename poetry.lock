@@ -3791,14 +3791,14 @@ tests = ["pytest"]
 
 [[package]]
 name = "pyaedt"
-version = "1.9.0"
+version = "1.10.0"
 description = "High-level Python API for Ansys Electronics Desktop Framework"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["doc"]
 files = [
-    {file = "pyaedt-1.9.0-py3-none-any.whl", hash = "sha256:2db03d1e4c70c14fed8eb05f91cc68506932c173107c220f901a1a8b1b44cbc8"},
-    {file = "pyaedt-1.9.0.tar.gz", hash = "sha256:9ae9d9ae03f9bd185c7a274670bdda1c0fc74de81c76c8385493a27d2e046dd8"},
+    {file = "pyaedt-1.10.0-py3-none-any.whl", hash = "sha256:5f95177bae757b0107780f15641c775a0d138ee533bb2a83b2e737c7e2ba75fc"},
+    {file = "pyaedt-1.10.0.tar.gz", hash = "sha256:0eb9d202322fed3c610a3e03cc99a85714747f55c31a72c66ccd14259a8f0853"},
 ]
 
 [package.dependencies]
@@ -4334,14 +4334,14 @@ files = [
 
 [[package]]
 name = "pyvista"
-version = "0.49.1"
+version = "0.49.2"
 description = "3D visualization and mesh analysis for science and engineering."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "doc", "graphics"]
 files = [
-    {file = "pyvista-0.49.1-py3-none-any.whl", hash = "sha256:e4bd78c829051207e885281c45d03280dcde25445e1885c0824518ea7849b1c8"},
-    {file = "pyvista-0.49.1.tar.gz", hash = "sha256:e3a37f2330ce9d2d680a153ac08fea2bd900aa59d13db46da8f64c92896ddd8e"},
+    {file = "pyvista-0.49.2-py3-none-any.whl", hash = "sha256:63f78495b30e146c9d1debeca7fa44c7a3935cc9f9ded8638b809ef955fc167a"},
+    {file = "pyvista-0.49.2.tar.gz", hash = "sha256:24cf548b15a375ddb0952bda5ea0ae4948006c7ab724cd676c420f8e04b3718d"},
 ]
 markers = {main = "extra == \"graphics\""}
 
@@ -6376,4 +6376,4 @@ graphics = ["pyvista"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "7781ec72ecb7ea3da9a51290f703cdc3ef9fffd8a81bb57597bd98713379ac19"
+content-hash = "5d364b9ac73d9f52b77e3920aaacb671bd35207f8322f441bf21f72aed34e27b"
