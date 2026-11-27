@@ -82,7 +82,7 @@ run PyTwin in a separate process with its own startup environment.
 Install the package
 -------------------
 
-The ``pytwin`` package supports Python 3.10 through Python 3.14 on Windows and Linux.
+The ``pytwin`` package supports Python 3.12 through Python 3.14 on Windows and Linux.
 
 Install the latest release from `PyPi <https://pypi.org/project/pytwin/>`_
 with this command:

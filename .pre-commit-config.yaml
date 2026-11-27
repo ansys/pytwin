@@ -7,7 +7,7 @@ repos:
   - id: black
 
 - repo: https://github.com/pycqa/isort
-  rev: 10.0.0b2
+  rev: 10.0.0b3
   hooks:
   - id: isort
 
@@ -35,7 +35,7 @@ repos:
       additional_dependencies: [black==26.10.1]
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.8.1
+  rev: v0.8.4
   hooks:
     - id: add-license-headers
       files: '(ansys|examples|tests)/.*\.(py)'
